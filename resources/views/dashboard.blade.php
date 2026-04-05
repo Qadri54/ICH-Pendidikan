@@ -9,7 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    <p class="text-lg font-semibold">Selamat datang, {{ $user->name }}!</p>
+                    <p class="text-sm text-gray-500 mt-1">Role: {{ $role }}</p>
+                    @if(auth()->user()->role?->role_name === 'Admin')
+                        <div class="mt-4 p-4 bg-red-100 text-red-800 rounded">
+                            Ini hanya bisa dilihat oleh Admin.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
