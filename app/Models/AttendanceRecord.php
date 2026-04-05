@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AttendanceRecord extends Model
+{
+    use HasFactory;
+
+    protected $primaryKey = 'attendance_record_id';
+
+    protected $fillable = [
+        'teacher_id',
+        'religious_teacher_id',
+        'check_in_time',
+        'check_in_latitude',
+        'check_in_longitude',
+        'check_in_accuracy',
+        'is_within_geofence',
+        'attendance_status',
+        'check_out_time',
+        'check_out_latitude',
+        'check_out_longitude',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'check_in_time'  => 'datetime',
+            'check_out_time' => 'datetime',
+            'check_in_latitude'   => 'decimal:7',
+            'check_in_longitude'  => 'decimal:7',
+            'check_out_latitude'  => 'decimal:7',
+            'check_out_longitude' => 'decimal:7',
+        ];
+    }
+
+    // Relationships
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function religiousTeacher()
+    {
+        return $this->belongsTo(ReligiousTeacher::class, 'religious_teacher_id', 'religious_teacher_id');
+    }
+}
