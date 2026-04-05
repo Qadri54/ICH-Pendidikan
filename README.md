@@ -1,59 +1,307 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IQRA' CREATIVE HOUSE - School Management Information System
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://via.placeholder.com/400x200?text=IQRA'+CREATIVE+HOUSE" alt="IQRA' Creative House Logo" width="400">
 </p>
 
-## About Laravel
+<p align="center">
+  <strong>Sistem Informasi Manajemen Terpusat dan Terintegrasi untuk TK</strong>
+  <br>
+  <em>Transformasi dari Sistem Manual ke Sistem Otomatis dengan Centralized Data Management</em>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Tentang Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+IQRA' CREATIVE HOUSE Information System adalah platform manajemen sekolah terintegrasi yang dirancang khusus untuk Taman Kanak-kanak (TK) modern. Sistem ini mengotomatisasi seluruh proses operasional, akademik, dan finansial dengan arsitektur terpusat untuk mengurangi human error dan meningkatkan efisiensi.
 
-## Learning Laravel
+### 🎯 Visi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Menyediakan solusi teknologi yang mudah digunakan untuk meningkatkan akurasi data, efisiensi operasional, dan transparansi informasi di TK IQRA' CREATIVE HOUSE.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🚀 Fitur Utama
 
-## Laravel Sponsors
+#### 1. **Manajemen Akademik** 📚
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Manajemen kelas dan mata pelajaran
+- Sistem penilaian siswa (grading)
+- Laporan kinerja siswa otomatis
+- Manajemen guru (TK & Guru Ngaji)
 
-### Premium Partners
+#### 2. **Manajemen Keuangan** 💳
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Tracking SPP (Sumbangan Pembinaan Pendidikan) bulanan
+- Manajemen biaya pendaftaran dengan sistem cicilan 3x
+- Payment gateway integration
+- Invoice generation otomatis
+- Financial reporting & reconciliation
 
-## Contributing
+#### 3. **Sistem Kehadiran** 📍
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- GPS-based attendance tracking dengan geofencing
+- Real-time check-in/check-out
+- Notifikasi otomatis ke orang tua
+- Laporan kehadiran terperinci
 
-## Code of Conduct
+#### 4. **Manajemen Tabungan Siswa** 🏦
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Digital passbook siswa
+- Transaction tracking (setor/tarik)
+- Automated passbook generation
+- Savings analytics & reporting
 
-## Security Vulnerabilities
+#### 5. **Sistem Notifikasi** 📧
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Email notifications
+- SMS notifications
+- Push notifications
+- Broadcast messages
 
-## License
+#### 6. **Reporting & Analytics** 📊
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Real-time dashboards
+- Academic performance analytics
+- Financial forecasting
+- Customizable reports
+
+---
+
+## 🏗️ Teknologi Stack
+
+### Backend
+
+- **Framework**: Laravel 11.x
+- **Database**: MySQL 8.0+
+- **API**: RESTful API dengan Laravel Sanctum
+- **Authentication**: Multi-role authentication
+
+### Architecture
+
+- **Pattern**: Service Layer Architecture
+- **Database Design**: Normalization (3NF)
+- **ORM**: Eloquent
+- **Repository Pattern**: For clean data access
+
+### Frontend (Optional)
+
+- **Framework**: React / Vue.js
+- **Build Tool**: Vite
+- **HTTP Client**: Axios
+
+---
+
+## 📊 Database Schema
+
+Sistem menggunakan 15+ tabel yang terintegrasi mencakup:
+
+- **Authentication & Users** - Users, Roles, Admin, Foundation Heads
+- **Academic** - Teachers, Students, Classes, Grades, Subjects
+- **Finance** - SPP Invoices, Payments, Registration Fees, Installments
+- **Attendance** - Records, Geofence Zones
+- **Savings** - Ledgers, Transactions, Student Passbooks
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- PHP >= 8.1
+- MySQL >= 8.0
+- Composer
+- Node.js >= 16
+
+### Installation
+
+```bash
+# 1. Clone repository
+git clone https://github.com/yourusername/ich-pendidikan.git
+cd ich-pendidikan
+
+# 2. Install dependencies
+composer install
+npm install
+
+# 3. Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Configure database di .env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ich_pendidikan
+DB_USERNAME=root
+DB_PASSWORD=
+
+# 5. Run migrations
+php artisan migrate
+
+# 6. Seed data (optional)
+php artisan db:seed
+
+# 7. Run development server
+php artisan serve
+npm run dev  # Terminal terpisah
+
+# Server berjalan di http://localhost:8000
+```
+
+---
+
+## 📚 API Documentation
+
+### Authentication
+
+```http
+POST /api/register          # Register user baru
+POST /api/login             # Login & get token
+POST /api/logout            # Logout (protected)
+```
+
+### Academic
+
+```http
+GET /api/students           # Get all students
+GET /api/grades?student_id=1  # Get student grades
+POST /api/grades            # Record new grade
+GET /api/classes            # Get all classes
+```
+
+### Finance
+
+```http
+GET /api/payments           # Get all payments
+POST /api/payments          # Create payment
+GET /api/invoices           # Get invoices
+GET /api/invoices/{id}      # Get invoice detail
+```
+
+### Attendance
+
+```http
+POST /api/attendance        # Record attendance (check-in/out)
+GET /api/attendance-report  # Get attendance report
+```
+
+### Savings
+
+```http
+GET /api/savings            # Get savings data
+POST /api/savings/transactions  # Record transaction
+GET /api/passbook/{id}      # Get student passbook
+```
+
+Lihat `/docs/API.md` untuk dokumentasi lengkap dengan request/response examples.
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test
+php artisan test tests/Feature/PaymentTest.php
+
+# Run with coverage
+php artisan test --coverage
+```
+
+---
+
+## 🔐 Security
+
+- ✅ Laravel Sanctum authentication dengan API tokens
+- ✅ Role-based access control (RBAC) - 5 roles
+- ✅ Input validation & sanitization
+- ✅ CSRF protection
+- ✅ Password hashing dengan bcrypt
+- ✅ Rate limiting
+- ✅ SQL injection prevention (Eloquent ORM)
+- ✅ Audit trails & logging
+
+---
+
+## 📈 Performance
+
+- Query optimization dengan eager loading
+- Database indexing on foreign keys & frequently searched columns
+- Pagination untuk large datasets
+- Caching strategies
+- Response compression
+
+---
+
+## 🐛 Troubleshooting
+
+### Vite Manifest Not Found
+
+```bash
+npm install
+npm run build
+php artisan serve
+```
+
+### Database Connection Error
+
+Pastikan MySQL service running dan `.env` configuration benar.
+
+### Permission Denied
+
+```bash
+chmod -R 777 storage/ bootstrap/cache/
+```
+
+Lihat `/docs/TROUBLESHOOTING.md` untuk masalah lebih lanjut.
+
+---
+
+## 📝 Contributing
+
+Terima kasih telah mempertimbangkan kontribusi!
+
+1. Fork repository
+2. Buat feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+---
+
+## 📞 Support & Contact
+
+- **Email**: support@iqracreativehouse.com
+- **Phone**: +62-XXX-XXXX-XXXX
+- **Issues**: https://github.com/yourusername/ich-pendidikan/issues
+- **Website**: https://iqracreativehouse.com
+
+---
+
+## 📄 License
+
+Licensed under the MIT license - lihat [LICENSE](LICENSE) untuk detail.
+
+---
+
+## 👏 Acknowledgments
+
+- Laravel Community
+- IQRA' CREATIVE HOUSE - Institusi pendidikan yang mendukung
+- Tim development yang berkontribusi
+
+---
+
+<p align="center">
+  <strong>Built with ❤️ for IQRA' CREATIVE HOUSE</strong>
+  <br>
+  <em>School Management Information System v1.0.0</em>
+</p>
+
+---
+
+**Last Updated**: 2024  
+**Version**: 1.0.0  
+**Status**: In Development
