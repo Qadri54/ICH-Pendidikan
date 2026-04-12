@@ -17,7 +17,6 @@ class Student extends Model
         'nama_siswa',
         'NIS',
         'jenis_kelamin',
-        'kelas',
         'tanggal_lahir',
         'tempat_lahir',
         'nama_ayah',
