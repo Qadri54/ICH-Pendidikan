@@ -18,6 +18,7 @@ class RegistrationTransaction extends Model
         'jumlah_bayar',
         'nama_bank',
         'gambar_bukti_pembayaran',
+        'payment_category',
         'status',
     ];
 
