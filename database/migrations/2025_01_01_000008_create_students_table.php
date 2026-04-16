@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('students', function (Blueprint $table) {
             $table->id('student_id');
-            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('class_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('nama_siswa');
-            $table->string('NIS')->unique();
+            $table->string('NIS')->unique()->nullable();
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->date('tanggal_lahir');
             $table->string('tempat_lahir');
