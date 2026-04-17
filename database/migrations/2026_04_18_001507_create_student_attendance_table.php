@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('student_attendance', function (Blueprint $table) {
             $table->id('student_attendance_id');
             $table->unsignedBigInteger('student_id');
-            $table->enum('status', ['present', 'absent']);
+            $table->enum('status', ['izin', 'sakit', 'tanpa keterangan']);
             $table->timestamp('created_at')->useCurrent();
 
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
