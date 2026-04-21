@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tanggal_tahun');
             $table->integer('jumlah');
             $table->date('jatuh_tempo');
-            $table->enum('status', ['belum dibayar', 'sudah dibayar', 'diproses', 'cancel', 'terlambat'])->default('belum dibayar');
+            $table->enum('status', ['unpaid', 'paid', 'pending', 'cancelled', 'overdue'])->default('unpaid');
             $table->timestamps();
 
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');

@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id('payment_id');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger('approved_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->dateTime('payment_date');
             $table->integer('jumlah_bayar');
             $table->string('nama_bank');
             $table->string('gambar_bukti_pembayaran');
-            $table->enum('status', ['sudah dibayar', 'belum dibayar'])->default('belum dibayar');
+            $table->enum('status', ['unpaid', 'paid', 'pending', 'cancelled', 'overdue'])->default('pending');
             $table->timestamps();
 
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
