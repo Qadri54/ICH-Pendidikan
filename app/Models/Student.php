@@ -70,4 +70,9 @@ class Student extends Model
     {
         return $this->hasMany(SavingTransaction::class, 'student_id', 'student_id');
     }
+
+    public function reportCards()
+    {
+        return $this->hasMany(StudentReportCard::class, 'student_id', 'student_id');
+    }
 }

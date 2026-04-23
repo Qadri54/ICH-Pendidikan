@@ -56,4 +56,9 @@ class Teacher extends Model
     {
         return $this->hasMany(SavingLedger::class, 'teacher_id', 'teacher_id');
     }
+
+    public function homeroomReportCards()
+    {
+        return $this->hasMany(StudentReportCard::class, 'homeroom_teacher_id', 'teacher_id');
+    }
 }

@@ -1,6 +1,10 @@
 *.log
 .DS_Store
 .env
+.claude/
+docs/
+PLANNING_SISTEM_PENILAIAN.md
+*.puml
 .env.backup
 .env.production
 .phpactor.json
