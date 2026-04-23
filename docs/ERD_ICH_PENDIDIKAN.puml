@@ -1,0 +1,344 @@
+@startuml ICH-Pendidikan ERD
+' =============================================
+' ERD ICH-Pendidikan — ICH Pendidikan App
+' Mencakup tabel existing + tabel baru Sistem Raport
+' Tabel tidak relevan (students_grades, subjects,
+' spp_*, saving_*, registration_*) dikecualikan.
+' =============================================
+
+skinparam linetype ortho
+skinparam entity {
+  BackgroundColor #FAFAFA
+  BorderColor #555555
+  FontSize 12
+}
+skinparam package {
+  BackgroundColor #F0F4FF
+  BorderColor #3366CC
+  FontSize 13
+  FontStyle bold
+}
+
+hide empty members
+
+' =============================================
+' PACKAGE: User Management
+' =============================================
+package "User Management" #EAF0FB {
+
+  entity "users" as users {
+    * user_id : BIGINT <<PK>>
+    --
+    * name : VARCHAR
+    * email : VARCHAR <<UNIQUE>>
+    * no_hp : VARCHAR
+    * password : VARCHAR
+    * status : ENUM(active, inactive)
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "roles" as roles {
+    * role_id : BIGINT <<PK>>
+    --
+    * user_id : BIGINT <<FK>>
+    * role_name : ENUM(Admin, Guest, Student,\nGuru, Guru Ngaji,\nKepala Sekolah, Kepala Yayasan)
+    description : VARCHAR
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "admins" as admins {
+    * admin_id : BIGINT <<PK>>
+    --
+    * user_id : BIGINT <<FK>>
+    * NIP : VARCHAR <<UNIQUE>>
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "teachers" as teachers {
+    * teacher_id : BIGINT <<PK>>
+    --
+    * user_id : BIGINT <<FK>>
+    * NIP : VARCHAR <<UNIQUE>>
+    * tipe : ENUM(Guru TK, Guru Ngaji)
+    subject : VARCHAR
+    * hire_date : DATE
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "religious_teachers" as religious_teachers {
+    * religious_teacher_id : BIGINT <<PK>>
+    --
+    * user_id : BIGINT <<FK>>
+    * NIP : VARCHAR <<UNIQUE>>
+    * tipe : ENUM(Guru Quran, Guru Iqra)
+    * hire_date : DATE
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "foundation_heads" as foundation_heads {
+    * principal_id : BIGINT <<PK>>
+    --
+    * user_id : BIGINT <<FK>>
+    * NIP : VARCHAR <<UNIQUE>>
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+}
+
+' =============================================
+' PACKAGE: Siswa & Kelas
+' =============================================
+package "Siswa & Kelas" #EAFBEA {
+
+  entity "classes" as classes {
+    * class_id : BIGINT <<PK>>
+    --
+    * nama_kelas : VARCHAR
+    * nama_ruangan : VARCHAR
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "students" as students {
+    * student_id : BIGINT <<PK>>
+    --
+    class_id : BIGINT <<FK>>
+    * user_id : BIGINT <<FK>>
+    * nama_siswa : VARCHAR
+    NIS : VARCHAR <<UNIQUE>>
+    * jenis_kelamin : ENUM(L, P)
+    * tanggal_lahir : DATE
+    * tempat_lahir : VARCHAR
+    * nama_ayah : VARCHAR
+    * nama_ibu : VARCHAR
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "student_attendance" as student_attendance {
+    * student_attendance_id : BIGINT <<PK>>
+    --
+    * student_id : BIGINT <<FK>>
+    * status : ENUM(izin, sakit, tanpa keterangan)
+    * created_at : TIMESTAMP
+  }
+}
+
+' =============================================
+' PACKAGE: Absensi Guru (Geofencing)
+' =============================================
+package "Absensi Guru" #FFF8EA {
+
+  entity "attendance_records" as attendance_records {
+    * attendance_record_id : BIGINT <<PK>>
+    --
+    teacher_id : BIGINT <<FK>>
+    religious_teacher_id : BIGINT <<FK>>
+    check_in_time : DATETIME
+    check_in_latitude : DECIMAL(10,7)
+    check_in_longitude : DECIMAL(10,7)
+    check_in_accuracy : VARCHAR
+    is_within_geofence : ENUM(ya, tidak)
+    * attendance_status : ENUM(Masuk, Izin, Sakit)
+    check_out_time : DATETIME
+    check_out_latitude : DECIMAL(10,7)
+    check_out_longitude : DECIMAL(10,7)
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "geofence_zones" as geofence_zones {
+    * geofence_zone_id : BIGINT <<PK>>
+    --
+    * center_latitude : DECIMAL(10,7)
+    * center_longitude : DECIMAL(10,7)
+    * radius_meter : DECIMAL(10,2)
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "attendance_settings" as attendance_settings {
+    * attendance_setting_id : BIGINT <<PK>>
+    --
+    * setting_key : CHAR(100)
+    * setting_value : CHAR(255)
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+}
+
+' =============================================
+' PACKAGE: Sistem Raport — BARU
+' =============================================
+package "Sistem Raport [BARU]" #FBEAEA {
+
+  entity "academic_periods" as academic_periods {
+    * period_id : BIGINT <<PK>>
+    --
+    * tahun_ajaran : VARCHAR
+    * semester : ENUM(1, 2)
+    * tanggal_mulai : DATE
+    * tanggal_selesai : DATE
+    * is_active : BOOLEAN
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "student_report_cards" as student_report_cards {
+    * report_card_id : BIGINT <<PK>>
+    --
+    * student_id : BIGINT <<FK>>
+    * period_id : BIGINT <<FK>>
+    * class_id : BIGINT <<FK>>
+    * homeroom_teacher_id : BIGINT <<FK>>
+    * status : ENUM(draft, submitted, approved)
+    approved_by : BIGINT <<FK, nullable>>
+    approved_at : TIMESTAMP
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+    ..
+    UNIQUE(student_id, period_id)
+  }
+
+  entity "narrative_assessments" as narrative_assessments {
+    * narrative_id : BIGINT <<PK>>
+    --
+    * report_card_id : BIGINT <<FK>>
+    * kategori : ENUM(intrakurikuler, kokurikuler)
+    * judul : VARCHAR
+    * isi_naratif : TEXT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+    ..
+    UNIQUE(report_card_id, judul)
+  }
+
+  entity "narrative_photos" as narrative_photos {
+    * photo_id : BIGINT <<PK>>
+    --
+    * narrative_id : BIGINT <<FK>>
+    * photo_path : VARCHAR
+    caption : VARCHAR
+    * urutan : INT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "development_categories" as development_categories {
+    * category_id : BIGINT <<PK>>
+    --
+    parent_id : BIGINT <<FK self, nullable>>
+    * nama : VARCHAR
+    * urutan : INT
+    * usia_min : INT
+    * usia_max : INT
+    * is_active : BOOLEAN
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "student_checklist_assessments" as student_checklist_assessments {
+    * checklist_id : BIGINT <<PK>>
+    --
+    * report_card_id : BIGINT <<FK>>
+    * category_id : BIGINT <<FK>>
+    * status : ENUM(BM, MM, SM)
+    catatan : TEXT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+    ..
+    UNIQUE(report_card_id, category_id)
+  }
+
+  entity "physical_measurements" as physical_measurements {
+    * measurement_id : BIGINT <<PK>>
+    --
+    * report_card_id : BIGINT <<FK>>
+    tinggi_badan : DECIMAL(5,2)
+    berat_badan : DECIMAL(5,2)
+    lingkar_kepala : DECIMAL(5,2)
+    tanggal_ukur : DATE
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+
+  entity "health_conditions" as health_conditions {
+    * health_id : BIGINT <<PK>>
+    --
+    * report_card_id : BIGINT <<FK>>
+    * pendengaran : VARCHAR
+    * penglihatan : VARCHAR
+    catatan_tambahan : TEXT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+  }
+}
+
+' =============================================
+' RELATIONSHIPS — User Management
+' =============================================
+users ||--o{ roles                : "memiliki"
+users ||--o| admins               : "profil"
+users ||--o| teachers             : "profil"
+users ||--o| religious_teachers   : "profil"
+users ||--o| foundation_heads     : "profil"
+
+' =============================================
+' RELATIONSHIPS — Siswa & Kelas
+' =============================================
+users   ||--o{ students           : "akun siswa"
+classes ||--o{ students           : "bergabung di"
+students ||--o{ student_attendance : "memiliki"
+
+' =============================================
+' RELATIONSHIPS — Absensi Guru
+' =============================================
+teachers           ||--o{ attendance_records : "absensi"
+religious_teachers ||--o{ attendance_records : "absensi"
+
+' =============================================
+' RELATIONSHIPS — Sistem Raport (Baru)
+' =============================================
+academic_periods ||--o{ student_report_cards      : "periode"
+students         ||--o{ student_report_cards      : "diraport"
+classes          ||--o{ student_report_cards      : "kelas saat itu"
+teachers         ||--o{ student_report_cards      : "wali kelas"
+users            ||--o{ student_report_cards      : "approve"
+
+student_report_cards ||--o{ narrative_assessments       : "memiliki 3"
+narrative_assessments ||--o{ narrative_photos            : "foto kegiatan"
+
+student_report_cards ||--o{ student_checklist_assessments : "ceklis"
+development_categories ||--o{ student_checklist_assessments : "dinilai"
+development_categories ||--o{ development_categories     : "sub-kategori"
+
+student_report_cards ||--o| physical_measurements       : "pengukuran fisik"
+student_report_cards ||--o| health_conditions           : "kondisi kesehatan"
+
+' Note: student_attendance digunakan via query agregasi
+' (COUNT per periode) di AttendanceSummaryService,
+' tidak ada FK langsung ke student_report_cards.
+
+note bottom of student_attendance
+  Dipakai oleh AttendanceSummaryService
+  untuk agregasi Ketidakhadiran di Raport.
+  Query: COUNT by status WHERE created_at
+  BETWEEN period.tanggal_mulai AND tanggal_selesai
+end note
+
+note bottom of development_categories
+  Hirarki 2 level:
+  - Level 1: Kategori utama (parent_id = NULL)
+    contoh: "Rukun Iman"
+  - Level 2: Sub-item/leaf (parent_id = kategori)
+    contoh: "Percaya Kepada Allah"
+  Hanya leaf yang masuk ke
+  student_checklist_assessments
+end note
+
+@enduml

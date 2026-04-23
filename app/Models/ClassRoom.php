@@ -28,4 +28,9 @@ class ClassRoom extends Model
     {
         return $this->hasMany(StudentGrade::class, 'class_id', 'class_id');
     }
+
+    public function reportCards()
+    {
+        return $this->hasMany(StudentReportCard::class, 'class_id', 'class_id');
+    }
 }
