@@ -18,6 +18,7 @@ class AttendanceRecord extends Model
         'check_in_latitude',
         'check_in_longitude',
         'check_in_accuracy',
+        'selfie_path',
         'is_within_geofence',
         'attendance_status',
         'check_out_time',
