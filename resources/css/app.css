@@ -70,3 +70,8 @@
   margin: 0 auto;
   position: relative;
 }
+
+/* Auth label glow — mobile only (overlaid on hero bg) */
+@media (max-width: 1023px) {
+  .mobile-label-glow { text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+}
