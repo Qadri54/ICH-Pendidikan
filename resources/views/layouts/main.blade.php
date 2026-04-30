@@ -20,7 +20,7 @@
 
         {{-- Logo --}}
         <a href="{{ route('dashboard') }}" class="mb-2">
-            <img src="{{ asset('images/logo.png') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
+            <img src="{{ asset('images/logo.svg') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
         </a>
 
         {{-- Nav Items --}}
@@ -71,9 +71,10 @@
             {{-- User dropdown --}}
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" class="flex items-center gap-2 text-white">
-                    <img src="{{ auth()->user()->avatar ?? asset('images/default-avatar.png') }}"
-                         alt="Avatar"
-                         class="w-9 h-9 rounded-full object-cover border-2 border-white">
+                    <div class="w-9 h-9 rounded-full bg-white/20 border-2 border-white
+                                flex items-center justify-center font-display font-bold text-sm text-white">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
                     <div class="text-left hidden sm:block">
                         <div class="text-sm font-semibold leading-tight">{{ auth()->user()->name }}</div>
                         <div class="text-xs opacity-80">{{ auth()->user()->role?->role_name ?? 'User' }}</div>
@@ -100,6 +101,20 @@
 
         {{-- PAGE CONTENT --}}
         <main class="flex-1 overflow-y-auto p-6">
+
+            @if(session('success'))
+                <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             {{ $slot }}
         </main>
 

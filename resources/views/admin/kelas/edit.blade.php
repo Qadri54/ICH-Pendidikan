@@ -1,0 +1,46 @@
+<x-main-layout title="Edit Kelas">
+
+    <div class="mb-6">
+        <a href="{{ route('admin.kelas.index') }}"
+           class="text-ich-teal text-sm font-ui font-semibold hover:underline">← Kembali</a>
+        <h1 class="text-2xl font-display font-bold text-ich-ink-900 mt-1">Edit Kelas — {{ $kelas->nama_kelas }}</h1>
+    </div>
+
+    <div class="max-w-md bg-white rounded-xl shadow-ich-card p-6">
+        <form method="POST" action="{{ route('admin.kelas.update', $kelas) }}" class="space-y-4">
+            @csrf @method('PUT')
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Kelas <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_kelas" value="{{ old('nama_kelas', $kelas->nama_kelas) }}"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg font-sans text-sm
+                              focus:outline-none focus:border-ich-teal-dark
+                              @error('nama_kelas') border-ich-error @else border-ich-teal @enderror">
+                @error('nama_kelas') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ruangan <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_ruangan" value="{{ old('nama_ruangan', $kelas->nama_ruangan) }}"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg font-sans text-sm
+                              focus:outline-none focus:border-ich-teal-dark
+                              @error('nama_ruangan') border-ich-error @else border-ich-teal @enderror">
+                @error('nama_ruangan') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                               rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    Perbarui
+                </button>
+                <a href="{{ route('admin.kelas.index') }}"
+                   class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm
+                          rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+
+</x-main-layout>

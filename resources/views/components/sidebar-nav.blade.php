@@ -1,16 +1,15 @@
 @php
     $adminMenu = [
-        ['label' => 'Dashboard',    'route' => 'dashboard',     'icon' => 'grid'],
-        ['label' => 'Siswa',        'route' => 'siswa.index',   'icon' => 'user'],
-        ['label' => 'Guru',         'route' => 'guru.index',    'icon' => 'users'],
-        ['label' => 'Orang Tua',    'route' => 'orang-tua.index','icon' => 'user-group'],
-        ['label' => 'User',         'route' => 'user.index',    'icon' => 'user-circle'],
-        ['label' => 'Keuangan',     'route' => 'keuangan.index','icon' => 'cash'],
-        ['label' => 'Tabungan',     'route' => 'tabungan.index','icon' => 'savings'],
-        ['label' => 'Laporan',      'route' => 'laporan.index', 'icon' => 'document'],
-        ['label' => 'Kegiatan',     'route' => 'kegiatan.index','icon' => 'calendar'],
-        ['label' => 'Pendaftaran',  'route' => 'pendaftaran.index','icon' => 'clipboard'],
-        ['label' => 'Pengaturan',   'route' => 'pengaturan.index','icon' => 'cog'],
+        ['label' => 'Dashboard',    'route' => 'dashboard',          'icon' => 'grid'],
+        ['label' => 'Siswa',        'route' => 'admin.siswa.index',  'icon' => 'user'],
+        ['label' => 'Guru',         'route' => 'admin.guru.index',   'icon' => 'users'],
+        ['label' => 'Orang Tua',    'route' => 'admin.user.index',   'icon' => 'user-circle'],
+        ['label' => 'Kelas',        'route' => 'admin.kelas.index',  'icon' => 'school'],
+        ['label' => 'Keuangan',     'route' => 'admin.keuangan.index','icon' => 'banknote'],
+        ['label' => 'Tabungan',     'route' => 'admin.tabungan.index','icon' => 'piggy'],
+        ['label' => 'Laporan',      'route' => 'admin.laporan.index','icon' => 'document'],
+        ['label' => 'Pendaftaran',  'route' => 'admin.pendaftaran.index','icon' => 'clipboard'],
+        ['label' => 'Pengaturan',   'route' => 'admin.pengaturan.index','icon' => 'cog'],
     ];
 
     $guruMenu = [
@@ -44,7 +43,8 @@
 
 @foreach ($menus as $item)
     @php
-        $isActive = request()->routeIs(rtrim($item['route'], '.index') . '*');
+        $base     = str_replace('.index', '', $item['route']);
+        $isActive = request()->routeIs($base) || request()->routeIs($base . '.*');
     @endphp
     <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
        class="flex flex-col items-center gap-1 w-full px-2 py-2 rounded-lg text-center transition
