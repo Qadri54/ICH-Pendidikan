@@ -37,6 +37,7 @@ export default {
                 'ich-ink-300':    '#99A1AF',
                 'ich-line':       '#E5E7EB',
                 'ich-surface':    '#F5F6FA',
+                'ich-sidebar':    '#1A6B1A',
             },
             borderRadius: {
                 'ich-sm': '5px',
