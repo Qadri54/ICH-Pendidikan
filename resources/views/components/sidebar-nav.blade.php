@@ -46,7 +46,7 @@
     @php
         $isActive = request()->routeIs(rtrim($item['route'], '.index') . '*');
     @endphp
-    <a href="{{ route($item['route']) }}"
+    <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
        class="flex flex-col items-center gap-1 w-full px-2 py-2 rounded-lg text-center transition
               {{ $isActive ? 'bg-white/20 text-white font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
         <x-nav-icon :name="$item['icon']" class="w-5 h-5" />
