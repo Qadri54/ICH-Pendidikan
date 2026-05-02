@@ -4,72 +4,65 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SppInvoice;
-use App\Models\Student;
+use App\Services\Spp\SppInvoiceService;
+use App\Services\Spp\SppPaymentService;
 use Illuminate\Http\Request;
 
 class KeuanganController extends Controller
 {
+    public function __construct(
+        private SppInvoiceService $invoiceService,
+        private SppPaymentService $paymentService,
+    ) {}
+
     public function index(Request $request)
     {
-        $invoices = SppInvoice::with('student.classRoom')
-            ->when($request->search, fn($q) =>
-                $q->whereHas('student', fn($s) => $s->where('nama_siswa', 'like', "%{$request->search}%"))
-            )
-            ->when($request->status, fn($q) => $q->where('status', $request->status))
-            ->latest('jatuh_tempo')
-            ->paginate(15)->withQueryString();
+        $invoices = $this->invoiceService->getPaginated(
+            $request->search,
+            $request->status,
+        );
 
-        $totalTagihan = SppInvoice::where('status', '!=', 'Lunas')->sum('jumlah');
-        $totalLunas   = SppInvoice::where('status', 'Lunas')->count();
+        $summary = $this->invoiceService->getSummary();
 
-        return view('admin.keuangan.index', compact('invoices', 'totalTagihan', 'totalLunas'));
-    }
-
-    public function create()
-    {
-        $siswa = Student::with('classRoom')->orderBy('nama_siswa')->get();
-        return view('admin.keuangan.create', compact('siswa'));
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'student_id'    => 'required|exists:students,student_id',
-            'tanggal_tahun' => 'required|date',
-            'jumlah'        => 'required|numeric|min:0',
-            'jatuh_tempo'   => 'required|date',
-            'status'        => 'required|in:Belum Bayar,Lunas',
+        return view('admin.keuangan.index', [
+            'invoices'      => $invoices,
+            'totalTagihan'  => $summary['total_tagihan'],
+            'totalLunas'    => $summary['total_lunas'],
         ]);
+    }
 
-        SppInvoice::create($data);
+    public function generate()
+    {
+        $count = $this->invoiceService->generateMonthlyInvoices();
 
-        return redirect()->route('admin.keuangan.index')
-            ->with('success', "Tagihan SPP berhasil dibuat.");
+        $message = $count > 0
+            ? "{$count} tagihan SPP bulan ini berhasil digenerate."
+            : "Semua siswa sudah punya tagihan untuk bulan ini.";
+
+        return redirect()->route('admin.keuangan.index')->with('success', $message);
     }
 
     public function edit(SppInvoice $keuangan)
     {
-        $siswa = Student::orderBy('nama_siswa')->get();
-        return view('admin.keuangan.edit', compact('keuangan', 'siswa'));
+        $keuangan->load('student', 'payments');
+        return view('admin.keuangan.edit', compact('keuangan'));
     }
 
     public function update(Request $request, SppInvoice $keuangan)
     {
         $data = $request->validate([
-            'jumlah'      => 'required|numeric|min:0',
-            'jatuh_tempo' => 'required|date',
-            'status'      => 'required|in:Belum Bayar,Lunas',
+            'status' => 'required|in:unpaid,paid,overdue',
         ]);
 
-        $keuangan->update($data);
+        $this->invoiceService->updateStatus($keuangan->invoice_id, $data['status']);
 
         return redirect()->route('admin.keuangan.index')
-            ->with('success', "Tagihan berhasil diperbarui.");
+            ->with('success', "Status tagihan berhasil diperbarui.");
     }
 
     public function destroy(SppInvoice $keuangan)
     {
-        $keuangan->delete();
+        $this->invoiceService->delete($keuangan->invoice_id);
 
         return redirect()->route('admin.keuangan.index')
             ->with('success', "Tagihan berhasil dihapus.");

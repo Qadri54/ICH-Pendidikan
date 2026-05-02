@@ -51,8 +51,8 @@
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status</label>
                 <select name="status"
                         class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="Belum Bayar">Belum Bayar</option>
-                    <option value="Lunas">Lunas</option>
+                    <option value="unpaid">Belum Bayar</option>
+                    <option value="paid">Lunas</option>
                 </select>
             </div>
 

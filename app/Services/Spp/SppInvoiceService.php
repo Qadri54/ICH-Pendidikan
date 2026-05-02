@@ -13,7 +13,7 @@ class SppInvoiceService
      * Nominal SPP bulanan (IDR).
      * Sesuaikan dengan tarif yang berlaku di IQRA' Creative House.
      */
-    const MONTHLY_FEE = 300000;
+    public const MONTHLY_FEE = 300000;
 
     /**
      * Generate invoice SPP bulan berjalan untuk seluruh siswa aktif.
@@ -52,7 +52,7 @@ class SppInvoiceService
 
         DB::table('spp_invoices')->insert($rows);
 
-        return count($rows);
+        return \count($rows);
     }
 
     /**
@@ -61,6 +61,41 @@ class SppInvoiceService
     public function getAll()
     {
         return SppInvoice::with(['student'])->latest()->get();
+    }
+
+    /**
+     * Ambil invoice dengan filter search/status + pagination (untuk halaman admin).
+     */
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return SppInvoice::with('student.classRoom')
+            ->when($search, fn($q) =>
+                $q->whereHas('student', fn($s) => $s->where('nama_siswa', 'like', "%{$search}%"))
+            )
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->latest('jatuh_tempo')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
+    /**
+     * Ringkasan keuangan: total tagihan belum lunas + jumlah yang sudah lunas.
+     */
+    public function getSummary(): array
+    {
+        return [
+            'total_tagihan'    => SppInvoice::where('status', '!=', 'paid')->sum('jumlah'),
+            'tagihan_berjalan' => SppInvoice::where('status', 'unpaid')->count(),
+            'total_lunas'      => SppInvoice::where('status', 'paid')->count(),
+        ];
+    }
+
+    /**
+     * Hapus invoice beserta data payment-nya.
+     */
+    public function delete(int $invoiceId): void
+    {
+        SppInvoice::findOrFail($invoiceId)->delete();
     }
 
     /**

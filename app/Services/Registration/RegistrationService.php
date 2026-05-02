@@ -43,6 +43,18 @@ class RegistrationService {
         return Registration::with(['user', 'user.role'])->get();
     }
 
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return Registration::with('user')
+            ->when($search, fn($q) =>
+                $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$search}%"))
+            )
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     public function getById(int $id): Registration {
         return Registration::with(['user', 'user.role'])->findOrFail($id);
     }

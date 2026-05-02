@@ -14,6 +14,16 @@ class SavingLedgerService
         return SavingLedger::with('teacher.user')->latest()->get();
     }
 
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return SavingLedger::with('teacher.user')
+            ->when($search, fn($q) => $q->where('ledger_name', 'like', "%{$search}%"))
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     // Ambil semua ledger milik guru yang sedang login.
     public function getByTeacher(int $teacherId): Collection
     {

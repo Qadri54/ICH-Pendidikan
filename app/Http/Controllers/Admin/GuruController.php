@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
@@ -21,6 +22,7 @@ class GuruController extends Controller
                   ->orWhere('NIP', 'like', "%{$request->search}%")
             )
             ->get()
+            ->toBase()                          // Eloquent\Collection → base Collection
             ->map(fn($t) => (object)[
                 'id'    => $t->teacher_id,
                 'tipe'  => 'Guru Kelas',
@@ -36,6 +38,7 @@ class GuruController extends Controller
                   ->orWhere('NIP', 'like', "%{$request->search}%")
             )
             ->get()
+            ->toBase()                          // Eloquent\Collection → base Collection
             ->map(fn($t) => (object)[
                 'id'    => $t->religious_teacher_id,
                 'tipe'  => 'Guru Ngaji',
@@ -46,7 +49,6 @@ class GuruController extends Controller
             ]);
 
         $guru = $guruKelas->merge($guruNgaji)->sortBy('nama')->values();
-
         return view('admin.guru.index', compact('guru'));
     }
 
@@ -68,29 +70,32 @@ class GuruController extends Controller
             'subject'    => 'nullable|string|max:255',
         ]);
 
-        $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'no_hp'    => $data['no_hp'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        $user->role()->create(['role_name' => $data['tipe_guru']]);
-
-        if ($data['tipe_guru'] === 'Guru') {
-            Teacher::create([
-                'user_id'   => $user->user_id,
-                'NIP'       => $data['NIP'],
-                'hire_date' => $data['hire_date'],
-                'subject'   => $data['subject'],
+        DB::transaction(function () use ($data) {
+            $user = User::create([
+                'name'     => $data['name'],
+                'email'    => $data['email'],
+                'no_hp'    => $data['no_hp'],
+                'password' => Hash::make($data['password']),
+                'status'   => 'active',
             ]);
-        } else {
-            ReligiousTeacher::create([
-                'user_id'   => $user->user_id,
-                'NIP'       => $data['NIP'],
-                'hire_date' => $data['hire_date'],
-            ]);
-        }
+
+            $user->role()->create(['role_name' => $data['tipe_guru']]);
+
+            if ($data['tipe_guru'] === 'Guru') {
+                Teacher::create([
+                    'user_id'   => $user->user_id,
+                    'NIP'       => $data['NIP'],
+                    'hire_date' => $data['hire_date'],
+                    'subject'   => $data['subject'],
+                ]);
+            } else {
+                ReligiousTeacher::create([
+                    'user_id'   => $user->user_id,
+                    'NIP'       => $data['NIP'],
+                    'hire_date' => $data['hire_date'],
+                ]);
+            }
+        });
 
         return redirect()->route('admin.guru.index')
             ->with('success', "Guru {$data['name']} berhasil ditambahkan.");
@@ -132,17 +137,15 @@ class GuruController extends Controller
 
     public function destroy(string $id)
     {
-        $teacher = Teacher::find($id);
-        if ($teacher) {
-            $teacher->user?->role()?->delete();
-            $teacher->user?->delete();
+        DB::transaction(function () use ($id) {
+            $teacher = Teacher::find($id) ?? ReligiousTeacher::findOrFail($id);
+            $user = $teacher->user;
+
+            // Hapus profile dulu (FK ke users), baru role, baru user
             $teacher->delete();
-        } else {
-            $teacher = ReligiousTeacher::findOrFail($id);
-            $teacher->user?->role()?->delete();
-            $teacher->user?->delete();
-            $teacher->delete();
-        }
+            $user?->role?->delete();
+            $user?->delete();
+        });
 
         return redirect()->route('admin.guru.index')
             ->with('success', "Data guru berhasil dihapus.");

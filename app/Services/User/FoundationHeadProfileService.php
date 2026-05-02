@@ -8,13 +8,13 @@ class FoundationHeadProfileService {
     public function createProfile(int $userId, array $data): FoundationHead {
         return FoundationHead::create([
             'user_id' => $userId,
-            'NIP' => $data['NIP'],
+            'NIP'     => $data['NIP'] ?? null,
         ]);
     }
 
     public function updateProfile(int $userId, array $data): bool {
         return FoundationHead::where('user_id', $userId)->update([
-            'NIP' => $data['NIP'],
+            'NIP' => $data['NIP'] ?? null,
         ]);
     }
 

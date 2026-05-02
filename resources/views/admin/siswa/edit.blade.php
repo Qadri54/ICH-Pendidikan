@@ -47,8 +47,8 @@
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Jenis Kelamin <span class="text-ich-error">*</span></label>
                     <select name="jenis_kelamin"
                             class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                        <option value="Laki-laki"  {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'Laki-laki'  ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="Perempuan"  {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'Perempuan'  ? 'selected' : '' }}>Perempuan</option>
+                        <option value="L" {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'P' ? 'selected' : '' }}>Perempuan</option>
                     </select>
                 </div>
             </div>

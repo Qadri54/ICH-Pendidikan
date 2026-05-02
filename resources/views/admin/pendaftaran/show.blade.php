@@ -45,31 +45,43 @@
             <h2 class="font-ui font-bold text-ich-ink-900 mb-4">Update Status</h2>
             @php
                 $statusColor = match($pendaftaran->status) {
-                    'Diterima' => 'bg-[#D1FAE5] text-[#009966]',
-                    'Ditolak'  => 'bg-[#FEE2E2] text-ich-error',
+                    'accepted' => 'bg-[#D1FAE5] text-[#009966]',
+                    'rejected' => 'bg-[#FEE2E2] text-ich-error',
                     default    => 'bg-[#FEF5DC] text-[#E09F17]',
+                };
+                $statusLabel = match($pendaftaran->status) {
+                    'accepted' => 'Diterima',
+                    'rejected' => 'Ditolak',
+                    default    => 'Menunggu',
                 };
             @endphp
             <div class="mb-4">
                 <span class="px-3 py-1.5 font-ui font-bold text-sm rounded-full {{ $statusColor }}">
-                    {{ $pendaftaran->status }}
+                    {{ $statusLabel }}
                 </span>
             </div>
 
-            <form method="POST" action="{{ route('admin.pendaftaran.update', $pendaftaran) }}" class="space-y-3">
-                @csrf @method('PATCH')
-                <select name="status"
-                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="Menunggu" {{ $pendaftaran->status === 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="Diterima" {{ $pendaftaran->status === 'Diterima' ? 'selected' : '' }}>Diterima</option>
-                    <option value="Ditolak"  {{ $pendaftaran->status === 'Ditolak'  ? 'selected' : '' }}>Ditolak</option>
-                </select>
-                <button type="submit"
-                        class="w-full py-2.5 bg-ich-teal text-white font-ui font-bold text-sm
-                               rounded-ich-lg shadow-ich-btn hover:bg-ich-teal-dark transition-colors">
-                    Simpan Status
-                </button>
-            </form>
+            @if($pendaftaran->status === 'pending')
+                <form method="POST" action="{{ route('admin.pendaftaran.update', $pendaftaran) }}" class="space-y-3">
+                    @csrf @method('PATCH')
+                    <div class="flex flex-col gap-2">
+                        <button type="submit" name="status" value="accepted"
+                                onclick="return confirm('Terima pendaftaran ini? Siswa akan dibuat dan biaya pendaftaran akan digenerate otomatis.')"
+                                class="w-full py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Terima Pendaftaran
+                        </button>
+                        <button type="submit" name="status" value="rejected"
+                                onclick="return confirm('Tolak pendaftaran ini?')"
+                                class="w-full py-2.5 bg-white border-2 border-ich-error text-ich-error font-ui font-bold text-sm
+                                       rounded-ich-lg hover:bg-ich-error hover:text-white transition-colors">
+                            Tolak Pendaftaran
+                        </button>
+                    </div>
+                </form>
+            @else
+                <p class="text-sm text-ich-ink-400 font-sans">Status sudah final, tidak dapat diubah.</p>
+            @endif
         </div>
 
     </div>

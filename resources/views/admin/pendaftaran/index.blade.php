@@ -15,9 +15,9 @@
         <select name="status"
                 class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none">
             <option value="">Semua Status</option>
-            <option value="Menunggu" {{ request('status') === 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
-            <option value="Diterima" {{ request('status') === 'Diterima' ? 'selected' : '' }}>Diterima</option>
-            <option value="Ditolak"  {{ request('status') === 'Ditolak'  ? 'selected' : '' }}>Ditolak</option>
+            <option value="pending"  {{ request('status') === 'pending'  ? 'selected' : '' }}>Menunggu</option>
+            <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Diterima</option>
+            <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
         </select>
         <button type="submit"
                 class="h-10 px-4 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-md hover:bg-ich-teal-dark">
@@ -41,9 +41,14 @@
                 @forelse($pendaftaran as $p)
                     @php
                         $statusColor = match($p->status) {
-                            'Diterima' => 'bg-[#D1FAE5] text-[#009966]',
-                            'Ditolak'  => 'bg-[#FEE2E2] text-ich-error',
+                            'accepted' => 'bg-[#D1FAE5] text-[#009966]',
+                            'rejected' => 'bg-[#FEE2E2] text-ich-error',
                             default    => 'bg-[#FEF5DC] text-[#E09F17]',
+                        };
+                        $statusLabel = match($p->status) {
+                            'accepted' => 'Diterima',
+                            'rejected' => 'Ditolak',
+                            default    => 'Menunggu',
                         };
                     @endphp
                     <tr class="hover:bg-[#F5F6FA]">
@@ -53,7 +58,7 @@
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->created_at?->format('d M Y') ?? '-' }}</td>
                         <td class="px-4 py-3 text-center">
                             <span class="px-2.5 py-1 font-ui font-bold text-xs rounded-full {{ $statusColor }}">
-                                {{ $p->status }}
+                                {{ $statusLabel }}
                             </span>
                         </td>
                         <td class="px-4 py-3 text-center">

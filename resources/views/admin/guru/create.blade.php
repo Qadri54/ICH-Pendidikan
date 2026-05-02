@@ -73,13 +73,6 @@
                 </div>
             </div>
 
-            {{-- Hanya tampil untuk Guru Kelas --}}
-            <div x-show="tipe === 'Guru'">
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Mata Pelajaran</label>
-                <input type="text" name="subject" value="{{ old('subject') }}" placeholder="contoh: Matematika"
-                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-            </div>
-
             <div class="flex gap-3 pt-2">
                 <button type="submit"
                         class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm

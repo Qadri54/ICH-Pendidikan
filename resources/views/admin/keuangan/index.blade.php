@@ -8,11 +8,15 @@
                 · {{ $totalLunas }} sudah lunas
             </p>
         </div>
-        <a href="{{ route('admin.keuangan.create') }}"
-           class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                  font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-            + Buat Tagihan
-        </a>
+        <form method="POST" action="{{ route('admin.keuangan.generate') }}"
+              onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
+            @csrf
+            <button type="submit"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                           font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                + Generate Tagihan Bulan Ini
+            </button>
+        </form>
     </div>
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -23,8 +27,8 @@
         <select name="status"
                 class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none">
             <option value="">Semua Status</option>
-            <option value="Belum Bayar" {{ request('status') === 'Belum Bayar' ? 'selected' : '' }}>Belum Bayar</option>
-            <option value="Lunas"       {{ request('status') === 'Lunas'       ? 'selected' : '' }}>Lunas</option>
+            <option value="unpaid" {{ request('status') === 'unpaid' ? 'selected' : '' }}>Belum Bayar</option>
+            <option value="paid"       {{ request('status') === 'paid'       ? 'selected' : '' }}>Lunas</option>
         </select>
         <button type="submit"
                 class="h-10 px-4 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-md hover:bg-ich-teal-dark">

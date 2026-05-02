@@ -51,15 +51,6 @@
                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
-            <div>
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status</label>
-                <select name="status"
-                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="Aktif">Aktif</option>
-                    <option value="Tutup">Tutup</option>
-                </select>
-            </div>
-
             <div class="flex gap-3 pt-2">
                 <button type="submit"
                         class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
