@@ -16,15 +16,15 @@
 
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Jumlah (Rp)</label>
-                <input type="number" name="jumlah" value="{{ old('jumlah', $keuangan->jumlah) }}" min="0"
+                <input type="number" name="jumlah" value="{{ old('jumlah', $keuangan->jumlah) }}" min="0" disabled
                     class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
-            <div>
+            <!-- <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Jatuh Tempo</label>
                 <input type="date" name="jatuh_tempo" value="{{ old('jatuh_tempo', $keuangan->jatuh_tempo) }}"
                     class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-            </div>
+            </div> -->
 
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status</label>

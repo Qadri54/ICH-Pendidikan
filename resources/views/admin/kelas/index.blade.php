@@ -12,12 +12,25 @@
         </a>
     </div>
 
+    @if(session('success'))
+        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-ich-green text-white">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold">Nama Kelas</th>
                     <th class="px-4 py-3 text-left font-ui font-bold">Ruangan</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold">Wali Kelas</th>
                     <th class="px-4 py-3 text-center font-ui font-bold">Jumlah Siswa</th>
                     <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
                 </tr>
@@ -27,6 +40,9 @@
                     <tr class="hover:bg-[#F5F6FA]">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $k->nama_kelas }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $k->nama_ruangan }}</td>
+                        <td class="px-4 py-3 text-ich-ink-600">
+                            {{ $k->homeroomTeacher?->user?->name ?? '-' }}
+                        </td>
                         <td class="px-4 py-3 text-center">
                             <span class="px-2.5 py-1 bg-[#F4F7FC] text-ich-teal font-ui font-bold text-xs rounded-full">
                                 {{ $k->students_count }} siswa
@@ -51,13 +67,14 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
+                        <td colspan="5" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
                             Belum ada data kelas.
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
     <div class="mt-4">{{ $kelas->links() }}</div>

@@ -26,6 +26,7 @@
     </form>
 
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-ich-green text-white">
                 <tr>
@@ -77,6 +78,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
     <div class="mt-4">{{ $pendaftaran->links() }}</div>

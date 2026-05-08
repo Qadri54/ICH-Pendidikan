@@ -56,7 +56,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Lahir</label>
-                    <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}"
+                    <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir?->format('Y-m-d')) }}"
                            class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 </div>
                 <div>

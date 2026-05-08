@@ -31,8 +31,12 @@ class AuthenticatedSessionController extends Controller
         $role = $request->user()->role?->role_name;
 
         return match (true) {
-            $role === 'Orang Tua' => redirect()->route('beranda'),
-            default               => redirect()->intended(route('dashboard')),
+            $role === 'Orang Tua'
+                => redirect()->route('beranda'),
+            in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan'])
+                => redirect()->intended(route('admin.laporan.index')),
+            default
+                => redirect()->intended(route('dashboard')),
         };
     }
 

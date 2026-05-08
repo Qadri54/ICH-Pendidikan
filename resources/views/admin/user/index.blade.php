@@ -12,18 +12,36 @@
         </a>
     </div>
 
-    <form method="GET" class="flex gap-3 mb-4">
+    <form method="GET" class="flex flex-wrap gap-3 mb-4">
         <input type="text" name="search" value="{{ request('search') }}"
                placeholder="Cari nama / email..."
-               class="flex-1 max-w-xs h-10 px-3.5 bg-white border border-ich-line rounded-ich-md
+               class="flex-1 min-w-[180px] max-w-xs h-10 px-3.5 bg-white border border-ich-line rounded-ich-md
                       font-sans text-sm focus:outline-none focus:border-ich-teal">
+        <select name="role"
+                class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm
+                       focus:outline-none focus:border-ich-teal">
+            <option value="">Semua Role</option>
+            @foreach($roles as $r)
+                <option value="{{ $r }}" {{ request('role') === $r ? 'selected' : '' }}>
+                    {{ $r }}
+                </option>
+            @endforeach
+        </select>
         <button type="submit"
-                class="h-10 px-4 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-md hover:bg-ich-teal-dark">
+                class="h-10 px-4 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-md hover:bg-ich-teal-dark transition-colors">
             Cari
         </button>
+        @if(request()->hasAny(['search', 'role']))
+            <a href="{{ route('admin.user.index') }}"
+               class="h-10 px-4 flex items-center bg-white border border-ich-line text-ich-ink-500
+                      font-ui text-sm rounded-ich-md hover:bg-gray-50 transition-colors">
+                Reset
+            </a>
+        @endif
     </form>
 
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-ich-green text-white">
                 <tr>
@@ -83,6 +101,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
     <div class="mt-4">{{ $users->links() }}</div>

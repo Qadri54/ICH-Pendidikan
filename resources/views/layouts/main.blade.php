@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? config('app.name', 'ICH Pendidikan') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -12,19 +13,23 @@
 </head>
 <body class="font-sans antialiased bg-gray-100">
 
-<div class="flex h-screen overflow-hidden">
+<div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     {{-- SIDEBAR --}}
-    <aside class="w-32 bg-ich-sidebar flex flex-col items-center py-4 gap-2 overflow-y-auto flex-shrink-0"
-           x-data="{ open: false }">
-
-        {{-- Logo --}}
-        <a href="{{ route('dashboard') }}" class="mb-2">
-            <img src="{{ asset('images/logo.svg') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
-        </a>
+    <aside class="bg-ich-sidebar flex flex-col items-center flex-shrink-0 transition-all duration-200"
+           :class="sidebarOpen ? 'w-32 py-4 gap-2 overflow-y-auto' : 'w-0 overflow-hidden'">
 
         {{-- Nav Items --}}
-        @php $role = auth()->user()?->role?->role_name; @endphp
+        @php
+            $role      = auth()->user()?->role?->role_name;
+            $isAdmin   = in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan']);
+            $logoRoute = $isAdmin ? route('admin.laporan.index') : route('dashboard');
+        @endphp
+
+        {{-- Logo --}}
+        <a href="{{ $logoRoute }}" class="mb-2">
+            <img src="{{ asset('images/logo.svg') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
+        </a>
 
         <x-sidebar-nav :role="$role" />
     </aside>
@@ -35,7 +40,7 @@
         {{-- TOPBAR --}}
         <header class="bg-ich-green h-14 flex items-center px-6 gap-4 flex-shrink-0">
             {{-- Hamburger --}}
-            <button class="text-white">
+            <button @click="sidebarOpen = !sidebarOpen" class="text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M4 6h16M4 12h16M4 18h16"/>

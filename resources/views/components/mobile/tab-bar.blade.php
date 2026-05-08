@@ -1,26 +1,43 @@
 @php
-$tabs = [
-    ['label' => 'Beranda',   'icon' => 'dashboard',   'route' => 'beranda'],
-    ['label' => 'Bayar',     'icon' => 'card',         'route' => 'pembayaran'],
-    ['label' => 'Kehadiran', 'icon' => 'calendar',     'route' => 'kehadiran'],
-    ['label' => 'Nilai',     'icon' => 'book',         'route' => 'akademik'],
-    ['label' => 'Profil',    'icon' => 'user_circle',  'route' => 'profil-anak'],
-];
+    $tabs = [
+        ['label' => 'Beranda', 'icon' => 'dashboard', 'route' => 'beranda'],
+        ['label' => 'Kehadiran', 'icon' => 'calendar', 'route' => 'kehadiran'],
+        ['label' => 'Akademik', 'icon' => 'book', 'route' => 'akademik'],
+        ['label' => 'Keuangan', 'icon' => 'card', 'route' => 'pembayaran'],
+        ['label' => 'Tabungan', 'icon' => 'piggy', 'route' => 'tabungan'],
+        ['label' => 'Profil Anak', 'icon' => 'user_circle', 'route' => 'profil-anak'],
+        ['label' => 'Daftar', 'icon' => 'clipboard', 'route' => 'pendaftaran'],
+        ['label' => 'Pengaturan', 'icon' => 'settings', 'route' => 'pengaturan'],
+    ];
 @endphp
 
-<div class="sticky bottom-0 z-10 bg-white border-t border-ich-line flex justify-around
-            px-1.5 pt-2 pb-[calc(8px+env(safe-area-inset-bottom,0px))]">
-    @foreach($tabs as $tab)
-        @php
-            $isActive = Route::has($tab['route']) && request()->routeIs($tab['route'] . '*');
-            $color = $isActive ? '#3DA746' : '#99A1AF';
-        @endphp
-        <a href="{{ Route::has($tab['route']) ? route($tab['route']) : '#' }}"
-           class="flex-1 flex flex-col items-center gap-[3px] py-1 px-0.5 no-underline cursor-pointer">
-            <x-ich-icon :name="$tab['icon']" :size="20" :color="$color"/>
-            <span class="font-ui text-[10px] leading-tight {{ $isActive ? 'font-bold text-ich-green' : 'font-semibold text-ich-ink-300' }}">
-                {{ $tab['label'] }}
-            </span>
-        </a>
-    @endforeach
+<div class="sticky bottom-0 z-10 bg-white border-t border-ich-line"
+    style="padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px))">
+    <div class="flex overflow-x-auto pt-2 px-1" style="scrollbar-width: none; -ms-overflow-style: none;">
+        @foreach($tabs as $tab)
+            @php
+                $isActive = Route::has($tab['route']) && request()->routeIs($tab['route'] . '*');
+                $color = $isActive ? '#3DA746' : '#99A1AF';
+            @endphp
+            <a href="{{ Route::has($tab['route']) ? route($tab['route']) : '#' }}"
+                class="flex flex-col items-center gap-[3px] py-1 px-3.5 shrink-0 no-underline">
+                <x-ich-icon :name="$tab['icon']" :size="20" :color="$color" />
+                <span class="font-ui text-[10px] leading-tight whitespace-nowrap
+                                 {{ $isActive ? 'font-bold text-ich-green' : 'font-semibold text-ich-ink-300' }}">
+                    {{ $tab['label'] }}
+                </span>
+            </a>
+        @endforeach
+
+        <form method="POST" action="{{ route('logout') }}" class="shrink-0">
+            @csrf
+            <button type="submit"
+                class="flex flex-col items-center gap-[3px] py-1 px-3.5 bg-transparent border-none cursor-pointer">
+                <x-ich-icon name="logout" :size="20" color="#99A1AF" />
+                <span class="font-ui text-[10px] leading-tight font-semibold text-ich-ink-300 whitespace-nowrap">
+                    Keluar
+                </span>
+            </button>
+        </form>
+    </div>
 </div>

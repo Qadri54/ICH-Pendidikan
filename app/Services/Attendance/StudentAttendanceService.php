@@ -13,7 +13,7 @@ class StudentAttendanceService
     // Hanya mencatat siswa yang TIDAK hadir (izin/sakit/tanpa keterangan).
     // teacher_id diisi dari guru yang sedang login agar tercatat siapa yang input.
     // Validasi: satu siswa hanya boleh punya satu record per hari.
-    public function record(int $studentId, int $teacherId, string $status): StudentAttendance
+    public function record(int $studentId, ?int $teacherId, string $status): StudentAttendance
     {
         $existing = $this->getTodayRecord($studentId);
 
@@ -37,7 +37,7 @@ class StudentAttendanceService
     // ]
     // Siswa yang tidak ada di array dianggap hadir (tidak perlu diinput).
     // Menggunakan bulk insert untuk efisiensi — satu query untuk semua siswa.
-    public function recordBulk(int $teacherId, array $absences): int
+    public function recordBulk(?int $teacherId, array $absences): int
     {
         $now  = now()->toDateTimeString();
         $rows = [];

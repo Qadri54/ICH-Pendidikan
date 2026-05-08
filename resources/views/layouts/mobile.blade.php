@@ -9,10 +9,10 @@
     @livewireStyles
     <style>[x-cloak]{display:none!important}</style>
 </head>
-<body class="bg-[#101828] flex justify-center">
+<body class="bg-[#101828] lg:bg-[#F5F6FA] flex justify-center lg:block">
 
 {{-- Mobile app frame (max 430px, centered) --}}
-<div class="ich-app flex flex-col" x-data="{ drawerOpen: false }">
+<div class="ich-app flex flex-col">
 
     {{-- Topbar: uses drawerOpen from x-data above --}}
     <x-mobile.topbar
@@ -22,15 +22,13 @@
 
     {{-- Scrollable page content --}}
     <main class="flex-1 overflow-y-auto bg-[#F5F6FA]
-                 pb-[calc(64px+env(safe-area-inset-bottom,0px))]">
+                 px-4 pt-4 pb-[calc(64px+env(safe-area-inset-bottom,0px))]">
         {{ $slot }}
     </main>
 
     {{-- Bottom tab bar --}}
     <x-mobile.tab-bar/>
 
-    {{-- Slide-in drawer (overlays everything) --}}
-    <x-mobile.drawer/>
 
 </div>
 

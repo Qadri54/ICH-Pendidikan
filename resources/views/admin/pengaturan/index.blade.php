@@ -5,7 +5,43 @@
         <p class="text-sm text-ich-ink-400 mt-0.5">Konfigurasi absensi dan geofencing</p>
     </div>
 
-    <div class="max-w-xl">
+    @if(session('success'))
+        <div class="mb-5 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="max-w-xl space-y-6">
+
+        {{-- Masa Pendaftaran --}}
+        <div class="bg-white rounded-xl shadow-ich-card p-6">
+            <h3 class="font-ui font-bold text-ich-ink-900 border-b border-ich-line pb-3 mb-5">
+                Masa Pendaftaran Siswa Baru
+            </h3>
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <p class="font-ui font-semibold text-sm text-ich-ink-900">Status Penerimaan</p>
+                    <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                        Jika dinonaktifkan, orang tua tidak dapat mengirim formulir pendaftaran.
+                    </p>
+                </div>
+                <form method="POST" action="{{ route('admin.pengaturan.toggle-pendaftaran') }}" class="shrink-0">
+                    @csrf
+                    <button type="submit"
+                            class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors
+                                   {{ $registrationSetting->is_registration_period ? 'bg-ich-green' : 'bg-ich-ink-400' }}">
+                        <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform
+                                     {{ $registrationSetting->is_registration_period ? 'translate-x-6' : 'translate-x-1' }}">
+                        </span>
+                    </button>
+                </form>
+            </div>
+            <p class="mt-3 text-xs font-ui font-bold
+                       {{ $registrationSetting->is_registration_period ? 'text-ich-green' : 'text-ich-ink-400' }}">
+                {{ $registrationSetting->is_registration_period ? 'Pendaftaran sedang DIBUKA' : 'Pendaftaran sedang DITUTUP' }}
+            </p>
+        </div>
+
         <div class="bg-white rounded-xl shadow-ich-card p-6">
             <form method="POST" action="{{ route('admin.pengaturan.update') }}" class="space-y-5">
                 @csrf

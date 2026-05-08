@@ -20,6 +20,7 @@ class RegistrationTransaction extends Model
         'gambar_bukti_pembayaran',
         'payment_category',
         'status',
+        'rejection_reason',
     ];
 
     protected function casts(): array

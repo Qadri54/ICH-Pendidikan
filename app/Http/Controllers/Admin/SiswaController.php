@@ -25,31 +25,6 @@ class SiswaController extends Controller
         return view('admin.siswa.index', compact('siswa', 'kelas'));
     }
 
-    public function create()
-    {
-        $kelas = ClassRoom::orderBy('nama_kelas')->get();
-        return view('admin.siswa.create', compact('kelas'));
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'nama_siswa'    => 'required|string|max:255',
-            'NIS'           => 'required|string|max:50|unique:students,NIS',
-            'class_id'      => 'required|exists:classes,class_id',
-            'jenis_kelamin' => 'required|in:L,P',
-            'tanggal_lahir' => 'required|date',
-            'tempat_lahir'  => 'required|string|max:255',
-            'nama_ayah'     => 'required|string|max:255',
-            'nama_ibu'      => 'required|string|max:255',
-        ]);
-
-        Student::create($data);
-
-        return redirect()->route('admin.siswa.index')
-            ->with('success', "Siswa {$data['nama_siswa']} berhasil ditambahkan.");
-    }
-
     public function show(Student $siswa)
     {
         $siswa->load('classRoom');

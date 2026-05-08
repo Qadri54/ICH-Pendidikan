@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
 {
     public function index()
     {
-        $kelas = ClassRoom::withCount('students')
+        $kelas = ClassRoom::with('homeroomTeacher.user')
+            ->withCount('students')
             ->orderBy('nama_kelas')
             ->paginate(15);
 
@@ -19,14 +21,16 @@ class KelasController extends Controller
 
     public function create()
     {
-        return view('admin.kelas.create');
+        $guru = Teacher::with('user')->get();
+        return view('admin.kelas.create', compact('guru'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama_kelas'   => 'required|string|max:100|unique:classes,nama_kelas',
-            'nama_ruangan' => 'required|string|max:100',
+            'nama_kelas'          => 'required|string|max:100|unique:classes,nama_kelas',
+            'nama_ruangan'        => 'required|string|max:100',
+            'homeroom_teacher_id' => 'nullable|exists:teachers,teacher_id',
         ]);
 
         ClassRoom::create($data);
@@ -37,14 +41,16 @@ class KelasController extends Controller
 
     public function edit(ClassRoom $kelas)
     {
-        return view('admin.kelas.edit', compact('kelas'));
+        $guru = Teacher::with('user')->get();
+        return view('admin.kelas.edit', compact('kelas', 'guru'));
     }
 
     public function update(Request $request, ClassRoom $kelas)
     {
         $data = $request->validate([
-            'nama_kelas'   => "required|string|max:100|unique:classes,nama_kelas,{$kelas->class_id},class_id",
-            'nama_ruangan' => 'required|string|max:100',
+            'nama_kelas'          => "required|string|max:100|unique:classes,nama_kelas,{$kelas->class_id},class_id",
+            'nama_ruangan'        => 'required|string|max:100',
+            'homeroom_teacher_id' => 'nullable|exists:teachers,teacher_id',
         ]);
 
         $kelas->update($data);

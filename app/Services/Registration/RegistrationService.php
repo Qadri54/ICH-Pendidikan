@@ -39,6 +39,20 @@ class RegistrationService {
         });
     }
 
+    public function getAllByUserId(int $userId)
+    {
+        return Registration::where('user_id', $userId)->latest()->get();
+    }
+
+    public function submit(int $userId, array $data): Registration
+    {
+        return Registration::create([
+            ...$data,
+            'user_id' => $userId,
+            'status'  => 'pending',
+        ]);
+    }
+
     public function getAll() {
         return Registration::with(['user', 'user.role'])->get();
     }
@@ -61,36 +75,32 @@ class RegistrationService {
 
     public function approve(int $id): Registration {
         return DB::transaction(function () use ($id) {
-            $registration = Registration::with('user')->findOrFail($id);
+            $registration = Registration::findOrFail($id);
 
             $registration->update(['status' => 'accepted']);
 
-            $user = $this->userService->updateUser($registration->user_id, [
-                'name' => $registration->user->name,
-                'email' => $registration->user->email,
-                'no_hp' => $registration->user->no_hp,
-                'status' => $registration->user->status,
-                'role_name' => 'Student',
-                'NIS' => null,
-                'nama_siswa' => $registration->user->name,
+            $student = $this->studentProfileService->createProfile($registration->user_id, [
+                'NIS'           => null,
+                'nama_siswa'    => $registration->nama_siswa,
                 'jenis_kelamin' => $registration->jenis_kelamin,
                 'tanggal_lahir' => $registration->tanggal_lahir,
-                'tempat_lahir' => $registration->tempat_lahir,
-                'nama_ayah' => $registration->nama_ayah,
-                'nama_ibu' => $registration->nama_ibu,
-                'class_id' => null,
+                'tempat_lahir'  => $registration->tempat_lahir,
+                'nama_ayah'     => $registration->nama_ayah,
+                'nama_ibu'      => $registration->nama_ibu,
+                'class_id'      => null,
             ]);
-
-            $student = $user->student;
 
             $this->registrationFeeService->createFee($student->student_id);
 
             return $registration;
         });
     }
-    public function reject(int $id): Registration {
+    public function reject(int $id, ?string $reason = null): Registration {
         $registration = Registration::findOrFail($id);
-        $registration->update(['status' => 'rejected']);
+        $registration->update([
+            'status'           => 'rejected',
+            'rejection_reason' => $reason,
+        ]);
 
         return $registration;
     }

@@ -22,12 +22,15 @@ class UserService
         return User::with('role')->get();
     }
 
-    public function getPaginated(?string $search, int $perPage = 15)
+    public function getPaginated(?string $search, ?string $role = null, int $perPage = 15)
     {
         return User::with('role')
             ->when($search, fn($q) =>
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
+            )
+            ->when($role, fn($q) =>
+                $q->whereHas('role', fn($r) => $r->where('role_name', $role))
             )
             ->orderBy('name')
             ->paginate($perPage)

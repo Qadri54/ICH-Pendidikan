@@ -30,13 +30,14 @@ class PendaftaranController extends Controller
     public function update(Request $request, Registration $pendaftaran)
     {
         $request->validate([
-            'status' => 'required|in:accepted,rejected',
+            'status'           => 'required|in:accepted,rejected',
+            'rejection_reason' => 'required_if:status,rejected|nullable|string|max:1000',
         ]);
 
         if ($request->status === 'accepted') {
             $this->registrationService->approve($pendaftaran->registration_id);
         } else {
-            $this->registrationService->reject($pendaftaran->registration_id);
+            $this->registrationService->reject($pendaftaran->registration_id, $request->rejection_reason);
         }
 
         return redirect()->route('admin.pendaftaran.show', $pendaftaran)
