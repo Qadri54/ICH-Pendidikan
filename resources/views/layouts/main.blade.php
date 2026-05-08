@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? config('app.name', 'ICH Pendidikan') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="font-sans antialiased bg-gray-100">
+
+<div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+
+    {{-- SIDEBAR --}}
+    <aside class="bg-ich-sidebar flex flex-col items-center flex-shrink-0 transition-all duration-200"
+           :class="sidebarOpen ? 'w-32 py-4 gap-2 overflow-y-auto' : 'w-0 overflow-hidden'">
+
+        {{-- Nav Items --}}
+        @php
+            $role      = auth()->user()?->role?->role_name;
+            $isAdmin   = in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan']);
+            $logoRoute = $isAdmin ? route('admin.laporan.index') : route('dashboard');
+        @endphp
+
+        {{-- Logo --}}
+        <a href="{{ $logoRoute }}" class="mb-2">
+            <img src="{{ asset('images/logo.svg') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
+        </a>
+
+        <x-sidebar-nav :role="$role" />
+    </aside>
+
+    {{-- MAIN AREA --}}
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+        {{-- TOPBAR --}}
+        <header class="bg-ich-green h-14 flex items-center px-6 gap-4 flex-shrink-0">
+            {{-- Hamburger --}}
+            <button @click="sidebarOpen = !sidebarOpen" class="text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            {{-- Search --}}
+            <div class="flex-1 max-w-md">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" placeholder="Search"
+                           class="w-full pl-10 pr-4 py-2 rounded-full text-sm bg-white focus:outline-none focus:ring-2 focus:ring-white/50">
+                </div>
+            </div>
+
+            <div class="flex-1"></div>
+
+            {{-- Notification --}}
+            <button class="relative text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    6
+                </span>
+            </button>
+
+            {{-- User dropdown --}}
+            <div class="relative" x-data="{ open: false }">
+                <button @click="open = !open" class="flex items-center gap-2 text-white">
+                    <div class="w-9 h-9 rounded-full bg-white/20 border-2 border-white
+                                flex items-center justify-center font-display font-bold text-sm text-white">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <div class="text-left hidden sm:block">
+                        <div class="text-sm font-semibold leading-tight">{{ auth()->user()->name }}</div>
+                        <div class="text-xs opacity-80">{{ auth()->user()->role?->role_name ?? 'User' }}</div>
+                    </div>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+
+                <div x-show="open" @click.outside="open = false" x-transition
+                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 py-1">
+                    <a href="{{ route('profile.edit') }}"
+                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            Keluar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </header>
+
+        {{-- PAGE CONTENT --}}
+        <main class="flex-1 overflow-y-auto p-6">
+
+            @if(session('success'))
+                <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            {{ $slot }}
+        </main>
+
+    </div>
+</div>
+
+@livewireScripts
+</body>
+</html>

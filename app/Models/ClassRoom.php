@@ -16,9 +16,15 @@ class ClassRoom extends Model
     protected $fillable = [
         'nama_kelas',
         'nama_ruangan',
+        'homeroom_teacher_id',
     ];
 
     // Relationships
+    public function homeroomTeacher()
+    {
+        return $this->belongsTo(Teacher::class, 'homeroom_teacher_id', 'teacher_id');
+    }
+
     public function students()
     {
         return $this->hasMany(Student::class, 'class_id', 'class_id');

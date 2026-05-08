@@ -10,14 +10,14 @@ class AdminProfileService
     {
         return Admin::create([
             'user_id' => $userId,
-            'NIP'     => $data['NIP'],
+            'NIP'     => $data['NIP'] ?? null,
         ]);
     }
 
     public function updateProfile(int $userId, array $data): bool
     {
         return Admin::where('user_id', $userId)->update([
-            'NIP' => $data['NIP'],
+            'NIP' => $data['NIP'] ?? null,
         ]);
     }
 

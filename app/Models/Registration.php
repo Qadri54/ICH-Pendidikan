@@ -13,13 +13,15 @@ class Registration extends Model
 
     protected $fillable = [
         'user_id',
+        'nama_siswa',
         'tanggal_lahir',
         'tempat_lahir',
         'jenis_kelamin',
         'nama_ayah',
         'nama_ibu',
-        'status',
         'alamat',
+        'status',
+        'rejection_reason',
     ];
 
     protected function casts(): array

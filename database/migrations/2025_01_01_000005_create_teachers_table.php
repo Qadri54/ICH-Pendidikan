@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('NIP')->unique();
             $table->enum('tipe', ['Guru TK', 'Guru Ngaji']);
-            $table->string('subject')->nullable();
+            // $table->string('subject')->nullable();
             $table->date('hire_date');
             $table->timestamps();
 

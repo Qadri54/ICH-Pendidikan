@@ -1,29 +1,31 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@php
+$isMobile = auth()->user()?->role?->role_name === 'Orang Tua';
+$layout   = $isMobile ? 'mobile-layout' : 'main-layout';
+@endphp
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+<x-dynamic-component :component="$layout" title="Pengaturan Profil" page-title="Pengaturan Profil">
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
-        </div>
+    @unless($isMobile)
+    <div class="mb-6">
+        <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pengaturan Profil</h1>
+        <p class="text-sm text-ich-ink-600 mt-1">Kelola informasi akun dan keamanan Anda</p>
     </div>
-</x-app-layout>
+    @endunless
+
+    <div class="{{ $isMobile ? 'pb-6 space-y-4' : 'max-w-2xl space-y-6' }}">
+
+        <div class="bg-white rounded-xl shadow-ich-card p-6">
+            @include('profile.partials.update-profile-information-form')
+        </div>
+
+        <div class="bg-white rounded-xl shadow-ich-card p-6">
+            @include('profile.partials.update-password-form')
+        </div>
+
+        <div class="bg-white rounded-xl shadow-ich-card p-6">
+            @include('profile.partials.delete-user-form')
+        </div>
+
+    </div>
+
+</x-dynamic-component>

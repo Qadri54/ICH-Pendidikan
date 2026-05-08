@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -41,16 +42,19 @@ class RegisteredUserController extends Controller {
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'no_hp' => $request->no_hp,
+            'no_hp'    => $request->no_hp,
         ]);
+
+        // Role disimpan di tabel roles dengan FK user_id (hasOne)
+        $user->role()->create(['role_name' => 'Orang Tua']);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('beranda');
     }
 }
