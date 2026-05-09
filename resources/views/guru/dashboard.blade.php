@@ -16,7 +16,7 @@
             [
                 'label'  => 'Absensi Saya',
                 'desc'   => 'Check-in & check-out',
-                'icon'   => 'check_circle',
+                'icon'   => 'user_check',
                 'route'  => 'guru.absensi-guru.index',
                 'color'  => 'bg-[#E8F5EA] text-ich-green',
             ],
