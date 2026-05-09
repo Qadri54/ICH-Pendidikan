@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller {
     public function index() {
         $user = auth()->user();
-        $role = $user->role?->role_name ?? 'Tidak ada role';
-        // dd($user, $role);
+        $role = $user->role?->role_name ?? '';
 
-        return view('dashboard', compact('user', 'role'));
+        // Arahkan ke view spesifik per role
+        return match(true) {
+            in_array($role, ['Guru', 'Guru Ngaji']) => view('guru.dashboard', compact('user')),
+            default                                  => view('dashboard', compact('user', 'role')),
+        };
     }
 }
