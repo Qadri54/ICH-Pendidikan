@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AttendanceSetting;
 use App\Models\RegistrationSetting;
+use App\Services\Attendance\GeofenceService;
 use Illuminate\Http\Request;
 
 class PengaturanController extends Controller
 {
+    public function __construct(
+        private GeofenceService $geofenceService,
+    ) {}
+
     public function index()
     {
         $settings            = AttendanceSetting::pluck('setting_value', 'setting_key');
@@ -27,10 +32,18 @@ class PengaturanController extends Controller
             'check_in_end'          => 'required|date_format:H:i',
         ]);
 
-        foreach ($data as $key => $value) {
+        // Simpan koordinat geofence via service
+        $this->geofenceService->saveZone(
+            (float) $data['geofence_latitude'],
+            (float) $data['geofence_longitude'],
+            (float) $data['geofence_radius_meter']
+        );
+
+        // Setting jam non-geofence disimpan langsung
+        foreach (['check_in_start', 'check_in_end'] as $key) {
             AttendanceSetting::updateOrCreate(
                 ['setting_key' => $key],
-                ['setting_value' => $value]
+                ['setting_value' => $data[$key]]
             );
         }
 

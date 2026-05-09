@@ -13,13 +13,19 @@ use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\PembayaranPendaftaranController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\AbsensiSiswaController as AdminAbsensiController;
+use App\Http\Controllers\Admin\AbsensiGuruController as AdminAbsensiGuruController;
+use App\Http\Controllers\Admin\RaportController as AdminRaportController;
 use App\Http\Controllers\OrangTua\PendaftaranController as OrangTuaPendaftaranController;
 use App\Http\Controllers\OrangTua\KeuanganController as OrangTuaKeuanganController;
 use App\Http\Controllers\OrangTua\TabunganController as OrangTuaTabunganController;
 use App\Http\Controllers\OrangTua\ProfilAnakController;
 use App\Http\Controllers\OrangTua\KehadiranController as OrangTuaKehadiranController;
+use App\Http\Controllers\OrangTua\AkademikController as OrangTuaAkademikController;
+use App\Http\Controllers\OrangTua\BerandaController as OrangTuaBerandaController;
 use App\Http\Controllers\Guru\TabunganGuruController;
 use App\Http\Controllers\Guru\AbsensiSiswaController as GuruAbsensiController;
+use App\Http\Controllers\Guru\AbsensiGuruController as GuruAbsensiGuruController;
+use App\Http\Controllers\Guru\RaportController as GuruRaportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,9 +44,10 @@ Route::middleware('auth')->group(function () {
 
 // ─── Orang Tua Area ────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
-    Route::get('/beranda', fn() => view('orang-tua.beranda'))->name('beranda');
+    Route::get('/beranda', [OrangTuaBerandaController::class, 'index'])->name('beranda');
     Route::get('/kehadiran', [OrangTuaKehadiranController::class, 'index'])->name('kehadiran');
-    Route::get('/akademik', fn() => view('orang-tua.placeholder', ['pageTitle' => 'Akademik']))->name('akademik');
+    Route::get('/akademik', [OrangTuaAkademikController::class, 'index'])->name('akademik');
+    Route::get('/raport/{id}/download', [OrangTuaAkademikController::class, 'download'])->name('raport.download');
     Route::get('/pembayaran', [OrangTuaKeuanganController::class, 'index'])->name('pembayaran');
     Route::post('/pembayaran/pendaftaran/{fee}', [OrangTuaKeuanganController::class, 'storeRegistrationPayment'])->name('pembayaran.pendaftaran');
     Route::post('/pembayaran/spp/{invoice}', [OrangTuaKeuanganController::class, 'storeSppPayment'])->name('pembayaran.spp');
@@ -52,11 +59,29 @@ Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
     Route::post('/pendaftaran',     [OrangTuaPendaftaranController::class, 'store'])->name('pendaftaran.store');
 });
 
+// ─── Absensi Guru (Guru TK + Guru Ngaji) ─────────────────────────────────────
+Route::middleware(['auth', 'role:Guru,Guru Ngaji'])->prefix('guru')->name('guru.')->group(function () {
+    Route::get('absensi-guru',              [GuruAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+    Route::post('absensi-guru/checkin',     [GuruAbsensiGuruController::class, 'checkIn'])->name('absensi-guru.checkin');
+    Route::post('absensi-guru/checkout',    [GuruAbsensiGuruController::class, 'checkOut'])->name('absensi-guru.checkout');
+    Route::post('absensi-guru/izin-sakit',  [GuruAbsensiGuruController::class, 'izinSakit'])->name('absensi-guru.izin-sakit');
+});
+
 // ─── Guru Area ───────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:Guru'])->prefix('guru')->name('guru.')->group(function () {
 
     Route::get('absensi',       [GuruAbsensiController::class, 'index'])->name('absensi.index');
     Route::post('absensi',      [GuruAbsensiController::class, 'store'])->name('absensi.store');
+
+    // Raport siswa (wali kelas)
+    Route::get('raport',                                  [GuruRaportController::class, 'index'])->name('raport.index');
+    Route::get('raport/create',                           [GuruRaportController::class, 'create'])->name('raport.create');
+    Route::post('raport',                                 [GuruRaportController::class, 'store'])->name('raport.store');
+    Route::get('raport/{id}/edit',                        [GuruRaportController::class, 'edit'])->name('raport.edit');
+    Route::post('raport/{id}/narrative',                  [GuruRaportController::class, 'updateNarrative'])->name('raport.narrative');
+    Route::post('raport/{id}/checklist',                  [GuruRaportController::class, 'updateChecklist'])->name('raport.checklist');
+    Route::post('raport/{id}/physical',                   [GuruRaportController::class, 'updatePhysical'])->name('raport.physical');
+    Route::post('raport/{id}/submit',                     [GuruRaportController::class, 'submit'])->name('raport.submit');
 
     Route::prefix('tabungan')->name('tabungan.')->group(function () {
         Route::get('/',                               [TabunganGuruController::class, 'index'])->name('index');
@@ -89,6 +114,22 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
         Route::get('absensi',  [AdminAbsensiController::class, 'index'])->name('absensi.index');
         Route::post('absensi', [AdminAbsensiController::class, 'store'])->name('absensi.store');
+
+        // Absensi guru
+        Route::get('absensi-guru',  [AdminAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+        Route::post('absensi-guru', [AdminAbsensiGuruController::class, 'store'])->name('absensi-guru.store');
+
+        // Raport siswa
+        Route::get('raport',                    [AdminRaportController::class, 'index'])->name('raport.index');
+        Route::get('raport/create',             [AdminRaportController::class, 'create'])->name('raport.create');
+        Route::post('raport',                   [AdminRaportController::class, 'store'])->name('raport.store');
+        Route::get('raport/{id}/edit',          [AdminRaportController::class, 'edit'])->name('raport.edit');
+        Route::post('raport/{id}/narrative',    [AdminRaportController::class, 'updateNarrative'])->name('raport.narrative');
+        Route::post('raport/{id}/checklist',    [AdminRaportController::class, 'updateChecklist'])->name('raport.checklist');
+        Route::post('raport/{id}/physical',     [AdminRaportController::class, 'updatePhysical'])->name('raport.physical');
+        Route::post('raport/{id}/submit',       [AdminRaportController::class, 'submit'])->name('raport.submit');
+        Route::post('raport/{id}/approve',      [AdminRaportController::class, 'approve'])->name('raport.approve');
+        Route::delete('raport/{id}',            [AdminRaportController::class, 'destroy'])->name('raport.destroy');
 
         Route::get('pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
         Route::get('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');

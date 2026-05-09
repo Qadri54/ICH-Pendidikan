@@ -1,24 +1,28 @@
 @php
     // Semua icon name mengacu ke x-ich-icon (ich-icon.blade.php)
     $adminMenu = [
-        ['label' => 'Laporan',     'route' => 'admin.laporan.index',              'icon' => 'document'],
-        ['label' => 'Siswa',       'route' => 'admin.siswa.index',                'icon' => 'user'],
-        ['label' => 'Guru',        'route' => 'admin.guru.index',                 'icon' => 'users'],
-        ['label' => 'User',        'route' => 'admin.user.index',                 'icon' => 'user_circle'],
-        ['label' => 'Kelas',       'route' => 'admin.kelas.index',                'icon' => 'school'],
-        ['label' => 'Absensi',     'route' => 'admin.absensi.index',              'icon' => 'calendar'],
-        ['label' => 'Keuangan',    'route' => 'admin.keuangan.index',             'icon' => 'banknote'],
-        ['label' => 'Pmbyr Daftar','route' => 'admin.pembayaran-pendaftaran.index','icon' => 'card'],
-        ['label' => 'Tabungan',    'route' => 'admin.tabungan.index',             'icon' => 'piggy'],
-        ['label' => 'Pendaftaran', 'route' => 'admin.pendaftaran.index',          'icon' => 'clipboard'],
-        ['label' => 'Pengaturan',  'route' => 'admin.pengaturan.index',           'icon' => 'settings'],
+        ['label' => 'Laporan',        'route' => 'admin.laporan.index',               'icon' => 'document'],
+        ['label' => 'Siswa',          'route' => 'admin.siswa.index',                 'icon' => 'user'],
+        ['label' => 'Guru',           'route' => 'admin.guru.index',                  'icon' => 'users'],
+        ['label' => 'User',           'route' => 'admin.user.index',                  'icon' => 'user_circle'],
+        ['label' => 'Kelas',          'route' => 'admin.kelas.index',                 'icon' => 'school'],
+        ['label' => 'Absensi Siswa',  'route' => 'admin.absensi.index',               'icon' => 'calendar'],
+        ['label' => 'Absensi Guru',   'route' => 'admin.absensi-guru.index',          'icon' => 'check_circle'],
+        ['label' => 'Raport',         'route' => 'admin.raport.index',                'icon' => 'book'],
+        ['label' => 'Keuangan',       'route' => 'admin.keuangan.index',              'icon' => 'banknote'],
+        ['label' => 'Pmbyr Daftar',   'route' => 'admin.pembayaran-pendaftaran.index','icon' => 'card'],
+        ['label' => 'Tabungan',       'route' => 'admin.tabungan.index',              'icon' => 'piggy'],
+        ['label' => 'Pendaftaran',    'route' => 'admin.pendaftaran.index',           'icon' => 'clipboard'],
+        ['label' => 'Pengaturan',     'route' => 'admin.pengaturan.index',            'icon' => 'settings'],
     ];
 
     $guruMenu = [
-        ['label' => 'Dashboard', 'route' => 'dashboard',          'icon' => 'grid'],
-        ['label' => 'Absensi',   'route' => 'guru.absensi.index', 'icon' => 'calendar'],
-        ['label' => 'Tabungan',  'route' => 'guru.tabungan.index','icon' => 'piggy'],
-        ['label' => 'Profil',    'route' => 'profile.edit',       'icon' => 'settings'],
+        ['label' => 'Dashboard',   'route' => 'dashboard',              'icon' => 'grid'],
+        ['label' => 'Absensi Saya','route' => 'guru.absensi-guru.index','icon' => 'check_circle'],
+        ['label' => 'Absensi Siswa','route' => 'guru.absensi.index',   'icon' => 'calendar'],
+        ['label' => 'Raport',      'route' => 'guru.raport.index',      'icon' => 'book'],
+        ['label' => 'Tabungan',    'route' => 'guru.tabungan.index',    'icon' => 'piggy'],
+        ['label' => 'Profil',      'route' => 'profile.edit',           'icon' => 'settings'],
     ];
 
     $orangTuaMenu = [
