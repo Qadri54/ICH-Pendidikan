@@ -34,7 +34,7 @@ class NarrativeAssessmentService
         foreach ($narratives as $item) {
             NarrativeAssessment::updateOrCreate(
                 ['report_card_id' => $reportCardId, 'judul' => $item['judul']],
-                ['kategori' => $item['kategori'], 'isi_naratif' => $item['isi_naratif']]
+                ['kategori' => $item['kategori'], 'isi_naratif' => $item['isi_naratif'] ?? '']
             );
         }
     }

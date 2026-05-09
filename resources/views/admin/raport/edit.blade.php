@@ -141,29 +141,40 @@
                         <div class="divide-y divide-ich-line">
                             @foreach($category->children as $child)
                                 @php $existing = $checklists->get($child->category_id); @endphp
-                                <div class="px-5 py-4">
-                                    <div class="flex items-start gap-4">
-                                        <p class="flex-1 font-sans text-sm text-ich-ink-800">{{ $child->nama }}</p>
+                                {{-- x-data per baris: track status yang dipilih secara lokal --}}
+                                <div class="px-5 py-4"
+                                     x-data="{ selected: '{{ $existing?->status ?? '' }}' }">
+                                    <div class="flex items-start gap-4 flex-wrap">
+                                        <p class="flex-1 min-w-0 font-sans text-sm text-ich-ink-800">{{ $child->nama }}</p>
                                         <div class="flex gap-2 flex-shrink-0">
-                                            @foreach(['BM' => ['Belum Muncul','bg-[#FEE2E2]','text-ich-error','border-ich-error'], 'MM' => ['Mulai Muncul','bg-[#FEF5DC]','text-[#E09F17]','border-[#E09F17]'], 'SM' => ['Sudah Muncul','bg-[#D1FAE5]','text-[#009966]','border-[#009966]']] as $val => $cfg)
-                                                <label class="cursor-pointer">
-                                                    <input type="radio"
-                                                           name="checklists[{{ $idx }}][status]"
-                                                           value="{{ $val }}"
-                                                           {{ ($existing?->status === $val) ? 'checked' : '' }}
-                                                           class="sr-only peer">
-                                                    <span class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 border-ich-line
-                                                                 peer-checked:{{ $cfg[1] }} peer-checked:{{ $cfg[2] }} peer-checked:{{ $cfg[3] }}
-                                                                 hover:border-ich-ink-300 transition-colors cursor-pointer block">
-                                                        {{ $val }}
-                                                    </span>
-                                                </label>
-                                            @endforeach
+                                            {{-- Tombol BM --}}
+                                            <button type="button" @click="selected = 'BM'"
+                                                    :class="selected === 'BM'
+                                                        ? 'bg-[#FEE2E2] text-ich-error border-ich-error'
+                                                        : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
+                                                    class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
+                                                BM
+                                            </button>
+                                            {{-- Tombol MM --}}
+                                            <button type="button" @click="selected = 'MM'"
+                                                    :class="selected === 'MM'
+                                                        ? 'bg-[#FEF5DC] text-[#E09F17] border-[#E09F17]'
+                                                        : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
+                                                    class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
+                                                MM
+                                            </button>
+                                            {{-- Tombol SM --}}
+                                            <button type="button" @click="selected = 'SM'"
+                                                    :class="selected === 'SM'
+                                                        ? 'bg-[#D1FAE5] text-[#009966] border-[#009966]'
+                                                        : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
+                                                    class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
+                                                SM
+                                            </button>
                                         </div>
                                     </div>
-                                    <input type="hidden"
-                                           name="checklists[{{ $idx }}][category_id]"
-                                           value="{{ $child->category_id }}">
+                                    <input type="hidden" name="checklists[{{ $idx }}][category_id]" value="{{ $child->category_id }}">
+                                    <input type="hidden" name="checklists[{{ $idx }}][status]" :value="selected">
                                     <input type="hidden" name="checklists[{{ $idx }}][catatan]" value="">
                                 </div>
                                 @php $idx++; @endphp

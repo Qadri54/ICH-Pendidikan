@@ -58,12 +58,20 @@ class RaportController extends Controller
         ]);
         $student = Student::with('classRoom')->findOrFail($data['student_id']);
 
+        // Raport wajib punya wali kelas — pastikan kelas siswa sudah dikonfigurasi
+        if (! $student->class_id) {
+            return back()->withErrors(['error' => 'Siswa belum memiliki kelas. Atur kelas siswa terlebih dahulu.'])->withInput();
+        }
+        if (! $student->classRoom?->homeroom_teacher_id) {
+            return back()->withErrors(['error' => "Kelas {$student->classRoom->nama_kelas} belum memiliki wali kelas. Atur wali kelas di menu Kelas terlebih dahulu."])->withInput();
+        }
+
         try {
             $raport = $this->reportCardService->create([
                 'student_id'          => $student->student_id,
                 'period_id'           => $data['period_id'],
                 'class_id'            => $student->class_id,
-                'homeroom_teacher_id' => $student->classRoom?->homeroom_teacher_id,
+                'homeroom_teacher_id' => $student->classRoom->homeroom_teacher_id,
             ]);
 
             return redirect()->route('admin.raport.edit', $raport->report_card_id)
