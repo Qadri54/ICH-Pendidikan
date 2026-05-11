@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Absensi Guru">
 
     <div class="mb-6 flex items-center justify-between">
