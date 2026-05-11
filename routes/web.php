@@ -48,7 +48,9 @@ Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
     Route::get('/kehadiran', [OrangTuaKehadiranController::class, 'index'])->name('kehadiran');
     Route::get('/akademik', [OrangTuaAkademikController::class, 'index'])->name('akademik');
     Route::get('/raport/{id}/download', [OrangTuaAkademikController::class, 'download'])->name('raport.download');
-    Route::get('/pembayaran', [OrangTuaKeuanganController::class, 'index'])->name('pembayaran');
+    Route::get('/pembayaran',             [OrangTuaKeuanganController::class, 'index'])->name('pembayaran');
+    Route::get('/pembayaran/pendaftaran', [OrangTuaKeuanganController::class, 'pendaftaran'])->name('pembayaran.pendaftaran.index');
+    Route::get('/pembayaran/spp',         [OrangTuaKeuanganController::class, 'spp'])->name('pembayaran.spp.index');
     Route::post('/pembayaran/pendaftaran/{fee}', [OrangTuaKeuanganController::class, 'storeRegistrationPayment'])->name('pembayaran.pendaftaran');
     Route::post('/pembayaran/spp/{invoice}', [OrangTuaKeuanganController::class, 'storeSppPayment'])->name('pembayaran.spp');
     Route::get('/tabungan', [OrangTuaTabunganController::class, 'index'])->name('tabungan');

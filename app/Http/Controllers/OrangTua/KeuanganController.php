@@ -28,23 +28,51 @@ class KeuanganController extends Controller
     {
         $students = $this->studentProfileService->getAllByUserId(auth()->id());
 
-        $keuanganData = $students->map(function ($student) {
+        $summary = $students->map(function ($student) {
+            $fee         = $this->registrationFeeService->findByStudentId($student->student_id);
+            $sppCount    = $this->sppInvoiceService
+                ->getByStudentId($student->student_id)
+                ->filter(fn($inv) => in_array($inv->status, ['unpaid', 'overdue', 'pending']))
+                ->count();
+
+            return compact('student', 'fee', 'sppCount');
+        });
+
+        return view('orang-tua.keuangan.index', compact('summary'));
+    }
+
+    public function pendaftaran(): View
+    {
+        $students = $this->studentProfileService->getAllByUserId(auth()->id());
+
+        $data = $students->map(function ($student) {
             $fee = $this->registrationFeeService->findByStudentId($student->student_id);
 
-            $pendingRegistrationTx = $fee
+            $pendingTx = $fee
                 ? $this->registrationTransactionService
                     ->getByRegistrationFeeId($fee->registration_fee_id)
                     ->firstWhere('status', 'pending')
                 : null;
 
-            $sppInvoices = $this->sppInvoiceService
+            return compact('student', 'fee', 'pendingTx');
+        });
+
+        return view('orang-tua.keuangan.pendaftaran', compact('data'));
+    }
+
+    public function spp(): View
+    {
+        $students = $this->studentProfileService->getAllByUserId(auth()->id());
+
+        $data = $students->map(function ($student) {
+            $invoices = $this->sppInvoiceService
                 ->getByStudentId($student->student_id)
                 ->filter(fn($inv) => in_array($inv->status, ['unpaid', 'overdue', 'pending']));
 
-            return compact('student', 'fee', 'pendingRegistrationTx', 'sppInvoices');
+            return compact('student', 'invoices');
         });
 
-        return view('orang-tua.keuangan.index', compact('keuanganData'));
+        return view('orang-tua.keuangan.spp', compact('data'));
     }
 
     public function storeRegistrationPayment(Request $request, RegistrationFee $fee): RedirectResponse
@@ -72,7 +100,7 @@ class KeuanganController extends Controller
             'payment_category'        => $data['payment_category'],
         ]);
 
-        return redirect()->route('pembayaran')
+        return redirect()->route('pembayaran.pendaftaran.index')
             ->with('success', 'Bukti pembayaran pendaftaran berhasil dikirim, menunggu konfirmasi admin.');
     }
 
@@ -98,7 +126,7 @@ class KeuanganController extends Controller
             'gambar_bukti_pembayaran' => $path,
         ]);
 
-        return redirect()->route('pembayaran')
+        return redirect()->route('pembayaran.spp.index')
             ->with('success', 'Bukti pembayaran SPP berhasil dikirim, menunggu konfirmasi admin.');
     }
 }
