@@ -37,14 +37,37 @@ class PendaftaranController extends Controller
         }
 
         $data = $request->validate([
-            'nama_siswa'    => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'tempat_lahir'  => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:L,P',
-            'nama_ayah'     => 'required|string|max:255',
-            'nama_ibu'      => 'required|string|max:255',
-            'alamat'        => 'required|string|max:1000',
+            'jenis_pendaftaran'  => 'required|in:TK,Mengaji',
+            // Biodata siswa
+            'nama_siswa'         => 'required|string|max:255',
+            'tanggal_lahir'      => 'required|date',
+            'tempat_lahir'       => 'required|string|max:255',
+            'jenis_kelamin'      => 'required|in:L,P',
+            'alamat'             => 'required|string|max:1000',
+            'anak_ke'            => 'required|integer|min:1|max:20',
+            'ukuran_baju'        => 'nullable|in:S,M,L',
+            // Biodata ayah
+            'nama_ayah'          => 'required|string|max:255',
+            'tempat_lahir_ayah'  => 'required|string|max:255',
+            'tanggal_lahir_ayah' => 'required|date',
+            'alamat_ayah'        => 'required|string|max:1000',
+            'pendidikan_ayah'    => 'required|string|max:100',
+            'pekerjaan_ayah'     => 'required|string|max:255',
+            'no_telp_ayah'       => 'required|string|max:20',
+            // Biodata ibu
+            'nama_ibu'           => 'required|string|max:255',
+            'tempat_lahir_ibu'   => 'required|string|max:255',
+            'tanggal_lahir_ibu'  => 'required|date',
+            'alamat_ibu'         => 'required|string|max:1000',
+            'pekerjaan_ibu'      => 'required|string|max:255',
+            'pendidikan_ibu'     => 'required|string|max:100',
+            'no_telp_ibu'        => 'required|string|max:20',
         ]);
+
+        // ukuran_baju hanya relevan untuk TK
+        if ($data['jenis_pendaftaran'] !== 'TK') {
+            $data['ukuran_baju'] = null;
+        }
 
         $this->registrationService->submit(auth()->id(), $data);
 

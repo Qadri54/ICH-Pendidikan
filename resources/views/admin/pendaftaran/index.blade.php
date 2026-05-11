@@ -33,6 +33,7 @@
                     <th class="px-4 py-3 text-left font-ui font-bold">Nama Orang Tua</th>
                     <th class="px-4 py-3 text-left font-ui font-bold">Email</th>
                     <th class="px-4 py-3 text-left font-ui font-bold">Nama Anak</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold">Jenis</th>
                     <th class="px-4 py-3 text-left font-ui font-bold">Tanggal Daftar</th>
                     <th class="px-4 py-3 text-center font-ui font-bold">Status</th>
                     <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
@@ -55,7 +56,13 @@
                     <tr class="hover:bg-[#F5F6FA]">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $p->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->user?->email ?? '-' }}</td>
-                        <td class="px-4 py-3 text-ich-ink-600">{{ $p->nama_ayah ? 'Anak dari '.$p->nama_ayah : '-' }}</td>
+                        <td class="px-4 py-3 text-ich-ink-600">{{ $p->nama_siswa ?? '-' }}</td>
+                        <td class="px-4 py-3">
+                            @php $jenisBg = $p->jenis_pendaftaran === 'TK' ? 'bg-[#EDE9FE] text-[#8B5CF6]' : 'bg-[#FEF5DC] text-[#E09F17]'; @endphp
+                            <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold {{ $jenisBg }}">
+                                {{ $p->jenis_pendaftaran === 'TK' ? 'TK' : 'Mengaji' }}
+                            </span>
+                        </td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->created_at?->format('d M Y') ?? '-' }}</td>
                         <td class="px-4 py-3 text-center">
                             <span class="px-2.5 py-1 font-ui font-bold text-xs rounded-full {{ $statusColor }}">
@@ -71,7 +78,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
+                        <td colspan="7" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
                             Belum ada data pendaftaran.
                         </td>
                     </tr>
