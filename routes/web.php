@@ -156,8 +156,11 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pembayaran-pendaftaran/{transaksi}/approve', [PembayaranPendaftaranController::class, 'approve'])->name('pembayaran-pendaftaran.approve');
             Route::post('pembayaran-pendaftaran/{transaksi}/reject',  [PembayaranPendaftaranController::class, 'reject'])->name('pembayaran-pendaftaran.reject');
 
-            Route::post('pengaturan',                    [PengaturanController::class, 'update'])->name('pengaturan.update');
-            Route::post('pengaturan/toggle-pendaftaran', [PengaturanController::class, 'togglePendaftaran'])->name('pengaturan.toggle-pendaftaran');
+            Route::post('pengaturan',                              [PengaturanController::class, 'update'])->name('pengaturan.update');
+            Route::post('pengaturan/toggle-pendaftaran',           [PengaturanController::class, 'togglePendaftaran'])->name('pengaturan.toggle-pendaftaran');
+            Route::post('pengaturan/semester',                     [PengaturanController::class, 'storeSemester'])->name('pengaturan.semester.store');
+            Route::post('pengaturan/semester/{semester}/activate', [PengaturanController::class, 'activateSemester'])->name('pengaturan.semester.activate');
+            Route::delete('pengaturan/semester/{semester}',        [PengaturanController::class, 'destroySemester'])->name('pengaturan.semester.destroy');
         });
     });
 

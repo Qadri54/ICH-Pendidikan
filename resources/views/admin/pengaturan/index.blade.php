@@ -50,6 +50,136 @@
             </p>
         </div>
 
+        {{-- Manajemen Semester --}}
+        <div class="bg-white rounded-xl shadow-ich-card p-6">
+            <h3 class="font-ui font-bold text-ich-ink-900 border-b border-ich-line pb-3 mb-5">
+                Semester Aktif
+            </h3>
+
+            @if(session('error'))
+                <div class="mb-4 px-3 py-2.5 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            {{-- Daftar semester --}}
+            @if($semesters->isEmpty())
+                <p class="text-sm text-ich-ink-400 font-sans mb-5">Belum ada semester. Tambahkan semester di bawah.</p>
+            @else
+                <div class="divide-y divide-ich-line mb-5">
+                    @foreach($semesters as $sem)
+                        <div class="py-3 flex items-center justify-between gap-3">
+                            <div>
+                                <p class="font-ui font-semibold text-sm text-ich-ink-900">
+                                    Semester {{ $sem->semester }}
+                                    <span class="font-normal text-ich-ink-500">— T.A {{ $sem->tahun_ajaran }}</span>
+                                </p>
+                                <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                                    {{ $sem->tanggal_mulai->translatedFormat('d M Y') }}
+                                    – {{ $sem->tanggal_selesai->translatedFormat('d M Y') }}
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                @if($sem->is_active)
+                                    <span class="px-2.5 py-1 bg-[#D1FAE5] text-[#009966] text-xs font-ui font-bold rounded-full">
+                                        Aktif
+                                    </span>
+                                @elseif(! $isReadOnly)
+                                    <form method="POST"
+                                          action="{{ route('admin.pengaturan.semester.activate', $sem) }}">
+                                        @csrf
+                                        <button type="submit"
+                                                class="px-3 py-1 text-xs font-ui font-bold border-2 border-ich-teal
+                                                       text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
+                                            Aktifkan
+                                        </button>
+                                    </form>
+                                    <form method="POST"
+                                          action="{{ route('admin.pengaturan.semester.destroy', $sem) }}"
+                                          onsubmit="return confirm('Hapus semester ini?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                                class="px-3 py-1 text-xs font-ui font-bold border-2 border-ich-error
+                                                       text-ich-error rounded-lg hover:bg-ich-error hover:text-white transition-colors">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            {{-- Form tambah semester --}}
+            @if(! $isReadOnly)
+                <form method="POST" action="{{ route('admin.pengaturan.semester.store') }}"
+                      class="border-t border-ich-line pt-5 space-y-4">
+                    @csrf
+                    <p class="font-ui font-bold text-sm text-ich-ink-700">Tambah Semester Baru</p>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tahun Ajaran</label>
+                            <input type="text" name="tahun_ajaran"
+                                   value="{{ old('tahun_ajaran') }}"
+                                   placeholder="2025-2026"
+                                   class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg
+                                          font-sans text-sm focus:outline-none focus:border-ich-teal
+                                          @error('tahun_ajaran') border-ich-error @else border-ich-line @enderror">
+                            @error('tahun_ajaran')
+                                <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Semester</label>
+                            <select name="semester"
+                                    class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                           font-sans text-sm focus:outline-none focus:border-ich-teal
+                                           @error('semester') border-ich-error @enderror">
+                                <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>Semester 1 (Ganjil)</option>
+                                <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>Semester 2 (Genap)</option>
+                            </select>
+                            @error('semester')
+                                <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Mulai</label>
+                            <input type="date" name="tanggal_mulai"
+                                   value="{{ old('tanggal_mulai') }}"
+                                   class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                          font-sans text-sm focus:outline-none focus:border-ich-teal
+                                          @error('tanggal_mulai') border-ich-error @enderror">
+                            @error('tanggal_mulai')
+                                <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Selesai</label>
+                            <input type="date" name="tanggal_selesai"
+                                   value="{{ old('tanggal_selesai') }}"
+                                   class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                          font-sans text-sm focus:outline-none focus:border-ich-teal
+                                          @error('tanggal_selesai') border-ich-error @enderror">
+                            @error('tanggal_selesai')
+                                <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                   rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                        Tambah Semester
+                    </button>
+                </form>
+            @endif
+        </div>
+
         <div class="bg-white rounded-xl shadow-ich-card p-6">
             @if($isReadOnly)
                 <p class="text-sm text-ich-ink-400 font-sans">Anda tidak memiliki akses untuk mengubah pengaturan.</p>
