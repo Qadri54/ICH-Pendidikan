@@ -1,16 +1,20 @@
 <x-main-layout title="Sistem Raport">
 
+    @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
+
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Sistem Raport</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Kelola raport siswa per periode akademik</p>
         </div>
-        <a href="{{ route('admin.raport.create') }}"
-           class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                  rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-            <x-ich-icon name="plus" :size="16" color="white"/>
-            Buat Raport
-        </a>
+        @if(! $isReadOnly)
+            <a href="{{ route('admin.raport.create') }}"
+               class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                      rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                <x-ich-icon name="plus" :size="16" color="white"/>
+                Buat Raport
+            </a>
+        @endif
     </div>
 
     @if(session('success'))
@@ -49,10 +53,10 @@
                     class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
                            font-sans text-sm focus:outline-none focus:border-ich-teal">
                 <option value="">Semua Kelas</option>
-                @foreach($classes as $class)
-                    <option value="{{ $class->class_id }}"
-                            {{ ($filters['class_id'] ?? '') == $class->class_id ? 'selected' : '' }}>
-                        {{ $class->nama_kelas }}
+                @foreach($classes as $kelas)
+                    <option value="{{ $kelas->class_id }}"
+                            {{ ($filters['class_id'] ?? '') == $kelas->class_id ? 'selected' : '' }}>
+                        {{ $kelas->nama_kelas }}
                     </option>
                 @endforeach
             </select>
@@ -128,39 +132,41 @@
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <a href="{{ route('admin.raport.edit', $raport->report_card_id) }}"
                                            class="text-xs font-ui font-bold text-ich-teal hover:underline">
-                                            Edit
+                                            {{ $isReadOnly ? 'Lihat' : 'Edit' }}
                                         </a>
-                                        @if($raport->status === 'submitted')
-                                            <form method="POST"
-                                                  action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
-                                                  onsubmit="return confirm('Setujui raport ini?')">
-                                                @csrf
-                                                <button type="submit"
-                                                        class="text-xs font-ui font-bold text-[#009966] hover:underline">
-                                                    Setujui
-                                                </button>
-                                            </form>
-                                        @endif
-                                        @if($raport->status === 'draft')
-                                            <form method="POST"
-                                                  action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
-                                                  onsubmit="return confirm('Submit raport ini?')">
-                                                @csrf
-                                                <button type="submit"
-                                                        class="text-xs font-ui font-bold text-[#E09F17] hover:underline">
-                                                    Submit
-                                                </button>
-                                            </form>
-                                            <form method="POST"
-                                                  action="{{ route('admin.raport.destroy', $raport->report_card_id) }}"
-                                                  onsubmit="return confirm('Hapus raport ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                        class="text-xs font-ui font-bold text-ich-error hover:underline">
-                                                    Hapus
-                                                </button>
-                                            </form>
+                                        @if(! $isReadOnly)
+                                            @if($raport->status === 'submitted')
+                                                <form method="POST"
+                                                      action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
+                                                      onsubmit="return confirm('Setujui raport ini?')">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="text-xs font-ui font-bold text-[#009966] hover:underline">
+                                                        Setujui
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            @if($raport->status === 'draft')
+                                                <form method="POST"
+                                                      action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
+                                                      onsubmit="return confirm('Submit raport ini?')">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="text-xs font-ui font-bold text-[#E09F17] hover:underline">
+                                                        Submit
+                                                    </button>
+                                                </form>
+                                                <form method="POST"
+                                                      action="{{ route('admin.raport.destroy', $raport->report_card_id) }}"
+                                                      onsubmit="return confirm('Hapus raport ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="text-xs font-ui font-bold text-ich-error hover:underline">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>

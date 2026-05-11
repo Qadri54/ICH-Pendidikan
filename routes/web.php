@@ -93,57 +93,70 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->name('guru.')->group(f
 });
 
 // ─── Admin Area ───────────────────────────────────────────────────────────────
+// Outer group: semua role admin dapat mengakses (read-only untuk Kepsek & Kepala Yayasan)
 Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::resource('siswa', SiswaController::class)->except(['create', 'store']);
-        Route::resource('kelas', KelasController::class, ['parameters' => ['kelas' => 'kelas']])->except('show');
-        Route::resource('guru', GuruController::class)->except('show');
-        Route::resource('user', UserController::class)->except('show');
-        Route::post('keuangan/generate', [KeuanganController::class, 'generate'])->name('keuangan.generate');
-        Route::resource('keuangan', KeuanganController::class)->only(['index', 'edit', 'update', 'destroy']);
+        // ── Read-only: diakses semua role admin ──────────────────────────────
+        Route::resource('siswa',    SiswaController::class)->only(['index', 'show']);
+        Route::resource('kelas',    KelasController::class, ['parameters' => ['kelas' => 'kelas']])->only(['index']);
+        Route::resource('guru',     GuruController::class)->only(['index']);
+        Route::resource('user',     UserController::class)->only(['index']);
+        Route::resource('keuangan', KeuanganController::class)->only(['index']);
+        Route::resource('tabungan', TabunganAdminController::class)->only(['index', 'show']);
+        Route::get('tabungan/passbooks/{passbook}', [TabunganAdminController::class, 'showPassbook'])->name('tabungan.passbook.show');
 
-        Route::get('tabungan/{tabungan}/passbooks/create',    [TabunganAdminController::class, 'openPassbook'])->name('tabungan.passbook.create');
-        Route::post('tabungan/{tabungan}/passbooks',          [TabunganAdminController::class, 'storePassbook'])->name('tabungan.passbook.store');
-        Route::get('tabungan/passbooks/{passbook}',           [TabunganAdminController::class, 'showPassbook'])->name('tabungan.passbook.show');
-        Route::post('tabungan/passbooks/{passbook}/deposit',  [TabunganAdminController::class, 'deposit'])->name('tabungan.passbook.deposit');
-        Route::post('tabungan/passbooks/{passbook}/withdraw', [TabunganAdminController::class, 'withdraw'])->name('tabungan.passbook.withdraw');
-        Route::resource('tabungan', TabunganAdminController::class)->except(['edit', 'update']);
+        Route::get('absensi',     [AdminAbsensiController::class,    'index'])->name('absensi.index');
+        Route::get('absensi-guru',[AdminAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
 
-        Route::get('absensi',  [AdminAbsensiController::class, 'index'])->name('absensi.index');
-        Route::post('absensi', [AdminAbsensiController::class, 'store'])->name('absensi.store');
+        Route::get('raport',           [AdminRaportController::class, 'index'])->name('raport.index');
+        Route::get('raport/{id}/edit', [AdminRaportController::class, 'edit'])->name('raport.edit');
 
-        // Absensi guru
-        Route::get('absensi-guru',  [AdminAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
-        Route::post('absensi-guru', [AdminAbsensiGuruController::class, 'store'])->name('absensi-guru.store');
+        Route::get('pendaftaran',                  [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+        Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show');
+        Route::get('pembayaran-pendaftaran',       [PembayaranPendaftaranController::class, 'index'])->name('pembayaran-pendaftaran.index');
 
-        // Raport siswa
-        Route::get('raport',                    [AdminRaportController::class, 'index'])->name('raport.index');
-        Route::get('raport/create',             [AdminRaportController::class, 'create'])->name('raport.create');
-        Route::post('raport',                   [AdminRaportController::class, 'store'])->name('raport.store');
-        Route::get('raport/{id}/edit',          [AdminRaportController::class, 'edit'])->name('raport.edit');
-        Route::post('raport/{id}/narrative',    [AdminRaportController::class, 'updateNarrative'])->name('raport.narrative');
-        Route::post('raport/{id}/checklist',    [AdminRaportController::class, 'updateChecklist'])->name('raport.checklist');
-        Route::post('raport/{id}/physical',     [AdminRaportController::class, 'updatePhysical'])->name('raport.physical');
-        Route::post('raport/{id}/submit',       [AdminRaportController::class, 'submit'])->name('raport.submit');
-        Route::post('raport/{id}/approve',      [AdminRaportController::class, 'approve'])->name('raport.approve');
-        Route::delete('raport/{id}',            [AdminRaportController::class, 'destroy'])->name('raport.destroy');
-
-        Route::get('pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
-        Route::get('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');
-        Route::patch('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
-
-        Route::get('pembayaran-pendaftaran', [PembayaranPendaftaranController::class, 'index'])->name('pembayaran-pendaftaran.index');
-        Route::post('pembayaran-pendaftaran/{transaksi}/approve', [PembayaranPendaftaranController::class, 'approve'])->name('pembayaran-pendaftaran.approve');
-        Route::post('pembayaran-pendaftaran/{transaksi}/reject', [PembayaranPendaftaranController::class, 'reject'])->name('pembayaran-pendaftaran.reject');
-
-        Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
-
+        Route::get('laporan',    [LaporanController::class,    'index'])->name('laporan.index');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
-        Route::post('pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
-        Route::post('pengaturan/toggle-pendaftaran', [PengaturanController::class, 'togglePendaftaran'])->name('pengaturan.toggle-pendaftaran');
+
+        // ── Write: hanya Admin ───────────────────────────────────────────────
+        Route::middleware('role:Admin')->group(function () {
+
+            Route::resource('siswa',    SiswaController::class)->only(['edit', 'update', 'destroy']);
+            Route::resource('kelas',    KelasController::class, ['parameters' => ['kelas' => 'kelas']])->only(['create', 'store', 'edit', 'update', 'destroy']);
+            Route::resource('guru',     GuruController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+            Route::resource('user',     UserController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+            Route::post('keuangan/generate', [KeuanganController::class, 'generate'])->name('keuangan.generate');
+            Route::resource('keuangan', KeuanganController::class)->only(['edit', 'update', 'destroy']);
+
+            Route::get('tabungan/{tabungan}/passbooks/create',    [TabunganAdminController::class, 'openPassbook'])->name('tabungan.passbook.create');
+            Route::post('tabungan/{tabungan}/passbooks',          [TabunganAdminController::class, 'storePassbook'])->name('tabungan.passbook.store');
+            Route::post('tabungan/passbooks/{passbook}/deposit',  [TabunganAdminController::class, 'deposit'])->name('tabungan.passbook.deposit');
+            Route::post('tabungan/passbooks/{passbook}/withdraw', [TabunganAdminController::class, 'withdraw'])->name('tabungan.passbook.withdraw');
+            Route::resource('tabungan', TabunganAdminController::class)->only(['create', 'store', 'destroy']);
+
+            Route::post('absensi',     [AdminAbsensiController::class,    'store'])->name('absensi.store');
+            Route::post('absensi-guru',[AdminAbsensiGuruController::class, 'store'])->name('absensi-guru.store');
+
+            Route::get('raport/create',          [AdminRaportController::class, 'create'])->name('raport.create');
+            Route::post('raport',                [AdminRaportController::class, 'store'])->name('raport.store');
+            Route::post('raport/{id}/narrative', [AdminRaportController::class, 'updateNarrative'])->name('raport.narrative');
+            Route::post('raport/{id}/checklist', [AdminRaportController::class, 'updateChecklist'])->name('raport.checklist');
+            Route::post('raport/{id}/physical',  [AdminRaportController::class, 'updatePhysical'])->name('raport.physical');
+            Route::post('raport/{id}/submit',    [AdminRaportController::class, 'submit'])->name('raport.submit');
+            Route::post('raport/{id}/approve',   [AdminRaportController::class, 'approve'])->name('raport.approve');
+            Route::delete('raport/{id}',         [AdminRaportController::class, 'destroy'])->name('raport.destroy');
+
+            Route::patch('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
+
+            Route::post('pembayaran-pendaftaran/{transaksi}/approve', [PembayaranPendaftaranController::class, 'approve'])->name('pembayaran-pendaftaran.approve');
+            Route::post('pembayaran-pendaftaran/{transaksi}/reject',  [PembayaranPendaftaranController::class, 'reject'])->name('pembayaran-pendaftaran.reject');
+
+            Route::post('pengaturan',                    [PengaturanController::class, 'update'])->name('pengaturan.update');
+            Route::post('pengaturan/toggle-pendaftaran', [PengaturanController::class, 'togglePendaftaran'])->name('pengaturan.toggle-pendaftaran');
+        });
     });
 
 require __DIR__ . '/auth.php';

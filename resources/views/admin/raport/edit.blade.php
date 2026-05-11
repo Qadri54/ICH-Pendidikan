@@ -1,4 +1,7 @@
 @php
+    // Kepsek dan Kepala Yayasan hanya bisa melihat — tidak bisa edit/submit/approve
+    $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']);
+
     // Judul narasi default sesuai kurikulum TK — dipakai jika belum ada data tersimpan
     $defaultNarratives = [
         ['kategori' => 'intrakurikuler', 'judul' => 'Nilai Agama dan Budi Pekerti'],
@@ -39,26 +42,28 @@
                 <span class="px-3 py-1 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
                     {{ $stCfg['label'] }}
                 </span>
-                @if($raport->status === 'draft')
-                    <form method="POST" action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
-                          onsubmit="return confirm('Submit raport ini untuk disetujui?')">
-                        @csrf
-                        <button type="submit"
-                                class="px-3 py-1.5 bg-[#E09F17] text-white font-ui font-bold text-xs
-                                       rounded-lg hover:bg-[#c08a13] transition-colors">
-                            Submit
-                        </button>
-                    </form>
-                @elseif($raport->status === 'submitted')
-                    <form method="POST" action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
-                          onsubmit="return confirm('Setujui raport ini?')">
-                        @csrf
-                        <button type="submit"
-                                class="px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
-                                       rounded-lg hover:bg-ich-green-dark transition-colors">
-                            Setujui
-                        </button>
-                    </form>
+                @if(! $isReadOnly)
+                    @if($raport->status === 'draft')
+                        <form method="POST" action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
+                              onsubmit="return confirm('Submit raport ini untuk disetujui?')">
+                            @csrf
+                            <button type="submit"
+                                    class="px-3 py-1.5 bg-[#E09F17] text-white font-ui font-bold text-xs
+                                           rounded-lg hover:bg-[#c08a13] transition-colors">
+                                Submit
+                            </button>
+                        </form>
+                    @elseif($raport->status === 'submitted')
+                        <form method="POST" action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
+                              onsubmit="return confirm('Setujui raport ini?')">
+                            @csrf
+                            <button type="submit"
+                                    class="px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
+                                           rounded-lg hover:bg-ich-green-dark transition-colors">
+                                Setujui
+                            </button>
+                        </form>
+                    @endif
                 @endif
             </div>
         </div>
@@ -117,13 +122,15 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-5">
-                    <button type="submit"
-                            class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                                   rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                        Simpan Narasi
-                    </button>
-                </div>
+                @if(! $isReadOnly)
+                    <div class="mt-5">
+                        <button type="submit"
+                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Simpan Narasi
+                        </button>
+                    </div>
+                @endif
             </form>
         </div>
 
@@ -191,11 +198,13 @@
 
                 @if($categories->isNotEmpty())
                     <div class="mt-2">
-                        <button type="submit"
-                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                            Simpan Checklist
-                        </button>
+                        @if(! $isReadOnly)
+                            <button type="submit"
+                                    class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                           rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                                Simpan Checklist
+                            </button>
+                        @endif
                         <p class="text-xs text-ich-ink-400 font-sans mt-2">BM = Belum Muncul · MM = Mulai Muncul · SM = Sudah Muncul</p>
                     </div>
                 @endif
@@ -294,13 +303,15 @@
                     </div>
                 </div>
 
-                <div class="mt-5">
-                    <button type="submit"
-                            class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                                   rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                        Simpan Data Fisik & Kesehatan
-                    </button>
-                </div>
+                @if(! $isReadOnly)
+                    <div class="mt-5">
+                        <button type="submit"
+                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Simpan Data Fisik & Kesehatan
+                        </button>
+                    </div>
+                @endif
             </form>
         </div>
 
