@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Detail Pendaftaran">
 
     <div class="mb-6 flex items-center justify-between">
@@ -62,7 +63,7 @@
                 </span>
             </div>
 
-            @if($pendaftaran->status === 'pending')
+            @if($pendaftaran->status === 'pending' && ! $isReadOnly)
                 <form method="POST" action="{{ route('admin.pendaftaran.update', $pendaftaran) }}"
                       class="space-y-3" x-data="{ showReject: false }">
                     @csrf @method('PATCH')
@@ -107,6 +108,8 @@
                         </div>
                     </div>
                 </form>
+            @elseif($pendaftaran->status === 'pending' && $isReadOnly)
+                <p class="text-sm text-ich-ink-400 font-sans">Anda tidak memiliki akses untuk mengubah status.</p>
             @else
                 <p class="text-sm text-ich-ink-400 font-sans">Status sudah final, tidak dapat diubah.</p>
                 @if($pendaftaran->status === 'rejected' && $pendaftaran->rejection_reason)

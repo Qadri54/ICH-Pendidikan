@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Absensi Siswa">
 
     <div class="mb-6">
@@ -85,7 +86,7 @@
                                 @endif
                             </div>
 
-                            @if($isToday && ! $existing)
+                            @if($isToday && ! $existing && ! $isReadOnly)
                                 <div class="flex items-center gap-3">
                                     <label class="flex items-center gap-1.5 cursor-pointer">
                                         <input type="checkbox" x-model="checked" class="accent-ich-error w-4 h-4">
@@ -113,7 +114,7 @@
                     @endforelse
                 </div>
 
-                @if($isToday && $students->isNotEmpty())
+                @if($isToday && $students->isNotEmpty() && ! $isReadOnly)
                     <div class="px-5 py-4 border-t border-ich-line">
                         <button type="submit"
                                 class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm

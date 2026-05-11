@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Daftar Guru">
 
     <div class="flex items-center justify-between mb-6">
@@ -5,11 +6,13 @@
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Guru</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Guru Kelas & Guru Ngaji</p>
         </div>
-        <a href="{{ route('admin.guru.create') }}"
-           class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                  font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-            + Tambah Guru
-        </a>
+        @if(! $isReadOnly)
+            <a href="{{ route('admin.guru.create') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                      font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                + Tambah Guru
+            </a>
+        @endif
     </div>
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -50,18 +53,20 @@
                         <td class="px-4 py-3 text-ich-ink-600">{{ $g->info }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('admin.guru.edit', $g->id) }}"
-                                   class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
-                                    Edit
-                                </a>
-                                <form method="POST" action="{{ route('admin.guru.destroy', $g->id) }}"
-                                      onsubmit="return confirm('Hapus guru {{ $g->nama }}?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                        Hapus
-                                    </button>
-                                </form>
+                                @if(! $isReadOnly)
+                                    <a href="{{ route('admin.guru.edit', $g->id) }}"
+                                       class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                        Edit
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.guru.destroy', $g->id) }}"
+                                          onsubmit="return confirm('Hapus guru {{ $g->nama }}?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                                class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

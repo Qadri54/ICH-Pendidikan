@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Daftar Siswa">
 
     {{-- Header --}}
@@ -71,18 +72,20 @@
                                    class="px-2.5 py-1 bg-[#F4F7FC] text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
                                     Detail
                                 </a>
-                                <a href="{{ route('admin.siswa.edit', $s) }}"
-                                   class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
-                                    Edit
-                                </a>
-                                <form method="POST" action="{{ route('admin.siswa.destroy', $s) }}"
-                                      onsubmit="return confirm('Hapus siswa {{ $s->nama_siswa }}?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                        Hapus
-                                    </button>
-                                </form>
+                                @if(! $isReadOnly)
+                                    <a href="{{ route('admin.siswa.edit', $s) }}"
+                                       class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                        Edit
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.siswa.destroy', $s) }}"
+                                          onsubmit="return confirm('Hapus siswa {{ $s->nama_siswa }}?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                                class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

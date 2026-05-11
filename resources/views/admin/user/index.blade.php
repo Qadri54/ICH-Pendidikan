@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Manajemen User">
 
     <div class="flex items-center justify-between mb-6">
@@ -5,11 +6,13 @@
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Manajemen User</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $users->total() }} akun</p>
         </div>
-        <a href="{{ route('admin.user.create') }}"
-           class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                  font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-            + Tambah User
-        </a>
+        @if(! $isReadOnly)
+            <a href="{{ route('admin.user.create') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                      font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                + Tambah User
+            </a>
+        @endif
     </div>
 
     <form method="GET" class="flex flex-wrap gap-3 mb-4">
@@ -75,19 +78,21 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('admin.user.edit', $u) }}"
-                                   class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
-                                    Edit
-                                </a>
-                                @if($u->user_id !== auth()->id())
-                                    <form method="POST" action="{{ route('admin.user.destroy', $u) }}"
-                                          onsubmit="return confirm('Hapus user {{ $u->name }}?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit"
-                                                class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                @if(! $isReadOnly)
+                                    <a href="{{ route('admin.user.edit', $u) }}"
+                                       class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                        Edit
+                                    </a>
+                                    @if($u->user_id !== auth()->id())
+                                        <form method="POST" action="{{ route('admin.user.destroy', $u) }}"
+                                              onsubmit="return confirm('Hapus user {{ $u->name }}?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit"
+                                                    class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    @endif
                                 @endif
                             </div>
                         </td>

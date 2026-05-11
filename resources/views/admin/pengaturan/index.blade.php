@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Pengaturan">
 
     <div class="mb-6">
@@ -25,16 +26,23 @@
                         Jika dinonaktifkan, orang tua tidak dapat mengirim formulir pendaftaran.
                     </p>
                 </div>
-                <form method="POST" action="{{ route('admin.pengaturan.toggle-pendaftaran') }}" class="shrink-0">
-                    @csrf
-                    <button type="submit"
-                            class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors
-                                   {{ $registrationSetting->is_registration_period ? 'bg-ich-green' : 'bg-ich-ink-400' }}">
-                        <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform
-                                     {{ $registrationSetting->is_registration_period ? 'translate-x-6' : 'translate-x-1' }}">
-                        </span>
-                    </button>
-                </form>
+                @if(! $isReadOnly)
+                    <form method="POST" action="{{ route('admin.pengaturan.toggle-pendaftaran') }}" class="shrink-0">
+                        @csrf
+                        <button type="submit"
+                                class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors
+                                       {{ $registrationSetting->is_registration_period ? 'bg-ich-green' : 'bg-ich-ink-400' }}">
+                            <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform
+                                         {{ $registrationSetting->is_registration_period ? 'translate-x-6' : 'translate-x-1' }}">
+                            </span>
+                        </button>
+                    </form>
+                @else
+                    <span class="px-2 py-1 rounded-full text-xs font-ui font-bold
+                                 {{ $registrationSetting->is_registration_period ? 'bg-[#D1FAE5] text-[#009966]' : 'bg-[#F3F4F6] text-ich-ink-500' }}">
+                        {{ $registrationSetting->is_registration_period ? 'Dibuka' : 'Ditutup' }}
+                    </span>
+                @endif
             </div>
             <p class="mt-3 text-xs font-ui font-bold
                        {{ $registrationSetting->is_registration_period ? 'text-ich-green' : 'text-ich-ink-400' }}">
@@ -43,6 +51,9 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-ich-card p-6">
+            @if($isReadOnly)
+                <p class="text-sm text-ich-ink-400 font-sans">Anda tidak memiliki akses untuk mengubah pengaturan.</p>
+            @else
             <form method="POST" action="{{ route('admin.pengaturan.update') }}" class="space-y-5">
                 @csrf
 
@@ -101,6 +112,7 @@
                     </button>
                 </div>
             </form>
+            @endif
         </div>
     </div>
 

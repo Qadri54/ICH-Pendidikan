@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Pembayaran Pendaftaran">
 
     <div class="mb-6">
@@ -126,7 +127,7 @@
                                 </div>
                             </td>
                             <td class="px-5 py-4">
-                                @if($tx->status === 'pending')
+                                @if($tx->status === 'pending' && ! $isReadOnly)
                                     <div class="flex flex-col gap-2 min-w-[120px]">
                                         {{-- Setujui --}}
                                         <form method="POST"

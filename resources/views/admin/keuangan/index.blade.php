@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Keuangan SPP">
 
     <div class="flex items-center justify-between mb-6">
@@ -8,15 +9,17 @@
                 · {{ $totalLunas }} sudah lunas
             </p>
         </div>
-        <form method="POST" action="{{ route('admin.keuangan.generate') }}"
-              onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
-            @csrf
-            <button type="submit"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                           font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                + Generate Tagihan Bulan Ini
-            </button>
-        </form>
+        @if(! $isReadOnly)
+            <form method="POST" action="{{ route('admin.keuangan.generate') }}"
+                  onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
+                @csrf
+                <button type="submit"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                               font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    + Generate Tagihan Bulan Ini
+                </button>
+            </form>
+        @endif
     </div>
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -76,18 +79,20 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('admin.keuangan.edit', $inv) }}"
-                                   class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
-                                    Edit
-                                </a>
-                                <form method="POST" action="{{ route('admin.keuangan.destroy', $inv) }}"
-                                      onsubmit="return confirm('Hapus tagihan ini?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                        Hapus
-                                    </button>
-                                </form>
+                                @if(! $isReadOnly)
+                                    <a href="{{ route('admin.keuangan.edit', $inv) }}"
+                                       class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                        Edit
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.keuangan.destroy', $inv) }}"
+                                          onsubmit="return confirm('Hapus tagihan ini?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                                class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

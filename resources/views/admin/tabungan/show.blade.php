@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Detail Ledger Tabungan">
 
     <div class="mb-6">
@@ -38,7 +39,7 @@
         <div class="lg:col-span-2 bg-white rounded-xl shadow-ich-card overflow-hidden">
             <div class="px-5 py-4 border-b border-ich-line flex items-center justify-between">
                 <h2 class="font-ui font-bold text-ich-ink-900">Daftar Tabungan Siswa</h2>
-                @if($tabungan->status === 'Active')
+                @if(! $isReadOnly && $tabungan->status === 'Active')
                     <a href="{{ route('admin.tabungan.passbook.create', $tabungan) }}"
                        class="flex items-center gap-1.5 px-4 py-2 bg-ich-green text-white
                               font-ui font-bold text-xs rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark">

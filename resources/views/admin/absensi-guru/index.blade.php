@@ -125,7 +125,8 @@
             </div>
         </div>
 
-        {{-- Form Input Absensi --}}
+        {{-- Form Input Absensi — hanya Admin --}}
+        @if(! $isReadOnly)
         <div class="space-y-5">
             <div class="bg-white rounded-xl shadow-ich-card p-5">
                 <h3 class="font-ui font-bold text-ich-ink-900 mb-4">Input Absensi Guru</h3>
@@ -203,6 +204,7 @@
                 </p>
             </div>
         </div>
+        @endif
     </div>
 
 </x-main-layout>

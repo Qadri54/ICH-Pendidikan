@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Detail Buku Tabungan">
 
     <div class="mb-6">
@@ -35,6 +36,12 @@
                 </div>
             </div>
 
+            {{-- Form setor/tarik hanya untuk Admin --}}
+            @if($isReadOnly)
+                <div class="bg-white rounded-xl shadow-ich-card p-5 text-center">
+                    <p class="font-sans text-sm text-ich-ink-400">Hanya Admin yang dapat mencatat transaksi.</p>
+                </div>
+            @else
             {{-- Deposit Form --}}
             <div x-data="{ tab: 'deposit' }" class="bg-white rounded-xl shadow-ich-card p-5">
                 <div class="flex gap-2 mb-4">
@@ -116,6 +123,7 @@
                     </button>
                 </form>
             </div>
+            @endif
         </div>
 
         {{-- Riwayat Transaksi --}}

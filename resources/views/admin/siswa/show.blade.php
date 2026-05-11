@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Detail Siswa">
 
     <div class="mb-6 flex items-center justify-between">
@@ -6,10 +7,12 @@
                class="text-ich-teal text-sm font-ui font-semibold hover:underline">← Kembali</a>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900 mt-1">Detail Siswa</h1>
         </div>
-        <a href="{{ route('admin.siswa.edit', $siswa) }}"
-           class="px-4 py-2 bg-ich-yellow text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-yellow-dark transition-colors">
-            Edit
-        </a>
+        @if(! $isReadOnly)
+            <a href="{{ route('admin.siswa.edit', $siswa) }}"
+               class="px-4 py-2 bg-ich-yellow text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-yellow-dark transition-colors">
+                Edit
+            </a>
+        @endif
     </div>
 
     <div class="max-w-xl bg-white rounded-xl shadow-ich-card p-6 space-y-4">
