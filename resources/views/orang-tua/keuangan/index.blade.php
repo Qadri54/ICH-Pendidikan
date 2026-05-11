@@ -43,33 +43,46 @@
                 @if($fee)
                     @php
                         $feeCfg = match($fee->status) {
-                            'paid'         => ['label'=>'Lunas',    'bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]'],
-                            'installments' => ['label'=>'Cicilan',  'bg'=>'bg-[#EDE9FE]','text'=>'text-[#8B5CF6]'],
+                            'paid'         => ['label'=>'Lunas',      'bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]'],
+                            'installments' => ['label'=>'Cicilan',    'bg'=>'bg-[#EDE9FE]','text'=>'text-[#8B5CF6]'],
                             default        => ['label'=>'Belum Bayar','bg'=>'bg-[#FEF5DC]','text'=>'text-[#E09F17]'],
                         };
+                        $totalPaid = $fee->transactions->where('status', 'approved')->sum('jumlah_bayar');
+                        $remaining = max(0, $fee->total_jumlah - $totalPaid);
                     @endphp
+
+                    {{-- Ringkasan tagihan --}}
                     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-3">
-                        @php
-                            $totalPaid = $fee->transactions->where('status', 'approved')->sum('jumlah_bayar');
-                            $remaining = max(0, $fee->total_jumlah - $totalPaid);
-                        @endphp
-                        <div class="px-5 py-4 flex items-center justify-between border-b border-ich-line">
-                            <div>
-                                <p class="font-ui font-bold text-sm text-ich-ink-900">Biaya Pendaftaran</p>
-                                <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
-                                    Total: Rp {{ number_format($fee->total_jumlah, 0, ',', '.') }}
-                                </p>
-                                @if($totalPaid > 0 && $fee->status !== 'paid')
-                                    <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
-                                        Dibayar: Rp {{ number_format($totalPaid, 0, ',', '.') }}
-                                        · <span class="font-bold text-[#E09F17]">Sisa: Rp {{ number_format($remaining, 0, ',', '.') }}</span>
-                                    </p>
-                                @endif
-                            </div>
+                        <div class="px-5 py-4 border-b border-ich-line flex items-center justify-between">
+                            <p class="font-ui font-bold text-sm text-ich-ink-900">Biaya Pendaftaran</p>
                             <span class="px-3 py-1 rounded-full text-xs font-ui font-bold {{ $feeCfg['bg'] }} {{ $feeCfg['text'] }}">
                                 {{ $feeCfg['label'] }}
                             </span>
                         </div>
+
+                        <div class="grid grid-cols-3 divide-x divide-ich-line">
+                            <div class="px-4 py-3 text-center">
+                                <p class="font-sans text-xs text-ich-ink-400 mb-1">Total Tagihan</p>
+                                <p class="font-ui font-bold text-sm text-ich-ink-900">
+                                    Rp {{ number_format($fee->total_jumlah, 0, ',', '.') }}
+                                </p>
+                            </div>
+                            <div class="px-4 py-3 text-center">
+                                <p class="font-sans text-xs text-ich-ink-400 mb-1">Sudah Dibayar</p>
+                                <p class="font-ui font-bold text-sm text-[#009966]">
+                                    Rp {{ number_format($totalPaid, 0, ',', '.') }}
+                                </p>
+                            </div>
+                            <div class="px-4 py-3 text-center">
+                                <p class="font-sans text-xs text-ich-ink-400 mb-1">Sisa Tagihan</p>
+                                <p class="font-ui font-bold text-sm {{ $remaining > 0 ? 'text-[#E09F17]' : 'text-[#009966]' }}">
+                                    {{ $remaining > 0 ? 'Rp '.number_format($remaining, 0, ',', '.') : 'Lunas' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-3">
 
                         @if($fee->status === 'paid')
                             <div class="px-5 py-4 flex items-center gap-2 text-[#009966]">

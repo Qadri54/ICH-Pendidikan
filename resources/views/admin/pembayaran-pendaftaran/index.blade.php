@@ -3,7 +3,7 @@
 
     <div class="mb-6">
         <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pembayaran Pendaftaran</h1>
-        <p class="text-sm text-ich-ink-400 mt-0.5">Kelola bukti pembayaran biaya pendaftaran siswa</p>
+        <p class="text-sm text-ich-ink-400 mt-0.5">Kelola tagihan dan bukti pembayaran biaya pendaftaran siswa</p>
     </div>
 
     @if(session('success'))
@@ -23,9 +23,9 @@
                 class="h-10 px-3.5 border-2 border-ich-line rounded-ich-lg font-sans text-sm
                        focus:outline-none focus:border-ich-teal bg-white">
             <option value="">Semua Status</option>
-            <option value="pending"  {{ request('status') === 'pending'  ? 'selected' : '' }}>Menunggu</option>
-            <option value="approved" {{ request('status') === 'approved' ? 'selected' : '' }}>Disetujui</option>
-            <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
+            <option value="unpaid"       {{ request('status') === 'unpaid'       ? 'selected' : '' }}>Belum Bayar</option>
+            <option value="installments" {{ request('status') === 'installments' ? 'selected' : '' }}>Cicilan</option>
+            <option value="paid"         {{ request('status') === 'paid'         ? 'selected' : '' }}>Lunas</option>
         </select>
 
         <button type="submit"
@@ -50,37 +50,47 @@
                 <thead>
                     <tr class="border-b border-ich-line bg-[#F9FAFB]">
                         <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Siswa</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Dibayar</th>
+                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Total Tagihan</th>
+                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Sudah Dibayar</th>
                         <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Sisa Tagihan</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Bank</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Kategori</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Tanggal</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Bukti</th>
                         <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Status</th>
+                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Bukti Terbaru</th>
                         <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-ich-line">
-                    @forelse($transaksi as $tx)
+                    @forelse($fees as $fee)
                         @php
-                            $statusCfg = match($tx->status) {
-                                'approved' => ['label' => 'Disetujui', 'class' => 'bg-[#D1FAE5] text-[#009966]'],
-                                'rejected' => ['label' => 'Ditolak',   'class' => 'bg-[#FEE2E2] text-ich-error'],
-                                default    => ['label' => 'Menunggu',  'class' => 'bg-[#FEF5DC] text-[#E09F17]'],
+                            $totalPaid  = $fee->transactions->where('status', 'approved')->sum('jumlah_bayar');
+                            $remaining  = max(0, $fee->total_jumlah - $totalPaid);
+                            $pendingTx  = $fee->transactions->firstWhere('status', 'pending');
+
+                            $feeCfg = match($fee->status) {
+                                'paid'         => ['label' => 'Lunas',       'class' => 'bg-[#D1FAE5] text-[#009966]'],
+                                'installments' => ['label' => 'Cicilan',     'class' => 'bg-[#EDE9FE] text-[#8B5CF6]'],
+                                default        => ['label' => 'Belum Bayar', 'class' => 'bg-[#FEF5DC] text-[#E09F17]'],
                             };
-                            $fee        = $tx->registrationFee;
-                            $totalPaid  = $fee?->transactions?->where('status', 'approved')->sum('jumlah_bayar') ?? 0;
-                            $remaining  = max(0, ($fee?->total_jumlah ?? 0) - $totalPaid);
                         @endphp
                         <tr class="hover:bg-[#F9FAFB] transition-colors" x-data="{ rejectOpen: false }">
+
+                            {{-- Siswa --}}
                             <td class="px-5 py-4">
                                 <p class="font-ui font-bold text-sm text-ich-ink-900">
-                                    {{ $fee?->student?->nama_siswa ?? '-' }}
+                                    {{ $fee->student?->nama_siswa ?? '-' }}
                                 </p>
                             </td>
+
+                            {{-- Total Tagihan --}}
                             <td class="px-5 py-4 font-sans text-sm text-ich-ink-900">
-                                Rp {{ number_format($tx->jumlah_bayar, 0, ',', '.') }}
+                                Rp {{ number_format($fee->total_jumlah, 0, ',', '.') }}
                             </td>
+
+                            {{-- Sudah Dibayar --}}
+                            <td class="px-5 py-4 font-ui font-bold text-sm text-[#009966]">
+                                Rp {{ number_format($totalPaid, 0, ',', '.') }}
+                            </td>
+
+                            {{-- Sisa Tagihan --}}
                             <td class="px-5 py-4">
                                 @if($remaining > 0)
                                     <span class="font-ui font-bold text-sm text-[#E09F17]">
@@ -90,48 +100,51 @@
                                     <span class="font-ui font-bold text-sm text-[#009966]">Lunas</span>
                                 @endif
                             </td>
-                            <td class="px-5 py-4 font-sans text-sm text-ich-ink-600">
-                                {{ $tx->nama_bank ?? '-' }}
-                            </td>
+
+                            {{-- Status Fee --}}
                             <td class="px-5 py-4">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold
-                                             {{ $tx->payment_category === 'full' ? 'bg-[#EDE9FE] text-[#8B5CF6]' : 'bg-[#F4F7FC] text-ich-teal' }}">
-                                    {{ $tx->payment_category === 'full' ? 'Lunas Penuh' : 'Cicilan' }}
+                                <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold {{ $feeCfg['class'] }}">
+                                    {{ $feeCfg['label'] }}
                                 </span>
                             </td>
-                            <td class="px-5 py-4 font-sans text-sm text-ich-ink-600 whitespace-nowrap">
-                                {{ $tx->payment_date?->format('d M Y') }}
-                            </td>
+
+                            {{-- Bukti Terbaru (dari pending tx jika ada) --}}
                             <td class="px-5 py-4">
-                                @if($tx->gambar_bukti_pembayaran)
-                                    <a href="{{ asset('storage/' . $tx->gambar_bukti_pembayaran) }}"
-                                       target="_blank"
-                                       class="inline-flex items-center gap-1 text-ich-teal font-ui font-semibold text-xs hover:underline">
-                                        <x-ich-icon name="document" :size="14" color="currentColor"/>
-                                        Lihat
-                                    </a>
+                                @if($pendingTx)
+                                    <div class="space-y-0.5">
+                                        <p class="font-sans text-xs text-ich-ink-600">
+                                            {{ $pendingTx->payment_date?->format('d M Y') }}
+                                            @if($pendingTx->nama_bank) · {{ $pendingTx->nama_bank }} @endif
+                                        </p>
+                                        <p class="font-ui font-semibold text-xs text-ich-ink-900">
+                                            Rp {{ number_format($pendingTx->jumlah_bayar, 0, ',', '.') }}
+                                            <span class="font-normal text-ich-ink-400">
+                                                ({{ $pendingTx->payment_category === 'full' ? 'Lunas Penuh' : 'Cicilan' }})
+                                            </span>
+                                        </p>
+                                        @if($pendingTx->gambar_bukti_pembayaran)
+                                            <a href="{{ asset('storage/' . $pendingTx->gambar_bukti_pembayaran) }}"
+                                               target="_blank"
+                                               class="inline-flex items-center gap-1 text-ich-teal font-ui font-semibold text-xs hover:underline">
+                                                <x-ich-icon name="document" :size="13" color="currentColor"/>
+                                                Lihat Bukti
+                                            </a>
+                                        @endif
+                                    </div>
+                                @elseif($fee->status === 'paid')
+                                    <span class="text-xs text-[#009966] font-ui font-semibold">—</span>
                                 @else
-                                    <span class="text-xs text-ich-ink-400">-</span>
+                                    <span class="text-xs text-ich-ink-400 font-sans italic">Belum ada bukti</span>
                                 @endif
                             </td>
+
+                            {{-- Aksi --}}
                             <td class="px-5 py-4">
-                                <div>
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold {{ $statusCfg['class'] }}">
-                                        {{ $statusCfg['label'] }}
-                                    </span>
-                                    @if($tx->status === 'rejected' && $tx->rejection_reason)
-                                        <p class="text-xs text-ich-ink-400 mt-1 max-w-[160px]" title="{{ $tx->rejection_reason }}">
-                                            {{ Str::limit($tx->rejection_reason, 40) }}
-                                        </p>
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="px-5 py-4">
-                                @if($tx->status === 'pending' && ! $isReadOnly)
+                                @if($pendingTx && ! $isReadOnly)
                                     <div class="flex flex-col gap-2 min-w-[120px]">
                                         {{-- Setujui --}}
                                         <form method="POST"
-                                              action="{{ route('admin.pembayaran-pendaftaran.approve', $tx) }}"
+                                              action="{{ route('admin.pembayaran-pendaftaran.approve', $pendingTx) }}"
                                               onsubmit="return confirm('Konfirmasi pembayaran ini?')">
                                             @csrf
                                             <button type="submit"
@@ -141,7 +154,6 @@
                                             </button>
                                         </form>
 
-                                        {{-- Tombol buka form tolak --}}
                                         <button type="button" x-show="!rejectOpen" @click="rejectOpen = true"
                                                 class="w-full px-3 py-1.5 bg-white border-2 border-ich-error text-ich-error
                                                        font-ui font-bold text-xs rounded-lg
@@ -149,9 +161,8 @@
                                             Tolak
                                         </button>
 
-                                        {{-- Form tolak dengan alasan --}}
                                         <form x-show="rejectOpen" method="POST"
-                                              action="{{ route('admin.pembayaran-pendaftaran.reject', $tx) }}"
+                                              action="{{ route('admin.pembayaran-pendaftaran.reject', $pendingTx) }}"
                                               class="space-y-1.5">
                                             @csrf
                                             <textarea name="rejection_reason" rows="2"
@@ -179,7 +190,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="px-5 py-10 text-center text-sm text-ich-ink-400 font-sans">
+                            <td colspan="7" class="px-5 py-10 text-center text-sm text-ich-ink-400 font-sans">
                                 Tidak ada data pembayaran pendaftaran.
                             </td>
                         </tr>
@@ -188,9 +199,9 @@
             </table>
         </div>
 
-        @if($transaksi->hasPages())
+        @if($fees->hasPages())
             <div class="px-5 py-4 border-t border-ich-line">
-                {{ $transaksi->links() }}
+                {{ $fees->links() }}
             </div>
         @endif
     </div>

@@ -56,6 +56,23 @@ class RegistrationFeeService {
         return RegistrationTransaction::where('status', 'approved')->sum('jumlah_bayar');
     }
 
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return \App\Models\RegistrationFee::with([
+                'student',
+                'transactions' => fn($q) => $q->latest(),
+            ])
+            ->when($search, fn($q) =>
+                $q->whereHas('student', fn($s) =>
+                    $s->where('nama_siswa', 'like', "%{$search}%")
+                )
+            )
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     public function getPaidFees() {
         return RegistrationFee::with('student.classRoom')
             ->where('status', 'paid')
