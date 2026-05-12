@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_01 — Autentikasi" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="820" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: User -->
+    <mxCell id="lane1" value="User" style="swimlane;startSize=30;horizontal=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="400" height="880" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="420" y="60" width="400" height="880" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== USER LANE ===== -->
+
+    <!-- Start -->
+    <mxCell id="u_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
+      <mxGeometry x="200" y="30" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <!-- Buka Halaman Login -->
+    <mxCell id="u_open" value="Buka Halaman Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="100" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Isi Email & Password -->
+    <mxCell id="u_fill" value="Isi Email &amp; Password" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="200" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Klik Lupa Password? (Decision) -->
+    <mxCell id="u_forgot_dec" value="Lupa Password?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane1">
+      <mxGeometry x="150" y="290" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Isi Email Reset -->
+    <mxCell id="u_reset_email" value="Isi Email untuk Reset" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="410" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Buka Link Reset di Email -->
+    <mxCell id="u_open_link" value="Buka Link Reset&lt;br&gt;di Email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="560" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Isi Password Baru -->
+    <mxCell id="u_new_pass" value="Isi Password Baru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="650" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Akses Dashboard (main flow) -->
+    <mxCell id="u_dashboard" value="Akses Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="650" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Klik Logout -->
+    <mxCell id="u_logout" value="Klik Logout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="740" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- End -->
+    <mxCell id="u_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane1">
+      <mxGeometry x="198" y="830" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <!-- Validasi Kredensial -->
+    <mxCell id="s_validate" value="Validasi Kredensial?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+      <mxGeometry x="150" y="200" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Tampil Pesan Error -->
+    <mxCell id="s_error" value="Tampil Pesan Error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="310" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Cek Role User -->
+    <mxCell id="s_role" value="Cek Role User" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+      <mxGeometry x="150" y="400" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Redirect Sesuai Role -->
+    <mxCell id="s_redirect" value="Redirect Dashboard&lt;br&gt;Sesuai Role" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="510" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Kirim Link Reset -->
+    <mxCell id="s_send_link" value="Kirim Link Reset&lt;br&gt;ke Email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="480" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Update Password -->
+    <mxCell id="s_update_pass" value="Update Password" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="660" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Hapus Sesi -->
+    <mxCell id="s_clear" value="Hapus Sesi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="750" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Redirect ke Login -->
+    <mxCell id="s_redir_login" value="Redirect ke Halaman Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="830" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <!-- Start → Buka Login -->
+    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_start" target="u_open" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Buka Login → Isi Form -->
+    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_open" target="u_fill" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Isi Form → Lupa Password? -->
+    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_fill" target="u_forgot_dec" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Lupa Password? → Isi Email Reset (Ya) -->
+    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_forgot_dec" target="u_reset_email" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e4_lbl" value="Ya" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e4">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Lupa Password? → System Validasi (Tidak = Login biasa) -->
+    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_forgot_dec" target="s_validate" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e5_lbl" value="Tidak" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e5">
+      <mxGeometry x="-0.3" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- User Isi Email Reset → System Kirim Link -->
+    <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_reset_email" target="s_send_link" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- System Kirim Link → User Buka Link -->
+    <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_send_link" target="u_open_link" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- User Buka Link → Isi Password Baru -->
+    <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_open_link" target="u_new_pass" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- User Isi Password Baru → System Update Password -->
+    <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_new_pass" target="s_update_pass" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- System Validate → Tampil Error (Gagal) -->
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_validate" target="s_error" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e10_lbl" value="Gagal" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e10">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- System Error → User Isi Form (loop back) -->
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="s_error" target="u_fill" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="380" y="335"/>
+          <mxPoint x="380" y="225"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- System Validate → Cek Role (Berhasil) -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_validate" target="s_role" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e12_lbl" value="Berhasil" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e12">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- System Cek Role → Redirect -->
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_role" target="s_redirect" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- System Redirect → User Dashboard -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_redirect" target="u_dashboard" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- User Dashboard → Logout -->
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_dashboard" target="u_logout" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- User Logout → System Hapus Sesi -->
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_logout" target="s_clear" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- System Hapus Sesi → Redirect Login -->
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_clear" target="s_redir_login" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- System Redirect Login → End -->
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_redir_login" target="u_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>

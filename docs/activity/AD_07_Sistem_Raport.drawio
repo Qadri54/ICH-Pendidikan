@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_07 — Sistem Raport (Pembuatan → Persetujuan → Download)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="1540" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: Guru -->
+    <mxCell id="lane1" value="Guru" style="swimlane;startSize=30;horizontal=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="370" height="1280" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="390" y="60" width="370" height="1280" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 3: Admin -->
+    <mxCell id="lane3" value="Admin" style="swimlane;startSize=30;horizontal=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="760" y="60" width="370" height="1280" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 4: Orang Tua -->
+    <mxCell id="lane4" value="Orang Tua" style="swimlane;startSize=30;horizontal=0;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1130" y="60" width="370" height="1280" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== GURU LANE ===== -->
+
+    <mxCell id="g_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
+      <mxGeometry x="190" y="30" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_open" value="Buka Halaman Raport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="100" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_buat" value="Klik Buat Raport Baru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="190" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_pilih_siswa" value="Pilih Siswa &amp; Periode&lt;br&gt;Akademik" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="340" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_narasi" value="Isi Narasi Akademik&lt;br&gt;&amp; Kokurikuler" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="490" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_checklist" value="Isi Checklist&lt;br&gt;Perkembangan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="580" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_fisik" value="Isi Pengukuran Fisik&lt;br&gt;&amp; Kondisi Kesehatan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="670" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_submit" value="Submit Raport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="760" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_tunggu" value="Menunggu Persetujuan&lt;br&gt;Admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="110" y="920" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="g_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane1">
+      <mxGeometry x="188" y="1010" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <mxCell id="sys_draft" value="Buat Draft&lt;br&gt;StudentReportCard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="250" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_save_narasi" value="Simpan NarrativeAssessment&lt;br&gt;+ Foto (opsional)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="490" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_save_checklist" value="Simpan Checklist&lt;br&gt;Assessment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="580" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_save_fisik" value="Simpan Physical&lt;br&gt;Measurement &amp; Health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="670" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_status_submitted" value="Update Status:&lt;br&gt;submitted" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="840" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_status_approved" value="Update Status:&lt;br&gt;approved" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="1090" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_pdf" value="Generate PDF Raport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="110" y="1190" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ADMIN LANE ===== -->
+
+    <mxCell id="adm_notif" value="Lihat Daftar Raport&lt;br&gt;Status: Submitted" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane3">
+      <mxGeometry x="110" y="920" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_review" value="Buka &amp; Review Raport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane3">
+      <mxGeometry x="110" y="1010" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_dec" value="Setujui?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane3">
+      <mxGeometry x="138" y="1080" width="120" height="60" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_approve" value="Klik Approve" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane3">
+      <mxGeometry x="110" y="1190" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_revisi" value="Kembalikan ke Guru&lt;br&gt;untuk Revisi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane3">
+      <mxGeometry x="110" y="1190" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ORANG TUA LANE ===== -->
+
+    <mxCell id="ot_lihat" value="Buka Akademik&lt;br&gt;→ Lihat Raport Tersedia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane4">
+      <mxGeometry x="110" y="1150" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_download" value="Klik Download PDF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane4">
+      <mxGeometry x="110" y="1240" width="175" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_start" target="g_open" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e02" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_open" target="g_buat" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru buat → Guru pilih siswa + System draft -->
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_buat" target="sys_draft" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_draft" target="g_pilih_siswa" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru: pilih → narasi → checklist → fisik → submit -->
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih_siswa" target="g_narasi" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru narasi → SYS save narasi -->
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_narasi" target="sys_save_narasi" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_save_narasi" target="g_checklist" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru checklist → SYS save checklist -->
+    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_checklist" target="sys_save_checklist" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_save_checklist" target="g_fisik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru fisik → SYS save fisik -->
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_fisik" target="sys_save_fisik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_save_fisik" target="g_submit" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru submit → SYS status submitted -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_submit" target="sys_status_submitted" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS submitted → Guru tunggu + Admin notif -->
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_status_submitted" target="g_tunggu" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_status_submitted" target="adm_notif" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Guru tunggu → end -->
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_tunggu" target="g_end" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Admin: notif → review → dec -->
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_notif" target="adm_review" parent="lane3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_review" target="adm_dec" parent="lane3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Admin dec → approve (Ya) -->
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_approve" parent="lane3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e18_lbl" value="Setuju" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e18">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Admin dec → revisi (Tidak) -->
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_revisi" parent="lane3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e19_lbl" value="Revisi" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e19">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Admin approve → SYS status approved -->
+    <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_approve" target="sys_status_approved" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Admin revisi → Guru narasi (back to editing) -->
+    <mxCell id="e21" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_revisi" target="g_narasi" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS approved → OT lihat -->
+    <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_status_approved" target="ot_lihat" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT lihat → download -->
+    <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_lihat" target="ot_download" parent="lane4">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT download → SYS PDF -->
+    <mxCell id="e24" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_download" target="sys_pdf" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>

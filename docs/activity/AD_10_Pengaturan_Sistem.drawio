@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_10 — Pengaturan Sistem" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="820" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: Admin -->
+    <mxCell id="lane1" value="Admin" style="swimlane;startSize=30;horizontal=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="400" height="1460" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="420" y="60" width="400" height="1460" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ADMIN LANE ===== -->
+
+    <mxCell id="a_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
+      <mxGeometry x="200" y="30" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_open" value="Buka Halaman Pengaturan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="100" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_pilih" value="Pilih Pengaturan" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane1">
+      <mxGeometry x="150" y="200" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- ── GEOFENCE ── -->
+    <mxCell id="a_geo_lat" value="Isi Koordinat (lat/lng)&lt;br&gt;&amp; Radius Geofence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="340" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_simpan_geo" value="Klik Simpan Geofence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="435" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ── JAM ABSENSI ── -->
+    <mxCell id="a_jam" value="Isi Jam Check-in&lt;br&gt;&amp; Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="560" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_simpan_jam" value="Klik Simpan Jam" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="650" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ── TOGGLE PENDAFTARAN ── -->
+    <mxCell id="a_toggle" value="Klik Toggle&lt;br&gt;Buka / Tutup Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="780" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <!-- ── SEMESTER ── -->
+    <mxCell id="a_semester_aksi" value="Pilih Aksi Semester" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane1">
+      <mxGeometry x="150" y="920" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Tambah Semester -->
+    <mxCell id="a_isi_semester" value="Isi Tahun Ajaran, Semester&lt;br&gt;(1/2), Tanggal Mulai/Selesai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="1055" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_simpan_sem" value="Klik Simpan Semester" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="1150" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Aktifkan Semester -->
+    <mxCell id="a_aktifkan" value="Klik Aktifkan Semester" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="1260" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Hapus Semester -->
+    <mxCell id="a_hapus_sem" value="Klik Hapus Semester&lt;br&gt;(hanya yang tidak aktif)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
+      <mxGeometry x="120" y="1340" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="a_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane1">
+      <mxGeometry x="198" y="1408" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <!-- Geofence -->
+    <mxCell id="s_val_geo" value="Validasi Koordinat?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+      <mxGeometry x="150" y="435" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_err_geo" value="Tampil Error Koordinat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="530" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_save_geo" value="Simpan AttendanceSetting&lt;br&gt;(geofence)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="530" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Jam -->
+    <mxCell id="s_save_jam" value="Simpan AttendanceSetting&lt;br&gt;(waktu check-in/out)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="650" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Toggle -->
+    <mxCell id="s_toggle" value="Update RegistrationSetting&lt;br&gt;(buka / tutup)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="780" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <!-- Tambah Semester: validasi -->
+    <mxCell id="s_val_sem" value="Validasi Tahun Ajaran&lt;br&gt;(format YYYY-YYYY)?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+      <mxGeometry x="150" y="1150" width="130" height="75" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_err_sem" value="Tampil Error Format" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="1255" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_save_sem" value="Simpan AcademicPeriod" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="1255" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Aktifkan Semester -->
+    <mxCell id="s_aktifkan" value="Deactivate Semua Semester&lt;br&gt;→ Activate yang Dipilih" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="1260" width="180" height="55" as="geometry"/>
+    </mxCell>
+
+    <!-- Hapus Semester -->
+    <mxCell id="s_dec_aktif" value="Semester Aktif?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+      <mxGeometry x="150" y="1340" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_err_aktif" value="Tampil Error:&lt;br&gt;Tidak Bisa Hapus Aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="1408" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="s_hapus_sem" value="Hapus AcademicPeriod" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
+      <mxGeometry x="120" y="1408" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_start" target="a_open" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e02" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_open" target="a_pilih" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih → Geofence -->
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_pilih" target="a_geo_lat" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e03_lbl" value="Geofence" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e03">
+      <mxGeometry x="-0.7" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_geo_lat" target="a_simpan_geo" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Simpan geo → SYS val geo -->
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_simpan_geo" target="s_val_geo" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS val geo → error (Tidak) / save (Ya) -->
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_val_geo" target="s_err_geo" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e06_lbl" value="Tidak Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e06">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_err_geo" target="a_geo_lat" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_val_geo" target="s_save_geo" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e08_lbl" value="Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e08">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e08b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_save_geo" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih → Jam Absensi -->
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_pilih" target="a_jam" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e09_lbl" value="Jam Absensi" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e09">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_jam" target="a_simpan_jam" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_simpan_jam" target="s_save_jam" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e11b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_save_jam" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih → Toggle Pendaftaran -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_pilih" target="a_toggle" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e12_lbl" value="Toggle&lt;br&gt;Pendaftaran" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e12">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_toggle" target="s_toggle" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e13b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_toggle" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih → Semester -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_pilih" target="a_semester_aksi" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e14_lbl" value="Semester" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e14">
+      <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Semester → Tambah -->
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_semester_aksi" target="a_isi_semester" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e15_lbl" value="Tambah" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e15">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_isi_semester" target="a_simpan_sem" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_simpan_sem" target="s_val_sem" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS val sem → error / save -->
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_val_sem" target="s_err_sem" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e18_lbl" value="Tidak Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e18">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e18b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_err_sem" target="a_isi_semester" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_val_sem" target="s_save_sem" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e19_lbl" value="Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e19">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e19b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_save_sem" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Semester → Aktifkan -->
+    <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_semester_aksi" target="a_aktifkan" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e20_lbl" value="Aktifkan" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e20">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e21" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_aktifkan" target="s_aktifkan" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e21b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_aktifkan" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Semester → Hapus -->
+    <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_semester_aksi" target="a_hapus_sem" parent="lane1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e22_lbl" value="Hapus" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e22">
+      <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="a_hapus_sem" target="s_dec_aktif" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS dec aktif → error (Ya) / hapus (Tidak) -->
+    <mxCell id="e24" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_dec_aktif" target="s_err_aktif" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e24_lbl" value="Ya (aktif)" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e24">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e25" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_dec_aktif" target="s_hapus_sem" parent="lane2">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e25_lbl" value="Tidak (non-aktif)" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e25">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e26" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_hapus_sem" target="a_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
