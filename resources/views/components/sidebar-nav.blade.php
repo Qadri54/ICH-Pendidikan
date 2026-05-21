@@ -1,4 +1,8 @@
 @php
+    $pendingRegistrationCount = in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan'])
+        ? \App\Models\Registration::where('status', 'pending')->count()
+        : 0;
+
     // Semua icon name mengacu ke x-ich-icon (ich-icon.blade.php)
     $adminMenu = [
         ['label' => 'Laporan',        'route' => 'admin.laporan.index',               'icon' => 'document'],
@@ -12,7 +16,7 @@
         ['label' => 'Keuangan',       'route' => 'admin.keuangan.index',              'icon' => 'banknote'],
         ['label' => 'Pmbyr Daftar',   'route' => 'admin.pembayaran-pendaftaran.index','icon' => 'card'],
         ['label' => 'Tabungan',       'route' => 'admin.tabungan.index',              'icon' => 'piggy'],
-        ['label' => 'Pendaftaran',    'route' => 'admin.pendaftaran.index',           'icon' => 'clipboard'],
+        ['label' => 'Pendaftaran',    'route' => 'admin.pendaftaran.index',           'icon' => 'clipboard', 'badge' => $pendingRegistrationCount],
         ['label' => 'Pengaturan',     'route' => 'admin.pengaturan.index',            'icon' => 'settings'],
     ];
 
@@ -45,14 +49,24 @@
 
 @foreach ($menus as $item)
     @php
-        $base = str_replace('.index', '', $item['route']);
+        $base    = str_replace('.index', '', $item['route']);
         $isActive = request()->routeIs($base) || request()->routeIs($base . '.*');
+        $badge   = $item['badge'] ?? 0;
     @endphp
-    <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}" class="flex flex-col items-center gap-1 w-full px-2 py-2.5 rounded-lg text-center transition-colors
-                  {{ $isActive
-            ? 'bg-white/25 text-white'
-            : 'text-white/75 hover:bg-white/15 hover:text-white' }}">
-        <x-ich-icon :name="$item['icon']" :size="22" color="currentColor" />
+    <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
+       class="relative flex flex-col items-center gap-1 w-full px-2 py-2.5 rounded-lg text-center transition-colors
+              {{ $isActive ? 'bg-white/25 text-white' : 'text-white/75 hover:bg-white/15 hover:text-white' }}">
+
+        <div class="relative">
+            <x-ich-icon :name="$item['icon']" :size="22" color="currentColor" />
+            @if($badge > 0)
+                <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold
+                             rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5 leading-none">
+                    {{ $badge > 99 ? '99+' : $badge }}
+                </span>
+            @endif
+        </div>
+
         <span class="text-[10px] font-ui font-semibold leading-tight mt-0.5">{{ $item['label'] }}</span>
     </a>
 @endforeach
