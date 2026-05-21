@@ -1,13 +1,20 @@
 @php
+    $keuanganBadge = auth()->user()->notifications()
+        ->whereIn('type', [
+            'App\Notifications\SppOverdueNotification',
+            'App\Notifications\RegistrationFeeOverdueNotification',
+        ])
+        ->count();
+
     $tabs = [
-        ['label' => 'Beranda', 'icon' => 'dashboard', 'route' => 'beranda'],
-        ['label' => 'Kehadiran', 'icon' => 'calendar', 'route' => 'kehadiran'],
-        ['label' => 'Akademik', 'icon' => 'book', 'route' => 'akademik'],
-        ['label' => 'Keuangan', 'icon' => 'card', 'route' => 'pembayaran'],
-        ['label' => 'Tabungan', 'icon' => 'piggy', 'route' => 'tabungan'],
-        ['label' => 'Profil Anak', 'icon' => 'user_circle', 'route' => 'profil-anak'],
-        ['label' => 'Daftar', 'icon' => 'clipboard', 'route' => 'pendaftaran'],
-        ['label' => 'Pengaturan', 'icon' => 'settings', 'route' => 'pengaturan'],
+        ['label' => 'Beranda',    'icon' => 'dashboard',   'route' => 'beranda'],
+        ['label' => 'Kehadiran',  'icon' => 'calendar',    'route' => 'kehadiran'],
+        ['label' => 'Akademik',   'icon' => 'book',        'route' => 'akademik'],
+        ['label' => 'Keuangan',   'icon' => 'card',        'route' => 'pembayaran', 'badge' => $keuanganBadge],
+        ['label' => 'Tabungan',   'icon' => 'piggy',       'route' => 'tabungan'],
+        ['label' => 'Profil Anak','icon' => 'user_circle', 'route' => 'profil-anak'],
+        ['label' => 'Daftar',     'icon' => 'clipboard',   'route' => 'pendaftaran'],
+        ['label' => 'Pengaturan', 'icon' => 'settings',    'route' => 'pengaturan'],
     ];
 @endphp
 
@@ -21,7 +28,15 @@
             @endphp
             <a href="{{ Route::has($tab['route']) ? route($tab['route']) : '#' }}"
                 class="flex flex-col items-center gap-[3px] py-1 px-3.5 shrink-0 no-underline">
-                <x-ich-icon :name="$tab['icon']" :size="20" :color="$color" />
+                <div class="relative">
+                    <x-ich-icon :name="$tab['icon']" :size="20" :color="$color" />
+                    @if(($tab['badge'] ?? 0) > 0)
+                        <span class="absolute -top-1.5 -right-1.5 min-w-[14px] h-[14px] bg-red-500 text-white
+                                     text-[9px] font-bold rounded-full flex items-center justify-center px-0.5 leading-none">
+                            {{ $tab['badge'] > 9 ? '9+' : $tab['badge'] }}
+                        </span>
+                    @endif
+                </div>
                 <span class="font-ui text-[10px] leading-tight whitespace-nowrap
                                  {{ $isActive ? 'font-bold text-ich-green' : 'font-semibold text-ich-ink-300' }}">
                     {{ $tab['label'] }}

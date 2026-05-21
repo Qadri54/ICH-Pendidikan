@@ -26,6 +26,13 @@ class KeuanganController extends Controller
 
     public function index(): View
     {
+        auth()->user()->notifications()
+            ->whereIn('type', [
+                'App\Notifications\SppOverdueNotification',
+                'App\Notifications\RegistrationFeeOverdueNotification',
+            ])
+            ->delete();
+
         $students = $this->studentProfileService->getAllByUserId(auth()->id());
 
         $summary = $students->map(function ($student) {
