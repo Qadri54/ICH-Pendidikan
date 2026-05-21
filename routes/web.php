@@ -42,8 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-    Route::post('/notifications/read-all',  [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::get('/notifications',               [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read',   [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{id}',      [NotificationController::class, 'destroy'])->name('notifications.delete');
+    Route::post('/notifications/read-all',    [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 });
 
 // ─── Orang Tua Area ────────────────────────────────────────────────────

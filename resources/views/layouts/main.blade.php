@@ -129,6 +129,14 @@
                             </div>
                         @endforelse
                     </div>
+
+                    {{-- Footer --}}
+                    <div class="border-t border-gray-100 px-4 py-2.5">
+                        <a href="{{ route('notifications.index') }}"
+                           class="block text-center text-xs font-ui font-semibold text-ich-green hover:underline">
+                            Lihat semua notifikasi
+                        </a>
+                    </div>
                 </div>
             </div>
 

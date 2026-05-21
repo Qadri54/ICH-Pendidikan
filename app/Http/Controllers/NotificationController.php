@@ -6,6 +6,16 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    public function index()
+    {
+        $notifications = auth()->user()
+            ->notifications()
+            ->latest()
+            ->paginate(15);
+
+        return view('notifications.index', compact('notifications'));
+    }
+
     public function markAsRead(string $id)
     {
         $notification = auth()->user()->notifications()->findOrFail($id);
@@ -13,6 +23,13 @@ class NotificationController extends Controller
         $notification->delete();
 
         return redirect($url);
+    }
+
+    public function destroy(string $id)
+    {
+        auth()->user()->notifications()->findOrFail($id)->delete();
+
+        return back()->with('success', 'Notifikasi dihapus.');
     }
 
     public function markAllAsRead()
