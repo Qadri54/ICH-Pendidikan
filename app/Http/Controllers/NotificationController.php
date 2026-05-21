@@ -13,7 +13,10 @@ class NotificationController extends Controller
             ->latest()
             ->paginate(15);
 
-        return view('notifications.index', compact('notifications'));
+        $role = auth()->user()->role?->role_name;
+        $view = $role === 'Orang Tua' ? 'notifications.mobile' : 'notifications.index';
+
+        return view($view, compact('notifications'));
     }
 
     public function markAsRead(string $id)

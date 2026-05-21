@@ -1,4 +1,4 @@
-@props(['title', 'user' => null, 'notifCount' => 0])
+@props(['title', 'user' => null, 'notifCount' => 0, 'notifUrl' => '#'])
 
 <div class="sticky top-0 z-10 bg-ich-green text-white px-4 py-3.5 flex items-center gap-3">
 
@@ -11,7 +11,8 @@
     </div>
 
     {{-- Notification bell --}}
-    <div class="relative w-9 h-9 bg-white/15 rounded-[10px] flex items-center justify-center shrink-0 mx-3">
+    <a href="{{ $notifUrl }}"
+       class="relative w-9 h-9 bg-white/15 rounded-[10px] flex items-center justify-center shrink-0 mx-3">
         <x-ich-icon name="bell" :size="18" color="#fff"/>
         @if($notifCount > 0)
             <div class="absolute top-1 right-1 w-[14px] h-[14px] bg-ich-yellow rounded-full
@@ -20,6 +21,6 @@
                 {{ $notifCount > 9 ? '9+' : $notifCount }}
             </div>
         @endif
-    </div>
+    </a>
 
 </div>

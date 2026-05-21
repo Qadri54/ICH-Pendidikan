@@ -18,7 +18,8 @@
     <x-mobile.topbar
         :title="$pageTitle ?? 'ICH Pendidikan'"
         :user="auth()->user()?->name"
-        :notif-count="0"/>
+        :notif-count="auth()->user()->notifications()->count()"
+        :notif-url="route('notifications.index')"/>
 
     {{-- Scrollable page content --}}
     <main class="flex-1 overflow-y-auto bg-[#F5F6FA]
