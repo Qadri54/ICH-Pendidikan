@@ -21,11 +21,9 @@ class NotificationController extends Controller
 
     public function markAsRead(string $id)
     {
-        $notification = auth()->user()->notifications()->findOrFail($id);
-        $url = $notification->data['url'] ?? route('dashboard');
-        $notification->delete();
+        auth()->user()->notifications()->findOrFail($id)->delete();
 
-        return redirect($url);
+        return back();
     }
 
     public function destroy(string $id)
