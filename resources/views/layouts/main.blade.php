@@ -63,15 +63,79 @@
             <div class="flex-1"></div>
 
             {{-- Notification --}}
-            <button class="relative text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                </svg>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    6
-                </span>
-            </button>
+            @php
+                $unreadCount  = auth()->user()->unreadNotifications()->count();
+                $recentNotifs = auth()->user()->notifications()->latest()->take(5)->get();
+            @endphp
+            <div class="relative" x-data="{ notifOpen: false }">
+                <button @click="notifOpen = !notifOpen" class="relative text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    @if($unreadCount > 0)
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                            {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                        </span>
+                    @endif
+                </button>
+
+                {{-- Dropdown --}}
+                <div x-show="notifOpen" @click.outside="notifOpen = false" x-transition
+                     class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl z-50 overflow-hidden">
+
+                    {{-- Header --}}
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                        <h3 class="font-semibold text-gray-800 text-sm">Notifikasi</h3>
+                        @if($unreadCount > 0)
+                            <form method="POST" action="{{ route('notifications.read-all') }}">
+                                @csrf
+                                <button type="submit" class="text-xs text-ich-green hover:underline">
+                                    Tandai semua dibaca
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+
+                    {{-- List --}}
+                    <div class="divide-y divide-gray-50 max-h-80 overflow-y-auto">
+                        @forelse($recentNotifs as $notif)
+                            <form method="POST" action="{{ route('notifications.read', $notif->id) }}">
+                                @csrf
+                                <button type="submit"
+                                        class="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors {{ is_null($notif->read_at) ? 'bg-green-50' : '' }}">
+                                    <div class="flex items-start gap-3">
+                                        {{-- Icon --}}
+                                        <div class="w-8 h-8 rounded-full bg-ich-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-4 h-4 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                            </svg>
+                                        </div>
+                                        {{-- Content --}}
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm text-gray-800 font-medium leading-snug">
+                                                {{ $notif->data['message'] }}
+                                            </p>
+                                            <p class="text-xs text-gray-400 mt-1">
+                                                {{ $notif->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        {{-- Unread dot --}}
+                                        @if(is_null($notif->read_at))
+                                            <div class="w-2 h-2 rounded-full bg-ich-green flex-shrink-0 mt-2"></div>
+                                        @endif
+                                    </div>
+                                </button>
+                            </form>
+                        @empty
+                            <div class="px-4 py-8 text-center text-gray-400 text-sm">
+                                Tidak ada notifikasi
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
 
             {{-- User dropdown --}}
             <div class="relative" x-data="{ open: false }">

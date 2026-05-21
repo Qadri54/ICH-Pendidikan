@@ -3,9 +3,12 @@
 namespace App\Services\Registration;
 
 use App\Models\Registration;
+use App\Models\User;
+use App\Notifications\NewRegistrationNotification;
 use App\Services\User\UserService;
 use App\Services\User\StudentProfileService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class RegistrationService {
     public function __construct(
@@ -46,11 +49,16 @@ class RegistrationService {
 
     public function submit(int $userId, array $data): Registration
     {
-        return Registration::create([
+        $registration = Registration::create([
             ...$data,
             'user_id' => $userId,
             'status'  => 'pending',
         ]);
+
+        $admins = User::whereHas('role', fn($q) => $q->where('role_name', 'Admin'))->get();
+        Notification::send($admins, new NewRegistrationNotification($registration));
+
+        return $registration;
     }
 
     public function getAll() {
