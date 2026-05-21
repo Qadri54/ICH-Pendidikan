@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,6 +12,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Carbon::setLocale('id');
+
         // <x-app-layout> → resources/views/layouts/main.blade.php
         Blade::component('layouts.main', 'app-layout');
     }
