@@ -57,16 +57,16 @@
        class="relative flex flex-col items-center gap-1 w-full px-2 py-2.5 rounded-lg text-center transition-colors
               {{ $isActive ? 'bg-white/25 text-white' : 'text-white/75 hover:bg-white/15 hover:text-white' }}">
 
-        <div class="relative">
-            <x-ich-icon :name="$item['icon']" :size="22" color="currentColor" />
+        <x-ich-icon :name="$item['icon']" :size="22" color="currentColor" />
+
+        <div class="flex items-center justify-center gap-1 mt-0.5">
+            <span class="text-[10px] font-ui font-semibold leading-tight">{{ $item['label'] }}</span>
             @if($badge > 0)
-                <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold
-                             rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5 leading-none">
+                <span class="bg-red-500 text-white text-[9px] font-bold rounded-full
+                             min-w-[16px] h-[16px] flex items-center justify-center px-1 leading-none flex-shrink-0">
                     {{ $badge > 99 ? '99+' : $badge }}
                 </span>
             @endif
         </div>
-
-        <span class="text-[10px] font-ui font-semibold leading-tight mt-0.5">{{ $item['label'] }}</span>
     </a>
 @endforeach
