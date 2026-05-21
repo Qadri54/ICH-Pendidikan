@@ -1,6 +1,8 @@
 @php
     $pendingRegistrationCount = in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan'])
-        ? \App\Models\Registration::where('status', 'pending')->count()
+        ? auth()->user()->notifications()
+            ->where('type', \App\Notifications\NewRegistrationNotification::class)
+            ->count()
         : 0;
 
     // Semua icon name mengacu ke x-ich-icon (ich-icon.blade.php)
