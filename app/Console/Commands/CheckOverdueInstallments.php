@@ -16,7 +16,7 @@ class CheckOverdueInstallments extends Command {
     }
 
     public function handle(): void {
-        $this->feeInstallmentService->checkOverdue();
-        $this->info('Pengecekan cicilan overdue berhasil dijalankan.');
+        $count = $this->feeInstallmentService->checkOverdue();
+        $this->info("✅  CheckOverdueInstallments: {$count} cicilan ditandai overdue.");
     }
 }
