@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_01b — Autentikasi Orang Tua" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="820" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: Orang Tua -->
+    <mxCell id="lane1" value="Orang Tua" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="400" height="870" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="420" y="60" width="400" height="870" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ORANG TUA LANE ===== -->
+
+    <!-- Start -->
+    <mxCell id="ot_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="205" y="100" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <!-- Buka Halaman Login -->
+    <mxCell id="ot_open" value="Buka Halaman Login&lt;br&gt;Orang Tua" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="130" y="165" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Masukkan Email -->
+    <mxCell id="ot_email" value="Masukkan Email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="130" y="255" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Masukkan Password -->
+    <mxCell id="ot_password" value="Masukkan Password" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="130" y="445" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Akses Beranda -->
+    <mxCell id="ot_beranda" value="Akses Beranda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="130" y="665" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Klik Logout -->
+    <mxCell id="ot_logout" value="Klik Logout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="130" y="745" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- End -->
+    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="203" y="830" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <!-- Cek Akun Terdaftar? -->
+    <mxCell id="s_check" value="Cek Akun Terdaftar?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="555" y="255" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Akun Tidak Ditemukan -->
+    <mxCell id="s_not_found" value="Tampil Pesan:&lt;br&gt;&quot;Akun tidak ditemukan&quot;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="530" y="350" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Validasi Password -->
+    <mxCell id="s_validate" value="Validasi Password?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="555" y="445" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Email / Password Salah -->
+    <mxCell id="s_error" value="Tampil Pesan:&lt;br&gt;&quot;Email / Password salah&quot;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="530" y="545" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Redirect ke Beranda -->
+    <mxCell id="s_redirect" value="Redirect ke Beranda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="530" y="675" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Hapus Sesi -->
+    <mxCell id="s_clear" value="Hapus Sesi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="530" y="755" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Redirect ke Login -->
+    <mxCell id="s_redir_login" value="Redirect ke Halaman Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="530" y="830" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <!-- Start → Buka Login -->
+    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_start" target="ot_open" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Buka Login → Masukkan Email -->
+    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_open" target="ot_email" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Masukkan Email → Cek Akun -->
+    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_email" target="s_check" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Cek Akun → Tidak Ditemukan -->
+    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_check" target="s_not_found" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e4_lbl" value="Tidak Ditemukan" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e4">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Tidak Ditemukan → Masukkan Email (loop back) -->
+    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="s_not_found" target="ot_email" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="415" y="375"/>
+          <mxPoint x="415" y="280"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Cek Akun → Masukkan Password (Ditemukan) -->
+    <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_check" target="ot_password" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e6_lbl" value="Ditemukan" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e6">
+      <mxGeometry x="0.3" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Masukkan Password → Validasi Password -->
+    <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_password" target="s_validate" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Validasi → Error (Gagal) -->
+    <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_validate" target="s_error" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e8_lbl" value="Gagal" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e8">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Error → Masukkan Password (loop back) -->
+    <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="s_error" target="ot_password" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="415" y="570"/>
+          <mxPoint x="415" y="470"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Validasi → Redirect Beranda (Berhasil) -->
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_validate" target="s_redirect" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e10_lbl" value="Berhasil" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" vertex="1" connectable="0" parent="e10">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Redirect Beranda → Akses Beranda -->
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_redirect" target="ot_beranda" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Akses Beranda → Klik Logout -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_beranda" target="ot_logout" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Klik Logout → Hapus Sesi -->
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_logout" target="s_clear" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Hapus Sesi → Redirect Login -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_clear" target="s_redir_login" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Redirect Login → End -->
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_redir_login" target="ot_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
+  </diagram>
+</mxfile>
