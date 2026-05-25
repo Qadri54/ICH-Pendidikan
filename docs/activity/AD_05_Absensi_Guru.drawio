@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
   <root>
     <mxCell id="0"/>
     <mxCell id="1" parent="0"/>
@@ -21,97 +23,97 @@
 
     <!-- ===== GURU LANE ===== -->
 
-    <mxCell id="g_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
-      <mxGeometry x="200" y="30" width="30" height="30" as="geometry"/>
+    <mxCell id="g_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="220" y="90" width="30" height="30" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_open" value="Buka Halaman Absensi Guru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="100" width="180" height="50" as="geometry"/>
+    <mxCell id="g_open" value="Buka Halaman Absensi Guru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="160" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_lihat_status" value="Lihat Status Absensi Hari Ini" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="240" width="180" height="50" as="geometry"/>
+    <mxCell id="g_lihat_status" value="Lihat Status Absensi Hari Ini" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="300" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_pilih" value="Pilih Aksi" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane1">
-      <mxGeometry x="150" y="330" width="130" height="65" as="geometry"/>
+    <mxCell id="g_pilih" value="Pilih Aksi" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="170" y="390" width="130" height="65" as="geometry"/>
     </mxCell>
 
     <!-- Branch Check-in -->
-    <mxCell id="g_ijin_lokasi" value="Izinkan Akses Lokasi GPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="450" width="180" height="50" as="geometry"/>
+    <mxCell id="g_ijin_lokasi" value="Izinkan Akses Lokasi GPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="510" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_selfie" value="Ambil Foto Selfie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="660" width="180" height="50" as="geometry"/>
+    <mxCell id="g_selfie" value="Ambil Foto Selfie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="720" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_konfirm_checkin" value="Konfirmasi Check-in" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="760" width="180" height="50" as="geometry"/>
+    <mxCell id="g_konfirm_checkin" value="Konfirmasi Check-in" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="820" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Branch Check-out -->
-    <mxCell id="g_konfirm_checkout" value="Konfirmasi Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="870" width="180" height="50" as="geometry"/>
+    <mxCell id="g_konfirm_checkout" value="Konfirmasi Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="930" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Branch Izin/Sakit -->
-    <mxCell id="g_pilih_alasan" value="Pilih Alasan&lt;br&gt;(Izin / Sakit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="120" y="970" width="180" height="50" as="geometry"/>
+    <mxCell id="g_pilih_alasan" value="Pilih Alasan&lt;br&gt;(Izin / Sakit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="140" y="1030" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="g_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane1">
-      <mxGeometry x="198" y="1080" width="34" height="34" as="geometry"/>
+    <mxCell id="g_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="218" y="1140" width="34" height="34" as="geometry"/>
     </mxCell>
 
     <!-- ===== SYSTEM LANE ===== -->
 
-    <mxCell id="sys_cek_waktu" value="Cek Window Waktu&lt;br&gt;Check-in / Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="160" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_cek_waktu" value="Cek Window Waktu&lt;br&gt;Check-in / Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="220" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_dec_waktu" value="Dalam Window&lt;br&gt;Waktu?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
-      <mxGeometry x="150" y="240" width="130" height="65" as="geometry"/>
+    <mxCell id="sys_dec_waktu" value="Dalam Window&lt;br&gt;Waktu?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="570" y="300" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_error_waktu" value="Tampil Error:&lt;br&gt;Di Luar Jam Absensi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="330" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_error_waktu" value="Tampil Error:&lt;br&gt;Di Luar Jam Absensi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="390" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Check-in: cek geofence -->
-    <mxCell id="sys_gps" value="Ambil Koordinat GPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="450" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_gps" value="Ambil Koordinat GPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="510" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_dec_geo" value="Dalam Radius&lt;br&gt;Geofence?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
-      <mxGeometry x="150" y="540" width="130" height="65" as="geometry"/>
+    <mxCell id="sys_dec_geo" value="Dalam Radius&lt;br&gt;Geofence?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="570" y="600" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_error_geo" value="Tampil Error:&lt;br&gt;Lokasi Di Luar Area" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="640" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_error_geo" value="Tampil Error:&lt;br&gt;Lokasi Di Luar Area" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="700" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_catat_checkin" value="Simpan AttendanceRecord&lt;br&gt;check_in_time + selfie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="760" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_catat_checkin" value="Simpan AttendanceRecord&lt;br&gt;check_in_time + selfie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="820" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Check-out -->
-    <mxCell id="sys_dec_sudah_ci" value="Sudah Check-in&lt;br&gt;Hari Ini?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
-      <mxGeometry x="150" y="870" width="130" height="65" as="geometry"/>
+    <mxCell id="sys_dec_sudah_ci" value="Sudah Check-in&lt;br&gt;Hari Ini?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="570" y="930" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_catat_checkout" value="Simpan check_out_time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="960" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_catat_checkout" value="Simpan check_out_time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="1020" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Izin/Sakit -->
-    <mxCell id="sys_catat_izin" value="Simpan AttendanceRecord&lt;br&gt;(status: izin / sakit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="120" y="1050" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_catat_izin" value="Simpan AttendanceRecord&lt;br&gt;(status: izin / sakit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="540" y="1110" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== EDGES ===== -->
 
-    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_start" target="g_open" parent="lane1">
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_start" target="g_open" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -121,12 +123,12 @@
     </mxCell>
 
     <!-- SYS cek waktu → dec waktu -->
-    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_cek_waktu" target="sys_dec_waktu" parent="lane2">
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_cek_waktu" target="sys_dec_waktu" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- SYS dec waktu → error (Tidak) -->
-    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_waktu" target="sys_error_waktu" parent="lane2">
+    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_waktu" target="sys_error_waktu" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e04_lbl" value="Tidak" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e04">
@@ -142,12 +144,12 @@
     </mxCell>
 
     <!-- Guru lihat → pilih aksi -->
-    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_lihat_status" target="g_pilih" parent="lane1">
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_lihat_status" target="g_pilih" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- Pilih aksi: Check-in -->
-    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_ijin_lokasi" parent="lane1">
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_ijin_lokasi" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e07_lbl" value="Check-in" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e07">
@@ -160,12 +162,12 @@
     </mxCell>
 
     <!-- SYS gps → dec geofence -->
-    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_gps" target="sys_dec_geo" parent="lane2">
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_gps" target="sys_dec_geo" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- SYS dec geo → error (Tidak) -->
-    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_geo" target="sys_error_geo" parent="lane2">
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_geo" target="sys_error_geo" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e10_lbl" value="Tidak" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e10">
@@ -181,7 +183,7 @@
     </mxCell>
 
     <!-- Guru selfie → konfirm checkin -->
-    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_selfie" target="g_konfirm_checkin" parent="lane1">
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_selfie" target="g_konfirm_checkin" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -196,7 +198,7 @@
     </mxCell>
 
     <!-- Pilih aksi: Check-out -->
-    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_konfirm_checkout" parent="lane1">
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_konfirm_checkout" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e15_lbl" value="Check-out" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e15">
@@ -209,7 +211,7 @@
     </mxCell>
 
     <!-- SYS dec sudah ci → catat checkout (Ya) -->
-    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_sudah_ci" target="sys_catat_checkout" parent="lane2">
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_sudah_ci" target="sys_catat_checkout" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e17_lbl" value="Ya" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e17">
@@ -222,7 +224,7 @@
     </mxCell>
 
     <!-- Pilih aksi: Izin/Sakit -->
-    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_pilih_alasan" parent="lane1">
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="g_pilih" target="g_pilih_alasan" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e19_lbl" value="Izin / Sakit" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e19">
@@ -241,3 +243,5 @@
 
   </root>
 </mxGraphModel>
+  </diagram>
+</mxfile>

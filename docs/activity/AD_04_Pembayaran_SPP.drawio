@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
   <root>
     <mxCell id="0"/>
     <mxCell id="1" parent="0"/>
@@ -26,90 +28,90 @@
 
     <!-- ===== ADMIN LANE ===== -->
 
-    <mxCell id="adm_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
-      <mxGeometry x="190" y="30" width="30" height="30" as="geometry"/>
+    <mxCell id="adm_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="210" y="90" width="30" height="30" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_generate" value="Klik Generate Tagihan&lt;br&gt;SPP Bulanan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="100" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_generate" value="Klik Generate Tagihan&lt;br&gt;SPP Bulanan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="160" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_lihat_spp" value="Lihat Daftar Tagihan SPP&lt;br&gt;Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="250" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_lihat_spp" value="Lihat Daftar Tagihan SPP&lt;br&gt;Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="310" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_review" value="Review Bukti Bayar&lt;br&gt;yang Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="680" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_review" value="Review Bukti Bayar&lt;br&gt;yang Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="740" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_dec" value="Bukti Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane1">
-      <mxGeometry x="140" y="780" width="130" height="65" as="geometry"/>
+    <mxCell id="adm_dec" value="Bukti Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="160" y="840" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_approve" value="Approve Pembayaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="890" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_approve" value="Approve Pembayaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="950" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_reject" value="Reject Pembayaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="970" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_reject" value="Reject Pembayaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="1030" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== SYSTEM LANE ===== -->
 
-    <mxCell id="sys_generate" value="Generate SppInvoice&lt;br&gt;per Siswa Aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="160" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_generate" value="Generate SppInvoice&lt;br&gt;per Siswa Aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="220" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_simpan_pay" value="Simpan SppPayment&lt;br&gt;(status: pending)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="580" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_simpan_pay" value="Simpan SppPayment&lt;br&gt;(status: pending)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="640" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_update_paid" value="Update SppInvoice&lt;br&gt;(status: paid)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="890" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_update_paid" value="Update SppInvoice&lt;br&gt;(status: paid)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="950" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_hapus" value="Hapus SppPayment&lt;br&gt;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="970" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_hapus" value="Hapus SppPayment&lt;br&gt;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="1030" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== ORANG TUA LANE ===== -->
 
-    <mxCell id="ot_lihat" value="Buka Keuangan&lt;br&gt;→ SPP Bulanan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="250" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_lihat" value="Buka Keuangan&lt;br&gt;→ SPP Bulanan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="310" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_daftar_invoice" value="Lihat Daftar Tagihan&lt;br&gt;per Bulan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="340" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_daftar_invoice" value="Lihat Daftar Tagihan&lt;br&gt;per Bulan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="400" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_dec_ada" value="Ada Tagihan&lt;br&gt;Belum Lunas?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane3">
-      <mxGeometry x="140" y="430" width="130" height="65" as="geometry"/>
+    <mxCell id="ot_dec_ada" value="Ada Tagihan&lt;br&gt;Belum Lunas?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="920" y="490" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_end_semua" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane3">
-      <mxGeometry x="188" y="545" width="34" height="34" as="geometry"/>
+    <mxCell id="ot_end_semua" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="968" y="605" width="34" height="34" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_upload" value="Pilih Tagihan &amp; Upload&lt;br&gt;Bukti Transfer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="545" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_upload" value="Pilih Tagihan &amp; Upload&lt;br&gt;Bukti Transfer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="605" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_tunggu" value="Menunggu Konfirmasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="680" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_tunggu" value="Menunggu Konfirmasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="740" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_result" value="Invoice Terupdate&lt;br&gt;(Lunas / Upload Ulang)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="890" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_result" value="Invoice Terupdate&lt;br&gt;(Lunas / Upload Ulang)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="950" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane3">
-      <mxGeometry x="188" y="990" width="34" height="34" as="geometry"/>
+    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="968" y="1050" width="34" height="34" as="geometry"/>
     </mxCell>
 
     <!-- ===== EDGES ===== -->
 
     <!-- ADM: start → generate -->
-    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_start" target="adm_generate" parent="lane1">
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_start" target="adm_generate" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -127,15 +129,15 @@
     </mxCell>
 
     <!-- OT: lihat → daftar invoice → dec ada -->
-    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_lihat" target="ot_daftar_invoice" parent="lane3">
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_lihat" target="ot_daftar_invoice" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
-    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_daftar_invoice" target="ot_dec_ada" parent="lane3">
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_daftar_invoice" target="ot_dec_ada" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- OT dec ada → end semua (Tidak) -->
-    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_ada" target="ot_end_semua" parent="lane3">
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_ada" target="ot_end_semua" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e07_lbl" value="Semua Lunas" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e07">
@@ -143,7 +145,7 @@
     </mxCell>
 
     <!-- OT dec ada → upload (Ada) -->
-    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_ada" target="ot_upload" parent="lane3">
+    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_ada" target="ot_upload" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e08_lbl" value="Ada" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e08">
@@ -164,12 +166,12 @@
     </mxCell>
 
     <!-- ADM: review → dec -->
-    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_review" target="adm_dec" parent="lane1">
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_review" target="adm_dec" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- ADM dec → approve (Valid) -->
-    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_approve" parent="lane1">
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_approve" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e13_lbl" value="Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e13">
@@ -177,7 +179,7 @@
     </mxCell>
 
     <!-- ADM dec → reject (Tidak) -->
-    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_reject" parent="lane1">
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_reject" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e14_lbl" value="Tidak Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e14">
@@ -203,9 +205,11 @@
     </mxCell>
 
     <!-- OT result → end -->
-    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_result" target="ot_end" parent="lane3">
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_result" target="ot_end" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
   </root>
 </mxGraphModel>
+  </diagram>
+</mxfile>

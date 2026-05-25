@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
   <root>
     <mxCell id="0"/>
     <mxCell id="1" parent="0"/>
@@ -26,100 +28,100 @@
 
     <!-- ===== ORANG TUA LANE ===== -->
 
-    <mxCell id="ot_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane1">
-      <mxGeometry x="190" y="30" width="30" height="30" as="geometry"/>
+    <mxCell id="ot_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="210" y="90" width="30" height="30" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_open" value="Buka Halaman Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="100" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_open" value="Buka Halaman Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="160" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- Placeholder: wait for System status check result -->
 
-    <mxCell id="ot_jenis" value="Pilih Jenis Pendaftaran&lt;br&gt;(TK / Mengaji)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="310" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_jenis" value="Pilih Jenis Pendaftaran&lt;br&gt;(TK / Mengaji)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="370" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_biodata_siswa" value="Isi Biodata Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="400" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_biodata_siswa" value="Isi Biodata Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="460" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_biodata_ortu" value="Isi Biodata Ayah &amp; Ibu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="490" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_biodata_ortu" value="Isi Biodata Ayah &amp; Ibu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="550" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_submit" value="Submit Formulir" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="580" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_submit" value="Submit Formulir" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="640" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_notif" value="Lihat Notifikasi Hasil&lt;br&gt;(Diterima / Ditolak)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="lane1">
-      <mxGeometry x="115" y="1000" width="180" height="50" as="geometry"/>
+    <mxCell id="ot_notif" value="Lihat Notifikasi Hasil&lt;br&gt;(Diterima / Ditolak)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="1060" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane1">
-      <mxGeometry x="188" y="1073" width="34" height="34" as="geometry"/>
+    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="208" y="1133" width="34" height="34" as="geometry"/>
     </mxCell>
 
     <!-- ===== SYSTEM LANE ===== -->
 
-    <mxCell id="sys_cek_status" value="Cek Status Pendaftaran" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
-      <mxGeometry x="140" y="190" width="130" height="65" as="geometry"/>
+    <mxCell id="sys_cek_status" value="Cek Status Pendaftaran" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="540" y="250" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_tutup" value="Tampil: Pendaftaran&lt;br&gt;Sedang Ditutup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="310" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_tutup" value="Tampil: Pendaftaran&lt;br&gt;Sedang Ditutup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="370" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_end_early" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="lane2">
-      <mxGeometry x="188" y="383" width="34" height="34" as="geometry"/>
+    <mxCell id="sys_end_early" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="588" y="443" width="34" height="34" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_validasi" value="Validasi Formulir?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
-      <mxGeometry x="140" y="615" width="130" height="65" as="geometry"/>
+    <mxCell id="sys_validasi" value="Validasi Formulir?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="540" y="675" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_error" value="Tampil Pesan Validasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="730" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_error" value="Tampil Pesan Validasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="790" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_simpan" value="Simpan Pendaftaran&lt;br&gt;(status: pending)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="730" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_simpan" value="Simpan Pendaftaran&lt;br&gt;(status: pending)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="790" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_update" value="Update Status Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="920" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_update" value="Update Status Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="980" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="sys_fee" value="Buat RegistrationFee&lt;br&gt;(jika Diterima)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane2">
-      <mxGeometry x="115" y="1000" width="180" height="50" as="geometry"/>
+    <mxCell id="sys_fee" value="Buat RegistrationFee&lt;br&gt;(jika Diterima)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="1060" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== ADMIN LANE ===== -->
 
-    <mxCell id="adm_lihat" value="Lihat Daftar Pendaftaran&lt;br&gt;Baru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="730" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_lihat" value="Lihat Daftar Pendaftaran&lt;br&gt;Baru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="790" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_detail" value="Buka Detail Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="820" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_detail" value="Buka Detail Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="880" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_dec" value="Keputusan?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane3">
-      <mxGeometry x="140" y="885" width="130" height="65" as="geometry"/>
+    <mxCell id="adm_dec" value="Keputusan?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="920" y="945" width="130" height="65" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_terima" value="Klik Terima" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="990" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_terima" value="Klik Terima" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="1050" width="180" height="50" as="geometry"/>
     </mxCell>
 
-    <mxCell id="adm_alasan" value="Isi Alasan Penolakan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="lane3">
-      <mxGeometry x="115" y="990" width="180" height="50" as="geometry"/>
+    <mxCell id="adm_alasan" value="Isi Alasan Penolakan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="1050" width="180" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== EDGES ===== -->
 
     <!-- OT: start → open -->
-    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_start" target="ot_open" parent="lane1">
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_start" target="ot_open" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -129,7 +131,7 @@
     </mxCell>
 
     <!-- SYS cek status → Tutup (Tidak) -->
-    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_cek_status" target="sys_tutup" parent="lane2">
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_cek_status" target="sys_tutup" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e03_lbl" value="Tutup" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e03">
@@ -137,7 +139,7 @@
     </mxCell>
 
     <!-- SYS tutup → early end -->
-    <mxCell id="e03b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_tutup" target="sys_end_early" parent="lane2">
+    <mxCell id="e03b" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_tutup" target="sys_end_early" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -150,13 +152,13 @@
     </mxCell>
 
     <!-- OT: jenis → biodata siswa → biodata ortu → submit -->
-    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_jenis" target="ot_biodata_siswa" parent="lane1">
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_jenis" target="ot_biodata_siswa" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
-    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_biodata_siswa" target="ot_biodata_ortu" parent="lane1">
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_biodata_siswa" target="ot_biodata_ortu" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
-    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_biodata_ortu" target="ot_submit" parent="lane1">
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_biodata_ortu" target="ot_submit" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -166,7 +168,7 @@
     </mxCell>
 
     <!-- SYS validasi → error (Tidak Valid) -->
-    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_validasi" target="sys_error" parent="lane2">
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_validasi" target="sys_error" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e09_lbl" value="Tidak Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e09">
@@ -179,7 +181,7 @@
     </mxCell>
 
     <!-- SYS validasi → simpan (Valid) -->
-    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_validasi" target="sys_simpan" parent="lane2">
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_validasi" target="sys_simpan" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e10_lbl" value="Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e10">
@@ -192,15 +194,15 @@
     </mxCell>
 
     <!-- ADM: lihat → detail → dec -->
-    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_lihat" target="adm_detail" parent="lane3">
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_lihat" target="adm_detail" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
-    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_detail" target="adm_dec" parent="lane3">
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_detail" target="adm_dec" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
     <!-- ADM dec → terima -->
-    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_terima" parent="lane3">
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_terima" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e14_lbl" value="Terima" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e14">
@@ -208,7 +210,7 @@
     </mxCell>
 
     <!-- ADM dec → alasan (Tolak) -->
-    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_alasan" parent="lane3">
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_alasan" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
     <mxCell id="e15_lbl" value="Tolak" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e15">
@@ -224,7 +226,7 @@
     </mxCell>
 
     <!-- SYS update → SYS fee -->
-    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_update" target="sys_fee" parent="lane2">
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_update" target="sys_fee" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
@@ -234,9 +236,11 @@
     </mxCell>
 
     <!-- OT notif → end -->
-    <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_notif" target="ot_end" parent="lane1">
+    <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_notif" target="ot_end" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
   </root>
 </mxGraphModel>
+  </diagram>
+</mxfile>
