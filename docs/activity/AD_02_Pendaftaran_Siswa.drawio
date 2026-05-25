@@ -12,17 +12,17 @@
     </mxCell>
 
     <!-- Lane 1: Orang Tua -->
-    <mxCell id="lane1" value="Orang Tua" style="swimlane;startSize=30;horizontal=0;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+    <mxCell id="lane1" value="Orang Tua" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="1">
       <mxGeometry x="20" y="60" width="380" height="1120" as="geometry"/>
     </mxCell>
 
     <!-- Lane 2: System -->
-    <mxCell id="lane2" value="System" style="swimlane;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
       <mxGeometry x="400" y="60" width="380" height="1120" as="geometry"/>
     </mxCell>
 
     <!-- Lane 3: Admin -->
-    <mxCell id="lane3" value="Admin" style="swimlane;startSize=30;horizontal=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+    <mxCell id="lane3" value="Admin" style="swimlane;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
       <mxGeometry x="780" y="60" width="380" height="1120" as="geometry"/>
     </mxCell>
 
