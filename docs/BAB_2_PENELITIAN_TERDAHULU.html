@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>BAB 2 - 2.1 Penelitian Terdahulu</title>
+<style>
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    text-align: justify;
+    color: #000;
+    background: #fff;
+    max-width: 18cm;
+    margin: 2cm auto;
+  }
+  h1 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 0 6pt 0;
+    line-height: 1.5;
+  }
+  h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    margin: 18pt 0 6pt 0;
+  }
+  p {
+    text-indent: 1cm;
+    margin: 0 0 6pt 0;
+  }
+  /* Caption tabel: 12pt, rata kiri, di atas tabel, tanpa titik */
+  .caption-tabel {
+    font-size: 12pt;
+    text-indent: 0;
+    margin: 0 0 4pt 0;
+  }
+  /* Tabel sesuai pedoman: hanya garis horizontal, tanpa garis vertikal */
+  table.pustaka {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;       /* isi tabel 10pt (pedoman 1.2.1) */
+    line-height: 1.15;     /* spasi rapat */
+    border-top: 1.5px solid #000;
+    border-bottom: 1.5px solid #000;
+  }
+  table.pustaka thead th {
+    border-bottom: 1px solid #000;
+    padding: 4px 6px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+  }
+  table.pustaka tbody tr + tr {
+    border-top: 1px solid #000;   /* garis pemisah antar penelitian */
+  }
+  table.pustaka tbody td {
+    padding: 5px 6px;
+    vertical-align: top;
+    text-align: justify;
+  }
+  table.pustaka td.no {
+    text-align: center;
+    vertical-align: top;
+  }
+  /* lebar kolom */
+  col.c-no   { width: 5%; }
+  col.c-nama { width: 27%; }
+  col.c-hasil{ width: 38%; }
+  col.c-beda { width: 30%; }
+</style>
+</head>
+<body>
+
+<h1>BAB 2<br>TINJAUAN PUSTAKA</h1>
+
+<h2>2.1 Penelitian Terdahulu</h2>
+
+<p>Dalam penulisan laporan akhir ini, penulis memperoleh banyak sumber informasi dari berbagai penelitian terdahulu yang berkaitan dengan topik yang diangkat. Berikut adalah sejumlah penelitian yang berkaitan dengan laporan akhir penulis.</p>
+
+<p class="caption-tabel">Tabel 2.1 Penelitian Terdahulu</p>
+
+<table class="pustaka">
+  <colgroup>
+    <col class="c-no">
+    <col class="c-nama">
+    <col class="c-hasil">
+    <col class="c-beda">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Nama Peneliti, Tahun, Judul</th>
+      <th>Hasil Penelitian</th>
+      <th>Persamaan dan Perbedaan</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="no">1</td>
+      <td>Muhamad Rosidin, Muhammad Haedar Z. H., &amp; Wicaksono Yuli Sulistyo (2025). <i>Perancangan Sistem Informasi Manajemen Asosiasi dengan Metode Waterfall dan RBAC di Majelis Diktilitbang Muhammadiyah.</i></td>
+      <td>Pengelolaan data berbagai asosiasi di Majelis Diktilitbang Muhammadiyah sebelumnya masih dilakukan secara manual sehingga tidak efisien dan rentan terhadap kesalahan. Penelitian ini menghasilkan sistem informasi manajemen asosiasi berbasis web yang dibangun menggunakan <i>framework</i> Laravel dan Filament dengan metode <i>Waterfall</i>, yang meliputi tahap analisis kebutuhan, desain sistem, implementasi, pengujian, dan pemeliharaan. Sistem ini menerapkan <i>Role-Based Access Control</i> (RBAC) untuk mengatur hak akses pengguna sesuai dengan perannya, dengan fitur utama berupa pengelolaan data asosiasi, anggota, jenis kegiatan, dan riwayat kegiatan. Hasil pengujian <i>Black Box</i> menunjukkan bahwa sistem berfungsi sesuai dengan spesifikasi serta meningkatkan efisiensi dan keterstrukturan dalam pengelolaan data.</td>
+      <td>Persamaan yang ada antara penelitian ini dengan topik yang diangkat terletak pada pembangunan sistem informasi manajemen berbasis web yang menggunakan <i>framework</i> Laravel, metode <i>Waterfall</i>, serta penerapan <i>Role-Based Access Control</i> (RBAC) untuk mengatur hak akses pengguna. Sementara itu, perbedaannya adalah penelitian ini berfokus pada manajemen asosiasi, sedangkan sistem yang akan dirancang dan dibangun oleh penulis berfokus pada integrasi seluruh administrasi lembaga pendidikan, meliputi PPDB, keuangan, absensi, raport digital, dan tabungan siswa, ke dalam satu <i>Integrated Management System</i> (IMS) pada IQRA' Creative House.</td>
+    </tr>
+    <tr>
+      <td class="no">2</td>
+      <td>Tri Dian Saputra, Dedy Abdullah, Khairullah, &amp; A. R. Walad Mahfuzhi (2026). <i>Rancang Bangun Aplikasi Presensi Guru dengan Metode Global Positioning System (GPS) dan Foto Selfi Berbasis Web (Studi Kasus: SMP N 26 Seluma).</i></td>
+      <td>Sistem presensi guru di SMP Negeri 26 Seluma sebelumnya masih mengandalkan metode manual yang rentan terhadap kesalahan pencatatan dan manipulasi data absensi, serta proses rekapitulasi yang memakan waktu lama. Penelitian ini menghasilkan aplikasi presensi guru berbasis web yang memanfaatkan teknologi <i>Global Positioning System</i> (GPS) untuk memverifikasi lokasi guru pada saat melakukan presensi, serta foto <i>selfie</i> untuk memastikan bahwa yang melakukan absensi adalah guru yang bersangkutan. Sistem dikembangkan menggunakan metode <i>Research and Development</i> (R&amp;D) dengan model <i>Waterfall</i>. Hasil pengujian menunjukkan bahwa aplikasi ini mampu meningkatkan akurasi dan efisiensi pencatatan kehadiran guru serta mengurangi potensi manipulasi data absensi.</td>
+      <td>Persamaan yang ada antara penelitian ini dengan topik yang diangkat terletak pada penerapan verifikasi kehadiran guru berbasis GPS dan foto <i>selfie</i> pada sistem berbasis web. Adapun perbedaannya adalah penelitian ini hanya menitikberatkan pada modul presensi guru, sedangkan sistem yang akan dirancang dan dibangun oleh penulis menjadikan absensi guru berbasis GPS dan <i>geofencing</i> sebagai salah satu dari beberapa modul yang terintegrasi dalam satu sistem manajemen lembaga pendidikan.</td>
+    </tr>
+    <tr>
+      <td class="no">3</td>
+      <td>Sachrul Sidiq, Fa'asya Vladimar Kasidin, Shafly Fawwaz Fadhlullah, &amp; Wasis Haryono (2025). <i>Implementasi Sistem Aplikasi Pembayaran Sekolah dan Pendaftaran Siswa Berbasis Web.</i></td>
+      <td>Proses administrasi di Raudhatul Athfal Nurul Hidayah, sebuah lembaga pendidikan taman kanak-kanak, sebelumnya masih dilakukan secara manual, khususnya pada pembayaran SPP dan pendaftaran siswa baru. Penelitian ini membangun sistem aplikasi pembayaran sekolah dan pendaftaran siswa berbasis web sehingga orang tua dapat melakukan pembayaran SPP dan pendaftaran siswa secara daring melalui aplikasi atau <i>website</i> tanpa harus datang langsung ke sekolah. Hasil penelitian menunjukkan bahwa sistem ini dapat mengurangi waktu dan biaya yang dibutuhkan dalam proses pembayaran dan pendaftaran, meningkatkan transparansi dan akurasi data, serta mempermudah pihak sekolah dalam mengelola data keuangan dan pendaftaran siswa.</td>
+      <td>Persamaan yang ada antara penelitian ini dengan topik yang diangkat terletak pada pengembangan modul pembayaran SPP dan pendaftaran siswa baru (PPDB) berbasis web pada lembaga pendidikan anak usia dini. Adapun perbedaannya adalah penelitian ini hanya mencakup pembayaran dan pendaftaran, sedangkan sistem yang akan dirancang dan dibangun oleh penulis mengintegrasikan modul tersebut bersama absensi guru dan siswa, raport digital, serta tabungan siswa dalam satu sistem dengan <i>Role-Based Access Control</i> (RBAC).</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
