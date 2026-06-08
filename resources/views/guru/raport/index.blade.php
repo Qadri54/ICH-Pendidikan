@@ -1,5 +1,9 @@
 <x-main-layout title="Raport Siswa">
 
+<div x-data="{
+    showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
+}">
+
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Raport Siswa</h1>
@@ -12,18 +16,24 @@
             </p>
         </div>
         @if($classroom)
-            <a href="{{ route('guru.raport.create') }}"
-               class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                      rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+            <button @click="showCreate = true"
+                    class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                           rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                 <x-ich-icon name="plus" :size="16" color="white"/>
                 Buat Raport
-            </a>
+            </button>
         @endif
     </div>
 
     @if(session('success'))
         <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
             {{ session('success') }}
+        </div>
+    @endif
+
+    @if($errors->has('error'))
+        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+            {{ $errors->first('error') }}
         </div>
     @endif
 
@@ -145,4 +155,50 @@
         </div>
     @endif
 
+    {{-- Modal Create --}}
+    @if($classroom)
+    <x-admin-modal show="showCreate" title="Buat Raport Baru" maxWidth="md">
+        <form method="POST" action="{{ route('guru.raport.store') }}" class="space-y-4">
+            @csrf
+            <input type="hidden" name="_modal" value="create">
+
+            <div class="px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
+                Kelas {{ $classroom->nama_kelas }}
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Siswa <span class="text-ich-error">*</span></label>
+                <select name="student_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Siswa --</option>
+                    @foreach($students as $s)
+                        <option value="{{ $s->student_id }}" {{ old('student_id') == $s->student_id ? 'selected' : '' }}>
+                            {{ $s->nama_siswa }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('student_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Akademik <span class="text-ich-error">*</span></label>
+                <select name="period_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    @foreach($periods as $period)
+                        <option value="{{ $period->period_id }}"
+                                {{ old('period_id', $active?->period_id) == $period->period_id ? 'selected' : '' }}>
+                            {{ $period->tahun_ajaran }} — Semester {{ $period->semester }}
+                            @if($period->is_active) (Aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Buat Raport</button>
+                <button type="button" @click="showCreate = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
+            </div>
+        </form>
+    </x-admin-modal>
+    @endif
+
+</div>
 </x-main-layout>

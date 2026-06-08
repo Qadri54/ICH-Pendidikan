@@ -55,7 +55,10 @@ class TabunganAdminController extends Controller
     public function show(SavingLedger $tabungan): View
     {
         $tabungan = $this->ledgerService->getById($tabungan->ledger_id);
-        return view('admin.tabungan.show', compact('tabungan'));
+        $existingStudentIds = $tabungan->passbooks()->pluck('student_id');
+        $students = Student::with('classRoom')->whereNotIn('student_id', $existingStudentIds)->orderBy('nama_siswa')->get();
+
+        return view('admin.tabungan.show', compact('tabungan', 'students'));
     }
 
     public function destroy(SavingLedger $tabungan): RedirectResponse

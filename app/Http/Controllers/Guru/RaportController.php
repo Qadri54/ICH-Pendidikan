@@ -41,8 +41,12 @@ class RaportController extends Controller
         $raports   = $this->reportCardService->getAll($filters);
         $periods   = $this->periodService->getAll();
         $classroom = ClassRoom::where('homeroom_teacher_id', $teacher->teacher_id)->first();
+        $students  = $classroom
+            ? Student::where('class_id', $classroom->class_id)->orderBy('nama_siswa')->get()
+            : collect();
+        $active    = $this->periodService->getActive();
 
-        return view('guru.raport.index', compact('raports', 'periods', 'classroom', 'filters'));
+        return view('guru.raport.index', compact('raports', 'periods', 'classroom', 'filters', 'students', 'active'));
     }
 
     // Form buat raport baru untuk siswa di kelas sendiri.
