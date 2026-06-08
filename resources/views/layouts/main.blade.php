@@ -23,7 +23,7 @@
         @php
             $role      = auth()->user()?->role?->role_name;
             $isAdmin   = in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan']);
-            $logoRoute = $isAdmin ? route('admin.laporan.index') : route('dashboard');
+            $logoRoute = route('dashboard');
         @endphp
 
         {{-- Logo --}}
