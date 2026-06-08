@@ -67,18 +67,18 @@ class AbsensiSiswaController extends Controller
     {
         $validated = $request->validate([
             'class_id'               => 'required|exists:classes,class_id',
-            'absences'               => 'nullable|array',
+            'absences'               => 'required|array',
             'absences.*.student_id'  => 'required|integer|exists:students,student_id',
-            'absences.*.status'      => 'required|in:izin,sakit,tanpa keterangan',
+            'absences.*.status'      => 'required|in:hadir,izin,sakit,tanpa keterangan',
         ]);
 
         $count = $this->attendanceService->recordBulk(
-            null, // admin tidak punya teacher_id
-            $validated['absences'] ?? []
+            null,
+            $validated['absences']
         );
 
         $message = $count > 0
-            ? "{$count} siswa berhasil diinput."
+            ? "Absensi {$count} siswa berhasil disimpan."
             : 'Tidak ada perubahan — mungkin sudah diinput sebelumnya.';
 
         return redirect()->route('admin.absensi.index', [

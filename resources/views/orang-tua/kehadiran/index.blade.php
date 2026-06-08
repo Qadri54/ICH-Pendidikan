@@ -15,7 +15,6 @@
                 $student = $data['student'];
                 $records = $data['records'];
                 $summary = $data['summary'];
-                $totalTidakHadir = $summary['izin'] + $summary['sakit'] + $summary['tanpa_keterangan'];
             @endphp
 
             <div>
@@ -31,9 +30,7 @@
                 {{-- Ringkasan bulan ini --}}
                 <div class="grid grid-cols-4 gap-2 mb-3">
                     <div class="bg-white rounded-xl shadow-ich-card p-3 text-center">
-                        <p class="text-lg font-display font-bold text-ich-green">
-                            {{ max(0, now()->day - $totalTidakHadir) }}
-                        </p>
+                        <p class="text-lg font-display font-bold text-ich-green">{{ $summary['hadir'] ?? 0 }}</p>
                         <p class="text-[10px] font-ui font-semibold text-ich-ink-400 mt-0.5">Hadir</p>
                     </div>
                     <div class="bg-white rounded-xl shadow-ich-card p-3 text-center">
@@ -51,24 +48,25 @@
                 </div>
                 <p class="text-xs text-ich-ink-400 font-sans mb-3">*Ringkasan bulan {{ now()->translatedFormat('F Y') }}</p>
 
-                {{-- Riwayat ketidakhadiran --}}
+                {{-- Riwayat kehadiran --}}
                 @if($records->isEmpty())
                     <div class="bg-white rounded-xl shadow-ich-card px-5 py-4 text-center">
-                        <p class="font-sans text-sm text-ich-green font-semibold">
-                            Tidak ada ketidakhadiran yang tercatat.
+                        <p class="font-sans text-sm text-ich-ink-400 font-semibold">
+                            Belum ada data kehadiran.
                         </p>
                     </div>
                 @else
                     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
                         <div class="px-5 py-3 border-b border-ich-line">
                             <p class="font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">
-                                Riwayat Ketidakhadiran
+                                Riwayat Kehadiran
                             </p>
                         </div>
                         <div class="divide-y divide-ich-line">
                             @foreach($records as $rec)
                                 @php
                                     $statusCfg = match($rec->status) {
+                                        'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]'],
                                         'izin'             => ['label'=>'Izin',             'bg'=>'bg-[#EDE9FE]','text'=>'text-[#8B5CF6]'],
                                         'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-[#FEE2E2]','text'=>'text-ich-error'],
                                         'tanpa keterangan' => ['label'=>'Alfa',             'bg'=>'bg-[#FEF5DC]','text'=>'text-[#E09F17]'],

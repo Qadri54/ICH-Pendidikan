@@ -29,21 +29,12 @@ class StudentAttendanceService
         ]);
     }
 
-    // Input absensi massal untuk satu kelas sekaligus.
-    // Guru memilih seluruh siswa yang tidak hadir dalam satu form.
-    // $absences = [
-    //   ['student_id' => 1, 'status' => 'izin'],
-    //   ['student_id' => 2, 'status' => 'sakit'],
-    // ]
-    // Siswa yang tidak ada di array dianggap hadir (tidak perlu diinput).
-    // Menggunakan bulk insert untuk efisiensi — satu query untuk semua siswa.
     public function recordBulk(?int $teacherId, array $absences): int
     {
         $now  = now()->toDateTimeString();
         $rows = [];
 
         foreach ($absences as $item) {
-            // Skip jika hari ini sudah ada record untuk siswa ini
             if ($this->getTodayRecord($item['student_id'])) {
                 continue;
             }
@@ -126,6 +117,7 @@ class StudentAttendanceService
 
                 return [
                     'nama'              => $student->nama_siswa,
+                    'hadir'             => $records->where('status', 'hadir')->count(),
                     'izin'              => $records->where('status', 'izin')->count(),
                     'sakit'             => $records->where('status', 'sakit')->count(),
                     'tanpa_keterangan'  => $records->where('status', 'tanpa keterangan')->count(),

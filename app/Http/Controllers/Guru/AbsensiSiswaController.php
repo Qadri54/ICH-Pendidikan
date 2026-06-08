@@ -41,19 +41,19 @@ class AbsensiSiswaController extends Controller
         $classroom = ClassRoom::where('homeroom_teacher_id', $teacher->teacher_id)->firstOrFail();
 
         $validated = $request->validate([
-            'absences'               => 'nullable|array',
+            'absences'               => 'required|array',
             'absences.*.student_id'  => 'required|integer|exists:students,student_id',
-            'absences.*.status'      => 'required|in:izin,sakit,tanpa keterangan',
+            'absences.*.status'      => 'required|in:hadir,izin,sakit,tanpa keterangan',
         ]);
 
         $count = $this->attendanceService->recordBulk(
             $teacher->teacher_id,
-            $validated['absences'] ?? []
+            $validated['absences']
         );
 
         $message = $count > 0
-            ? "{$count} siswa berhasil diinput sebagai tidak hadir."
-            : 'Tidak ada perubahan — semua siswa mungkin sudah diinput hari ini.';
+            ? "Absensi {$count} siswa berhasil disimpan."
+            : 'Tidak ada perubahan — semua siswa sudah diinput hari ini.';
 
         return redirect()->route('guru.absensi.index')->with('success', $message);
     }

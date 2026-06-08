@@ -27,6 +27,7 @@ class KehadiranController extends Controller
                 'student' => $student,
                 'records' => $records->take(30),
                 'summary' => [
+                    'hadir'             => $thisMonth->where('status', 'hadir')->count(),
                     'izin'              => $thisMonth->where('status', 'izin')->count(),
                     'sakit'             => $thisMonth->where('status', 'sakit')->count(),
                     'tanpa_keterangan'  => $thisMonth->where('status', 'tanpa keterangan')->count(),

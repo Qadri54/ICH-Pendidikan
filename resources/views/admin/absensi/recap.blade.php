@@ -51,18 +51,22 @@
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold w-12">No</th>
                             <th class="px-4 py-3 text-left font-ui font-bold">Nama Siswa</th>
+                            <th class="px-4 py-3 text-center font-ui font-bold">Hadir</th>
                             <th class="px-4 py-3 text-center font-ui font-bold">Izin</th>
                             <th class="px-4 py-3 text-center font-ui font-bold">Sakit</th>
-                            <th class="px-4 py-3 text-center font-ui font-bold">Tanpa Keterangan</th>
+                            <th class="px-4 py-3 text-center font-ui font-bold">Tanpa Ket.</th>
                             <th class="px-4 py-3 text-center font-ui font-bold">Total</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-ich-line">
                         @forelse($recap as $i => $item)
-                            @php $total = $item['izin'] + $item['sakit'] + $item['tanpa_keterangan']; @endphp
+                            @php $total = ($item['hadir'] ?? 0) + $item['izin'] + $item['sakit'] + $item['tanpa_keterangan']; @endphp
                             <tr class="hover:bg-[#F5F6FA]">
                                 <td class="px-4 py-3 text-ich-ink-400">{{ $i + 1 }}</td>
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $item['nama'] }}</td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="px-2 py-0.5 bg-[#D1FAE5] text-[#009966] font-ui font-bold text-xs rounded-full">{{ $item['hadir'] ?? 0 }}</span>
+                                </td>
                                 <td class="px-4 py-3 text-center">
                                     <span class="px-2 py-0.5 bg-[#EDE9FE] text-[#8B5CF6] font-ui font-bold text-xs rounded-full">{{ $item['izin'] }}</span>
                                 </td>
@@ -76,8 +80,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
-                                    Tidak ada ketidakhadiran pada periode ini.
+                                <td colspan="7" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
+                                    Tidak ada data absensi pada periode ini.
                                 </td>
                             </tr>
                         @endforelse

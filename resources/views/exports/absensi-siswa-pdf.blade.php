@@ -30,9 +30,10 @@
             <tr>
                 <th>No</th>
                 <th>Nama Siswa</th>
+                <th class="text-center">Hadir</th>
                 <th class="text-center">Izin</th>
                 <th class="text-center">Sakit</th>
-                <th class="text-center">Tanpa Keterangan</th>
+                <th class="text-center">Tanpa Ket.</th>
                 <th class="text-center">Total</th>
             </tr>
         </thead>
@@ -41,14 +42,15 @@
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $row['nama'] }}</td>
+                    <td class="text-center">{{ $row['hadir'] ?? 0 }}</td>
                     <td class="text-center">{{ $row['izin'] }}</td>
                     <td class="text-center">{{ $row['sakit'] }}</td>
                     <td class="text-center">{{ $row['tanpa_keterangan'] }}</td>
-                    <td class="text-center">{{ $row['izin'] + $row['sakit'] + $row['tanpa_keterangan'] }}</td>
+                    <td class="text-center">{{ ($row['hadir'] ?? 0) + $row['izin'] + $row['sakit'] + $row['tanpa_keterangan'] }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center" style="padding: 20px; color: #999;">Tidak ada data absensi.</td>
+                    <td colspan="7" class="text-center" style="padding: 20px; color: #999;">Tidak ada data absensi.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -56,10 +58,11 @@
             <tfoot>
                 <tr>
                     <td colspan="2">Total</td>
+                    <td class="text-center">{{ $recap->sum(fn($r) => $r['hadir'] ?? 0) }}</td>
                     <td class="text-center">{{ $recap->sum('izin') }}</td>
                     <td class="text-center">{{ $recap->sum('sakit') }}</td>
                     <td class="text-center">{{ $recap->sum('tanpa_keterangan') }}</td>
-                    <td class="text-center">{{ $recap->sum('izin') + $recap->sum('sakit') + $recap->sum('tanpa_keterangan') }}</td>
+                    <td class="text-center">{{ $recap->sum(fn($r) => ($r['hadir'] ?? 0) + $r['izin'] + $r['sakit'] + $r['tanpa_keterangan']) }}</td>
                 </tr>
             </tfoot>
         @endif

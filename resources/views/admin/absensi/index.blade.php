@@ -56,7 +56,7 @@
                         {{ $classroom->nama_kelas }}
                         <span class="text-ich-ink-400 font-normal text-sm">— {{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('d F Y') }}</span>
                     </h2>
-                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $absences->count() }} tidak hadir dari {{ $students->count() }} siswa</p>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $absences->count() }} sudah diinput dari {{ $students->count() }} siswa</p>
                 </div>
                 @if($isToday)
                     <span class="px-3 py-1 bg-[#D1FAE5] text-[#009966] font-ui font-bold text-xs rounded-full">Hari Ini</span>
@@ -67,16 +67,27 @@
                 @csrf
                 <input type="hidden" name="class_id" value="{{ $classroom->class_id }}">
 
+                {{-- Header kolom --}}
+                <div class="px-5 py-2 bg-[#F5F6FA] flex items-center gap-4 text-xs font-ui font-bold text-ich-ink-500">
+                    <div class="flex-1">Nama Siswa</div>
+                    <div class="w-[280px] grid grid-cols-4 text-center">
+                        <span>Hadir</span>
+                        <span>Izin</span>
+                        <span>Sakit</span>
+                        <span>Tanpa Ket.</span>
+                    </div>
+                </div>
+
                 <div class="divide-y divide-ich-line">
                     @forelse($students as $i => $student)
                         @php $existing = $absences->get($student->student_id); @endphp
-                        <div class="px-5 py-3 flex items-center gap-4"
-                             x-data="{ checked: {{ $existing ? 'true' : 'false' }} }">
+                        <div class="px-5 py-3 flex items-center gap-4">
                             <div class="flex-1">
                                 <p class="font-ui font-semibold text-sm text-ich-ink-900">{{ $student->nama_siswa }}</p>
                                 @if($existing)
                                     @php
                                         $cfg = match($existing->status) {
+                                            'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]'],
                                             'izin'             => ['label'=>'Izin',             'bg'=>'bg-[#EDE9FE]','text'=>'text-[#8B5CF6]'],
                                             'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-[#FEE2E2]','text'=>'text-ich-error'],
                                             'tanpa keterangan' => ['label'=>'Tanpa Keterangan', 'bg'=>'bg-[#FEF5DC]','text'=>'text-[#E09F17]'],
@@ -87,32 +98,37 @@
                                                  {{ $cfg['bg'] }} {{ $cfg['text'] }}">
                                         {{ $cfg['label'] }}
                                     </span>
-                                @else
-                                    <span class="text-xs text-ich-green font-ui">Hadir</span>
                                 @endif
                             </div>
 
                             @if($isToday && ! $existing && ! $isReadOnly)
-                                <div class="flex items-center gap-3">
-                                    <label class="flex items-center gap-1.5 cursor-pointer">
-                                        <input type="checkbox" x-model="checked" class="accent-ich-error w-4 h-4">
-                                        <span class="font-ui text-xs text-ich-ink-600 font-semibold">Tidak Hadir</span>
+                                <input type="hidden" name="absences[{{ $i }}][student_id]" value="{{ $student->student_id }}">
+                                <div class="w-[280px] grid grid-cols-4 text-center">
+                                    <label class="flex justify-center cursor-pointer">
+                                        <input type="radio" name="absences[{{ $i }}][status]" value="hadir"
+                                               class="accent-[#009966] w-4 h-4">
                                     </label>
-                                    <select x-show="checked" name="absences[{{ $i }}][status]"
-                                            class="h-8 px-2 bg-white border-2 border-ich-line rounded-lg
-                                                   font-sans text-xs focus:outline-none focus:border-ich-teal">
-                                        <option value="tanpa keterangan">Tanpa Ket.</option>
-                                        <option value="izin">Izin</option>
-                                        <option value="sakit">Sakit</option>
-                                    </select>
-                                    <input x-show="checked" type="hidden"
-                                           name="absences[{{ $i }}][student_id]"
-                                           value="{{ $student->student_id }}">
+                                    <label class="flex justify-center cursor-pointer">
+                                        <input type="radio" name="absences[{{ $i }}][status]" value="izin"
+                                               class="accent-[#8B5CF6] w-4 h-4">
+                                    </label>
+                                    <label class="flex justify-center cursor-pointer">
+                                        <input type="radio" name="absences[{{ $i }}][status]" value="sakit"
+                                               class="accent-[#EF4444] w-4 h-4">
+                                    </label>
+                                    <label class="flex justify-center cursor-pointer">
+                                        <input type="radio" name="absences[{{ $i }}][status]" value="tanpa keterangan"
+                                               checked class="accent-[#E09F17] w-4 h-4">
+                                    </label>
                                 </div>
                             @elseif(! $isToday && ! $existing)
-                                <span class="text-xs text-ich-ink-300 font-sans italic">Tidak dapat diubah</span>
+                                <div class="w-[280px] text-center">
+                                    <span class="text-xs text-ich-ink-300 font-sans italic">Tidak dapat diubah</span>
+                                </div>
                             @elseif($existing)
-                                <span class="text-xs text-ich-ink-300 font-sans italic">Sudah diinput</span>
+                                <div class="w-[280px] text-center">
+                                    <span class="text-xs text-ich-ink-300 font-sans italic">Sudah diinput</span>
+                                </div>
                             @endif
                         </div>
                     @empty
@@ -127,9 +143,6 @@
                                        rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                             Simpan Absensi
                         </button>
-                        <p class="text-xs text-ich-ink-400 font-sans mt-2">
-                            Siswa yang tidak dicentang dianggap <strong>Hadir</strong>.
-                        </p>
                     </div>
                 @endif
             </form>
