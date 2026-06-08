@@ -36,14 +36,14 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-ich-green text-white">
+                <thead class="bg-[#F5F6FA]">
                     <tr>
-                        <th class="px-4 py-3 text-left font-ui font-bold w-12">No</th>
-                        <th class="px-4 py-3 text-left font-ui font-bold">Nama Guru</th>
-                        <th class="px-4 py-3 text-center font-ui font-bold">Hadir</th>
-                        <th class="px-4 py-3 text-center font-ui font-bold">Izin</th>
-                        <th class="px-4 py-3 text-center font-ui font-bold">Sakit</th>
-                        <th class="px-4 py-3 text-center font-ui font-bold">Tanpa Ket.</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600 w-12">No</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Guru</th>
+                        <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Hadir</th>
+                        <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Izin</th>
+                        <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Sakit</th>
+                        <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Tanpa Ket.</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-ich-line">

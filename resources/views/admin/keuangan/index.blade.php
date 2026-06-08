@@ -23,14 +23,19 @@
 }">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Keuangan SPP</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Total tagihan berjalan:
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#E8F5EA] flex items-center justify-center">
+                <svg class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Keuangan SPP</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Total tagihan berjalan:
                 <span class="font-bold text-ich-error">Rp {{ number_format($totalTagihan, 0, ',', '.') }}</span>
                 · {{ $totalLunas }} sudah lunas
             </p>
+            </div>
         </div>
-            <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3">
             <a href="{{ route('admin.keuangan.bukti-pembayaran') }}"
                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200
                       font-ui font-bold text-sm rounded-ich-lg hover:bg-blue-100 transition-colors">
@@ -82,15 +87,15 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Siswa</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Kelas</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Bulan/Tahun</th>
-                    <th class="px-4 py-3 text-right font-ui font-bold">Jumlah</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Jatuh Tempo</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Status</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Bulan/Tahun</th>
+                    <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Jumlah</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Jatuh Tempo</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">

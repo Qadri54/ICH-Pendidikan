@@ -34,18 +34,18 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Siswa</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Kelas</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Periode</th>
-                    <th class="px-4 py-3 text-right font-ui font-bold">Jumlah</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Bank</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Tanggal</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Bukti</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Status</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
+                    <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Jumlah</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Bank</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Bukti</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
                     @if(! $isReadOnly)
-                        <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                        <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                     @endif
                 </tr>
             </thead>

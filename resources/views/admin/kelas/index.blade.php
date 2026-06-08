@@ -25,9 +25,14 @@
 }">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Kelas</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $kelas->total() }} kelas</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#EDE9FE] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#8B5CF6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Kelas</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $kelas->total() }} kelas</p>
+            </div>
         </div>
         @if(! $isReadOnly)
             <button @click="showCreate = true"
@@ -52,18 +57,18 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama Kelas</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Ruangan</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Wali Kelas</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Jumlah Siswa</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Kelas</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Ruangan</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Wali Kelas</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Jumlah Siswa</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($kelas as $k)
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $k->nama_kelas }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $k->nama_ruangan }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">

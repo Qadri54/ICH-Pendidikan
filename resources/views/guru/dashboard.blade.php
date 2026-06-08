@@ -1,10 +1,21 @@
 <x-main-layout title="Dashboard">
 
     {{-- Greeting --}}
-    <div class="bg-ich-green rounded-xl p-6 text-white mb-6">
-        <p class="font-sans text-sm opacity-80">Selamat datang,</p>
-        <p class="font-display font-bold text-2xl mt-0.5">{{ $user->name }}</p>
-        <p class="font-sans text-xs opacity-70 mt-1">{{ now()->translatedFormat('l, d F Y') }}</p>
+    <div class="bg-gradient-to-br from-ich-green to-[#00785A] rounded-2xl p-6 text-white mb-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-1/2 w-24 h-24 bg-white/5 rounded-full translate-y-1/2"></div>
+        <div class="relative">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center text-lg font-display font-bold">
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                </div>
+                <div>
+                    <p class="font-sans text-sm opacity-80">Selamat datang,</p>
+                    <p class="font-display font-bold text-xl">{{ $user->name }}</p>
+                </div>
+            </div>
+            <p class="text-xs opacity-70 mt-2">{{ now()->translatedFormat('l, d F Y') }}</p>
+        </div>
     </div>
 
     {{-- Quick Actions --}}
@@ -54,7 +65,7 @@
         @foreach($menus as $menu)
             <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#' }}"
                class="bg-white rounded-xl shadow-ich-card p-5 flex flex-col gap-3
-                      hover:shadow-md transition-shadow no-underline group">
+                      hover:shadow-md transition-all no-underline group hover:-translate-y-0.5">
                 <div class="w-12 h-12 rounded-xl {{ $menu['color'] }} flex items-center justify-center
                             group-hover:scale-105 transition-transform">
                     <x-ich-icon :name="$menu['icon']" :size="24" color="currentColor"/>

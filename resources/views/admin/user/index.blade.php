@@ -27,9 +27,14 @@
 }">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Manajemen User</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $users->total() }} akun</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#DBEAFE] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Manajemen User</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $users->total() }} akun</p>
+            </div>
         </div>
         @if(! $isReadOnly)
             <button @click="showCreate = true"
@@ -65,13 +70,13 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Email</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">No HP</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Role</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Email</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">No HP</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Role</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">
@@ -86,7 +91,7 @@
                             default                        => 'bg-[#F3F4F6] text-ich-ink-500',
                         };
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $u->name }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $u->email }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $u->no_hp ?? '-' }}</td>

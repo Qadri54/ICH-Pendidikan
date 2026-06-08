@@ -32,9 +32,14 @@
 }">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Guru</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Guru Kelas & Guru Ngaji</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#E8F5EA] flex items-center justify-center">
+                <svg class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Guru</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Guru Kelas & Guru Ngaji</p>
+            </div>
         </div>
         @if(! $isReadOnly)
             <button @click="showCreate = true"
@@ -58,18 +63,18 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Tipe</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">NIP</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Mata Pelajaran</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tipe</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIP</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Mata Pelajaran</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($guru as $g)
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3">
                             @if($g->tipe === 'Guru Kelas')
                                 <span class="px-2 py-1 bg-[#E8F5EA] text-ich-green font-ui font-bold text-xs rounded-full">Guru Kelas</span>

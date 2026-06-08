@@ -13,9 +13,14 @@
 }">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Tabungan Siswa</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $ledgers->total() }} ledger</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#FEF5DC] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#E09F17]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Tabungan Siswa</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $ledgers->total() }} ledger</p>
+            </div>
         </div>
         @if(! $isReadOnly)
             <button @click="showCreate = true"
@@ -36,14 +41,14 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama Ledger</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Guru PJ</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Tahun Akademik</th>
-                    <th class="px-4 py-3 text-right font-ui font-bold">Total Saldo</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Status</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Guru PJ</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tahun Akademik</th>
+                    <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Total Saldo</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">

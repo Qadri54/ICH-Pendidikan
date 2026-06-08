@@ -2,9 +2,14 @@
 <x-main-layout title="Absensi Guru">
 
     <div class="mb-6 flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Guru</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Rekap dan input absensi guru</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#FCE7F3] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#EC4899]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Guru</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Rekap dan input absensi guru</p>
+            </div>
         </div>
         <a href="{{ route('admin.absensi-guru.recap') }}"
            class="text-sm font-ui font-bold text-ich-teal hover:underline">

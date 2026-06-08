@@ -2,9 +2,14 @@
 <x-main-layout title="Absensi Siswa">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Siswa</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Lihat dan input absensi per kelas</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#FEF5DC] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#E09F17]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Siswa</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Lihat dan input absensi per kelas</p>
+            </div>
         </div>
         <a href="{{ route('admin.absensi.recap') }}"
            class="text-sm font-ui font-bold text-ich-teal hover:underline">

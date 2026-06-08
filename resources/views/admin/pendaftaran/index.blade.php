@@ -1,9 +1,14 @@
 <x-main-layout title="Pendaftaran Siswa">
 
     <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pendaftaran Siswa</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">PPDB — Total: {{ $pendaftaran->total() }}</p>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-[#DBEAFE] flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pendaftaran Siswa</h1>
+                <p class="text-sm text-ich-ink-400 mt-0.5">PPDB — Total: {{ $pendaftaran->total() }}</p>
+            </div>
         </div>
     </div>
 
@@ -28,15 +33,15 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-ich-green text-white">
+            <thead class="bg-[#F5F6FA]">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama Orang Tua</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Email</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Nama Anak</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Jenis</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold">Tanggal Daftar</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Status</th>
-                    <th class="px-4 py-3 text-center font-ui font-bold">Aksi</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Orang Tua</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Email</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Anak</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Jenis</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal Daftar</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
+                    <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">
