@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SppInvoice;
+use App\Models\SppPayment;
 use App\Models\Student;
 use App\Services\Spp\SppInvoiceService;
 use App\Services\Spp\SppPaymentService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class KeuanganController extends Controller
@@ -92,5 +94,37 @@ class KeuanganController extends Controller
 
         return redirect()->route('admin.keuangan.index')
             ->with('success', "Tagihan berhasil dihapus.");
+    }
+
+    public function buktiPembayaran(Request $request)
+    {
+        auth()->user()->notifications()
+            ->where('type', \App\Notifications\SppPaymentUploadedNotification::class)
+            ->delete();
+
+        $payments = $this->paymentService->getPaginated(
+            $request->search,
+            $request->status,
+        );
+
+        $pendingCount = SppPayment::where('status', 'pending')->count();
+
+        return view('admin.keuangan.bukti-pembayaran', compact('payments', 'pendingCount'));
+    }
+
+    public function approvePayment(SppPayment $payment): RedirectResponse
+    {
+        $this->paymentService->approve($payment->payment_id, auth()->id());
+
+        return redirect()->route('admin.keuangan.bukti-pembayaran')
+            ->with('success', 'Pembayaran berhasil dikonfirmasi.');
+    }
+
+    public function rejectPayment(SppPayment $payment): RedirectResponse
+    {
+        $this->paymentService->cancel($payment->payment_id);
+
+        return redirect()->route('admin.keuangan.bukti-pembayaran')
+            ->with('success', 'Pembayaran berhasil ditolak.');
     }
 }

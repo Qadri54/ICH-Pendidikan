@@ -69,6 +69,16 @@ class SppPaymentService
         return $payment;
     }
 
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return SppPayment::with(['student.classRoom', 'invoice', 'approvedBy'])
+            ->when($search, fn ($q) => $q->whereHas('student', fn ($s) => $s->where('nama_siswa', 'like', "%{$search}%")))
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     /**
      * Ambil semua pembayaran berdasarkan invoice_id.
      */

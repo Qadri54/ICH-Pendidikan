@@ -114,6 +114,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::resource('kelas',    KelasController::class, ['parameters' => ['kelas' => 'kelas']])->only(['index']);
         Route::resource('guru',     GuruController::class)->only(['index']);
         Route::resource('user',     UserController::class)->only(['index']);
+        Route::get('keuangan/bukti-pembayaran', [KeuanganController::class, 'buktiPembayaran'])->name('keuangan.bukti-pembayaran');
         Route::resource('keuangan', KeuanganController::class)->only(['index']);
         Route::resource('tabungan', TabunganAdminController::class)->only(['index', 'show']);
         Route::get('tabungan/passbooks/{passbook}', [TabunganAdminController::class, 'showPassbook'])->name('tabungan.passbook.show');
@@ -147,6 +148,8 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::resource('guru',     GuruController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('user',     UserController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::post('keuangan/generate', [KeuanganController::class, 'generate'])->name('keuangan.generate');
+            Route::post('keuangan/pembayaran/{payment}/approve', [KeuanganController::class, 'approvePayment'])->name('keuangan.pembayaran.approve');
+            Route::post('keuangan/pembayaran/{payment}/reject',  [KeuanganController::class, 'rejectPayment'])->name('keuangan.pembayaran.reject');
             Route::resource('keuangan', KeuanganController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
             Route::get('tabungan/{tabungan}/passbooks/create',    [TabunganAdminController::class, 'openPassbook'])->name('tabungan.passbook.create');
