@@ -91,6 +91,17 @@ class SppInvoiceService
         ];
     }
 
+    public function createSingle(array $data): SppInvoice
+    {
+        return SppInvoice::create([
+            'student_id'    => $data['student_id'],
+            'tanggal_tahun' => $data['tanggal_tahun'],
+            'jumlah'        => $data['jumlah'],
+            'jatuh_tempo'   => $data['jatuh_tempo'],
+            'status'        => $data['status'] ?? 'unpaid',
+        ]);
+    }
+
     /**
      * Hapus invoice beserta data payment-nya.
      */

@@ -6,6 +6,10 @@
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Guru</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Rekap dan input absensi guru</p>
         </div>
+        <a href="{{ route('admin.absensi-guru.recap') }}"
+           class="text-sm font-ui font-bold text-ich-teal hover:underline">
+            Rekap Bulanan →
+        </a>
     </div>
 
     @if(session('success'))

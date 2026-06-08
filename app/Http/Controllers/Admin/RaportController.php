@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
+use App\Models\NarrativePhoto;
 use App\Models\Student;
 use App\Services\ReportCard\AcademicPeriodService;
 use App\Services\ReportCard\ChecklistAssessmentService;
@@ -182,6 +183,38 @@ class RaportController extends Controller
         } catch (InvalidArgumentException $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function uploadPhoto(Request $request, int $id): RedirectResponse
+    {
+        $request->validate([
+            'narrative_id' => 'required|exists:narrative_assessments,narrative_id',
+            'photo'        => 'required|image|max:2048',
+            'caption'      => 'nullable|string|max:255',
+        ]);
+
+        $maxUrutan = NarrativePhoto::where('narrative_id', $request->narrative_id)->max('urutan') ?? -1;
+
+        $this->narrativeService->addPhoto(
+            $request->integer('narrative_id'),
+            $request->file('photo'),
+            $request->caption,
+            $maxUrutan + 1
+        );
+
+        return redirect()->route('admin.raport.edit', $id)
+            ->with('success', 'Foto berhasil diunggah.');
+    }
+
+    public function deletePhoto(int $photoId): RedirectResponse
+    {
+        $photo     = NarrativePhoto::with('narrative.reportCard')->findOrFail($photoId);
+        $raportId  = $photo->narrative->reportCard->report_card_id;
+
+        $this->narrativeService->deletePhoto($photoId);
+
+        return redirect()->route('admin.raport.edit', $raportId)
+            ->with('success', 'Foto berhasil dihapus.');
     }
 
     // Hapus raport (hanya boleh status draft).

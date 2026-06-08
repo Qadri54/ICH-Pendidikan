@@ -1,9 +1,15 @@
 @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Absensi Siswa">
 
-    <div class="mb-6">
-        <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Siswa</h1>
-        <p class="text-sm text-ich-ink-400 mt-0.5">Lihat dan input absensi per kelas</p>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Siswa</h1>
+            <p class="text-sm text-ich-ink-400 mt-0.5">Lihat dan input absensi per kelas</p>
+        </div>
+        <a href="{{ route('admin.absensi.recap') }}"
+           class="text-sm font-ui font-bold text-ich-teal hover:underline">
+            Rekap Bulanan →
+        </a>
     </div>
 
     @if(session('success'))

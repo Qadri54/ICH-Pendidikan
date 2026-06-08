@@ -13,6 +13,7 @@ use App\Services\ReportCard\HealthConditionService;
 use App\Services\ReportCard\NarrativeAssessmentService;
 use App\Services\ReportCard\PhysicalMeasurementService;
 use App\Services\ReportCard\ReportCardService;
+use App\Models\NarrativePhoto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -184,7 +185,43 @@ class RaportController extends Controller
         }
     }
 
-    // Cek kepemilikan raport: hanya wali kelas yang bersangkutan yang boleh edit.
+    public function uploadPhoto(Request $request, int $id): RedirectResponse
+    {
+        $this->authorizeEdit($id);
+
+        $request->validate([
+            'narrative_id' => 'required|exists:narrative_assessments,narrative_id',
+            'photo'        => 'required|image|max:2048',
+            'caption'      => 'nullable|string|max:255',
+        ]);
+
+        $maxUrutan = NarrativePhoto::where('narrative_id', $request->narrative_id)->max('urutan') ?? -1;
+
+        $this->narrativeService->addPhoto(
+            $request->integer('narrative_id'),
+            $request->file('photo'),
+            $request->caption,
+            $maxUrutan + 1
+        );
+
+        return redirect()->route('guru.raport.edit', $id)
+            ->with('success', 'Foto berhasil diunggah.');
+    }
+
+    public function deletePhoto(int $photoId): RedirectResponse
+    {
+        $photo  = NarrativePhoto::with('narrative.reportCard')->findOrFail($photoId);
+        $raport = $photo->narrative->reportCard;
+
+        $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
+        abort_if($raport->homeroom_teacher_id !== $teacher->teacher_id, 403);
+
+        $this->narrativeService->deletePhoto($photoId);
+
+        return redirect()->route('guru.raport.edit', $raport->report_card_id)
+            ->with('success', 'Foto berhasil dihapus.');
+    }
+
     private function authorizeEdit(int $id): void
     {
         $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();

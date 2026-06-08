@@ -90,6 +90,8 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->name('guru.')->group(f
     Route::post('raport/{id}/checklist',                  [GuruRaportController::class, 'updateChecklist'])->name('raport.checklist');
     Route::post('raport/{id}/physical',                   [GuruRaportController::class, 'updatePhysical'])->name('raport.physical');
     Route::post('raport/{id}/submit',                     [GuruRaportController::class, 'submit'])->name('raport.submit');
+    Route::post('raport/{id}/photo',                      [GuruRaportController::class, 'uploadPhoto'])->name('raport.photo.store');
+    Route::delete('raport/photo/{photoId}',               [GuruRaportController::class, 'deletePhoto'])->name('raport.photo.destroy');
 
     Route::prefix('tabungan')->name('tabungan.')->group(function () {
         Route::get('/',                               [TabunganGuruController::class, 'index'])->name('index');
@@ -116,8 +118,10 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::resource('tabungan', TabunganAdminController::class)->only(['index', 'show']);
         Route::get('tabungan/passbooks/{passbook}', [TabunganAdminController::class, 'showPassbook'])->name('tabungan.passbook.show');
 
-        Route::get('absensi',     [AdminAbsensiController::class,    'index'])->name('absensi.index');
-        Route::get('absensi-guru',[AdminAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+        Route::get('absensi/recap', [AdminAbsensiController::class,     'recap'])->name('absensi.recap');
+        Route::get('absensi',      [AdminAbsensiController::class,    'index'])->name('absensi.index');
+        Route::get('absensi-guru/recap', [AdminAbsensiGuruController::class, 'recap'])->name('absensi-guru.recap');
+        Route::get('absensi-guru',       [AdminAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
 
         Route::get('raport',           [AdminRaportController::class, 'index'])->name('raport.index');
         Route::get('raport/{id}/edit', [AdminRaportController::class, 'edit'])->name('raport.edit');
@@ -126,18 +130,24 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show');
         Route::get('pembayaran-pendaftaran',       [PembayaranPendaftaranController::class, 'index'])->name('pembayaran-pendaftaran.index');
 
+        Route::get('laporan/export/keuangan-pdf',      [LaporanController::class, 'exportKeuanganPdf'])->name('laporan.export.keuangan-pdf');
+        Route::get('laporan/export/keuangan-csv',      [LaporanController::class, 'exportKeuanganCsv'])->name('laporan.export.keuangan-csv');
+        Route::get('laporan/export/absensi-siswa-pdf',  [LaporanController::class, 'exportAbsensiSiswaPdf'])->name('laporan.export.absensi-siswa-pdf');
+        Route::get('laporan/export/absensi-siswa-csv',  [LaporanController::class, 'exportAbsensiSiswaCsv'])->name('laporan.export.absensi-siswa-csv');
+        Route::get('laporan/export/absensi-guru-pdf',   [LaporanController::class, 'exportAbsensiGuruPdf'])->name('laporan.export.absensi-guru-pdf');
+        Route::get('laporan/export/absensi-guru-csv',   [LaporanController::class, 'exportAbsensiGuruCsv'])->name('laporan.export.absensi-guru-csv');
         Route::get('laporan',    [LaporanController::class,    'index'])->name('laporan.index');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
 
         // ── Write: hanya Admin ───────────────────────────────────────────────
         Route::middleware('role:Admin')->group(function () {
 
-            Route::resource('siswa',    SiswaController::class)->only(['edit', 'update', 'destroy']);
+            Route::resource('siswa',    SiswaController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('kelas',    KelasController::class, ['parameters' => ['kelas' => 'kelas']])->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('guru',     GuruController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('user',     UserController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::post('keuangan/generate', [KeuanganController::class, 'generate'])->name('keuangan.generate');
-            Route::resource('keuangan', KeuanganController::class)->only(['edit', 'update', 'destroy']);
+            Route::resource('keuangan', KeuanganController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
             Route::get('tabungan/{tabungan}/passbooks/create',    [TabunganAdminController::class, 'openPassbook'])->name('tabungan.passbook.create');
             Route::post('tabungan/{tabungan}/passbooks',          [TabunganAdminController::class, 'storePassbook'])->name('tabungan.passbook.store');
@@ -155,6 +165,8 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('raport/{id}/physical',  [AdminRaportController::class, 'updatePhysical'])->name('raport.physical');
             Route::post('raport/{id}/submit',    [AdminRaportController::class, 'submit'])->name('raport.submit');
             Route::post('raport/{id}/approve',   [AdminRaportController::class, 'approve'])->name('raport.approve');
+            Route::post('raport/{id}/photo',     [AdminRaportController::class, 'uploadPhoto'])->name('raport.photo.store');
+            Route::delete('raport/photo/{photoId}', [AdminRaportController::class, 'deletePhoto'])->name('raport.photo.destroy');
             Route::delete('raport/{id}',         [AdminRaportController::class, 'destroy'])->name('raport.destroy');
 
             Route::patch('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');

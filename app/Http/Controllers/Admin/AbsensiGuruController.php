@@ -29,6 +29,18 @@ class AbsensiGuruController extends Controller
         ));
     }
 
+    public function recap(Request $request): View
+    {
+        $selectedYear  = $request->integer('year', now()->year);
+        $selectedMonth = $request->integer('month', now()->month);
+
+        $recap = $this->attendanceService->getMonthlyRecap($selectedYear, $selectedMonth);
+
+        return view('admin.absensi-guru.recap', compact(
+            'selectedYear', 'selectedMonth', 'recap'
+        ));
+    }
+
     // Admin mencatat izin/sakit atas nama guru yang tidak bisa input sendiri.
     public function store(Request $request): RedirectResponse
     {

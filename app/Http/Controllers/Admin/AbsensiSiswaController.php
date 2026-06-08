@@ -40,6 +40,29 @@ class AbsensiSiswaController extends Controller
         ));
     }
 
+    public function recap(Request $request): View
+    {
+        $classes       = ClassRoom::orderBy('nama_kelas')->get();
+        $selectedClass = $request->integer('class_id') ?: null;
+        $selectedYear  = $request->integer('year', now()->year);
+        $selectedMonth = $request->integer('month', now()->month);
+
+        $recap     = collect();
+        $classroom = null;
+
+        if ($selectedClass) {
+            $classroom = ClassRoom::find($selectedClass);
+            $recap     = $this->attendanceService->getMonthlyRecap(
+                $selectedClass, $selectedYear, $selectedMonth
+            );
+        }
+
+        return view('admin.absensi.recap', compact(
+            'classes', 'selectedClass', 'selectedYear', 'selectedMonth',
+            'recap', 'classroom'
+        ));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

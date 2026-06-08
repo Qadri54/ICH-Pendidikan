@@ -119,6 +119,67 @@
                                       placeholder="Tulis penilaian narasi di sini..."
                                       class="w-full px-3 py-2.5 bg-[#F9FAFB] border-2 border-ich-line rounded-ich-lg
                                              font-sans text-sm focus:outline-none focus:border-ich-teal resize-none">{{ $existing?->isi_naratif }}</textarea>
+
+                            {{-- Foto narasi --}}
+                            @if($existing)
+                                @if($existing->photos->count() > 0)
+                                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-3">
+                                        @foreach($existing->photos->sortBy('urutan') as $photo)
+                                            <div class="relative group">
+                                                <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                     alt="{{ $photo->caption }}"
+                                                     class="w-full h-24 object-cover rounded-lg border border-ich-line">
+                                                @if($photo->caption)
+                                                    <p class="text-xs text-ich-ink-400 mt-1 truncate">{{ $photo->caption }}</p>
+                                                @endif
+                                                @if(! $isReadOnly && $raport->status !== 'approved')
+                                                    <form method="POST"
+                                                          action="{{ route('admin.raport.photo.destroy', $photo->photo_id) }}"
+                                                          onsubmit="return confirm('Hapus foto ini?')"
+                                                          class="absolute top-1 right-1">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit"
+                                                                class="w-6 h-6 bg-ich-error text-white rounded-full text-xs font-bold
+                                                                       opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                @if(! $isReadOnly && $raport->status !== 'approved')
+                                    </div>
+                                    <div class="bg-[#F9FAFB] rounded-xl p-4 mt-2 mb-4">
+                                        <form method="POST"
+                                              action="{{ route('admin.raport.photo.store', $raport->report_card_id) }}"
+                                              enctype="multipart/form-data"
+                                              class="flex flex-wrap items-end gap-3">
+                                            @csrf
+                                            <input type="hidden" name="narrative_id" value="{{ $existing->narrative_id }}">
+                                            <div class="flex-1 min-w-[160px]">
+                                                <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Foto</label>
+                                                <input type="file" name="photo" accept="image/*" required
+                                                       class="w-full text-sm font-sans file:mr-2 file:py-1.5 file:px-3
+                                                              file:rounded-lg file:border-0 file:text-xs file:font-bold
+                                                              file:bg-ich-teal file:text-white hover:file:opacity-90">
+                                            </div>
+                                            <div class="flex-1 min-w-[120px]">
+                                                <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Keterangan</label>
+                                                <input type="text" name="caption" placeholder="Opsional"
+                                                       class="w-full h-9 px-3 bg-white border border-ich-line rounded-lg
+                                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
+                                            </div>
+                                            <button type="submit"
+                                                    class="h-9 px-4 bg-ich-green text-white font-ui font-bold text-xs
+                                                           rounded-lg hover:bg-ich-green-dark transition-colors">
+                                                Unggah
+                                            </button>
+                                        </form>
+                                    </div>
+                                    @continue
+                                @endif
+                            @endif
                         </div>
                     @endforeach
                 </div>

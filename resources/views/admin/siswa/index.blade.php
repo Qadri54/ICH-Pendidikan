@@ -7,6 +7,13 @@
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Siswa</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $siswa->total() }} siswa</p>
         </div>
+        @if(! $isReadOnly)
+            <a href="{{ route('admin.siswa.create') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                      font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                + Tambah Siswa
+            </a>
+        @endif
     </div>
 
     {{-- Filter --}}

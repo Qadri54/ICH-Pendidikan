@@ -10,15 +10,22 @@
             </p>
         </div>
         @if(! $isReadOnly)
-            <form method="POST" action="{{ route('admin.keuangan.generate') }}"
-                  onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
-                @csrf
-                <button type="submit"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                               font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                    + Generate Tagihan Bulan Ini
-                </button>
-            </form>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.keuangan.create') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-ich-teal text-white
+                          font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-colors">
+                    + Buat Tagihan Manual
+                </a>
+                <form method="POST" action="{{ route('admin.keuangan.generate') }}"
+                      onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
+                    @csrf
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                                   font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                        + Generate Tagihan Bulan Ini
+                    </button>
+                </form>
+            </div>
         @endif
     </div>
 

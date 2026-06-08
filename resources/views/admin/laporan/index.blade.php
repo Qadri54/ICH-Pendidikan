@@ -176,10 +176,132 @@
         </div>
     </div>
 
-    {{-- Export section --}}
-    <div class="bg-white rounded-xl shadow-ich-card p-6">
+    {{-- Export Laporan --}}
+    <div class="bg-white rounded-xl shadow-ich-card p-6" x-data="{ tab: 'keuangan' }">
         <h2 class="font-ui font-bold text-ich-ink-900 mb-4">Export Laporan</h2>
-        <p class="text-sm text-ich-ink-400 font-sans">Fitur export laporan akan tersedia segera.</p>
+
+        {{-- Tab buttons --}}
+        <div class="flex gap-2 mb-5">
+            <button @click="tab = 'keuangan'" :class="tab === 'keuangan' ? 'bg-ich-green text-white' : 'bg-[#F5F6FA] text-ich-ink-500'"
+                    class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-colors">Keuangan</button>
+            <button @click="tab = 'absensi-siswa'" :class="tab === 'absensi-siswa' ? 'bg-ich-green text-white' : 'bg-[#F5F6FA] text-ich-ink-500'"
+                    class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-colors">Absensi Siswa</button>
+            <button @click="tab = 'absensi-guru'" :class="tab === 'absensi-guru' ? 'bg-ich-green text-white' : 'bg-[#F5F6FA] text-ich-ink-500'"
+                    class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-colors">Absensi Guru</button>
+        </div>
+
+        {{-- Keuangan export --}}
+        <div x-show="tab === 'keuangan'" x-cloak>
+            <p class="text-sm text-ich-ink-400 font-sans mb-4">Download laporan keuangan SPP lengkap.</p>
+            <div class="flex gap-3">
+                <a href="{{ route('admin.laporan.export.keuangan-pdf') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> PDF
+                </a>
+                <a href="{{ route('admin.laporan.export.keuangan-csv') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> CSV
+                </a>
+            </div>
+        </div>
+
+        {{-- Absensi Siswa export --}}
+        <div x-show="tab === 'absensi-siswa'" x-cloak>
+            <form id="formAbsensiSiswa" class="flex flex-wrap items-end gap-3 mb-4">
+                <div>
+                    <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Kelas</label>
+                    <select name="class_id" required
+                            class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                        <option value="">Pilih Kelas</option>
+                        @foreach($classes as $kelas)
+                            <option value="{{ $kelas->class_id }}">{{ $kelas->nama_kelas }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Bulan</label>
+                    <select name="month" required
+                            class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                        @for($m = 1; $m <= 12; $m++)
+                            <option value="{{ $m }}" {{ $m === now()->month ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::create(null, $m)->translatedFormat('F') }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Tahun</label>
+                    <input type="number" name="year" value="{{ now()->year }}" min="2020" required
+                           class="h-10 w-24 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                </div>
+            </form>
+            <div class="flex gap-3">
+                <button onclick="exportAbsensiSiswa('pdf')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> PDF
+                </button>
+                <button onclick="exportAbsensiSiswa('csv')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> CSV
+                </button>
+            </div>
+        </div>
+
+        {{-- Absensi Guru export --}}
+        <div x-show="tab === 'absensi-guru'" x-cloak>
+            <form id="formAbsensiGuru" class="flex flex-wrap items-end gap-3 mb-4">
+                <div>
+                    <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Bulan</label>
+                    <select name="month" required
+                            class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                        @for($m = 1; $m <= 12; $m++)
+                            <option value="{{ $m }}" {{ $m === now()->month ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::create(null, $m)->translatedFormat('F') }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Tahun</label>
+                    <input type="number" name="year" value="{{ now()->year }}" min="2020" required
+                           class="h-10 w-24 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                </div>
+            </form>
+            <div class="flex gap-3">
+                <button onclick="exportAbsensiGuru('pdf')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> PDF
+                </button>
+                <button onclick="exportAbsensiGuru('csv')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity">
+                    <x-ich-icon name="document" :size="16" color="currentColor"/> CSV
+                </button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function exportAbsensiSiswa(format) {
+            const form = document.getElementById('formAbsensiSiswa');
+            const classId = form.querySelector('[name=class_id]').value;
+            const month = form.querySelector('[name=month]').value;
+            const year = form.querySelector('[name=year]').value;
+            if (!classId) { alert('Pilih kelas terlebih dahulu'); return; }
+            const url = format === 'pdf'
+                ? '{{ route("admin.laporan.export.absensi-siswa-pdf") }}'
+                : '{{ route("admin.laporan.export.absensi-siswa-csv") }}';
+            window.location.href = url + '?class_id=' + classId + '&year=' + year + '&month=' + month;
+        }
+
+        function exportAbsensiGuru(format) {
+            const form = document.getElementById('formAbsensiGuru');
+            const month = form.querySelector('[name=month]').value;
+            const year = form.querySelector('[name=year]').value;
+            const url = format === 'pdf'
+                ? '{{ route("admin.laporan.export.absensi-guru-pdf") }}'
+                : '{{ route("admin.laporan.export.absensi-guru-csv") }}';
+            window.location.href = url + '?year=' + year + '&month=' + month;
+        }
+    </script>
 
 </x-main-layout>

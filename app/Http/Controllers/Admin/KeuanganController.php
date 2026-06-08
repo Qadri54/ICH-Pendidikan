@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SppInvoice;
+use App\Models\Student;
 use App\Services\Spp\SppInvoiceService;
 use App\Services\Spp\SppPaymentService;
 use Illuminate\Http\Request;
@@ -40,6 +41,29 @@ class KeuanganController extends Controller
             : "Semua siswa sudah punya tagihan untuk bulan ini.";
 
         return redirect()->route('admin.keuangan.index')->with('success', $message);
+    }
+
+    public function create()
+    {
+        $siswa = Student::with('classRoom')->orderBy('nama_siswa')->get();
+
+        return view('admin.keuangan.create', compact('siswa'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'student_id'    => 'required|exists:students,student_id',
+            'tanggal_tahun' => 'required|date',
+            'jumlah'        => 'required|integer|min:0',
+            'jatuh_tempo'   => 'required|date|after_or_equal:tanggal_tahun',
+            'status'        => 'required|in:unpaid,paid',
+        ]);
+
+        $this->invoiceService->createSingle($data);
+
+        return redirect()->route('admin.keuangan.index')
+            ->with('success', 'Tagihan SPP berhasil dibuat.');
     }
 
     public function edit(SppInvoice $keuangan)

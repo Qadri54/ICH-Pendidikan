@@ -7,6 +7,7 @@
 
     // Semua icon name mengacu ke x-ich-icon (ich-icon.blade.php)
     $adminMenu = [
+        ['label' => 'Dashboard',      'route' => 'dashboard',                         'icon' => 'grid'],
         ['label' => 'Laporan',        'route' => 'admin.laporan.index',               'icon' => 'document'],
         ['label' => 'Siswa',          'route' => 'admin.siswa.index',                 'icon' => 'user'],
         ['label' => 'Guru',           'route' => 'admin.guru.index',                  'icon' => 'users'],
