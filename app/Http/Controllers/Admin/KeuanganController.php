@@ -24,11 +24,13 @@ class KeuanganController extends Controller
         );
 
         $summary = $this->invoiceService->getSummary();
+        $siswa   = Student::with('classRoom')->orderBy('nama_siswa')->get();
 
         return view('admin.keuangan.index', [
             'invoices'      => $invoices,
             'totalTagihan'  => $summary['total_tagihan'],
             'totalLunas'    => $summary['total_lunas'],
+            'siswa'         => $siswa,
         ]);
     }
 

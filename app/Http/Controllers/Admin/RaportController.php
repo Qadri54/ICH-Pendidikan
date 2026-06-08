@@ -31,12 +31,14 @@ class RaportController extends Controller
     // Daftar raport dengan filter periode, kelas, dan status.
     public function index(Request $request): View
     {
-        $filters = $request->only(['period_id', 'class_id', 'status']);
-        $raports = $this->reportCardService->getAll($filters);
-        $periods = $this->periodService->getAll();
-        $classes = ClassRoom::orderBy('nama_kelas')->get();
+        $filters  = $request->only(['period_id', 'class_id', 'status']);
+        $raports  = $this->reportCardService->getAll($filters);
+        $periods  = $this->periodService->getAll();
+        $classes  = ClassRoom::orderBy('nama_kelas')->get();
+        $students = Student::with('classRoom')->orderBy('nama_siswa')->get();
+        $active   = $this->periodService->getActive();
 
-        return view('admin.raport.index', compact('raports', 'periods', 'classes', 'filters'));
+        return view('admin.raport.index', compact('raports', 'periods', 'classes', 'filters', 'students', 'active'));
     }
 
     // Form buat raport baru: pilih siswa + periode.

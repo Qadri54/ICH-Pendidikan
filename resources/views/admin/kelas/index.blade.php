@@ -1,5 +1,28 @@
 @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Daftar Kelas">
+<div x-data="{
+    showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
+    showEdit: {{ $errors->any() && old('_modal') === 'edit' ? 'true' : 'false' }},
+    showDelete: false,
+    editId: '{{ old('_edit_id', '') }}',
+    editNama: '{{ old('nama_kelas', '') }}',
+    editRuangan: '{{ old('nama_ruangan', '') }}',
+    editGuru: '{{ old('homeroom_teacher_id', '') }}',
+    deleteId: null,
+    deleteName: '',
+    openEdit(k) {
+        this.editId = k.class_id;
+        this.editNama = k.nama_kelas;
+        this.editRuangan = k.nama_ruangan;
+        this.editGuru = k.homeroom_teacher_id || '';
+        this.showEdit = true;
+    },
+    openDelete(id, name) {
+        this.deleteId = id;
+        this.deleteName = name;
+        this.showDelete = true;
+    }
+}">
 
     <div class="flex items-center justify-between mb-6">
         <div>
@@ -7,11 +30,11 @@
             <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $kelas->total() }} kelas</p>
         </div>
         @if(! $isReadOnly)
-            <a href="{{ route('admin.kelas.create') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                      font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+            <button @click="showCreate = true"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                           font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                 + Tambah Kelas
-            </a>
+            </button>
         @endif
     </div>
 
@@ -54,18 +77,14 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
-                                    <a href="{{ route('admin.kelas.edit', $k) }}"
-                                       class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                    <button @click="openEdit({{ Js::from(['class_id' => $k->class_id, 'nama_kelas' => $k->nama_kelas, 'nama_ruangan' => $k->nama_ruangan, 'homeroom_teacher_id' => $k->homeroom_teacher_id]) }})"
+                                            class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
-                                    </a>
-                                    <form method="POST" action="{{ route('admin.kelas.destroy', $k) }}"
-                                          onsubmit="return confirm('Hapus kelas {{ $k->nama_kelas }}?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit"
-                                                class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    </button>
+                                    <button @click="openDelete('{{ $k->class_id }}', '{{ $k->nama_kelas }}')"
+                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                        Hapus
+                                    </button>
                                 @endif
                             </div>
                         </td>
@@ -84,4 +103,114 @@
 
     <div class="mt-4">{{ $kelas->links() }}</div>
 
+    {{-- Modal Create --}}
+    <x-admin-modal show="showCreate" title="Tambah Kelas" maxWidth="md">
+        <form method="POST" action="{{ route('admin.kelas.store') }}" class="space-y-4">
+            @csrf
+            <input type="hidden" name="_modal" value="create">
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Kelas <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_kelas" value="{{ old('_modal') === 'create' ? old('nama_kelas') : '' }}" placeholder="contoh: Kelas 1A"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
+                @error('nama_kelas') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ruangan <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_ruangan" value="{{ old('_modal') === 'create' ? old('nama_ruangan') : '' }}" placeholder="contoh: Ruang Melati"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
+                @error('nama_ruangan') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Wali Kelas</label>
+                <select name="homeroom_teacher_id"
+                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Belum Ditentukan --</option>
+                    @foreach($guru as $g)
+                        <option value="{{ $g->teacher_id }}" {{ old('homeroom_teacher_id') == $g->teacher_id ? 'selected' : '' }}>
+                            {{ $g->user?->name ?? '-' }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    Simpan
+                </button>
+                <button type="button" @click="showCreate = false"
+                        class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Edit --}}
+    <x-admin-modal show="showEdit" title="Edit Kelas" maxWidth="md">
+        <form method="POST" :action="'{{ route('admin.kelas.update', ':id') }}'.replace(':id', editId)" class="space-y-4">
+            @csrf @method('PUT')
+            <input type="hidden" name="_modal" value="edit">
+            <input type="hidden" name="_edit_id" :value="editId">
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Kelas <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_kelas" x-model="editNama"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
+                @if(old('_modal') === 'edit') @error('nama_kelas') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror @endif
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ruangan <span class="text-ich-error">*</span></label>
+                <input type="text" name="nama_ruangan" x-model="editRuangan"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
+                @if(old('_modal') === 'edit') @error('nama_ruangan') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror @endif
+            </div>
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Wali Kelas</label>
+                <select name="homeroom_teacher_id" x-model="editGuru"
+                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Belum Ditentukan --</option>
+                    @foreach($guru as $g)
+                        <option value="{{ $g->teacher_id }}">{{ $g->user?->name ?? '-' }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    Perbarui
+                </button>
+                <button type="button" @click="showEdit = false"
+                        class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Delete --}}
+    <x-admin-modal show="showDelete" title="Konfirmasi Hapus" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-4">Yakin ingin menghapus kelas <strong x-text="deleteName"></strong>?</p>
+        <form method="POST" :action="'{{ route('admin.kelas.destroy', ':id') }}'.replace(':id', deleteId)">
+            @csrf @method('DELETE')
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-error text-white font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-opacity">
+                    Hapus
+                </button>
+                <button type="button" @click="showDelete = false"
+                        class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+</div>
 </x-main-layout>

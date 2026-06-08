@@ -2,18 +2,30 @@
 
     @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 
+<div x-data="{
+    showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
+    showDelete: false,
+    deleteId: null,
+    deleteName: '',
+    openDelete(id, name) {
+        this.deleteId = id;
+        this.deleteName = name;
+        this.showDelete = true;
+    }
+}">
+
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Sistem Raport</h1>
             <p class="text-sm text-ich-ink-400 mt-0.5">Kelola raport siswa per periode akademik</p>
         </div>
         @if(! $isReadOnly)
-            <a href="{{ route('admin.raport.create') }}"
-               class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                      rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+            <button @click="showCreate = true"
+                    class="flex items-center gap-2 px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                           rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                 <x-ich-icon name="plus" :size="16" color="white"/>
                 Buat Raport
-            </a>
+            </button>
         @endif
     </div>
 
@@ -156,16 +168,10 @@
                                                         Submit
                                                     </button>
                                                 </form>
-                                                <form method="POST"
-                                                      action="{{ route('admin.raport.destroy', $raport->report_card_id) }}"
-                                                      onsubmit="return confirm('Hapus raport ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                            class="text-xs font-ui font-bold text-ich-error hover:underline">
-                                                        Hapus
-                                                    </button>
-                                                </form>
+                                                <button @click="openDelete('{{ $raport->report_card_id }}', '{{ $raport->student->nama_siswa }}')"
+                                                        class="text-xs font-ui font-bold text-ich-error hover:underline">
+                                                    Hapus
+                                                </button>
                                             @endif
                                         @endif
                                     </div>
@@ -178,4 +184,56 @@
         @endif
     </div>
 
+    {{-- Modal Create --}}
+    <x-admin-modal show="showCreate" title="Buat Raport Baru" maxWidth="md">
+        <form method="POST" action="{{ route('admin.raport.store') }}" class="space-y-4">
+            @csrf
+            <input type="hidden" name="_modal" value="create">
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Siswa <span class="text-ich-error">*</span></label>
+                <select name="student_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Siswa --</option>
+                    @foreach($students as $s)
+                        <option value="{{ $s->student_id }}" {{ old('student_id') == $s->student_id ? 'selected' : '' }}>
+                            {{ $s->nama_siswa }} — {{ $s->classRoom?->nama_kelas ?? 'Tanpa kelas' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('student_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Akademik <span class="text-ich-error">*</span></label>
+                <select name="period_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    @foreach($periods as $period)
+                        <option value="{{ $period->period_id }}"
+                                {{ old('period_id', $active?->period_id) == $period->period_id ? 'selected' : '' }}>
+                            {{ $period->tahun_ajaran }} — Semester {{ $period->semester }}
+                            @if($period->is_active) (Aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Buat Raport</button>
+                <button type="button" @click="showCreate = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Delete --}}
+    <x-admin-modal show="showDelete" title="Konfirmasi Hapus" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-4">Yakin ingin menghapus raport untuk <strong x-text="deleteName"></strong>?</p>
+        <form method="POST" :action="'{{ route('admin.raport.destroy', ':id') }}'.replace(':id', deleteId)">
+            @csrf @method('DELETE')
+            <div class="flex gap-3">
+                <button type="submit" class="px-6 py-2.5 bg-ich-error text-white font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-opacity">Hapus</button>
+                <button type="button" @click="showDelete = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+</div>
 </x-main-layout>

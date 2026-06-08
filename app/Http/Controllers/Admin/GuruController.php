@@ -28,6 +28,10 @@ class GuruController extends Controller {
                 'NIP' => $t->NIP,
                 'info' => $t->subject ?? '-',
                 'model' => 'teacher',
+                'no_hp' => $t->user?->no_hp ?? '',
+                'hire_date' => $t->hire_date ?? '',
+                'subject' => $t->subject ?? '',
+                'email' => $t->user?->email ?? '',
             ]);
 
         $guruNgaji = ReligiousTeacher::with('user')
@@ -36,7 +40,7 @@ class GuruController extends Controller {
                     ->orWhere('NIP', 'like', "%{$request->search}%")
             )
             ->get()
-            ->toBase()                          // Eloquent\Collection → base Collection
+            ->toBase()
             ->map(fn($t) => (object) [
                 'id' => $t->religious_teacher_id,
                 'tipe' => 'Guru Ngaji',
@@ -44,6 +48,10 @@ class GuruController extends Controller {
                 'NIP' => $t->NIP,
                 'info' => '-',
                 'model' => 'religious_teacher',
+                'no_hp' => $t->user?->no_hp ?? '',
+                'hire_date' => $t->hire_date ?? '',
+                'subject' => '',
+                'email' => $t->user?->email ?? '',
             ]);
 
         $guru = $guruKelas->merge($guruNgaji)->sortBy('nama')->values();

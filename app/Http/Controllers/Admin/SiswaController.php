@@ -52,8 +52,10 @@ class SiswaController extends Controller
             ->paginate(15)->withQueryString();
 
         $kelas = ClassRoom::orderBy('nama_kelas')->get();
+        $parents = User::whereHas('role', fn($q) => $q->where('role_name', 'Orang Tua'))
+            ->orderBy('name')->get();
 
-        return view('admin.siswa.index', compact('siswa', 'kelas'));
+        return view('admin.siswa.index', compact('siswa', 'kelas', 'parents'));
     }
 
     public function show(Student $siswa)
