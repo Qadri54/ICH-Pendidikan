@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-        @elseif($todayRecord->check_out_time === null && $todayRecord->attendance_status === 'Masuk')
+        @elseif($todayRecord->check_out_time === null && $todayRecord->attendance_status === 'Hadir')
             {{-- Sudah check-in, belum check-out --}}
             <div class="bg-white rounded-xl shadow-ich-card p-6">
                 <div class="flex items-center gap-3 mb-5">
@@ -246,10 +246,11 @@
             <div class="bg-white rounded-xl shadow-ich-card p-6">
                 @php
                     $stCfg = match($todayRecord->attendance_status) {
-                        'Masuk' => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-[#D1FAE5]', 'label' => 'Hadir'],
-                        'Izin'  => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-[#EDE9FE]', 'label' => 'Izin'],
-                        'Sakit' => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-[#FEE2E2]', 'label' => 'Sakit'],
-                        default => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-[#F5F6FA]', 'label' => $todayRecord->attendance_status],
+                        'Hadir'             => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-[#D1FAE5]', 'label' => 'Hadir'],
+                        'Izin'              => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-[#EDE9FE]', 'label' => 'Izin'],
+                        'Sakit'             => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-[#FEE2E2]', 'label' => 'Sakit'],
+                        'Tanpa Keterangan'  => ['icon' => 'clock',        'color' => '#E09F17', 'bg' => 'bg-[#FEF5DC]', 'label' => 'Tanpa Keterangan'],
+                        default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-[#F5F6FA]', 'label' => $todayRecord->attendance_status],
                     };
                 @endphp
                 <div class="flex items-center gap-3 mb-4">
@@ -264,7 +265,7 @@
                     </div>
                 </div>
 
-                @if($todayRecord->attendance_status === 'Masuk')
+                @if($todayRecord->attendance_status === 'Hadir')
                     <div class="space-y-2 text-sm font-sans text-ich-ink-600">
                         <div class="flex justify-between">
                             <span>Check-in</span>

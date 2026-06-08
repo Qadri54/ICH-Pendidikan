@@ -44,9 +44,10 @@
                             class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
                                    font-sans text-sm focus:outline-none focus:border-ich-teal">
                         <option value="">Semua Status</option>
-                        <option value="Masuk"  {{ ($filters['status'] ?? '') === 'Masuk'  ? 'selected' : '' }}>Masuk</option>
-                        <option value="Izin"   {{ ($filters['status'] ?? '') === 'Izin'   ? 'selected' : '' }}>Izin</option>
-                        <option value="Sakit"  {{ ($filters['status'] ?? '') === 'Sakit'  ? 'selected' : '' }}>Sakit</option>
+                        <option value="Hadir"              {{ ($filters['status'] ?? '') === 'Hadir'              ? 'selected' : '' }}>Hadir</option>
+                        <option value="Izin"               {{ ($filters['status'] ?? '') === 'Izin'               ? 'selected' : '' }}>Izin</option>
+                        <option value="Sakit"              {{ ($filters['status'] ?? '') === 'Sakit'              ? 'selected' : '' }}>Sakit</option>
+                        <option value="Tanpa Keterangan"   {{ ($filters['status'] ?? '') === 'Tanpa Keterangan'   ? 'selected' : '' }}>Tanpa Keterangan</option>
                     </select>
                 </div>
                 <button type="submit"
@@ -88,10 +89,11 @@
                                         $nama  = $record->teacher?->user?->name ?? $record->religiousTeacher?->user?->name ?? '-';
                                         $tipe  = $record->teacher ? 'Guru TK' : 'Guru Ngaji';
                                         $stCfg = match($record->attendance_status) {
-                                            'Masuk' => ['label' => 'Masuk', 'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                                            'Izin'  => ['label' => 'Izin',  'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
-                                            'Sakit' => ['label' => 'Sakit', 'bg' => 'bg-[#FEE2E2]', 'text' => 'text-ich-error'],
-                                            default => ['label' => $record->attendance_status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                                            'Hadir'             => ['label' => 'Hadir',            'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
+                                            'Izin'              => ['label' => 'Izin',             'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
+                                            'Sakit'             => ['label' => 'Sakit',            'bg' => 'bg-[#FEE2E2]', 'text' => 'text-ich-error'],
+                                            'Tanpa Keterangan'  => ['label' => 'Tanpa Keterangan', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
+                                            default             => ['label' => $record->attendance_status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
                                         };
                                     @endphp
                                     <tr class="hover:bg-[#F9FAFB]">
@@ -136,7 +138,7 @@
             <div class="bg-white rounded-xl shadow-ich-card p-5">
                 <h3 class="font-ui font-bold text-ich-ink-900 mb-4">Input Absensi Guru</h3>
                 <p class="text-xs text-ich-ink-400 font-sans mb-4">
-                    Catat absensi izin/sakit atas nama guru yang tidak bisa input sendiri.
+                    Catat absensi atas nama guru yang tidak bisa input sendiri.
                 </p>
 
                 <form method="POST" action="{{ route('admin.absensi-guru.store') }}" x-data="{ tipe: 'guru' }">
@@ -187,8 +189,10 @@
                                 class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
                                        font-sans text-sm focus:outline-none focus:border-ich-teal
                                        @error('status') border-ich-error @enderror">
+                            <option value="Hadir">Hadir</option>
                             <option value="Izin">Izin</option>
                             <option value="Sakit">Sakit</option>
+                            <option value="Tanpa Keterangan">Tanpa Keterangan</option>
                         </select>
                     </div>
 

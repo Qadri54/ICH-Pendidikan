@@ -112,10 +112,10 @@ class LaporanExportService
 
         return new StreamedResponse(function () use ($recap) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['No', 'Nama Guru', 'Masuk', 'Izin', 'Sakit']);
+            fputcsv($handle, ['No', 'Nama Guru', 'Hadir', 'Izin', 'Sakit', 'Tanpa Keterangan']);
 
             foreach ($recap as $i => $row) {
-                fputcsv($handle, [$i + 1, $row['nama'], $row['masuk'], $row['izin'], $row['sakit']]);
+                fputcsv($handle, [$i + 1, $row['nama'], $row['hadir'], $row['izin'], $row['sakit'], $row['tanpa_keterangan']]);
             }
 
             fclose($handle);

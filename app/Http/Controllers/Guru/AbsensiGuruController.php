@@ -81,7 +81,7 @@ class AbsensiGuruController extends Controller
     public function izinSakit(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => 'required|in:Izin,Sakit',
+            'status' => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
         ]);
 
         [$teacherId, $religiousTeacherId] = $this->resolveIds();

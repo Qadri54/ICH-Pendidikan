@@ -48,7 +48,7 @@ class AbsensiGuruController extends Controller
             'tipe_guru'    => 'required|in:guru,guru_ngaji',
             'teacher_id'   => 'required_if:tipe_guru,guru|nullable|exists:teachers,teacher_id',
             'religious_id' => 'required_if:tipe_guru,guru_ngaji|nullable|exists:religious_teachers,religious_teacher_id',
-            'status'       => 'required|in:Izin,Sakit',
+            'status'       => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
         ]);
 
         try {

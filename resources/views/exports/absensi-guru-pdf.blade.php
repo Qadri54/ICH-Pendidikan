@@ -29,9 +29,10 @@
             <tr>
                 <th>No</th>
                 <th>Nama Guru</th>
-                <th class="text-center">Masuk</th>
+                <th class="text-center">Hadir</th>
                 <th class="text-center">Izin</th>
                 <th class="text-center">Sakit</th>
+                <th class="text-center">Tanpa Ket.</th>
             </tr>
         </thead>
         <tbody>
@@ -39,13 +40,14 @@
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $row['nama'] }}</td>
-                    <td class="text-center">{{ $row['masuk'] }}</td>
+                    <td class="text-center">{{ $row['hadir'] }}</td>
                     <td class="text-center">{{ $row['izin'] }}</td>
                     <td class="text-center">{{ $row['sakit'] }}</td>
+                    <td class="text-center">{{ $row['tanpa_keterangan'] }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center" style="padding: 20px; color: #999;">Tidak ada data absensi.</td>
+                    <td colspan="6" class="text-center" style="padding: 20px; color: #999;">Tidak ada data absensi.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -53,9 +55,10 @@
             <tfoot>
                 <tr>
                     <td colspan="2">Total</td>
-                    <td class="text-center">{{ $recap->sum('masuk') }}</td>
+                    <td class="text-center">{{ $recap->sum('hadir') }}</td>
                     <td class="text-center">{{ $recap->sum('izin') }}</td>
                     <td class="text-center">{{ $recap->sum('sakit') }}</td>
+                    <td class="text-center">{{ $recap->sum('tanpa_keterangan') }}</td>
                 </tr>
             </tfoot>
         @endif
