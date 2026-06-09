@@ -13,6 +13,7 @@ Sistem Informasi Manajemen Terintegrasi (IMS) untuk TK IQRA' Creative House, Med
 
 ## Arsitektur
 
+
 Controller-Service-Model. Controller hanya menerima request dan memanggil service — **seluruh business logic ada di service layer** (`app/Services/`).
 
 ```
@@ -127,6 +128,41 @@ User memiliki profile table terpisah per role: `admins`, `teachers`, `religious_
 
 Komponen Blade custom: `card`, `pill`, `stat-card`, `ich-button`, `ich-icon`, `section-header`, `sidebar-nav`, `mobile/drawer`, `mobile/topbar`, `mobile/tab-bar`
 
+## UI Design Conventions
+
+### Warna & Token
+- **Font families:** `font-ui` (label/tombol), `font-display` (heading), `font-sans` (body text)
+- **Ink palette:** `text-ich-ink-900` (primary), `text-ich-ink-600` (secondary), `text-ich-ink-400` (muted), `text-ich-ink-300` (disabled/empty)
+- **Card shadow:** `shadow-ich-card` untuk semua card, `hover:shadow-md` untuk interaktif
+
+### Tabel
+- Header: `bg-[#F5F6FA]` dengan `text-ich-ink-600 font-ui font-bold` — **bukan** `bg-ich-green text-white`
+- Row hover: `hover:bg-[#F5F6FA] transition-colors`
+- Divider: `divide-y divide-ich-line`
+- Empty state: `text-ich-ink-300 font-sans` centered
+
+### Halaman Admin
+- Setiap halaman admin punya **ikon header**: SVG 24x24 di dalam `div` rounded-xl dengan warna latar per modul:
+  - Guru: `bg-[#E8F5EA]` hijau | Siswa: `bg-[#F0F4FF]` biru muda | Kelas: `bg-[#EDE9FE]` ungu
+  - User: `bg-[#DBEAFE]` biru | Keuangan: `bg-[#E8F5EA]` hijau | Absensi Siswa: `bg-[#FEF5DC]` kuning
+  - Absensi Guru: `bg-[#FCE7F3]` pink | Pendaftaran: `bg-[#DBEAFE]` biru | Pembayaran: `bg-[#EDE9FE]` ungu
+  - Tabungan: `bg-[#FEF5DC]` kuning | Raport: `bg-[#EDE9FE]` ungu | Pengaturan: `bg-[#F3F4F6]` abu
+
+### Greeting Banner (Dashboard)
+- Gradient: `bg-gradient-to-br from-ich-green to-[#00785A]`
+- Avatar initials: `w-12 h-12 rounded-full bg-white/15` dengan huruf pertama nama
+- Decorative circles: `bg-white/5 rounded-full` positioned absolutely
+
+### Stat Cards
+- Icon badge: `w-12 h-12 rounded-xl` dengan warna latar per metrik
+- Hover interaktif: `hover:-translate-y-0.5 transition-all`
+
+### Status Badges
+- Pending/Menunggu: `bg-[#FEF5DC] text-[#E09F17]`
+- Sukses/Disetujui/Lunas: `bg-[#D1FAE5] text-[#009966]`
+- Error/Ditolak: `bg-[#FEE2E2] text-ich-error`
+- Info/Izin: `bg-[#EDE9FE] text-[#8B5CF6]`
+
 ## Seeders
 
 Urutan: `ClassRoomSeeder` → `UserSeeder` → `AcademicPeriodSeeder` → `DevelopmentCategorySeeder`
@@ -152,6 +188,26 @@ composer test
 # Fresh migrate + seed
 php artisan migrate:fresh --seed
 ```
+
+## ERD (Entity Relationship Diagram)
+
+ERD database tersedia dalam format Mermaid.js, dipecah per modul di `docs/erd/` sebagai file `.mmd`:
+
+| File | Modul | Tabel |
+|------|-------|-------|
+| `1_user_management.mmd` | User Management | users, roles, admins, teachers, religious_teachers, foundation_heads |
+| `2_siswa_kelas.mmd` | Siswa & Kelas | classes, students, student_attendance |
+| `3_mata_pelajaran.mmd` | Mata Pelajaran | subjects, subject_teachers, students_grades |
+| `4_ppdb.mmd` | PPDB | registrations, registration_fees, fee_installments, registration_transactions, registration_settings |
+| `5_spp.mmd` | SPP | spp_invoices, spp_payments |
+| `6_tabungan.mmd` | Tabungan Siswa | saving_ledgers, student_passbooks, saving_transactions |
+| `7_absensi_guru.mmd` | Absensi Guru | attendance_records, geofence_zones, attendance_settings |
+| `8_sistem_raport.mmd` | Sistem Raport | academic_periods, student_report_cards, narrative_assessments, narrative_photos, development_categories, student_checklist_assessments, physical_measurements, health_conditions |
+
+- File `.mmd` berisi pure Mermaid code (dimulai langsung dengan `erDiagram`) — tanpa markdown wrapper
+- File referensi lengkap (markdown): `docs/ERD_ICH_PENDIDIKAN.md`
+- Gunakan tanda hubung (`-`) bukan koma di comment string Mermaid (contoh: `"5-2"` bukan `"5,2"`)
+- Label relasi harus deskriptif dalam bahasa Indonesia (contoh: `memiliki`, `profil`, `mencatat`)
 
 ## Git Conventions
 
