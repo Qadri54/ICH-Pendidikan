@@ -58,7 +58,7 @@
                             default    => 'Menunggu',
                         };
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $p->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->user?->email ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $p->nama_siswa ?? '-' }}</td>

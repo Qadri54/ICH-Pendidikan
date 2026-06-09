@@ -53,7 +53,7 @@
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($ledgers as $l)
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $l->ledger_name }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $l->teacher?->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">

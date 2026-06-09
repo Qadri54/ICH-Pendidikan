@@ -34,7 +34,7 @@
                 </thead>
                 <tbody class="divide-y divide-ich-line">
                     @forelse($passbooks as $pb)
-                        <tr class="hover:bg-[#F5F6FA]">
+                        <tr class="hover:bg-[#F5F6FA] transition-colors">
                             <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                 {{ $pb->student?->nama_siswa ?? '-' }}
                             </td>

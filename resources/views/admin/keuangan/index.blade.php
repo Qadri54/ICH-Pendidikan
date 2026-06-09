@@ -106,7 +106,7 @@
                             : 'bg-[#FEE2E2] text-ich-error';
                         $statusRaw = $inv->status === 'Lunas' ? 'paid' : 'unpaid';
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA]">
+                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $inv->student?->nama_siswa ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $inv->student?->classRoom?->nama_kelas ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">

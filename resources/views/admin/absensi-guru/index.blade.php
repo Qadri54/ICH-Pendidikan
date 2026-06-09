@@ -101,7 +101,7 @@
                                             default             => ['label' => $record->attendance_status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
                                         };
                                     @endphp
-                                    <tr class="hover:bg-[#F9FAFB]">
+                                    <tr class="hover:bg-[#F5F6FA] transition-colors">
                                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $nama }}</td>
                                         <td class="px-4 py-3 font-sans text-ich-ink-600">{{ $tipe }}</td>
                                         <td class="px-4 py-3 font-sans text-ich-ink-600">

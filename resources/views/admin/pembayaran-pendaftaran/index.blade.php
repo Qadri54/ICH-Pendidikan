@@ -52,15 +52,15 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead>
-                    <tr class="border-b border-ich-line bg-[#F9FAFB]">
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Siswa</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Total Tagihan</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Sudah Dibayar</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Sisa Tagihan</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Status</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Bukti Terbaru</th>
-                        <th class="px-5 py-3.5 text-left font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">Aksi</th>
+                <thead class="bg-[#F5F6FA]">
+                    <tr>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Total Tagihan</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Sudah Dibayar</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Sisa Tagihan</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Status</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Bukti Terbaru</th>
+                        <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-ich-line">
@@ -76,7 +76,7 @@
                                 default        => ['label' => 'Belum Bayar', 'class' => 'bg-[#FEF5DC] text-[#E09F17]'],
                             };
                         @endphp
-                        <tr class="hover:bg-[#F9FAFB] transition-colors" x-data="{ rejectOpen: false }">
+                        <tr class="hover:bg-[#F5F6FA] transition-colors" x-data="{ rejectOpen: false }">
 
                             {{-- Siswa --}}
                             <td class="px-5 py-4">

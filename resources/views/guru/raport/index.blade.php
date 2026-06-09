@@ -112,7 +112,7 @@
                                         default     => ['label' => $raport->status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
                                     };
                                 @endphp
-                                <tr class="hover:bg-[#F9FAFB]">
+                                <tr class="hover:bg-[#F5F6FA] transition-colors">
                                     <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                         {{ $raport->student->nama_siswa }}
                                     </td>

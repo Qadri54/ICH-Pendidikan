@@ -27,7 +27,7 @@
                             @php
                                 $isActive = $ledger->status === 'Active';
                             @endphp
-                            <tr class="hover:bg-[#F5F6FA]">
+                            <tr class="hover:bg-[#F5F6FA] transition-colors">
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                     {{ $ledger->ledger_name }}
                                 </td>
