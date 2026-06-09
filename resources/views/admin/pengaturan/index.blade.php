@@ -456,7 +456,6 @@
         <div x-show="tab === 'whatsapp'" x-cloak>
             <div class="bg-white rounded-xl shadow-ich-card p-6" x-data="{
                 waEnabled: '{{ $whatsappSettings['whatsapp_enabled'] ?? 'false' }}',
-                waDriver: '{{ $whatsappSettings['whatsapp_driver'] ?? 'fonnte' }}',
             }">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="w-9 h-9 rounded-lg bg-ich-success-soft flex items-center justify-center">
@@ -472,20 +471,9 @@
                     <div class="space-y-4">
                         <div class="bg-ich-surface rounded-xl p-5">
                             <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Status</p>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-xs text-ich-ink-400 font-sans">WhatsApp</p>
-                                    <p class="font-ui font-bold text-sm {{ $waEnabled ? 'text-ich-success' : 'text-ich-ink-500' }}">
-                                        {{ $waEnabled ? 'Aktif' : 'Nonaktif' }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-ich-ink-400 font-sans">Driver</p>
-                                    <p class="font-ui font-bold text-sm text-ich-ink-900">
-                                        {{ ucfirst($whatsappSettings['whatsapp_driver'] ?? 'fonnte') }}
-                                    </p>
-                                </div>
-                            </div>
+                            <p class="font-ui font-bold text-sm {{ $waEnabled ? 'text-ich-success' : 'text-ich-ink-500' }}">
+                                {{ $waEnabled ? 'Aktif' : 'Nonaktif' }}
+                            </p>
                         </div>
                         <div class="bg-ich-blue-soft rounded-lg p-3">
                             <p class="font-sans text-xs text-ich-ink-500">
@@ -528,65 +516,9 @@
                             </div>
                         </div>
 
-                        {{-- Pilihan Driver --}}
+                        {{-- Gateway URL --}}
                         <div>
-                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Gateway Provider</p>
-                            <div class="grid grid-cols-2 gap-4">
-                                <label class="relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
-                                       :class="waDriver === 'fonnte' ? 'border-ich-teal bg-ich-teal/5' : 'border-ich-line hover:border-ich-ink-200'">
-                                    <input type="radio" name="whatsapp_driver" value="fonnte"
-                                           x-model="waDriver" class="sr-only">
-                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                                         :class="waDriver === 'fonnte' ? 'bg-ich-teal text-white' : 'bg-ich-surface text-ich-ink-400'">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-ui font-bold text-sm text-ich-ink-900">Fonnte</p>
-                                        <p class="font-sans text-xs text-ich-ink-400">API gateway cloud</p>
-                                    </div>
-                                    <div x-show="waDriver === 'fonnte'" class="absolute top-2 right-2">
-                                        <svg class="w-5 h-5 text-ich-teal" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                    </div>
-                                </label>
-
-                                <label class="relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
-                                       :class="waDriver === 'self-hosted' ? 'border-ich-teal bg-ich-teal/5' : 'border-ich-line hover:border-ich-ink-200'">
-                                    <input type="radio" name="whatsapp_driver" value="self-hosted"
-                                           x-model="waDriver" class="sr-only">
-                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                                         :class="waDriver === 'self-hosted' ? 'bg-ich-teal text-white' : 'bg-ich-surface text-ich-ink-400'">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-ui font-bold text-sm text-ich-ink-900">Self-hosted</p>
-                                        <p class="font-sans text-xs text-ich-ink-400">Server lokal (gratis)</p>
-                                    </div>
-                                    <div x-show="waDriver === 'self-hosted'" class="absolute top-2 right-2">
-                                        <svg class="w-5 h-5 text-ich-teal" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        {{-- Fonnte Config --}}
-                        <div x-show="waDriver === 'fonnte'" x-cloak>
-                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Fonnte</p>
-                            <div>
-                                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">API Token</label>
-                                <input type="text" name="fonnte_token"
-                                       value="{{ $whatsappSettings['fonnte_token'] ?? '' }}"
-                                       placeholder="Masukkan token dari dashboard Fonnte..."
-                                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
-                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
-                                <p class="font-sans text-xs text-ich-ink-400 mt-1.5">
-                                    Dapatkan token API dari <span class="font-bold">fonnte.com</span> setelah mendaftarkan nomor WhatsApp.
-                                </p>
-                            </div>
-                        </div>
-
-                        {{-- Self-hosted Config --}}
-                        <div x-show="waDriver === 'self-hosted'" x-cloak>
-                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Self-hosted</p>
+                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Gateway</p>
                             <div>
                                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">URL Gateway</label>
                                 <input type="text" name="self_hosted_url"
@@ -598,34 +530,34 @@
                                     URL server whatsapp-web.js yang berjalan di Node.js.
                                 </p>
                             </div>
+                        </div>
 
-                            {{-- QR Code Scanner --}}
-                            <div class="mt-4 bg-ich-surface rounded-xl p-5" x-data="{ qrLoading: false, qrData: null, sessionStatus: 'unknown' }">
-                                <div class="flex items-center justify-between mb-3">
-                                    <p class="font-ui font-bold text-sm text-ich-ink-700">Scan QR Code</p>
-                                    <button type="button"
-                                            @click="qrLoading = true; fetch('{{ route('admin.pengaturan.whatsapp.qr') }}').then(r => r.json()).then(d => { qrData = d.qr; sessionStatus = d.status?.status || 'unknown'; qrLoading = false; }).catch(() => { qrLoading = false; sessionStatus = 'error'; })"
-                                            class="px-3 py-1.5 text-xs font-ui font-bold bg-ich-teal/10 text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
-                                        <span x-show="!qrLoading">Muat QR</span>
-                                        <span x-show="qrLoading">Memuat...</span>
-                                    </button>
-                                </div>
-                                <div class="flex items-center gap-2 mb-3">
-                                    <div class="w-2 h-2 rounded-full"
-                                         :class="sessionStatus === 'connected' ? 'bg-ich-success' : sessionStatus === 'error' ? 'bg-ich-error' : 'bg-ich-ink-300'"></div>
-                                    <span class="font-sans text-xs text-ich-ink-500" x-text="
-                                        sessionStatus === 'connected' ? 'Terhubung' :
-                                        sessionStatus === 'error' ? 'Gagal terhubung' :
-                                        sessionStatus === 'disconnected' ? 'Terputus' : 'Belum dicek'
-                                    "></span>
-                                </div>
-                                <div x-show="qrData" class="flex justify-center p-4 bg-white rounded-lg">
-                                    <img :src="'data:image/png;base64,' + qrData" alt="QR Code" class="w-48 h-48">
-                                </div>
-                                <p x-show="!qrData && !qrLoading" class="text-center text-ich-ink-300 text-sm py-6 font-sans">
-                                    Klik "Muat QR" untuk menampilkan QR code
-                                </p>
+                        {{-- QR Code Scanner --}}
+                        <div class="bg-ich-surface rounded-xl p-5" x-data="{ qrLoading: false, qrData: null, sessionStatus: 'unknown' }">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="font-ui font-bold text-sm text-ich-ink-700">Scan QR Code</p>
+                                <button type="button"
+                                        @click="qrLoading = true; fetch('{{ route('admin.pengaturan.whatsapp.qr') }}').then(r => r.json()).then(d => { qrData = d.qr; sessionStatus = d.status?.status || 'unknown'; qrLoading = false; }).catch(() => { qrLoading = false; sessionStatus = 'error'; })"
+                                        class="px-3 py-1.5 text-xs font-ui font-bold bg-ich-teal/10 text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
+                                    <span x-show="!qrLoading">Muat QR</span>
+                                    <span x-show="qrLoading">Memuat...</span>
+                                </button>
                             </div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-2 h-2 rounded-full"
+                                     :class="sessionStatus === 'connected' ? 'bg-ich-success' : sessionStatus === 'error' ? 'bg-ich-error' : 'bg-ich-ink-300'"></div>
+                                <span class="font-sans text-xs text-ich-ink-500" x-text="
+                                    sessionStatus === 'connected' ? 'Terhubung' :
+                                    sessionStatus === 'error' ? 'Gagal terhubung' :
+                                    sessionStatus === 'disconnected' ? 'Terputus' : 'Belum dicek'
+                                "></span>
+                            </div>
+                            <div x-show="qrData" class="flex justify-center p-4 bg-white rounded-lg">
+                                <img :src="'data:image/png;base64,' + qrData" alt="QR Code" class="w-48 h-48">
+                            </div>
+                            <p x-show="!qrData && !qrLoading" class="text-center text-ich-ink-300 text-sm py-6 font-sans">
+                                Klik "Muat QR" untuk menampilkan QR code
+                            </p>
                         </div>
 
                         {{-- Info Box --}}

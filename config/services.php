@@ -36,15 +36,8 @@ return [
     ],
 
     'whatsapp' => [
-        'enabled' => env('WHATSAPP_ENABLED', false),
-        'driver'  => env('WHATSAPP_DRIVER', 'fonnte'),
-        'fonnte' => [
-            'url'   => env('FONNTE_API_URL', 'https://api.fonnte.com/send'),
-            'token' => env('FONNTE_TOKEN'),
-        ],
-        'self_hosted' => [
-            'url' => env('WHATSAPP_SELF_HOSTED_URL', 'http://localhost:3000'),
-        ],
+        'enabled'     => env('WHATSAPP_ENABLED', false),
+        'gateway_url' => env('WHATSAPP_GATEWAY_URL', 'http://localhost:3000'),
     ],
 
 ];

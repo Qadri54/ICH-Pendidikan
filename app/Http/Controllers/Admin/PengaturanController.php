@@ -116,8 +116,6 @@ class PengaturanController extends Controller
     {
         $data = $request->validate([
             'whatsapp_enabled' => 'required|in:true,false',
-            'whatsapp_driver'  => 'required|in:fonnte,self-hosted',
-            'fonnte_token'     => 'nullable|string|max:500',
             'self_hosted_url'  => 'nullable|string|max:255',
         ]);
 

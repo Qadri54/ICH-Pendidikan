@@ -21,8 +21,6 @@ return new class extends Migration
 
         DB::table('whatsapp_settings')->insert([
             ['setting_key' => 'whatsapp_enabled', 'setting_value' => 'false', 'created_at' => now(), 'updated_at' => now()],
-            ['setting_key' => 'whatsapp_driver', 'setting_value' => 'fonnte', 'created_at' => now(), 'updated_at' => now()],
-            ['setting_key' => 'fonnte_token', 'setting_value' => '', 'created_at' => now(), 'updated_at' => now()],
             ['setting_key' => 'self_hosted_url', 'setting_value' => 'http://localhost:3000', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }

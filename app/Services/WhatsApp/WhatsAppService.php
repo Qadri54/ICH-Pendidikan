@@ -27,19 +27,29 @@ class WhatsAppService
             return false;
         }
 
-        $driver = $this->getDriver();
-
         try {
-            return match ($driver) {
-                'fonnte'      => $this->sendViaFonnte($phone, $message),
-                'self-hosted' => $this->sendViaSelfHosted($phone, $message),
-                default       => false,
-            };
+            $baseUrl = $this->getGatewayUrl();
+
+            $response = Http::timeout(15)->post("{$baseUrl}/api/send", [
+                'number'  => $phone,
+                'message' => $message,
+            ]);
+
+            if ($response->failed()) {
+                Log::error('WhatsApp: gagal kirim', [
+                    'phone'  => $phone,
+                    'status' => $response->status(),
+                    'body'   => $response->body(),
+                ]);
+                return false;
+            }
+
+            Log::info('WhatsApp: pesan terkirim', ['phone' => $phone]);
+            return true;
         } catch (\Throwable $e) {
             Log::error('WhatsApp: gagal kirim pesan', [
-                'driver' => $driver,
-                'phone'  => $phone,
-                'error'  => $e->getMessage(),
+                'phone' => $phone,
+                'error' => $e->getMessage(),
             ]);
             return false;
         }
@@ -47,7 +57,7 @@ class WhatsAppService
 
     public function getSessionStatus(): array
     {
-        $baseUrl = $this->getSelfHostedUrl();
+        $baseUrl = $this->getGatewayUrl();
 
         try {
             $response = Http::timeout(5)->get("{$baseUrl}/api/status");
@@ -59,7 +69,7 @@ class WhatsAppService
 
     public function getQrCode(): ?string
     {
-        $baseUrl = $this->getSelfHostedUrl();
+        $baseUrl = $this->getGatewayUrl();
 
         try {
             $response = Http::timeout(10)->get("{$baseUrl}/api/qr");
@@ -74,67 +84,9 @@ class WhatsAppService
         return $this->send($phone, "Ini adalah pesan uji coba dari ICH Pendidikan.\nJika Anda menerima pesan ini, WhatsApp gateway telah berhasil dikonfigurasi. ✅");
     }
 
-    private function getDriver(): string
-    {
-        return WhatsAppSetting::getValue('whatsapp_driver')
-            ?? config('services.whatsapp.driver', 'fonnte');
-    }
-
-    private function getSelfHostedUrl(): string
+    private function getGatewayUrl(): string
     {
         return WhatsAppSetting::getValue('self_hosted_url')
-            ?? config('services.whatsapp.self_hosted.url', 'http://localhost:3000');
-    }
-
-    private function sendViaFonnte(string $phone, string $message): bool
-    {
-        $token = WhatsAppSetting::getValue('fonnte_token')
-            ?? config('services.whatsapp.fonnte.token');
-
-        if (empty($token)) {
-            Log::warning('WhatsApp Fonnte: token belum dikonfigurasi.');
-            return false;
-        }
-
-        $url = config('services.whatsapp.fonnte.url', 'https://api.fonnte.com/send');
-
-        $response = Http::withHeaders([
-            'Authorization' => $token,
-        ])->post($url, [
-            'target'  => $phone,
-            'message' => $message,
-        ]);
-
-        if ($response->failed()) {
-            Log::error('WhatsApp Fonnte: gagal kirim', [
-                'status' => $response->status(),
-                'body'   => $response->body(),
-            ]);
-            return false;
-        }
-
-        Log::info('WhatsApp Fonnte: pesan terkirim', ['phone' => $phone]);
-        return true;
-    }
-
-    private function sendViaSelfHosted(string $phone, string $message): bool
-    {
-        $baseUrl = $this->getSelfHostedUrl();
-
-        $response = Http::timeout(15)->post("{$baseUrl}/api/send", [
-            'number'  => $phone,
-            'message' => $message,
-        ]);
-
-        if ($response->failed()) {
-            Log::error('WhatsApp self-hosted: gagal kirim', [
-                'status' => $response->status(),
-                'body'   => $response->body(),
-            ]);
-            return false;
-        }
-
-        Log::info('WhatsApp self-hosted: pesan terkirim', ['phone' => $phone]);
-        return true;
+            ?? config('services.whatsapp.gateway_url', 'http://localhost:3000');
     }
 }
