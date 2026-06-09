@@ -1,15 +1,15 @@
 @props(['tone' => 'green', 'size' => 40])
 @php
 $tones = [
-    'green'  => 'bg-[#E8F5EA] text-[#009966]',
-    'yellow' => 'bg-[#FEF5DC] text-[#E09F17]',
-    'blue'   => 'bg-[#F4F7FC] text-[#155DFC]',
-    'brand'  => 'bg-[#EDE9FE] text-[#8B5CF6]',
-    'teal'   => 'bg-[#E0F0F5] text-ich-teal',
-    'error'  => 'bg-[#FEE2E2] text-ich-error',
-    'success'=> 'bg-[#D1FAE5] text-[#009966]',
-    'warning'=> 'bg-[#FEF5DC] text-[#E09F17]',
-    'info'   => 'bg-[#F4F7FC] text-[#155DFC]',
+    'green'  => 'bg-ich-green-surface text-ich-success',
+    'yellow' => 'bg-ich-warning-soft text-ich-warning',
+    'blue'   => 'bg-ich-info-soft text-ich-info',
+    'brand'  => 'bg-ich-purple-soft text-ich-purple',
+    'teal'   => 'bg-ich-info-soft text-ich-teal',
+    'error'  => 'bg-ich-error-soft text-ich-error',
+    'success'=> 'bg-ich-success-soft text-ich-success',
+    'warning'=> 'bg-ich-warning-soft text-ich-warning',
+    'info'   => 'bg-ich-info-soft text-ich-info',
 ];
 $cls = $tones[$tone] ?? $tones['green'];
 @endphp

@@ -22,7 +22,7 @@ $initials = strtoupper(substr($user?->name ?? 'U', 0, 1));
          @click="drawerOpen = false"></div>
 
     {{-- Panel --}}
-    <div class="absolute top-0 left-0 bottom-0 w-[280px] bg-ich-green text-white flex flex-col
+    <div class="absolute top-0 left-0 bottom-0 w-[280px] bg-ich-sidebar text-white flex flex-col
                 transition-transform duration-[220ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]"
          :style="drawerOpen ? 'transform:translateX(0);pointer-events:auto' : 'transform:translateX(-100%)'">
 
