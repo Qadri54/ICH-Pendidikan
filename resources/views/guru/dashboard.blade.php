@@ -1,7 +1,7 @@
 <x-main-layout title="Dashboard">
 
     {{-- Greeting --}}
-    <div class="bg-gradient-to-br from-ich-green to-[#00785A] rounded-2xl p-6 text-white mb-6 relative overflow-hidden">
+    <div class="bg-gradient-to-br from-ich-green to-ich-gradient-end rounded-2xl p-6 text-white mb-6 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
         <div class="absolute bottom-0 left-1/2 w-24 h-24 bg-white/5 rounded-full translate-y-1/2"></div>
         <div class="relative">
@@ -29,35 +29,35 @@
                 'desc'   => 'Check-in & check-out',
                 'icon'   => 'user_check',
                 'route'  => 'guru.absensi-guru.index',
-                'color'  => 'bg-[#E8F5EA] text-ich-green',
+                'color'  => 'bg-ich-green-surface text-ich-green',
             ],
             [
                 'label'  => 'Absensi Siswa',
                 'desc'   => 'Input kehadiran kelas',
                 'icon'   => 'calendar',
                 'route'  => 'guru.absensi.index',
-                'color'  => 'bg-[#F0F4FF] text-ich-teal',
+                'color'  => 'bg-ich-blue-soft text-ich-teal',
             ],
             [
                 'label'  => 'Raport',
                 'desc'   => 'Penilaian perkembangan',
                 'icon'   => 'book',
                 'route'  => 'guru.raport.index',
-                'color'  => 'bg-[#EDE9FE] text-[#8B5CF6]',
+                'color'  => 'bg-ich-purple-soft text-ich-purple',
             ],
             [
                 'label'  => 'Tabungan',
                 'desc'   => 'Kelola buku tabungan',
                 'icon'   => 'piggy',
                 'route'  => 'guru.tabungan.index',
-                'color'  => 'bg-[#FEF5DC] text-[#E09F17]',
+                'color'  => 'bg-ich-warning-soft text-ich-warning',
             ],
             [
                 'label'  => 'Profil',
                 'desc'   => 'Pengaturan akun',
                 'icon'   => 'settings',
                 'route'  => 'profile.edit',
-                'color'  => 'bg-[#F3F4F6] text-ich-ink-500',
+                'color'  => 'bg-gray-100 text-ich-ink-500',
             ],
         ];
         @endphp
