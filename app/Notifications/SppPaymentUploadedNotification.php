@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\WhatsAppChannel;
 use App\Models\SppPayment;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ class SppPaymentUploadedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', WhatsAppChannel::class];
     }
 
     public function toArray(object $notifiable): array
@@ -27,5 +28,15 @@ class SppPaymentUploadedNotification extends Notification
             'message'    => "{$namaSiswa} mengirim bukti pembayaran SPP sebesar Rp {$jumlah}. Menunggu konfirmasi.",
             'url'        => route('admin.keuangan.bukti-pembayaran', ['status' => 'pending']),
         ];
+    }
+
+    public function toWhatsApp(object $notifiable): string
+    {
+        $namaSiswa = $this->payment->student->nama_siswa;
+        $jumlah    = number_format($this->payment->jumlah_bayar, 0, ',', '.');
+
+        return "[ICH Admin]\n\n"
+             . "*{$namaSiswa}* mengirim bukti pembayaran SPP sebesar *Rp {$jumlah}*.\n\n"
+             . "Menunggu konfirmasi Anda.";
     }
 }

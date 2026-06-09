@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\WhatsAppChannel;
 use App\Models\Registration;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ class NewRegistrationNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', WhatsAppChannel::class];
     }
 
     public function toArray(object $notifiable): array
@@ -23,5 +24,13 @@ class NewRegistrationNotification extends Notification
             'message'           => "Pendaftaran baru dari {$this->registration->nama_siswa} ({$this->registration->jenis_pendaftaran})",
             'url'               => route('admin.pendaftaran.show', $this->registration->registration_id),
         ];
+    }
+
+    public function toWhatsApp(object $notifiable): string
+    {
+        return "[ICH Admin]\n\n"
+             . "Pendaftaran baru dari *{$this->registration->nama_siswa}* "
+             . "({$this->registration->jenis_pendaftaran}).\n\n"
+             . "Silakan cek di panel admin.";
     }
 }
