@@ -136,32 +136,32 @@ Komponen Blade custom: `card`, `pill`, `stat-card`, `ich-button`, `ich-icon`, `s
 - **Card shadow:** `shadow-ich-card` untuk semua card, `hover:shadow-md` untuk interaktif
 
 ### Tabel
-- Header: `bg-[#F5F6FA]` dengan `text-ich-ink-600 font-ui font-bold` — **bukan** `bg-ich-green text-white`
-- Row hover: `hover:bg-[#F5F6FA] transition-colors`
+- Header: `bg-ich-surface` dengan `text-ich-ink-600 font-ui font-bold` — **bukan** `bg-ich-green text-white`
+- Row hover: `hover:bg-ich-surface transition-colors`
 - Divider: `divide-y divide-ich-line`
 - Empty state: `text-ich-ink-300 font-sans` centered
 
 ### Halaman Admin
 - Setiap halaman admin punya **ikon header**: SVG 24x24 di dalam `div` rounded-xl dengan warna latar per modul:
-  - Guru: `bg-[#E8F5EA]` hijau | Siswa: `bg-[#F0F4FF]` biru muda | Kelas: `bg-[#EDE9FE]` ungu
-  - User: `bg-[#DBEAFE]` biru | Keuangan: `bg-[#E8F5EA]` hijau | Absensi Siswa: `bg-[#FEF5DC]` kuning
-  - Absensi Guru: `bg-[#FCE7F3]` pink | Pendaftaran: `bg-[#DBEAFE]` biru | Pembayaran: `bg-[#EDE9FE]` ungu
-  - Tabungan: `bg-[#FEF5DC]` kuning | Raport: `bg-[#EDE9FE]` ungu | Pengaturan: `bg-[#F3F4F6]` abu
+  - Guru: `bg-ich-green-surface` hijau | Siswa: `bg-ich-blue-soft` biru muda | Kelas: `bg-ich-purple-soft` ungu
+  - User: `bg-ich-blue-soft` biru | Keuangan: `bg-ich-green-surface` hijau | Absensi Siswa: `bg-ich-warning-soft` kuning
+  - Absensi Guru: `bg-ich-pink-soft` pink | Pendaftaran: `bg-ich-blue-soft` biru | Pembayaran: `bg-ich-purple-soft` ungu
+  - Tabungan: `bg-ich-warning-soft` kuning | Raport: `bg-ich-purple-soft` ungu | Pengaturan: `bg-gray-100` abu
 
 ### Greeting Banner (Dashboard)
-- Gradient: `bg-gradient-to-br from-ich-green to-[#00785A]`
+- Gradient: `bg-gradient-to-br from-ich-green to-ich-gradient-end`
 - Avatar initials: `w-12 h-12 rounded-full bg-white/15` dengan huruf pertama nama
 - Decorative circles: `bg-white/5 rounded-full` positioned absolutely
 
 ### Stat Cards
-- Icon badge: `w-12 h-12 rounded-xl` dengan warna latar per metrik
+- Icon badge: `w-12 h-12 rounded-xl` dengan warna latar per metrik (gunakan token: `bg-ich-green-surface`, `bg-ich-info-soft`, `bg-ich-warning-soft`, `bg-ich-purple-soft`)
 - Hover interaktif: `hover:-translate-y-0.5 transition-all`
 
-### Status Badges
-- Pending/Menunggu: `bg-[#FEF5DC] text-[#E09F17]`
-- Sukses/Disetujui/Lunas: `bg-[#D1FAE5] text-[#009966]`
-- Error/Ditolak: `bg-[#FEE2E2] text-ich-error`
-- Info/Izin: `bg-[#EDE9FE] text-[#8B5CF6]`
+### Status Badges (gunakan komponen `<x-pill>`)
+- Pending/Menunggu: `bg-ich-warning-soft text-ich-warning`
+- Sukses/Disetujui/Lunas: `bg-ich-success-soft text-ich-success`
+- Error/Ditolak: `bg-ich-error-soft text-ich-error`
+- Info/Izin: `bg-ich-purple-soft text-ich-purple`
 
 ## Seeders
 
