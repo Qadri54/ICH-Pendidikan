@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicPeriod;
 use App\Models\AttendanceSetting;
 use App\Models\RegistrationSetting;
+use App\Models\WhatsAppSetting;
 use App\Services\Attendance\GeofenceService;
+use App\Services\WhatsApp\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,8 +25,9 @@ class PengaturanController extends Controller
         $semesters           = AcademicPeriod::orderByDesc('tahun_ajaran')
                                     ->orderByDesc('semester')
                                     ->get();
+        $whatsappSettings    = WhatsAppSetting::getAll();
 
-        return view('admin.pengaturan.index', compact('settings', 'registrationSetting', 'semesters'));
+        return view('admin.pengaturan.index', compact('settings', 'registrationSetting', 'semesters', 'whatsappSettings'));
     }
 
     public function update(Request $request)
@@ -107,5 +110,43 @@ class PengaturanController extends Controller
 
         return redirect()->route('admin.pengaturan.index')
             ->with('success', 'Semester berhasil dihapus.');
+    }
+
+    public function updateWhatsApp(Request $request)
+    {
+        $data = $request->validate([
+            'whatsapp_enabled' => 'required|in:true,false',
+            'whatsapp_driver'  => 'required|in:fonnte,self-hosted',
+            'fonnte_token'     => 'nullable|string|max:500',
+            'self_hosted_url'  => 'nullable|string|max:255',
+        ]);
+
+        foreach ($data as $key => $value) {
+            WhatsAppSetting::updateOrCreate(
+                ['setting_key' => $key],
+                ['setting_value' => $value ?? '']
+            );
+        }
+
+        return redirect()->route('admin.pengaturan.index')
+            ->with('success', 'Pengaturan WhatsApp berhasil disimpan.');
+    }
+
+    public function testWhatsApp(Request $request, WhatsAppService $whatsAppService)
+    {
+        $request->validate(['test_phone' => 'required|string']);
+
+        $success = $whatsAppService->testSend($request->test_phone);
+
+        return redirect()->route('admin.pengaturan.index')
+            ->with($success ? 'success' : 'error', $success ? 'Pesan uji coba berhasil dikirim!' : 'Gagal mengirim pesan. Periksa konfigurasi.');
+    }
+
+    public function whatsappQr(WhatsAppService $whatsAppService)
+    {
+        return response()->json([
+            'qr'     => $whatsAppService->getQrCode(),
+            'status' => $whatsAppService->getSessionStatus(),
+        ]);
     }
 }

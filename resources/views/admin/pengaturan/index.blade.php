@@ -7,7 +7,7 @@
         </div>
         <div>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pengaturan Sistem</h1>
-            <p class="text-sm text-ich-ink-400 mt-0.5">Kelola konfigurasi pendaftaran, semester, dan absensi</p>
+            <p class="text-sm text-ich-ink-400 mt-0.5">Kelola konfigurasi pendaftaran, semester, absensi, dan WhatsApp</p>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
     <div x-data="{ tab: 'pendaftaran' }" class="max-w-4xl">
 
         {{-- Status Overview Cards --}}
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div class="bg-white rounded-xl shadow-ich-card p-4 flex items-center gap-4 cursor-pointer hover:ring-2 hover:ring-ich-teal/30 transition-all"
                  @click="tab = 'pendaftaran'">
                 <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0
@@ -67,6 +67,23 @@
                     </p>
                 </div>
             </div>
+
+            @php $waEnabled = filter_var($whatsappSettings['whatsapp_enabled'] ?? 'false', FILTER_VALIDATE_BOOLEAN); @endphp
+            <div class="bg-white rounded-xl shadow-ich-card p-4 flex items-center gap-4 cursor-pointer hover:ring-2 hover:ring-ich-teal/30 transition-all"
+                 @click="tab = 'whatsapp'">
+                <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0
+                            {{ $waEnabled ? 'bg-ich-success-soft' : 'bg-gray-100' }}">
+                    <svg class="w-5 h-5 {{ $waEnabled ? 'text-ich-success' : 'text-ich-ink-400' }}" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wider">WhatsApp</p>
+                    <p class="text-sm font-display font-bold {{ $waEnabled ? 'text-ich-success' : 'text-ich-ink-500' }}">
+                        {{ $waEnabled ? 'Aktif' : 'Nonaktif' }}
+                    </p>
+                </div>
+            </div>
         </div>
 
         {{-- Tab Navigation --}}
@@ -88,6 +105,12 @@
                     class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-ui font-bold text-sm transition-all">
                 <x-ich-icon name="user_check" :size="16"/>
                 Geofence
+            </button>
+            <button @click="tab = 'whatsapp'" type="button"
+                    :class="tab === 'whatsapp' ? 'bg-ich-teal text-white shadow-sm' : 'text-ich-ink-500 hover:bg-ich-surface'"
+                    class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-ui font-bold text-sm transition-all">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
             </button>
         </div>
 
@@ -425,6 +448,222 @@
                             Simpan Pengaturan
                         </button>
                     </form>
+                @endif
+            </div>
+        </div>
+
+        {{-- Tab: WhatsApp --}}
+        <div x-show="tab === 'whatsapp'" x-cloak>
+            <div class="bg-white rounded-xl shadow-ich-card p-6" x-data="{
+                waEnabled: '{{ $whatsappSettings['whatsapp_enabled'] ?? 'false' }}',
+                waDriver: '{{ $whatsappSettings['whatsapp_driver'] ?? 'fonnte' }}',
+            }">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-9 h-9 rounded-lg bg-ich-success-soft flex items-center justify-center">
+                        <svg class="w-[18px] h-[18px] text-ich-success" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="font-display font-bold text-ich-ink-900">Notifikasi WhatsApp</h2>
+                        <p class="text-xs text-ich-ink-400 font-sans">Kirim notifikasi otomatis ke WhatsApp orang tua & admin</p>
+                    </div>
+                </div>
+
+                @if($isReadOnly)
+                    <div class="space-y-4">
+                        <div class="bg-ich-surface rounded-xl p-5">
+                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Status</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs text-ich-ink-400 font-sans">WhatsApp</p>
+                                    <p class="font-ui font-bold text-sm {{ $waEnabled ? 'text-ich-success' : 'text-ich-ink-500' }}">
+                                        {{ $waEnabled ? 'Aktif' : 'Nonaktif' }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-ich-ink-400 font-sans">Driver</p>
+                                    <p class="font-ui font-bold text-sm text-ich-ink-900">
+                                        {{ ucfirst($whatsappSettings['whatsapp_driver'] ?? 'fonnte') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-ich-blue-soft rounded-lg p-3">
+                            <p class="font-sans text-xs text-ich-ink-500">
+                                Anda tidak memiliki akses untuk mengubah pengaturan ini.
+                            </p>
+                        </div>
+                    </div>
+                @else
+                    <form method="POST" action="{{ route('admin.pengaturan.whatsapp.update') }}" class="space-y-6">
+                        @csrf
+
+                        {{-- Toggle Aktif/Nonaktif --}}
+                        <div class="bg-ich-surface rounded-xl p-5">
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center"
+                                         :class="waEnabled === 'true' ? 'bg-ich-success-soft' : 'bg-gray-200'">
+                                        <svg class="w-6 h-6" :class="waEnabled === 'true' ? 'text-ich-success' : 'text-ich-ink-400'" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-display font-bold text-lg"
+                                           :class="waEnabled === 'true' ? 'text-ich-success' : 'text-ich-ink-500'">
+                                            <span x-show="waEnabled === 'true'">WhatsApp Aktif</span>
+                                            <span x-show="waEnabled !== 'true'">WhatsApp Nonaktif</span>
+                                        </p>
+                                        <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                                            <span x-show="waEnabled === 'true'">Notifikasi akan dikirim ke WhatsApp.</span>
+                                            <span x-show="waEnabled !== 'true'">Notifikasi hanya tersimpan di aplikasi.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <button type="button"
+                                        @click="waEnabled = waEnabled === 'true' ? 'false' : 'true'"
+                                        class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors"
+                                        :class="waEnabled === 'true' ? 'bg-ich-green' : 'bg-ich-ink-300'">
+                                    <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-transform"
+                                          :class="waEnabled === 'true' ? 'translate-x-7' : 'translate-x-1'"></span>
+                                </button>
+                                <input type="hidden" name="whatsapp_enabled" :value="waEnabled">
+                            </div>
+                        </div>
+
+                        {{-- Pilihan Driver --}}
+                        <div>
+                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Gateway Provider</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
+                                       :class="waDriver === 'fonnte' ? 'border-ich-teal bg-ich-teal/5' : 'border-ich-line hover:border-ich-ink-200'">
+                                    <input type="radio" name="whatsapp_driver" value="fonnte"
+                                           x-model="waDriver" class="sr-only">
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                                         :class="waDriver === 'fonnte' ? 'bg-ich-teal text-white' : 'bg-ich-surface text-ich-ink-400'">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-ui font-bold text-sm text-ich-ink-900">Fonnte</p>
+                                        <p class="font-sans text-xs text-ich-ink-400">API gateway cloud</p>
+                                    </div>
+                                    <div x-show="waDriver === 'fonnte'" class="absolute top-2 right-2">
+                                        <svg class="w-5 h-5 text-ich-teal" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    </div>
+                                </label>
+
+                                <label class="relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
+                                       :class="waDriver === 'self-hosted' ? 'border-ich-teal bg-ich-teal/5' : 'border-ich-line hover:border-ich-ink-200'">
+                                    <input type="radio" name="whatsapp_driver" value="self-hosted"
+                                           x-model="waDriver" class="sr-only">
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                                         :class="waDriver === 'self-hosted' ? 'bg-ich-teal text-white' : 'bg-ich-surface text-ich-ink-400'">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-ui font-bold text-sm text-ich-ink-900">Self-hosted</p>
+                                        <p class="font-sans text-xs text-ich-ink-400">Server lokal (gratis)</p>
+                                    </div>
+                                    <div x-show="waDriver === 'self-hosted'" class="absolute top-2 right-2">
+                                        <svg class="w-5 h-5 text-ich-teal" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        {{-- Fonnte Config --}}
+                        <div x-show="waDriver === 'fonnte'" x-cloak>
+                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Fonnte</p>
+                            <div>
+                                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">API Token</label>
+                                <input type="text" name="fonnte_token"
+                                       value="{{ $whatsappSettings['fonnte_token'] ?? '' }}"
+                                       placeholder="Masukkan token dari dashboard Fonnte..."
+                                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
+                                <p class="font-sans text-xs text-ich-ink-400 mt-1.5">
+                                    Dapatkan token API dari <span class="font-bold">fonnte.com</span> setelah mendaftarkan nomor WhatsApp.
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Self-hosted Config --}}
+                        <div x-show="waDriver === 'self-hosted'" x-cloak>
+                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Self-hosted</p>
+                            <div>
+                                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">URL Gateway</label>
+                                <input type="text" name="self_hosted_url"
+                                       value="{{ $whatsappSettings['self_hosted_url'] ?? 'http://localhost:3000' }}"
+                                       placeholder="http://localhost:3000"
+                                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
+                                <p class="font-sans text-xs text-ich-ink-400 mt-1.5">
+                                    URL server whatsapp-web.js yang berjalan di Node.js.
+                                </p>
+                            </div>
+
+                            {{-- QR Code Scanner --}}
+                            <div class="mt-4 bg-ich-surface rounded-xl p-5" x-data="{ qrLoading: false, qrData: null, sessionStatus: 'unknown' }">
+                                <div class="flex items-center justify-between mb-3">
+                                    <p class="font-ui font-bold text-sm text-ich-ink-700">Scan QR Code</p>
+                                    <button type="button"
+                                            @click="qrLoading = true; fetch('{{ route('admin.pengaturan.whatsapp.qr') }}').then(r => r.json()).then(d => { qrData = d.qr; sessionStatus = d.status?.status || 'unknown'; qrLoading = false; }).catch(() => { qrLoading = false; sessionStatus = 'error'; })"
+                                            class="px-3 py-1.5 text-xs font-ui font-bold bg-ich-teal/10 text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
+                                        <span x-show="!qrLoading">Muat QR</span>
+                                        <span x-show="qrLoading">Memuat...</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <div class="w-2 h-2 rounded-full"
+                                         :class="sessionStatus === 'connected' ? 'bg-ich-success' : sessionStatus === 'error' ? 'bg-ich-error' : 'bg-ich-ink-300'"></div>
+                                    <span class="font-sans text-xs text-ich-ink-500" x-text="
+                                        sessionStatus === 'connected' ? 'Terhubung' :
+                                        sessionStatus === 'error' ? 'Gagal terhubung' :
+                                        sessionStatus === 'disconnected' ? 'Terputus' : 'Belum dicek'
+                                    "></span>
+                                </div>
+                                <div x-show="qrData" class="flex justify-center p-4 bg-white rounded-lg">
+                                    <img :src="'data:image/png;base64,' + qrData" alt="QR Code" class="w-48 h-48">
+                                </div>
+                                <p x-show="!qrData && !qrLoading" class="text-center text-ich-ink-300 text-sm py-6 font-sans">
+                                    Klik "Muat QR" untuk menampilkan QR code
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Info Box --}}
+                        <div class="bg-ich-blue-soft rounded-lg p-3">
+                            <p class="font-sans text-xs text-ich-ink-500">
+                                <strong>Info:</strong> Notifikasi WhatsApp dikirim otomatis saat terjadi event: tagihan jatuh tempo, pendaftaran baru, dan upload bukti pembayaran. Notifikasi database (in-app) tetap berjalan meskipun WhatsApp dinonaktifkan.
+                            </p>
+                        </div>
+
+                        <button type="submit"
+                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Simpan Pengaturan
+                        </button>
+                    </form>
+
+                    {{-- Test Message Section --}}
+                    <div class="border-t border-ich-line pt-6 mt-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <svg class="w-4 h-4 text-ich-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            <p class="font-ui font-bold text-sm text-ich-ink-700">Kirim Pesan Uji Coba</p>
+                        </div>
+                        <form method="POST" action="{{ route('admin.pengaturan.whatsapp.test') }}" class="flex gap-3">
+                            @csrf
+                            <input type="text" name="test_phone"
+                                   placeholder="08123456789"
+                                   class="flex-1 h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
+                                          font-sans text-sm focus:outline-none focus:border-ich-teal">
+                            <button type="submit"
+                                    class="px-5 py-2.5 bg-ich-teal text-white font-ui font-bold text-sm
+                                           rounded-ich-lg hover:bg-ich-teal-dark transition-colors whitespace-nowrap">
+                                Kirim Test
+                            </button>
+                        </form>
+                        <p class="font-sans text-xs text-ich-ink-400 mt-1.5">
+                            Masukkan nomor HP untuk mengirim pesan percobaan. Format: 08xxx atau 628xxx.
+                        </p>
+                    </div>
                 @endif
             </div>
         </div>
