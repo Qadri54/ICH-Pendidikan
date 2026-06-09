@@ -8,21 +8,21 @@
    ICH Pendidikan — Design Tokens
    ============================================================ */
 :root {
-  --ich-green:          #3DA746;
-  --ich-green-dark:     #2F8537;
-  --ich-green-soft:     #51B059;
-  --ich-green-faint:    rgba(68, 252, 81, 0.25);
-  --ich-green-surface:  #E8F5EA;
+  --ich-green:          #4A9E5C;
+  --ich-green-dark:     #3B8249;
+  --ich-green-soft:     #6DB578;
+  --ich-green-faint:    rgba(74, 158, 92, 0.15);
+  --ich-green-surface:  #EEF6F0;
 
-  --ich-teal:           #3087A2;
-  --ich-teal-dark:      #246A80;
+  --ich-teal:           #3A8FA8;
+  --ich-teal-dark:      #2E7A90;
 
-  --ich-yellow:         #FDB625;
-  --ich-yellow-dark:    #E09F17;
+  --ich-yellow:         #F5A623;
+  --ich-yellow-dark:    #D9961A;
   --ich-yellow-soft:    #FEF5DC;
 
   --ich-blue:           #155DFC;
-  --ich-blue-soft:      #4880FF;
+  --ich-blue-soft:      #DBEAFE;
   --ich-blue-surface:   #F4F7FC;
 
   --ich-error:          #E7000B;
@@ -33,6 +33,15 @@
 
   --ich-purple:         #8B5CF6;
   --ich-purple-soft:    #EDE9FE;
+
+  --ich-warning:        #D9961A;
+  --ich-warning-soft:   #FEF5DC;
+
+  --ich-info:           #155DFC;
+  --ich-info-soft:      #F4F7FC;
+
+  --ich-pink-soft:      #FCE7F3;
+  --ich-gradient-end:   #2D7A5E;
 
   --ink-900: #101828;
   --ink-800: #1E2939;
@@ -58,7 +67,7 @@
   --r-full: 9999px;
 
   --shadow-card: 0 1px 3px rgba(89,96,120,0.1), 0 1px 2px rgba(70,79,96,0.06);
-  --shadow-lift: 0 4px 4px rgba(0,0,0,0.25);
+  --shadow-lift: 0 4px 4px rgba(0,0,0,0.08);
 }
 
 /* ── Mobile app base ── */
