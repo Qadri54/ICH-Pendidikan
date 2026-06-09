@@ -24,7 +24,7 @@
         @foreach($tabs as $tab)
             @php
                 $isActive = Route::has($tab['route']) && request()->routeIs($tab['route'] . '*');
-                $color = $isActive ? '#3DA746' : '#99A1AF';
+                $color = $isActive ? '#4A9E5C' : '#99A1AF';
             @endphp
             <a href="{{ Route::has($tab['route']) ? route($tab['route']) : '#' }}"
                 class="flex flex-col items-center gap-[3px] py-1 px-3.5 shrink-0 no-underline">

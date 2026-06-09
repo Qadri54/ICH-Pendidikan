@@ -10,7 +10,7 @@
     <div class="lg:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
          style="background-image: url('{{ asset('images/hero-students.jpg') }}')"></div>
     {{-- Mobile-only: #51B059 green overlay at 60% --}}
-    <div class="lg:hidden absolute inset-0" style="background:#51B059;opacity:0.6"></div>
+    <div class="lg:hidden absolute inset-0" style="background: var(--ich-green-soft); opacity: 0.45"></div>
 
     {{-- Content container --}}
     <div class="relative z-10 lg:static flex flex-col flex-1 lg:flex-none

@@ -20,7 +20,7 @@
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
              style="background-image: url('{{ asset('images/hero-students.jpg') }}')"></div>
         {{-- Green wash --}}
-        <div class="absolute inset-0" style="background:#3DA746;opacity:0.65"></div>
+        <div class="absolute inset-0" style="background: var(--ich-green); opacity: 0.55"></div>
 
         {{-- Brand content --}}
         <div class="relative z-10 flex flex-col items-center text-center px-12 gap-5">
@@ -48,7 +48,7 @@
     {{-- Mobile  : flex justify-center → centers the 430px slot container --}}
     {{-- Desktop : flex-1, white gradient, centers slot vertically --}}
     <div class="flex justify-center
-                lg:flex-1 lg:bg-gradient-to-b lg:from-white lg:to-[#e8f5ea]
+                lg:flex-1 lg:bg-gradient-to-b lg:from-white lg:to-ich-green-surface
                 lg:flex lg:items-center lg:justify-center lg:overflow-y-auto">
 
         {{-- Slot wrapper --}}
