@@ -9,7 +9,7 @@
         </div>
         @php
             $jenisLabel = $pendaftaran->jenis_pendaftaran === 'TK' ? 'PG / TK ICH' : 'Magrib Mengaji';
-            $jenisBg    = $pendaftaran->jenis_pendaftaran === 'TK' ? 'bg-[#EDE9FE] text-[#8B5CF6]' : 'bg-[#FEF5DC] text-[#E09F17]';
+            $jenisBg    = $pendaftaran->jenis_pendaftaran === 'TK' ? 'bg-ich-purple-soft text-ich-purple' : 'bg-ich-warning-soft text-ich-warning';
         @endphp
         <span class="px-3 py-1.5 rounded-full text-xs font-ui font-bold {{ $jenisBg }}">
             {{ $jenisLabel }}
@@ -104,9 +104,9 @@
             <h2 class="font-ui font-bold text-ich-ink-900 mb-4">Update Status</h2>
             @php
                 $statusColor = match($pendaftaran->status) {
-                    'accepted' => 'bg-[#D1FAE5] text-[#009966]',
-                    'rejected' => 'bg-[#FEE2E2] text-ich-error',
-                    default    => 'bg-[#FEF5DC] text-[#E09F17]',
+                    'accepted' => 'bg-ich-success-soft text-ich-success',
+                    'rejected' => 'bg-ich-error-soft text-ich-error',
+                    default    => 'bg-ich-warning-soft text-ich-warning',
                 };
                 $statusLabel = match($pendaftaran->status) {
                     'accepted' => 'Diterima',
@@ -135,7 +135,7 @@
                     <div x-show="!showReject">
                         <button type="button" @click="showReject = true"
                                 class="w-full py-2.5 bg-white border-2 border-ich-error text-ich-error font-ui font-bold text-sm
-                                       rounded-ich-lg hover:bg-[#FEE2E2] transition-colors">
+                                       rounded-ich-lg hover:bg-ich-error-soft transition-colors">
                             Tolak Pendaftaran
                         </button>
                     </div>
@@ -170,7 +170,7 @@
             @else
                 <p class="text-sm text-ich-ink-400 font-sans">Status sudah final, tidak dapat diubah.</p>
                 @if($pendaftaran->status === 'rejected' && $pendaftaran->rejection_reason)
-                    <div class="mt-3 p-3 bg-[#FEE2E2] rounded-lg">
+                    <div class="mt-3 p-3 bg-ich-error-soft rounded-lg">
                         <p class="font-ui font-bold text-xs text-ich-error mb-1">Alasan Penolakan:</p>
                         <p class="font-sans text-sm text-ich-ink-900">{{ $pendaftaran->rejection_reason }}</p>
                     </div>

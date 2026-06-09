@@ -6,7 +6,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
@@ -34,7 +34,7 @@
                         @csrf
 
                         {{-- Header kolom --}}
-                        <div class="px-5 py-2 bg-[#F5F6FA] flex items-center gap-4 text-xs font-ui font-bold text-ich-ink-500">
+                        <div class="px-5 py-2 bg-ich-surface flex items-center gap-4 text-xs font-ui font-bold text-ich-ink-500">
                             <div class="flex-1">Nama Siswa</div>
                             <div class="w-[280px] grid grid-cols-4 text-center">
                                 <span>Hadir</span>
@@ -53,11 +53,11 @@
                                         @if($existing)
                                             @php
                                                 $statusCfg = match($existing->status) {
-                                                    'hadir'             => ['label' => 'Hadir',             'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                                                    'izin'              => ['label' => 'Izin',              'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
-                                                    'sakit'             => ['label' => 'Sakit',             'bg' => 'bg-[#FEE2E2]', 'text' => 'text-ich-error'],
-                                                    'tanpa keterangan'  => ['label' => 'Tanpa Keterangan',  'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
-                                                    default             => ['label' => $existing->status,   'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                                                    'hadir'             => ['label' => 'Hadir',             'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                                                    'izin'              => ['label' => 'Izin',              'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
+                                                    'sakit'             => ['label' => 'Sakit',             'bg' => 'bg-ich-error-soft', 'text' => 'text-ich-error'],
+                                                    'tanpa keterangan'  => ['label' => 'Tanpa Keterangan',  'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                                                    default             => ['label' => $existing->status,   'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                                                 };
                                             @endphp
                                             <span class="text-xs font-ui font-bold px-2 py-0.5 rounded-full mt-0.5 inline-block
@@ -126,7 +126,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="font-sans text-sm text-ich-ink-600">Izin</span>
-                            <span class="font-ui font-bold text-[#8B5CF6]">
+                            <span class="font-ui font-bold text-ich-purple">
                                 {{ $todayAbsences->where('status', 'izin')->count() }}
                             </span>
                         </div>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="font-sans text-sm text-ich-ink-600">Tanpa Ket.</span>
-                            <span class="font-ui font-bold text-[#E09F17]">
+                            <span class="font-ui font-bold text-ich-warning">
                                 {{ $todayAbsences->where('status', 'tanpa keterangan')->count() }}
                             </span>
                         </div>

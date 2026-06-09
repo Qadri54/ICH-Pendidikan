@@ -2,10 +2,10 @@
 
     {{-- Closed notice --}}
     @unless($isRegistrationOpen)
-        <div class="bg-[#FEF5DC] rounded-xl p-5 flex items-start gap-3 mb-5">
+        <div class="bg-ich-warning-soft rounded-xl p-5 flex items-start gap-3 mb-5">
             <x-ich-icon name="clock" :size="24" color="#E09F17"/>
             <div>
-                <p class="font-ui font-bold text-sm text-[#E09F17]">Pendaftaran Sedang Ditutup</p>
+                <p class="font-ui font-bold text-sm text-ich-warning">Pendaftaran Sedang Ditutup</p>
                 <p class="font-sans text-xs text-ich-ink-600 mt-1">
                     Pendaftaran saat ini belum dibuka. Anda tidak dapat mengirim formulir pendaftaran.
                 </p>
@@ -14,7 +14,7 @@
     @endunless
 
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif

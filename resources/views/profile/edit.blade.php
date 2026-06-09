@@ -9,13 +9,13 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
 <x-dynamic-component :component="$layout" title="Profil Saya" page-title="Profil Saya">
 
     @if(session('status') === 'profile-updated')
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold"
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold"
              x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition>
             Profil berhasil diperbarui.
         </div>
     @endif
     @if(session('status') === 'password-updated')
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold"
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold"
              x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition>
             Password berhasil diperbarui.
         </div>
@@ -43,14 +43,14 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
                 </div>
 
                 <div class="grid {{ $isMobile ? 'grid-cols-2' : 'grid-cols-3' }} gap-3 mt-5">
-                    <div class="bg-[#F5F6FA] rounded-lg p-3">
+                    <div class="bg-ich-surface rounded-lg p-3">
                         <div class="flex items-center gap-2 mb-1">
                             <x-ich-icon name="mail" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Email</span>
                         </div>
                         <p class="text-sm font-sans text-ich-ink-900 truncate">{{ $user->email }}</p>
                     </div>
-                    <div class="bg-[#F5F6FA] rounded-lg p-3">
+                    <div class="bg-ich-surface rounded-lg p-3">
                         <div class="flex items-center gap-2 mb-1">
                             <x-ich-icon name="phone" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">No. HP</span>
@@ -58,7 +58,7 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
                         <p class="text-sm font-sans text-ich-ink-900">{{ $user->no_hp ?: '-' }}</p>
                     </div>
                     @unless($isMobile)
-                    <div class="bg-[#F5F6FA] rounded-lg p-3">
+                    <div class="bg-ich-surface rounded-lg p-3">
                         <div class="flex items-center gap-2 mb-1">
                             <x-ich-icon name="calendar" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Bergabung</span>
@@ -76,19 +76,19 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
             {{-- Tab Navigation --}}
             <div class="flex gap-1 bg-white rounded-xl shadow-ich-card p-1.5 mb-4">
                 <button @click="tab = 'profil'" type="button"
-                        :class="tab === 'profil' ? 'bg-ich-teal text-white shadow-sm' : 'text-ich-ink-500 hover:bg-[#F5F6FA]'"
+                        :class="tab === 'profil' ? 'bg-ich-teal text-white shadow-sm' : 'text-ich-ink-500 hover:bg-ich-surface'"
                         class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-ui font-bold text-sm transition-all">
                     <x-ich-icon name="user" :size="16"/>
                     <span>Informasi</span>
                 </button>
                 <button @click="tab = 'password'" type="button"
-                        :class="tab === 'password' ? 'bg-ich-teal text-white shadow-sm' : 'text-ich-ink-500 hover:bg-[#F5F6FA]'"
+                        :class="tab === 'password' ? 'bg-ich-teal text-white shadow-sm' : 'text-ich-ink-500 hover:bg-ich-surface'"
                         class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-ui font-bold text-sm transition-all">
                     <x-ich-icon name="lock" :size="16"/>
                     <span>Password</span>
                 </button>
                 <button @click="tab = 'hapus'" type="button"
-                        :class="tab === 'hapus' ? 'bg-ich-error text-white shadow-sm' : 'text-ich-ink-500 hover:bg-[#F5F6FA]'"
+                        :class="tab === 'hapus' ? 'bg-ich-error text-white shadow-sm' : 'text-ich-ink-500 hover:bg-ich-surface'"
                         class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-ui font-bold text-sm transition-all">
                     <x-ich-icon name="alert" :size="16"/>
                     <span>Hapus Akun</span>
@@ -194,7 +194,7 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
             <div x-show="tab === 'password'" x-cloak>
                 <div class="bg-white rounded-xl shadow-ich-card p-6">
                     <div class="flex items-center gap-3 mb-5">
-                        <div class="w-9 h-9 rounded-lg bg-[#EDE9FE] flex items-center justify-center">
+                        <div class="w-9 h-9 rounded-lg bg-ich-purple-soft flex items-center justify-center">
                             <x-ich-icon name="lock" :size="18" color="#8B5CF6"/>
                         </div>
                         <div>

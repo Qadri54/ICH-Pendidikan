@@ -24,7 +24,7 @@
 
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#E8F5EA] flex items-center justify-center">
+            <div class="w-11 h-11 rounded-xl bg-ich-green-surface flex items-center justify-center">
                 <svg class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </div>
             <div>
@@ -70,7 +70,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">{{ session('success') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -87,7 +87,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
@@ -102,11 +102,11 @@
                 @forelse($invoices as $inv)
                     @php
                         $statusColor = $inv->status === 'Lunas'
-                            ? 'bg-[#D1FAE5] text-[#009966]'
-                            : 'bg-[#FEE2E2] text-ich-error';
+                            ? 'bg-ich-success-soft text-ich-success'
+                            : 'bg-ich-error-soft text-ich-error';
                         $statusRaw = $inv->status === 'Lunas' ? 'paid' : 'unpaid';
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $inv->student?->nama_siswa ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $inv->student?->classRoom?->nama_kelas ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">
@@ -125,11 +125,11 @@
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
                                     <button @click="openEdit({{ Js::from(['invoice_id' => $inv->invoice_id, 'nama_siswa' => $inv->student?->nama_siswa ?? '-', 'status_raw' => $statusRaw]) }})"
-                                            class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
                                     </button>
                                     <button @click="openDelete('{{ $inv->invoice_id }}', '{{ $inv->student?->nama_siswa ?? '-' }}')"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                         Hapus
                                     </button>
                                 @endif
@@ -208,7 +208,7 @@
             <input type="hidden" name="_modal" value="edit">
             <input type="hidden" name="_edit_id" :value="editId">
 
-            <div class="px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-semibold" x-text="'Siswa: ' + editSiswa"></div>
+            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-semibold" x-text="'Siswa: ' + editSiswa"></div>
 
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status</label>

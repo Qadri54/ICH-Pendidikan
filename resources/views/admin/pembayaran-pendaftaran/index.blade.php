@@ -2,8 +2,8 @@
 <x-main-layout title="Pembayaran Pendaftaran">
 
     <div class="mb-6 flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl bg-[#EDE9FE] flex items-center justify-center">
-            <svg class="w-5 h-5 text-[#8B5CF6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        <div class="w-11 h-11 rounded-xl bg-ich-purple-soft flex items-center justify-center">
+            <svg class="w-5 h-5 text-ich-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
         </div>
         <div>
             <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pembayaran Pendaftaran</h1>
@@ -12,7 +12,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-5 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-5 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
@@ -52,7 +52,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-[#F5F6FA]">
+                <thead class="bg-ich-surface">
                     <tr>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Total Tagihan</th>
@@ -71,12 +71,12 @@
                             $pendingTx  = $fee->transactions->firstWhere('status', 'pending');
 
                             $feeCfg = match($fee->status) {
-                                'paid'         => ['label' => 'Lunas',       'class' => 'bg-[#D1FAE5] text-[#009966]'],
-                                'installments' => ['label' => 'Cicilan',     'class' => 'bg-[#EDE9FE] text-[#8B5CF6]'],
-                                default        => ['label' => 'Belum Bayar', 'class' => 'bg-[#FEF5DC] text-[#E09F17]'],
+                                'paid'         => ['label' => 'Lunas',       'class' => 'bg-ich-success-soft text-ich-success'],
+                                'installments' => ['label' => 'Cicilan',     'class' => 'bg-ich-purple-soft text-ich-purple'],
+                                default        => ['label' => 'Belum Bayar', 'class' => 'bg-ich-warning-soft text-ich-warning'],
                             };
                         @endphp
-                        <tr class="hover:bg-[#F5F6FA] transition-colors" x-data="{ rejectOpen: false }">
+                        <tr class="hover:bg-ich-surface transition-colors" x-data="{ rejectOpen: false }">
 
                             {{-- Siswa --}}
                             <td class="px-5 py-4">
@@ -91,18 +91,18 @@
                             </td>
 
                             {{-- Sudah Dibayar --}}
-                            <td class="px-5 py-4 font-ui font-bold text-sm text-[#009966]">
+                            <td class="px-5 py-4 font-ui font-bold text-sm text-ich-success">
                                 Rp {{ number_format($totalPaid, 0, ',', '.') }}
                             </td>
 
                             {{-- Sisa Tagihan --}}
                             <td class="px-5 py-4">
                                 @if($remaining > 0)
-                                    <span class="font-ui font-bold text-sm text-[#E09F17]">
+                                    <span class="font-ui font-bold text-sm text-ich-warning">
                                         Rp {{ number_format($remaining, 0, ',', '.') }}
                                     </span>
                                 @else
-                                    <span class="font-ui font-bold text-sm text-[#009966]">Lunas</span>
+                                    <span class="font-ui font-bold text-sm text-ich-success">Lunas</span>
                                 @endif
                             </td>
 
@@ -137,7 +137,7 @@
                                         @endif
                                     </div>
                                 @elseif($fee->status === 'paid')
-                                    <span class="text-xs text-[#009966] font-ui font-semibold">—</span>
+                                    <span class="text-xs text-ich-success font-ui font-semibold">—</span>
                                 @else
                                     <span class="text-xs text-ich-ink-400 font-sans italic">Belum ada bukti</span>
                                 @endif

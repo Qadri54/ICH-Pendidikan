@@ -14,8 +14,8 @@
 
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#FEF5DC] flex items-center justify-center">
-                <svg class="w-5 h-5 text-[#E09F17]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <div class="w-11 h-11 rounded-xl bg-ich-warning-soft flex items-center justify-center">
+                <svg class="w-5 h-5 text-ich-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </div>
             <div>
                 <h1 class="text-2xl font-display font-bold text-ich-ink-900">Tabungan Siswa</h1>
@@ -32,16 +32,16 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">{{ session('success') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">{{ session('error') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">{{ session('error') }}</div>
     @endif
 
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Guru PJ</th>
@@ -53,7 +53,7 @@
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($ledgers as $l)
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $l->ledger_name }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $l->teacher?->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">
@@ -64,19 +64,19 @@
                         </td>
                         <td class="px-4 py-3 text-center">
                             <span class="px-2.5 py-1 font-ui font-bold text-xs rounded-full
-                                {{ $l->status === 'Aktif' ? 'bg-[#D1FAE5] text-[#009966]' : 'bg-[#F3F4F6] text-ich-ink-500' }}">
+                                {{ $l->status === 'Aktif' ? 'bg-ich-success-soft text-ich-success' : 'bg-gray-100 text-ich-ink-500' }}">
                                 {{ $l->status }}
                             </span>
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 <a href="{{ route('admin.tabungan.show', $l) }}"
-                                   class="px-2.5 py-1 bg-[#F4F7FC] text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
+                                   class="px-2.5 py-1 bg-ich-info-soft text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
                                     Detail
                                 </a>
                                 @if(! $isReadOnly)
                                     <button @click="openDelete('{{ $l->ledger_id }}', '{{ $l->ledger_name }}')"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                         Hapus
                                     </button>
                                 @endif

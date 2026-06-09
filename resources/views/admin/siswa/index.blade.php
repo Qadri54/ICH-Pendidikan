@@ -46,7 +46,7 @@
 
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#F0F4FF] flex items-center justify-center">
+            <div class="w-11 h-11 rounded-xl bg-ich-blue-soft flex items-center justify-center">
                 <svg class="w-5 h-5 text-ich-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
             </div>
             <div>
@@ -64,7 +64,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">{{ session('success') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -85,7 +85,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIS</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Siswa</th>
@@ -98,11 +98,11 @@
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($siswa as $s)
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-sans text-ich-ink-500">{{ $s->NIS }}</td>
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $s->nama_siswa }}</td>
                         <td class="px-4 py-3">
-                            <span class="px-2 py-1 bg-[#E8F5EA] text-ich-green font-ui font-bold text-xs rounded-full">{{ $s->classRoom?->nama_kelas ?? '-' }}</span>
+                            <span class="px-2 py-1 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full">{{ $s->classRoom?->nama_kelas ?? '-' }}</span>
                         </td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $s->jenis_kelamin }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $s->nama_ayah }}</td>
@@ -110,16 +110,16 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 <button @click="openDetail({{ Js::from(['NIS' => $s->NIS, 'nama_siswa' => $s->nama_siswa, 'kelas' => $s->classRoom?->nama_kelas ?? '-', 'jenis_kelamin' => $s->jenis_kelamin, 'tanggal_lahir' => $s->tanggal_lahir ? \Carbon\Carbon::parse($s->tanggal_lahir)->format('d M Y') : '-', 'tempat_lahir' => $s->tempat_lahir, 'nama_ayah' => $s->nama_ayah, 'nama_ibu' => $s->nama_ibu]) }})"
-                                        class="px-2.5 py-1 bg-[#F4F7FC] text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
+                                        class="px-2.5 py-1 bg-ich-info-soft text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
                                     Detail
                                 </button>
                                 @if(! $isReadOnly)
                                     <button @click="openEdit({{ Js::from(['student_id' => $s->student_id, 'nama_siswa' => $s->nama_siswa, 'NIS' => $s->NIS, 'class_id' => $s->class_id, 'jenis_kelamin' => $s->jenis_kelamin, 'tanggal_lahir' => $s->tanggal_lahir?->format('Y-m-d'), 'tempat_lahir' => $s->tempat_lahir, 'nama_ayah' => $s->nama_ayah, 'nama_ibu' => $s->nama_ibu]) }})"
-                                            class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
                                     </button>
                                     <button @click="openDelete('{{ $s->student_id }}', '{{ $s->nama_siswa }}')"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                         Hapus
                                     </button>
                                 @endif

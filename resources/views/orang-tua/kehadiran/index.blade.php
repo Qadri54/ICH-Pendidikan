@@ -34,7 +34,7 @@
                         <p class="text-[10px] font-ui font-semibold text-ich-ink-400 mt-0.5">Hadir</p>
                     </div>
                     <div class="bg-white rounded-xl shadow-ich-card p-3 text-center">
-                        <p class="text-lg font-display font-bold text-[#8B5CF6]">{{ $summary['izin'] }}</p>
+                        <p class="text-lg font-display font-bold text-ich-purple">{{ $summary['izin'] }}</p>
                         <p class="text-[10px] font-ui font-semibold text-ich-ink-400 mt-0.5">Izin</p>
                     </div>
                     <div class="bg-white rounded-xl shadow-ich-card p-3 text-center">
@@ -42,7 +42,7 @@
                         <p class="text-[10px] font-ui font-semibold text-ich-ink-400 mt-0.5">Sakit</p>
                     </div>
                     <div class="bg-white rounded-xl shadow-ich-card p-3 text-center">
-                        <p class="text-lg font-display font-bold text-[#E09F17]">{{ $summary['tanpa_keterangan'] }}</p>
+                        <p class="text-lg font-display font-bold text-ich-warning">{{ $summary['tanpa_keterangan'] }}</p>
                         <p class="text-[10px] font-ui font-semibold text-ich-ink-400 mt-0.5">Alfa</p>
                     </div>
                 </div>
@@ -66,11 +66,11 @@
                             @foreach($records as $rec)
                                 @php
                                     $statusCfg = match($rec->status) {
-                                        'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]'],
-                                        'izin'             => ['label'=>'Izin',             'bg'=>'bg-[#EDE9FE]','text'=>'text-[#8B5CF6]'],
-                                        'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-[#FEE2E2]','text'=>'text-ich-error'],
-                                        'tanpa keterangan' => ['label'=>'Alfa',             'bg'=>'bg-[#FEF5DC]','text'=>'text-[#E09F17]'],
-                                        default            => ['label'=>$rec->status,       'bg'=>'bg-[#F5F6FA]','text'=>'text-ich-ink-400'],
+                                        'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-ich-success-soft','text'=>'text-ich-success'],
+                                        'izin'             => ['label'=>'Izin',             'bg'=>'bg-ich-purple-soft','text'=>'text-ich-purple'],
+                                        'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-ich-error-soft','text'=>'text-ich-error'],
+                                        'tanpa keterangan' => ['label'=>'Alfa',             'bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning'],
+                                        default            => ['label'=>$rec->status,       'bg'=>'bg-ich-surface','text'=>'text-ich-ink-400'],
                                     };
                                 @endphp
                                 <div class="px-5 py-3 flex items-center justify-between">

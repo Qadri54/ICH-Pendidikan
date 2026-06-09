@@ -47,7 +47,7 @@
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-[#F5F6FA]">
+                    <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600 w-12">No</th>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Siswa</th>
@@ -61,20 +61,20 @@
                     <tbody class="divide-y divide-ich-line">
                         @forelse($recap as $i => $item)
                             @php $total = ($item['hadir'] ?? 0) + $item['izin'] + $item['sakit'] + $item['tanpa_keterangan']; @endphp
-                            <tr class="hover:bg-[#F5F6FA] transition-colors">
+                            <tr class="hover:bg-ich-surface transition-colors">
                                 <td class="px-4 py-3 text-ich-ink-400">{{ $i + 1 }}</td>
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $item['nama'] }}</td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-0.5 bg-[#D1FAE5] text-[#009966] font-ui font-bold text-xs rounded-full">{{ $item['hadir'] ?? 0 }}</span>
+                                    <span class="px-2 py-0.5 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded-full">{{ $item['hadir'] ?? 0 }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-0.5 bg-[#EDE9FE] text-[#8B5CF6] font-ui font-bold text-xs rounded-full">{{ $item['izin'] }}</span>
+                                    <span class="px-2 py-0.5 bg-ich-purple-soft text-ich-purple font-ui font-bold text-xs rounded-full">{{ $item['izin'] }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-0.5 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded-full">{{ $item['sakit'] }}</span>
+                                    <span class="px-2 py-0.5 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded-full">{{ $item['sakit'] }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-0.5 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded-full">{{ $item['tanpa_keterangan'] }}</span>
+                                    <span class="px-2 py-0.5 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded-full">{{ $item['tanpa_keterangan'] }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-center font-ui font-bold text-ich-ink-900">{{ $total }}</td>
                             </tr>

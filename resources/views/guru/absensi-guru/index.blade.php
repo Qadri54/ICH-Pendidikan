@@ -6,13 +6,13 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
 
     @if($errors->has('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ $errors->first('error') }}
         </div>
     @endif
@@ -23,7 +23,7 @@
             {{-- Belum absen hari ini --}}
             <div class="bg-white rounded-xl shadow-ich-card p-6 mb-5">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-full bg-[#FEF5DC] flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full bg-ich-warning-soft flex items-center justify-center">
                         <x-ich-icon name="clock" :size="20" color="#E09F17"/>
                     </div>
                     <div>
@@ -38,14 +38,14 @@
                         <button @click="tab = 'checkin'" type="button"
                                 :class="tab === 'checkin'
                                     ? 'bg-ich-green text-white'
-                                    : 'bg-[#F5F6FA] text-ich-ink-600'"
+                                    : 'bg-ich-surface text-ich-ink-600'"
                                 class="flex-1 py-2 text-xs font-ui font-bold rounded-lg transition-colors">
                             Check-in GPS
                         </button>
                         <button @click="tab = 'izin'" type="button"
                                 :class="tab === 'izin'
                                     ? 'bg-ich-green text-white'
-                                    : 'bg-[#F5F6FA] text-ich-ink-600'"
+                                    : 'bg-ich-surface text-ich-ink-600'"
                                 class="flex-1 py-2 text-xs font-ui font-bold rounded-lg transition-colors">
                             Izin / Sakit
                         </button>
@@ -77,7 +77,7 @@
                          }">
 
                         @if(! $zone)
-                            <div class="bg-[#FEF5DC] rounded-lg p-3 text-xs font-sans text-[#E09F17]">
+                            <div class="bg-ich-warning-soft rounded-lg p-3 text-xs font-sans text-ich-warning">
                                 Titik koordinat sekolah belum dikonfigurasi. Hubungi admin.
                             </div>
                         @else
@@ -103,7 +103,7 @@
                                 </div>
 
                                 {{-- Lokasi --}}
-                                <div class="mb-4 p-3 bg-[#F5F6FA] rounded-lg text-xs font-sans">
+                                <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
                                     <template x-if="lat">
                                         <p class="text-ich-green font-semibold">
                                             Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
@@ -120,7 +120,7 @@
 
                                 <div class="flex gap-2">
                                     <button @click.prevent="getLocation()" type="button"
-                                            class="flex-1 py-2.5 bg-[#F0F4FF] text-ich-teal font-ui font-bold text-sm
+                                            class="flex-1 py-2.5 bg-ich-blue-soft text-ich-teal font-ui font-bold text-sm
                                                    rounded-ich-lg border-2 border-ich-teal/20 transition-colors
                                                    hover:bg-ich-teal/10"
                                             :disabled="loading">
@@ -152,13 +152,13 @@
                                 <div class="flex gap-3">
                                     <label class="flex-1 flex items-center gap-2 cursor-pointer p-3 rounded-lg
                                                   border-2 border-ich-line has-[:checked]:border-[#8B5CF6]
-                                                  has-[:checked]:bg-[#EDE9FE] transition-colors">
+                                                  has-[:checked]:bg-ich-purple-soft transition-colors">
                                         <input type="radio" name="status" value="Izin" class="accent-[#8B5CF6]">
                                         <span class="font-ui font-bold text-sm">Izin</span>
                                     </label>
                                     <label class="flex-1 flex items-center gap-2 cursor-pointer p-3 rounded-lg
                                                   border-2 border-ich-line has-[:checked]:border-ich-error
-                                                  has-[:checked]:bg-[#FEE2E2] transition-colors">
+                                                  has-[:checked]:bg-ich-error-soft transition-colors">
                                         <input type="radio" name="status" value="Sakit" class="accent-ich-error">
                                         <span class="font-ui font-bold text-sm">Sakit</span>
                                     </label>
@@ -178,7 +178,7 @@
             {{-- Sudah check-in, belum check-out --}}
             <div class="bg-white rounded-xl shadow-ich-card p-6">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-full bg-[#D1FAE5] flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full bg-ich-success-soft flex items-center justify-center">
                         <x-ich-icon name="check_circle" :size="20" color="#009966"/>
                     </div>
                     <div>
@@ -186,7 +186,7 @@
                         <p class="font-sans text-xs text-ich-ink-400">
                             {{ $todayRecord->check_in_time->format('H:i') }} WIB
                             @if($todayRecord->is_within_geofence === 'ya')
-                                · <span class="text-[#009966]">Dalam area</span>
+                                · <span class="text-ich-success">Dalam area</span>
                             @elseif($todayRecord->is_within_geofence === 'tidak')
                                 · <span class="text-ich-error">Di luar area</span>
                             @endif
@@ -212,7 +212,7 @@
                         <input type="hidden" name="latitude"  :value="lat">
                         <input type="hidden" name="longitude" :value="lng">
 
-                        <div class="mb-4 p-3 bg-[#F5F6FA] rounded-lg text-xs font-sans">
+                        <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
                             <template x-if="lat">
                                 <p class="text-ich-green font-semibold">
                                     Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
@@ -225,7 +225,7 @@
 
                         <div class="flex gap-2">
                             <button @click.prevent="getLocation()" type="button"
-                                    class="flex-1 py-2.5 bg-[#F0F4FF] text-ich-teal font-ui font-bold text-sm
+                                    class="flex-1 py-2.5 bg-ich-blue-soft text-ich-teal font-ui font-bold text-sm
                                            rounded-ich-lg border-2 border-ich-teal/20 hover:bg-ich-teal/10">
                                 <span x-text="loading ? 'Mengambil...' : 'Ambil Lokasi'"></span>
                             </button>
@@ -246,11 +246,11 @@
             <div class="bg-white rounded-xl shadow-ich-card p-6">
                 @php
                     $stCfg = match($todayRecord->attendance_status) {
-                        'Hadir'             => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-[#D1FAE5]', 'label' => 'Hadir'],
-                        'Izin'              => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-[#EDE9FE]', 'label' => 'Izin'],
-                        'Sakit'             => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-[#FEE2E2]', 'label' => 'Sakit'],
-                        'Tanpa Keterangan'  => ['icon' => 'clock',        'color' => '#E09F17', 'bg' => 'bg-[#FEF5DC]', 'label' => 'Tanpa Keterangan'],
-                        default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-[#F5F6FA]', 'label' => $todayRecord->attendance_status],
+                        'Hadir'             => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-ich-success-soft', 'label' => 'Hadir'],
+                        'Izin'              => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-ich-purple-soft', 'label' => 'Izin'],
+                        'Sakit'             => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-ich-error-soft', 'label' => 'Sakit'],
+                        'Tanpa Keterangan'  => ['icon' => 'clock',        'color' => '#E09F17', 'bg' => 'bg-ich-warning-soft', 'label' => 'Tanpa Keterangan'],
+                        default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-ich-surface', 'label' => $todayRecord->attendance_status],
                     };
                 @endphp
                 <div class="flex items-center gap-3 mb-4">
@@ -277,7 +277,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span>Geofence</span>
-                            <span class="font-semibold {{ $todayRecord->is_within_geofence === 'ya' ? 'text-[#009966]' : 'text-ich-error' }}">
+                            <span class="font-semibold {{ $todayRecord->is_within_geofence === 'ya' ? 'text-ich-success' : 'text-ich-error' }}">
                                 {{ $todayRecord->is_within_geofence === 'ya' ? 'Dalam Area' : 'Di Luar Area' }}
                             </span>
                         </div>

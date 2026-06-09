@@ -16,7 +16,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">{{ session('success') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -34,7 +34,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
@@ -53,13 +53,13 @@
                 @forelse($payments as $p)
                     @php
                         $statusCfg = match($p->status) {
-                            'pending'   => ['label' => 'Menunggu',  'class' => 'bg-[#FEF5DC] text-[#E09F17]'],
-                            'paid'      => ['label' => 'Disetujui', 'class' => 'bg-[#D1FAE5] text-[#009966]'],
-                            'cancelled' => ['label' => 'Ditolak',   'class' => 'bg-[#FEE2E2] text-ich-error'],
+                            'pending'   => ['label' => 'Menunggu',  'class' => 'bg-ich-warning-soft text-ich-warning'],
+                            'paid'      => ['label' => 'Disetujui', 'class' => 'bg-ich-success-soft text-ich-success'],
+                            'cancelled' => ['label' => 'Ditolak',   'class' => 'bg-ich-error-soft text-ich-error'],
                             default     => ['label' => $p->status,  'class' => 'bg-gray-100 text-gray-600'],
                         };
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $p->student?->nama_siswa ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->student?->classRoom?->nama_kelas ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">
@@ -100,7 +100,7 @@
                                               onsubmit="return confirm('Setujui pembayaran ini?')">
                                             @csrf
                                             <button type="submit"
-                                                    class="px-2.5 py-1 bg-[#D1FAE5] text-[#009966] font-ui font-bold text-xs rounded hover:bg-ich-green hover:text-white transition-colors">
+                                                    class="px-2.5 py-1 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded hover:bg-ich-green hover:text-white transition-colors">
                                                 Setujui
                                             </button>
                                         </form>
@@ -108,7 +108,7 @@
                                               onsubmit="return confirm('Tolak pembayaran ini?')">
                                             @csrf
                                             <button type="submit"
-                                                    class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                                    class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                                 Tolak
                                             </button>
                                         </form>

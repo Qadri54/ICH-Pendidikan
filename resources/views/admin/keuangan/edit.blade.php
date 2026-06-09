@@ -7,7 +7,7 @@
     </div>
 
     <div class="max-w-md bg-white rounded-xl shadow-ich-card p-6">
-        <div class="mb-4 px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
+        <div class="mb-4 px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
             Siswa: {{ $keuangan->student?->nama_siswa }}
         </div>
 

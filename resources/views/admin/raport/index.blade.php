@@ -16,8 +16,8 @@
 
     <div class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#EDE9FE] flex items-center justify-center">
-                <svg class="w-5 h-5 text-[#8B5CF6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <div class="w-11 h-11 rounded-xl bg-ich-purple-soft flex items-center justify-center">
+                <svg class="w-5 h-5 text-ich-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
                 <h1 class="text-2xl font-display font-bold text-ich-ink-900">Sistem Raport</h1>
@@ -35,13 +35,13 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
 
     @if($errors->has('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ $errors->first('error') }}
         </div>
     @endif
@@ -110,7 +110,7 @@
         @else
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-[#F5F6FA]">
+                    <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Siswa</th>
                             <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Kelas</th>
@@ -123,13 +123,13 @@
                         @foreach($raports as $raport)
                             @php
                                 $stCfg = match($raport->status) {
-                                    'draft'     => ['label' => 'Draft',      'bg' => 'bg-[#F5F6FA]',  'text' => 'text-ich-ink-500'],
-                                    'submitted' => ['label' => 'Disubmit',   'bg' => 'bg-[#FEF5DC]',  'text' => 'text-[#E09F17]'],
-                                    'approved'  => ['label' => 'Disetujui',  'bg' => 'bg-[#D1FAE5]',  'text' => 'text-[#009966]'],
-                                    default     => ['label' => $raport->status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                                    'draft'     => ['label' => 'Draft',      'bg' => 'bg-ich-surface',  'text' => 'text-ich-ink-500'],
+                                    'submitted' => ['label' => 'Disubmit',   'bg' => 'bg-ich-warning-soft',  'text' => 'text-ich-warning'],
+                                    'approved'  => ['label' => 'Disetujui',  'bg' => 'bg-ich-success-soft',  'text' => 'text-ich-success'],
+                                    default     => ['label' => $raport->status, 'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                                 };
                             @endphp
-                            <tr class="hover:bg-[#F5F6FA] transition-colors">
+                            <tr class="hover:bg-ich-surface transition-colors">
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                     {{ $raport->student->nama_siswa }}
                                 </td>
@@ -158,7 +158,7 @@
                                                       onsubmit="return confirm('Setujui raport ini?')">
                                                     @csrf
                                                     <button type="submit"
-                                                            class="text-xs font-ui font-bold text-[#009966] hover:underline">
+                                                            class="text-xs font-ui font-bold text-ich-success hover:underline">
                                                         Setujui
                                                     </button>
                                                 </form>
@@ -169,7 +169,7 @@
                                                       onsubmit="return confirm('Submit raport ini?')">
                                                     @csrf
                                                     <button type="submit"
-                                                            class="text-xs font-ui font-bold text-[#E09F17] hover:underline">
+                                                            class="text-xs font-ui font-bold text-ich-warning hover:underline">
                                                         Submit
                                                     </button>
                                                 </form>

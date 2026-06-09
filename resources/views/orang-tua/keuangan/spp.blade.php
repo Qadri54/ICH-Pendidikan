@@ -6,7 +6,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
@@ -45,9 +45,9 @@
                         @foreach($invoices as $invoice)
                             @php
                                 $invCfg = match($invoice->status) {
-                                    'pending' => ['label' => 'Menunggu',    'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
-                                    'overdue' => ['label' => 'Terlambat',   'bg' => 'bg-[#FEE2E2]', 'text' => 'text-ich-error'],
-                                    default   => ['label' => 'Belum Bayar', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
+                                    'pending' => ['label' => 'Menunggu',    'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
+                                    'overdue' => ['label' => 'Terlambat',   'bg' => 'bg-ich-error-soft', 'text' => 'text-ich-error'],
+                                    default   => ['label' => 'Belum Bayar', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
                                 };
                             @endphp
                             <div x-data="{ open: false }" class="px-5 py-4">
@@ -75,7 +75,7 @@
                                 </div>
 
                                 @if($invoice->status === 'pending')
-                                    <p class="mt-2 font-sans text-xs text-[#8B5CF6] flex items-center gap-1">
+                                    <p class="mt-2 font-sans text-xs text-ich-purple flex items-center gap-1">
                                         <x-ich-icon name="clock" :size="13" color="#8B5CF6"/>
                                         Bukti dikirim, menunggu konfirmasi admin
                                     </p>

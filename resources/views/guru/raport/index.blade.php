@@ -26,13 +26,13 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
 
     @if($errors->has('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ $errors->first('error') }}
         </div>
     @endif
@@ -94,7 +94,7 @@
             @else
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-[#F5F6FA]">
+                        <thead class="bg-ich-surface">
                             <tr>
                                 <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Siswa</th>
                                 <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Periode</th>
@@ -106,13 +106,13 @@
                             @foreach($raports as $raport)
                                 @php
                                     $stCfg = match($raport->status) {
-                                        'draft'     => ['label' => 'Draft',    'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-500'],
-                                        'submitted' => ['label' => 'Disubmit', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
-                                        'approved'  => ['label' => 'Disetujui','bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                                        default     => ['label' => $raport->status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                                        'draft'     => ['label' => 'Draft',    'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-500'],
+                                        'submitted' => ['label' => 'Disubmit', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                                        'approved'  => ['label' => 'Disetujui','bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                                        default     => ['label' => $raport->status, 'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                                     };
                                 @endphp
-                                <tr class="hover:bg-[#F5F6FA] transition-colors">
+                                <tr class="hover:bg-ich-surface transition-colors">
                                     <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                         {{ $raport->student->nama_siswa }}
                                     </td>
@@ -139,7 +139,7 @@
                                                       onsubmit="return confirm('Submit raport ini untuk persetujuan admin?')">
                                                     @csrf
                                                     <button type="submit"
-                                                            class="text-xs font-ui font-bold text-[#E09F17] hover:underline">
+                                                            class="text-xs font-ui font-bold text-ich-warning hover:underline">
                                                         Submit
                                                     </button>
                                                 </form>
@@ -162,7 +162,7 @@
             @csrf
             <input type="hidden" name="_modal" value="create">
 
-            <div class="px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
+            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
                 Kelas {{ $classroom->nama_kelas }}
             </div>
 

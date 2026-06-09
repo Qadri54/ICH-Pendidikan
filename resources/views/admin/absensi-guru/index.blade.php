@@ -3,8 +3,8 @@
 
     <div class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#FCE7F3] flex items-center justify-center">
-                <svg class="w-5 h-5 text-[#EC4899]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <div class="w-11 h-11 rounded-xl bg-ich-pink-soft flex items-center justify-center">
+                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             </div>
             <div>
                 <h1 class="text-2xl font-display font-bold text-ich-ink-900">Absensi Guru</h1>
@@ -18,13 +18,13 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
 
     @if($errors->has('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ $errors->first('error') }}
         </div>
     @endif
@@ -77,7 +77,7 @@
                 @else
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
-                            <thead class="bg-[#F5F6FA]">
+                            <thead class="bg-ich-surface">
                                 <tr>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Nama Guru</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Tipe</th>
@@ -94,14 +94,14 @@
                                         $nama  = $record->teacher?->user?->name ?? $record->religiousTeacher?->user?->name ?? '-';
                                         $tipe  = $record->teacher ? 'Guru TK' : 'Guru Ngaji';
                                         $stCfg = match($record->attendance_status) {
-                                            'Hadir'             => ['label' => 'Hadir',            'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                                            'Izin'              => ['label' => 'Izin',             'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
-                                            'Sakit'             => ['label' => 'Sakit',            'bg' => 'bg-[#FEE2E2]', 'text' => 'text-ich-error'],
-                                            'Tanpa Keterangan'  => ['label' => 'Tanpa Keterangan', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
-                                            default             => ['label' => $record->attendance_status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                                            'Hadir'             => ['label' => 'Hadir',            'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                                            'Izin'              => ['label' => 'Izin',             'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
+                                            'Sakit'             => ['label' => 'Sakit',            'bg' => 'bg-ich-error-soft', 'text' => 'text-ich-error'],
+                                            'Tanpa Keterangan'  => ['label' => 'Tanpa Keterangan', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                                            default             => ['label' => $record->attendance_status, 'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                                         };
                                     @endphp
-                                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                                    <tr class="hover:bg-ich-surface transition-colors">
                                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $nama }}</td>
                                         <td class="px-4 py-3 font-sans text-ich-ink-600">{{ $tipe }}</td>
                                         <td class="px-4 py-3 font-sans text-ich-ink-600">
@@ -115,7 +115,7 @@
                                         </td>
                                         <td class="px-4 py-3">
                                             @if($record->is_within_geofence === 'ya')
-                                                <span class="text-xs font-ui font-bold text-[#009966]">Dalam Area</span>
+                                                <span class="text-xs font-ui font-bold text-ich-success">Dalam Area</span>
                                             @elseif($record->is_within_geofence === 'tidak')
                                                 <span class="text-xs font-ui font-bold text-ich-error">Di Luar Area</span>
                                             @else
@@ -210,7 +210,7 @@
             </div>
 
             {{-- Info Pengaturan --}}
-            <div class="bg-[#F0F4FF] rounded-xl p-4">
+            <div class="bg-ich-blue-soft rounded-xl p-4">
                 <p class="font-ui font-bold text-xs text-ich-ink-600 mb-1">Pengaturan Geofence</p>
                 <p class="font-sans text-xs text-ich-ink-500">
                     Untuk mengatur titik koordinat dan radius sekolah, buka

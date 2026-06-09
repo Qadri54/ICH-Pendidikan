@@ -19,7 +19,7 @@
             <a href="{{ route('pembayaran.pendaftaran.index') }}"
                class="block bg-white rounded-xl shadow-ich-card p-5 hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-[#EDE9FE] flex items-center justify-center shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-ich-purple-soft flex items-center justify-center shrink-0">
                         <x-ich-icon name="document" :size="24" color="#8B5CF6"/>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -29,11 +29,11 @@
                             $unpaidFees = $summary->filter(fn($d) => $d['fee'] && $d['fee']->status !== 'paid')->count();
                         @endphp
                         @if($unpaidFees > 0)
-                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-[#FEF5DC] text-[#E09F17] text-xs font-ui font-bold rounded-full">
+                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-ich-warning-soft text-ich-warning text-xs font-ui font-bold rounded-full">
                                 {{ $unpaidFees }} belum lunas
                             </span>
                         @else
-                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-[#D1FAE5] text-[#009966] text-xs font-ui font-bold rounded-full">
+                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-ich-success-soft text-ich-success text-xs font-ui font-bold rounded-full">
                                 Semua lunas
                             </span>
                         @endif
@@ -46,7 +46,7 @@
             <a href="{{ route('pembayaran.spp.index') }}"
                class="block bg-white rounded-xl shadow-ich-card p-5 hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-[#D1FAE5] flex items-center justify-center shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-ich-success-soft flex items-center justify-center shrink-0">
                         <x-ich-icon name="calendar" :size="24" color="#009966"/>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -56,11 +56,11 @@
                             $totalSppPending = $summary->sum('sppCount');
                         @endphp
                         @if($totalSppPending > 0)
-                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-[#FEF5DC] text-[#E09F17] text-xs font-ui font-bold rounded-full">
+                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-ich-warning-soft text-ich-warning text-xs font-ui font-bold rounded-full">
                                 {{ $totalSppPending }} tagihan belum lunas
                             </span>
                         @else
-                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-[#D1FAE5] text-[#009966] text-xs font-ui font-bold rounded-full">
+                            <span class="inline-block mt-1.5 px-2 py-0.5 bg-ich-success-soft text-ich-success text-xs font-ui font-bold rounded-full">
                                 Tidak ada tagihan
                             </span>
                         @endif

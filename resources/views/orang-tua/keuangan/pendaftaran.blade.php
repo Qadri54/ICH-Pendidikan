@@ -6,12 +6,12 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -43,9 +43,9 @@
                         $totalPaid = $fee->transactions->where('status', 'approved')->sum('jumlah_bayar');
                         $remaining = max(0, $fee->total_jumlah - $totalPaid);
                         $feeCfg    = match($fee->status) {
-                            'paid'         => ['label' => 'Lunas',       'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                            'installments' => ['label' => 'Cicilan',     'bg' => 'bg-[#EDE9FE]', 'text' => 'text-[#8B5CF6]'],
-                            default        => ['label' => 'Belum Bayar', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
+                            'paid'         => ['label' => 'Lunas',       'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                            'installments' => ['label' => 'Cicilan',     'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
+                            default        => ['label' => 'Belum Bayar', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
                         };
                     @endphp
 
@@ -66,13 +66,13 @@
                             </div>
                             <div class="px-4 py-3 text-center">
                                 <p class="font-sans text-xs text-ich-ink-400 mb-1">Dibayar</p>
-                                <p class="font-ui font-bold text-sm text-[#009966]">
+                                <p class="font-ui font-bold text-sm text-ich-success">
                                     Rp {{ number_format($totalPaid, 0, ',', '.') }}
                                 </p>
                             </div>
                             <div class="px-4 py-3 text-center">
                                 <p class="font-sans text-xs text-ich-ink-400 mb-1">Sisa</p>
-                                <p class="font-ui font-bold text-sm {{ $remaining > 0 ? 'text-[#E09F17]' : 'text-[#009966]' }}">
+                                <p class="font-ui font-bold text-sm {{ $remaining > 0 ? 'text-ich-warning' : 'text-ich-success' }}">
                                     {{ $remaining > 0 ? 'Rp '.number_format($remaining, 0, ',', '.') : 'Lunas' }}
                                 </p>
                             </div>
@@ -82,13 +82,13 @@
                     {{-- Status / Form upload --}}
                     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
                         @if($fee->status === 'paid')
-                            <div class="px-5 py-4 flex items-center gap-2 text-[#009966]">
+                            <div class="px-5 py-4 flex items-center gap-2 text-ich-success">
                                 <x-ich-icon name="check_circle" :size="18" color="#009966"/>
                                 <span class="font-ui font-semibold text-sm">Biaya pendaftaran telah lunas</span>
                             </div>
 
                         @elseif($pendingTx)
-                            <div class="px-5 py-4 flex items-center gap-2 text-[#E09F17]">
+                            <div class="px-5 py-4 flex items-center gap-2 text-ich-warning">
                                 <x-ich-icon name="clock" :size="18" color="#E09F17"/>
                                 <span class="font-ui font-semibold text-sm">Bukti dikirim, menunggu konfirmasi admin</span>
                             </div>

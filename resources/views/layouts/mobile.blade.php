@@ -9,7 +9,7 @@
     @livewireStyles
     <style>[x-cloak]{display:none!important}</style>
 </head>
-<body class="bg-[#101828] lg:bg-[#F5F6FA] flex justify-center lg:block">
+<body class="bg-[#101828] lg:bg-ich-surface flex justify-center lg:block">
 
 {{-- Mobile app frame (max 430px, centered) --}}
 <div class="ich-app flex flex-col">
@@ -22,7 +22,7 @@
         :notif-url="route('notifications.index')"/>
 
     {{-- Scrollable page content --}}
-    <main class="flex-1 overflow-y-auto bg-[#F5F6FA]
+    <main class="flex-1 overflow-y-auto bg-ich-surface
                  px-4 pt-4 pb-[calc(64px+env(safe-area-inset-bottom,0px))]">
         {{ $slot }}
     </main>

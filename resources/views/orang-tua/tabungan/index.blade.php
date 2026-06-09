@@ -62,7 +62,7 @@
                                                 </p>
                                             </div>
                                             <span class="font-ui font-bold text-sm
-                                                {{ $isDeposit ? 'text-[#009966]' : 'text-ich-error' }}">
+                                                {{ $isDeposit ? 'text-ich-success' : 'text-ich-error' }}">
                                                 {{ $isDeposit ? '+' : '-' }}Rp {{ number_format($trx->amount, 0, ',', '.') }}
                                             </span>
                                         </div>

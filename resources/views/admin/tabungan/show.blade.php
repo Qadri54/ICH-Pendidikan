@@ -11,12 +11,12 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -53,7 +53,7 @@
             </div>
             <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-[#F5F6FA]">
+                <thead class="bg-ich-surface">
                     <tr>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Siswa</th>
                         <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Saldo</th>
@@ -62,7 +62,7 @@
                 </thead>
                 <tbody class="divide-y divide-ich-line">
                     @forelse($tabungan->passbooks as $pb)
-                        <tr class="hover:bg-[#F5F6FA] transition-colors">
+                        <tr class="hover:bg-ich-surface transition-colors">
                             <td class="px-4 py-3 font-sans text-ich-ink-900">
                                 {{ $pb->student?->nama_siswa ?? '-' }}
                             </td>
@@ -95,7 +95,7 @@
             @csrf
             <input type="hidden" name="_modal" value="create">
 
-            <div class="px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
+            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-semibold">
                 Ledger: {{ $tabungan->ledger_name }}
             </div>
 

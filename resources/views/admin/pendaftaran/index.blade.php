@@ -2,8 +2,8 @@
 
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#DBEAFE] flex items-center justify-center">
-                <svg class="w-5 h-5 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <div class="w-11 h-11 rounded-xl bg-ich-blue-soft flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
             </div>
             <div>
                 <h1 class="text-2xl font-display font-bold text-ich-ink-900">Pendaftaran Siswa</h1>
@@ -33,7 +33,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Orang Tua</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Email</th>
@@ -48,9 +48,9 @@
                 @forelse($pendaftaran as $p)
                     @php
                         $statusColor = match($p->status) {
-                            'accepted' => 'bg-[#D1FAE5] text-[#009966]',
-                            'rejected' => 'bg-[#FEE2E2] text-ich-error',
-                            default    => 'bg-[#FEF5DC] text-[#E09F17]',
+                            'accepted' => 'bg-ich-success-soft text-ich-success',
+                            'rejected' => 'bg-ich-error-soft text-ich-error',
+                            default    => 'bg-ich-warning-soft text-ich-warning',
                         };
                         $statusLabel = match($p->status) {
                             'accepted' => 'Diterima',
@@ -58,12 +58,12 @@
                             default    => 'Menunggu',
                         };
                     @endphp
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $p->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->user?->email ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $p->nama_siswa ?? '-' }}</td>
                         <td class="px-4 py-3">
-                            @php $jenisBg = $p->jenis_pendaftaran === 'TK' ? 'bg-[#EDE9FE] text-[#8B5CF6]' : 'bg-[#FEF5DC] text-[#E09F17]'; @endphp
+                            @php $jenisBg = $p->jenis_pendaftaran === 'TK' ? 'bg-ich-purple-soft text-ich-purple' : 'bg-ich-warning-soft text-ich-warning'; @endphp
                             <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold {{ $jenisBg }}">
                                 {{ $p->jenis_pendaftaran === 'TK' ? 'TK' : 'Mengaji' }}
                             </span>
@@ -76,7 +76,7 @@
                         </td>
                         <td class="px-4 py-3 text-center">
                             <a href="{{ route('admin.pendaftaran.show', $p) }}"
-                               class="px-2.5 py-1 bg-[#F4F7FC] text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
+                               class="px-2.5 py-1 bg-ich-info-soft text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
                                 Detail
                             </a>
                         </td>

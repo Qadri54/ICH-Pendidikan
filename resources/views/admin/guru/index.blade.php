@@ -33,7 +33,7 @@
 
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-[#E8F5EA] flex items-center justify-center">
+            <div class="w-11 h-11 rounded-xl bg-ich-green-surface flex items-center justify-center">
                 <svg class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             </div>
             <div>
@@ -51,7 +51,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">{{ session('success') }}</div>
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
     <form method="GET" class="flex gap-3 mb-4">
@@ -63,7 +63,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
-            <thead class="bg-[#F5F6FA]">
+            <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tipe</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama</th>
@@ -74,12 +74,12 @@
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($guru as $g)
-                    <tr class="hover:bg-[#F5F6FA] transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3">
                             @if($g->tipe === 'Guru Kelas')
-                                <span class="px-2 py-1 bg-[#E8F5EA] text-ich-green font-ui font-bold text-xs rounded-full">Guru Kelas</span>
+                                <span class="px-2 py-1 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full">Guru Kelas</span>
                             @else
-                                <span class="px-2 py-1 bg-[#EDE9FE] text-[#8B5CF6] font-ui font-bold text-xs rounded-full">Guru Ngaji</span>
+                                <span class="px-2 py-1 bg-ich-purple-soft text-ich-purple font-ui font-bold text-xs rounded-full">Guru Ngaji</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $g->nama }}</td>
@@ -89,11 +89,11 @@
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
                                     <button @click="openEdit({{ Js::from(['id' => $g->id, 'tipe' => $g->tipe, 'nama' => $g->nama, 'NIP' => $g->NIP, 'no_hp' => $g->no_hp, 'hire_date' => $g->hire_date, 'subject' => $g->subject]) }})"
-                                            class="px-2.5 py-1 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
                                     </button>
                                     <button @click="openDelete('{{ $g->id }}', '{{ $g->nama }}')"
-                                            class="px-2.5 py-1 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                         Hapus
                                     </button>
                                 @endif
@@ -179,7 +179,7 @@
             <input type="hidden" name="_modal" value="edit">
             <input type="hidden" name="_edit_id" :value="editId">
 
-            <div class="px-3 py-2 bg-[#F4F7FC] rounded-ich-md text-sm text-ich-teal font-ui font-bold" x-text="'Tipe: ' + editTipe"></div>
+            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-bold" x-text="'Tipe: ' + editTipe"></div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>

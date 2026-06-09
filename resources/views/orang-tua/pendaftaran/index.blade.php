@@ -1,12 +1,12 @@
 <x-mobile-layout title="Pendaftaran" page-title="Pendaftaran">
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -28,10 +28,10 @@
             </a>
         </div>
     @else
-        <div class="bg-[#FEF5DC] rounded-xl p-5 flex items-start gap-3 mb-5">
+        <div class="bg-ich-warning-soft rounded-xl p-5 flex items-start gap-3 mb-5">
             <x-ich-icon name="clock" :size="24" color="#E09F17"/>
             <div>
-                <p class="font-ui font-bold text-sm text-[#E09F17]">Pendaftaran Sedang Ditutup</p>
+                <p class="font-ui font-bold text-sm text-ich-warning">Pendaftaran Sedang Ditutup</p>
                 <p class="font-sans text-xs text-ich-ink-600 mt-1">
                     Saat ini penerimaan siswa baru belum dibuka. Silakan pantau halaman ini untuk informasi lebih lanjut.
                 </p>
@@ -49,9 +49,9 @@
             @foreach($registrations as $reg)
                 @php
                     $cfg = match($reg->status) {
-                        'accepted' => ['label'=>'Diterima','bg'=>'bg-[#D1FAE5]','text'=>'text-[#009966]','icon'=>'check_circle','color'=>'#009966'],
-                        'rejected' => ['label'=>'Ditolak', 'bg'=>'bg-[#FEE2E2]','text'=>'text-ich-error','icon'=>'close',        'color'=>'#E7000B'],
-                        default    => ['label'=>'Menunggu','bg'=>'bg-[#FEF5DC]','text'=>'text-[#E09F17]','icon'=>'clock',        'color'=>'#E09F17'],
+                        'accepted' => ['label'=>'Diterima','bg'=>'bg-ich-success-soft','text'=>'text-ich-success','icon'=>'check_circle','color'=>'#009966'],
+                        'rejected' => ['label'=>'Ditolak', 'bg'=>'bg-ich-error-soft','text'=>'text-ich-error','icon'=>'close',        'color'=>'#E7000B'],
+                        default    => ['label'=>'Menunggu','bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning','icon'=>'clock',        'color'=>'#E09F17'],
                     };
                 @endphp
                 <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">

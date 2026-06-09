@@ -14,7 +14,7 @@
 
             <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
                 {{-- Info Siswa --}}
-                <div class="px-4 py-3 bg-[#F5F6FA] border-b border-ich-line">
+                <div class="px-4 py-3 bg-ich-surface border-b border-ich-line">
                     <p class="font-ui font-bold text-sm text-ich-ink-900">{{ $student->nama_siswa }}</p>
                     <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
                         {{ $student->classRoom?->nama_kelas ?? 'Belum ada kelas' }}
@@ -26,9 +26,9 @@
                 @forelse($raports as $raport)
                     @php
                         $stCfg = match($raport->status) {
-                            'approved'  => ['label' => 'Disetujui',         'bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                            'submitted' => ['label' => 'Menunggu Persetujuan','bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
-                            default     => ['label' => 'Draft',              'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-500'],
+                            'approved'  => ['label' => 'Disetujui',         'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                            'submitted' => ['label' => 'Menunggu Persetujuan','bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                            default     => ['label' => 'Draft',              'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-500'],
                         };
                     @endphp
                     <div class="px-4 py-3 border-b border-ich-line flex items-center justify-between gap-3">

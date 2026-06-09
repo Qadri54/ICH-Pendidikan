@@ -36,7 +36,7 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-[#F5F6FA]">
+                <thead class="bg-ich-surface">
                     <tr>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600 w-12">No</th>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Guru</th>
@@ -48,20 +48,20 @@
                 </thead>
                 <tbody class="divide-y divide-ich-line">
                     @forelse($recap as $i => $item)
-                        <tr class="hover:bg-[#F5F6FA] transition-colors">
+                        <tr class="hover:bg-ich-surface transition-colors">
                             <td class="px-4 py-3 text-ich-ink-400">{{ $i + 1 }}</td>
                             <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $item['nama'] }}</td>
                             <td class="px-4 py-3 text-center">
-                                <span class="px-2 py-0.5 bg-[#D1FAE5] text-[#009966] font-ui font-bold text-xs rounded-full">{{ $item['hadir'] }}</span>
+                                <span class="px-2 py-0.5 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded-full">{{ $item['hadir'] }}</span>
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <span class="px-2 py-0.5 bg-[#EDE9FE] text-[#8B5CF6] font-ui font-bold text-xs rounded-full">{{ $item['izin'] }}</span>
+                                <span class="px-2 py-0.5 bg-ich-purple-soft text-ich-purple font-ui font-bold text-xs rounded-full">{{ $item['izin'] }}</span>
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <span class="px-2 py-0.5 bg-[#FEE2E2] text-ich-error font-ui font-bold text-xs rounded-full">{{ $item['sakit'] }}</span>
+                                <span class="px-2 py-0.5 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded-full">{{ $item['sakit'] }}</span>
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <span class="px-2 py-0.5 bg-[#FEF5DC] text-[#E09F17] font-ui font-bold text-xs rounded-full">{{ $item['tanpa_keterangan'] }}</span>
+                                <span class="px-2 py-0.5 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded-full">{{ $item['tanpa_keterangan'] }}</span>
                             </td>
                         </tr>
                     @empty
@@ -73,13 +73,13 @@
                     @endforelse
                 </tbody>
                 @if($recap->isNotEmpty())
-                    <tfoot class="bg-[#F5F6FA]">
+                    <tfoot class="bg-ich-surface">
                         <tr>
                             <td colspan="2" class="px-4 py-3 font-ui font-bold text-ich-ink-900">Total</td>
-                            <td class="px-4 py-3 text-center font-ui font-bold text-[#009966]">{{ $recap->sum('hadir') }}</td>
-                            <td class="px-4 py-3 text-center font-ui font-bold text-[#8B5CF6]">{{ $recap->sum('izin') }}</td>
+                            <td class="px-4 py-3 text-center font-ui font-bold text-ich-success">{{ $recap->sum('hadir') }}</td>
+                            <td class="px-4 py-3 text-center font-ui font-bold text-ich-purple">{{ $recap->sum('izin') }}</td>
                             <td class="px-4 py-3 text-center font-ui font-bold text-ich-error">{{ $recap->sum('sakit') }}</td>
-                            <td class="px-4 py-3 text-center font-ui font-bold text-[#E09F17]">{{ $recap->sum('tanpa_keterangan') }}</td>
+                            <td class="px-4 py-3 text-center font-ui font-bold text-ich-warning">{{ $recap->sum('tanpa_keterangan') }}</td>
                         </tr>
                     </tfoot>
                 @endif

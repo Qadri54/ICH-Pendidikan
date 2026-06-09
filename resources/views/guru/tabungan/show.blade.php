@@ -11,12 +11,12 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -24,7 +24,7 @@
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-[#F5F6FA]">
+                <thead class="bg-ich-surface">
                     <tr>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Siswa</th>
                         <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
@@ -34,13 +34,13 @@
                 </thead>
                 <tbody class="divide-y divide-ich-line">
                     @forelse($passbooks as $pb)
-                        <tr class="hover:bg-[#F5F6FA] transition-colors">
+                        <tr class="hover:bg-ich-surface transition-colors">
                             <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                 {{ $pb->student?->nama_siswa ?? '-' }}
                             </td>
                             <td class="px-4 py-3">
                                 @if($pb->student?->classRoom)
-                                    <span class="px-2 py-1 bg-[#E8F5EA] text-ich-green font-ui font-bold text-xs rounded-full">
+                                    <span class="px-2 py-1 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full">
                                         {{ $pb->student->classRoom->nama_kelas }}
                                     </span>
                                 @else

@@ -27,10 +27,10 @@
             </div>
             @php
                 $stCfg = match($raport->status) {
-                    'draft'     => ['label' => 'Draft',    'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-500'],
-                    'submitted' => ['label' => 'Disubmit', 'bg' => 'bg-[#FEF5DC]', 'text' => 'text-[#E09F17]'],
-                    'approved'  => ['label' => 'Disetujui','bg' => 'bg-[#D1FAE5]', 'text' => 'text-[#009966]'],
-                    default     => ['label' => $raport->status, 'bg' => 'bg-[#F5F6FA]', 'text' => 'text-ich-ink-400'],
+                    'draft'     => ['label' => 'Draft',    'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-500'],
+                    'submitted' => ['label' => 'Disubmit', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                    'approved'  => ['label' => 'Disetujui','bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
+                    default     => ['label' => $raport->status, 'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                 };
             @endphp
             <div class="flex items-center gap-2 flex-shrink-0">
@@ -53,7 +53,7 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
@@ -71,7 +71,7 @@
                 ['id' => 'fisik',    'label' => 'Fisik & Kesehatan'],
             ] as $t)
                 <button @click="tab = '{{ $t['id'] }}'" type="button"
-                        :class="tab === '{{ $t['id'] }}' ? 'bg-ich-green text-white' : 'text-ich-ink-500 hover:bg-[#F5F6FA]'"
+                        :class="tab === '{{ $t['id'] }}' ? 'bg-ich-green text-white' : 'text-ich-ink-500 hover:bg-ich-surface'"
                         class="flex-1 py-2 text-xs font-ui font-bold rounded-lg transition-colors">
                     {{ $t['label'] }}
                 </button>
@@ -89,7 +89,7 @@
                         <div class="bg-white rounded-xl shadow-ich-card p-5">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold
-                                             {{ $default['kategori'] === 'intrakurikuler' ? 'bg-[#E8F5EA] text-ich-green' : 'bg-[#F0F4FF] text-ich-teal' }}">
+                                             {{ $default['kategori'] === 'intrakurikuler' ? 'bg-ich-green-surface text-ich-green' : 'bg-ich-blue-soft text-ich-teal' }}">
                                     {{ ucfirst($default['kategori']) }}
                                 </span>
                                 <h3 class="font-ui font-bold text-sm text-ich-ink-900">{{ $default['judul'] }}</h3>
@@ -182,7 +182,7 @@
                 @php $idx = 0; @endphp
                 @forelse($categories as $category)
                     <div class="bg-white rounded-xl shadow-ich-card mb-4 overflow-hidden">
-                        <div class="px-5 py-3 bg-[#F5F6FA] border-b border-ich-line">
+                        <div class="px-5 py-3 bg-ich-surface border-b border-ich-line">
                             <h3 class="font-ui font-bold text-sm text-ich-ink-900">{{ $category->nama }}</h3>
                         </div>
                         <div class="divide-y divide-ich-line">
@@ -195,21 +195,21 @@
                                         <div class="flex gap-2 flex-shrink-0">
                                             <button type="button" @click="selected = 'BM'"
                                                     :class="selected === 'BM'
-                                                        ? 'bg-[#FEE2E2] text-ich-error border-ich-error'
+                                                        ? 'bg-ich-error-soft text-ich-error border-ich-error'
                                                         : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
                                                     class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
                                                 BM
                                             </button>
                                             <button type="button" @click="selected = 'MM'"
                                                     :class="selected === 'MM'
-                                                        ? 'bg-[#FEF5DC] text-[#E09F17] border-[#E09F17]'
+                                                        ? 'bg-ich-warning-soft text-ich-warning border-[#E09F17]'
                                                         : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
                                                     class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
                                                 MM
                                             </button>
                                             <button type="button" @click="selected = 'SM'"
                                                     :class="selected === 'SM'
-                                                        ? 'bg-[#D1FAE5] text-[#009966] border-[#009966]'
+                                                        ? 'bg-ich-success-soft text-ich-success border-[#009966]'
                                                         : 'bg-white text-ich-ink-400 border-ich-line hover:border-ich-ink-300'"
                                                     class="px-2.5 py-1 text-xs font-ui font-bold rounded-lg border-2 transition-colors">
                                                 SM

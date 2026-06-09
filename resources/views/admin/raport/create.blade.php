@@ -10,7 +10,7 @@
     </div>
 
     @if($errors->has('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ $errors->first('error') }}
         </div>
     @endif
@@ -65,7 +65,7 @@
                 <div class="flex gap-3">
                     <a href="{{ route('admin.raport.index') }}"
                        class="flex-1 py-2.5 border-2 border-ich-line text-ich-ink-600 font-ui font-bold text-sm
-                              rounded-ich-lg text-center hover:bg-[#F5F6FA] transition-colors">
+                              rounded-ich-lg text-center hover:bg-ich-surface transition-colors">
                         Batal
                     </a>
                     <button type="submit"
