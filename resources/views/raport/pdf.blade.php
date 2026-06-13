@@ -44,6 +44,7 @@
         position: absolute;
         top: 0; left: 0;
         width: 210mm; height: 297mm;
+        z-index: -1;
     }
 
     /* ─── COVER ─── */
