@@ -2,6 +2,7 @@
 .DS_Store
 .env
 .claude/
+CLAUDE.md
 docs/
 PLANNING_SISTEM_PENILAIAN.md
 *.puml
@@ -26,3 +27,4 @@ PLANNING_SISTEM_PENILAIAN.md
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/referensi
