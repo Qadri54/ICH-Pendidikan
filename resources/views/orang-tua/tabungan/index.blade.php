@@ -1,6 +1,6 @@
 <x-mobile-layout title="Tabungan" page-title="Tabungan">
 
-    @if($tabunganData->isEmpty())
+    @if($data->isEmpty())
         <div class="bg-white rounded-xl shadow-ich-card p-8 text-center">
             <x-ich-icon name="piggy" :size="40" color="#99A1AF" class="mx-auto mb-3"/>
             <p class="font-ui font-bold text-sm text-ich-ink-900 mb-1">Belum Ada Data Tabungan</p>
@@ -9,76 +9,49 @@
             </p>
         </div>
     @else
-        <div class="space-y-6">
-        @foreach($tabunganData as $data)
-            @php $student = $data['student']; @endphp
+        <div class="space-y-3">
+        @foreach($data as $item)
+            @php
+                $student    = $item['student'];
+                $totalSaldo = $item['totalSaldo'];
+                $jumlahBuku = $item['jumlahBuku'];
+            @endphp
 
-            <div>
-                <h2 class="font-display font-bold text-base text-ich-ink-900 mb-3">
-                    {{ $student->nama_siswa }}
-                </h2>
-
-                @if($data['passbooks']->isEmpty())
-                    <div class="bg-white rounded-xl shadow-ich-card px-5 py-4 text-center">
-                        <p class="font-sans text-sm text-ich-ink-400">
-                            Belum ada buku tabungan untuk anak ini.
-                        </p>
+            <a href="{{ route('tabungan.detail', $student->student_id) }}"
+               class="block bg-white rounded-xl shadow-ich-card p-5 hover:shadow-md transition-shadow active:scale-[0.98]">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-ich-warning-soft flex items-center justify-center shrink-0">
+                        <span class="font-display font-bold text-lg text-ich-warning">
+                            {{ strtoupper(substr($student->nama_siswa, 0, 1)) }}
+                        </span>
                     </div>
-                @else
-                    <div class="space-y-3">
-                    @foreach($data['passbooks'] as $item)
-                        @php
-                            $pb  = $item['passbook'];
-                            $txs = $item['transactions'];
-                        @endphp
+                    <div class="flex-1 min-w-0">
+                        <p class="font-ui font-bold text-sm text-ich-ink-900 truncate">
+                            {{ $student->nama_siswa }}
+                        </p>
+                        <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                            {{ $student->classRoom?->nama_kelas ?? 'Belum ada kelas' }}
+                            @if($student->NIS) · NIS: {{ $student->NIS }} @endif
+                        </p>
 
-                        <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
-                            {{-- Header buku --}}
-                            <div class="bg-ich-teal px-5 py-4">
-                                <p class="text-white/70 text-xs font-sans">{{ $pb->ledger->ledger_name }}</p>
-                                <p class="text-2xl font-display font-bold text-white mt-0.5">
-                                    Rp {{ number_format($pb->current_balance, 0, ',', '.') }}
-                                </p>
-                                <p class="text-white/60 text-xs font-sans mt-1">
-                                    Dibuka {{ $pb->opening_date->translatedFormat('d F Y') }}
-                                </p>
-                            </div>
-
-                            {{-- Riwayat transaksi --}}
-                            @if($txs->isNotEmpty())
-                                <div class="divide-y divide-ich-line">
-                                    @foreach($txs as $trx)
-                                        @php $isDeposit = $trx->transaction_type === 'deposit'; @endphp
-                                        <div class="px-5 py-3 flex items-center justify-between">
-                                            <div>
-                                                <p class="font-ui font-semibold text-sm text-ich-ink-900">
-                                                    {{ $isDeposit ? 'Setoran' : 'Penarikan' }}
-                                                </p>
-                                                <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
-                                                    {{ $trx->transaction_date->translatedFormat('d F Y') }}
-                                                    @if($trx->description)
-                                                        · {{ $trx->description }}
-                                                    @endif
-                                                </p>
-                                            </div>
-                                            <span class="font-ui font-bold text-sm
-                                                {{ $isDeposit ? 'text-ich-success' : 'text-ich-error' }}">
-                                                {{ $isDeposit ? '+' : '-' }}Rp {{ number_format($trx->amount, 0, ',', '.') }}
-                                            </span>
-                                        </div>
-                                    @endforeach
-                                </div>
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            @if($jumlahBuku > 0)
+                                <span class="px-2 py-0.5 bg-ich-success-soft text-ich-success text-xs font-ui font-bold rounded-full">
+                                    Rp {{ number_format($totalSaldo, 0, ',', '.') }}
+                                </span>
+                                <span class="px-2 py-0.5 bg-ich-info-soft text-ich-info text-xs font-ui font-bold rounded-full">
+                                    {{ $jumlahBuku }} buku
+                                </span>
                             @else
-                                <div class="px-5 py-4 text-center">
-                                    <p class="font-sans text-xs text-ich-ink-400">Belum ada riwayat transaksi.</p>
-                                </div>
+                                <span class="px-2 py-0.5 bg-ich-surface text-ich-ink-400 text-xs font-ui font-bold rounded-full">
+                                    Belum ada tabungan
+                                </span>
                             @endif
                         </div>
-                    @endforeach
                     </div>
-                @endif
-            </div>
-
+                    <x-ich-icon name="chevron_right" :size="20" color="#99A1AF"/>
+                </div>
+            </a>
         @endforeach
         </div>
     @endif

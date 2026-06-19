@@ -30,6 +30,10 @@ use App\Http\Controllers\Guru\RaportController as GuruRaportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+
     return view('welcome');
 });
 
@@ -40,6 +44,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/foto', [ProfileController::class, 'updateFoto'])->name('profile.foto');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/notifications',               [NotificationController::class, 'index'])->name('notifications.index');
@@ -52,19 +57,27 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
     Route::get('/beranda', [OrangTuaBerandaController::class, 'index'])->name('beranda');
     Route::get('/kehadiran', [OrangTuaKehadiranController::class, 'index'])->name('kehadiran');
+    Route::get('/kehadiran/{student}', [OrangTuaKehadiranController::class, 'detail'])->name('kehadiran.detail');
     Route::get('/akademik', [OrangTuaAkademikController::class, 'index'])->name('akademik');
+    Route::get('/akademik/{student}', [OrangTuaAkademikController::class, 'detail'])->name('akademik.detail');
     Route::get('/raport/{id}/download', [OrangTuaAkademikController::class, 'download'])->name('raport.download');
     Route::get('/pembayaran',             [OrangTuaKeuanganController::class, 'index'])->name('pembayaran');
     Route::get('/pembayaran/pendaftaran', [OrangTuaKeuanganController::class, 'pendaftaran'])->name('pembayaran.pendaftaran.index');
+    Route::get('/pembayaran/pendaftaran/{student}', [OrangTuaKeuanganController::class, 'pendaftaranDetail'])->name('pembayaran.pendaftaran.detail');
     Route::get('/pembayaran/spp',         [OrangTuaKeuanganController::class, 'spp'])->name('pembayaran.spp.index');
+    Route::get('/pembayaran/spp/{student}', [OrangTuaKeuanganController::class, 'sppDetail'])->name('pembayaran.spp.detail');
     Route::post('/pembayaran/pendaftaran/{fee}', [OrangTuaKeuanganController::class, 'storeRegistrationPayment'])->name('pembayaran.pendaftaran');
     Route::post('/pembayaran/spp/{invoice}', [OrangTuaKeuanganController::class, 'storeSppPayment'])->name('pembayaran.spp');
     Route::get('/tabungan', [OrangTuaTabunganController::class, 'index'])->name('tabungan');
+    Route::get('/tabungan/{student}', [OrangTuaTabunganController::class, 'detail'])->name('tabungan.detail');
     Route::get('/profil-anak', [ProfilAnakController::class, 'index'])->name('profil-anak');
+    Route::get('/profil-anak/{student}', [ProfilAnakController::class, 'detail'])->name('profil-anak.detail');
+    Route::post('/profil-anak/{student}/foto', [ProfilAnakController::class, 'updateFoto'])->name('profil-anak.foto');
     Route::get('/pengaturan', [ProfileController::class, 'edit'])->name('pengaturan');
-    Route::get('/pendaftaran',      [OrangTuaPendaftaranController::class, 'index'])->name('pendaftaran');
-    Route::get('/pendaftaran/buat', [OrangTuaPendaftaranController::class, 'create'])->name('pendaftaran.create');
-    Route::post('/pendaftaran',     [OrangTuaPendaftaranController::class, 'store'])->name('pendaftaran.store');
+    Route::get('/pendaftaran',                    [OrangTuaPendaftaranController::class, 'index'])->name('pendaftaran');
+    Route::get('/pendaftaran/buat',               [OrangTuaPendaftaranController::class, 'create'])->name('pendaftaran.create');
+    Route::get('/pendaftaran/{registration}',     [OrangTuaPendaftaranController::class, 'detail'])->name('pendaftaran.detail');
+    Route::post('/pendaftaran',                   [OrangTuaPendaftaranController::class, 'store'])->name('pendaftaran.store');
 });
 
 // ─── Absensi Guru (Guru TK + Guru Ngaji) ─────────────────────────────────────

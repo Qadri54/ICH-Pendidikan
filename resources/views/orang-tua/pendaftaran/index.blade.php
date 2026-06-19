@@ -49,50 +49,39 @@
             @foreach($registrations as $reg)
                 @php
                     $cfg = match($reg->status) {
-                        'accepted' => ['label'=>'Diterima','bg'=>'bg-ich-success-soft','text'=>'text-ich-success','icon'=>'check_circle','color'=>'#009966'],
-                        'rejected' => ['label'=>'Ditolak', 'bg'=>'bg-ich-error-soft','text'=>'text-ich-error','icon'=>'close',        'color'=>'#E7000B'],
-                        default    => ['label'=>'Menunggu','bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning','icon'=>'clock',        'color'=>'#E09F17'],
+                        'accepted' => ['label'=>'Diterima','bg'=>'bg-ich-success-soft','text'=>'text-ich-success'],
+                        'rejected' => ['label'=>'Ditolak', 'bg'=>'bg-ich-error-soft','text'=>'text-ich-error'],
+                        default    => ['label'=>'Menunggu','bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning'],
                     };
                 @endphp
-                <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
-                    <div class="px-5 py-3 flex items-center justify-between border-b border-ich-line">
-                        <div>
-                            <p class="font-ui font-bold text-sm text-ich-ink-900">{{ $reg->nama_siswa }}</p>
-                            <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
-                                Dikirim {{ $reg->created_at->translatedFormat('d F Y') }}
-                            </p>
-                        </div>
-                        <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-ui font-bold {{ $cfg['bg'] }} {{ $cfg['text'] }}">
-                            <x-ich-icon :name="$cfg['icon']" :size="14" :color="$cfg['color']"/>
-                            {{ $cfg['label'] }}
-                        </span>
-                    </div>
-                    <div class="divide-y divide-ich-line">
-                        @foreach([
-                            ['Tempat Lahir',  $reg->tempat_lahir],
-                            ['Tanggal Lahir', $reg->tanggal_lahir?->translatedFormat('d F Y')],
-                            ['Jenis Kelamin', $reg->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan'],
-                            ['Nama Ayah',     $reg->nama_ayah],
-                            ['Nama Ibu',      $reg->nama_ibu],
-                        ] as [$label, $value])
-                            <div class="flex gap-3 px-5 py-2.5">
-                                <span class="w-28 shrink-0 font-ui font-bold text-xs text-ich-ink-400">{{ $label }}</span>
-                                <span class="font-sans text-sm text-ich-ink-900">{{ $value ?? '-' }}</span>
-                            </div>
-                        @endforeach
 
-                        @if($reg->status === 'rejected' && $reg->rejection_reason)
-                            <div class="px-5 py-3 bg-[#FEF2F2]">
-                                <p class="font-ui font-bold text-xs text-ich-error mb-1">Alasan Penolakan:</p>
-                                <p class="font-sans text-sm text-ich-ink-900">{{ $reg->rejection_reason }}</p>
+                <a href="{{ route('pendaftaran.detail', $reg->registration_id) }}"
+                   class="block bg-white rounded-xl shadow-ich-card p-5 hover:shadow-md transition-shadow active:scale-[0.98]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-ich-blue-soft flex items-center justify-center shrink-0">
+                            <span class="font-display font-bold text-lg text-ich-info">
+                                {{ strtoupper(substr($reg->nama_siswa, 0, 1)) }}
+                            </span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-ui font-bold text-sm text-ich-ink-900 truncate">
+                                {{ $reg->nama_siswa }}
+                            </p>
+                            <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                                {{ $reg->jenis_pendaftaran ?? 'TK' }} · {{ $reg->created_at->translatedFormat('d M Y') }}
+                            </p>
+                            <div class="flex flex-wrap gap-1.5 mt-2">
+                                <span class="px-2 py-0.5 {{ $cfg['bg'] }} {{ $cfg['text'] }} text-xs font-ui font-bold rounded-full">
+                                    {{ $cfg['label'] }}
+                                </span>
                             </div>
-                        @endif
+                        </div>
+                        <x-ich-icon name="chevron_right" :size="20" color="#99A1AF"/>
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
     @else
-        {{-- Empty state --}}
         <div class="bg-white rounded-xl shadow-ich-card p-8 text-center">
             <x-ich-icon name="clipboard" :size="40" color="#99A1AF" class="mx-auto mb-3"/>
             <p class="font-ui font-bold text-sm text-ich-ink-900 mb-1">Belum Ada Pendaftaran</p>

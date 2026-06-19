@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OrangTua;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
 use App\Services\Attendance\StudentAttendanceService;
 use App\Services\User\StudentProfileService;
 use Illuminate\View\View;
@@ -18,23 +19,43 @@ class KehadiranController extends Controller
     {
         $students = $this->studentService->getAllByUserId(auth()->id())->load('classRoom');
 
-        $kehadiranData = $students->map(function ($student) {
+        $data = $students->map(function ($student) {
             $records = $this->attendanceService->getAll(['student_id' => $student->student_id]);
-
             $thisMonth = $records->filter(fn ($r) => $r->created_at->isCurrentMonth());
 
             return [
                 'student' => $student,
-                'records' => $records->take(30),
                 'summary' => [
-                    'hadir'             => $thisMonth->where('status', 'hadir')->count(),
-                    'izin'              => $thisMonth->where('status', 'izin')->count(),
-                    'sakit'             => $thisMonth->where('status', 'sakit')->count(),
-                    'tanpa_keterangan'  => $thisMonth->where('status', 'tanpa keterangan')->count(),
+                    'hadir'            => $thisMonth->where('status', 'hadir')->count(),
+                    'izin'             => $thisMonth->where('status', 'izin')->count(),
+                    'sakit'            => $thisMonth->where('status', 'sakit')->count(),
+                    'tanpa_keterangan' => $thisMonth->where('status', 'tanpa keterangan')->count(),
                 ],
+                'totalRecords' => $records->count(),
             ];
         });
 
-        return view('orang-tua.kehadiran.index', compact('kehadiranData'));
+        return view('orang-tua.kehadiran.index', compact('data'));
+    }
+
+    public function detail(Student $student): View
+    {
+        abort_if($student->user_id !== auth()->id(), 403);
+
+        $student->load('classRoom');
+
+        $records = $this->attendanceService->getAll(['student_id' => $student->student_id]);
+        $thisMonth = $records->filter(fn ($r) => $r->created_at->isCurrentMonth());
+
+        $summary = [
+            'hadir'            => $thisMonth->where('status', 'hadir')->count(),
+            'izin'             => $thisMonth->where('status', 'izin')->count(),
+            'sakit'            => $thisMonth->where('status', 'sakit')->count(),
+            'tanpa_keterangan' => $thisMonth->where('status', 'tanpa keterangan')->count(),
+        ];
+
+        $records = $records->take(30);
+
+        return view('orang-tua.kehadiran.detail', compact('student', 'records', 'summary'));
     }
 }

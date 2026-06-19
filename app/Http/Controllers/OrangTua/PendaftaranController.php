@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OrangTua;
 
 use App\Http\Controllers\Controller;
+use App\Models\Registration;
 use App\Models\RegistrationSetting;
 use App\Services\Registration\RegistrationService;
 use Illuminate\Http\Request;
@@ -19,6 +20,13 @@ class PendaftaranController extends Controller
         $isRegistrationOpen = RegistrationSetting::current()->is_registration_period;
 
         return view('orang-tua.pendaftaran.index', compact('registrations', 'isRegistrationOpen'));
+    }
+
+    public function detail(Registration $registration): View
+    {
+        abort_if($registration->user_id !== auth()->id(), 403);
+
+        return view('orang-tua.pendaftaran.detail', compact('registration'));
     }
 
     public function create(): View

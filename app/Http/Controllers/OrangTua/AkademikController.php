@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OrangTua;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
 use App\Models\StudentReportCard;
 use App\Services\ReportCard\ReportCardPdfService;
 use App\Services\ReportCard\ReportCardService;
@@ -17,25 +18,44 @@ class AkademikController extends Controller
         private ReportCardPdfService  $pdfService,
     ) {}
 
-    // Daftar raport per anak — hanya raport yang sudah approved yang bisa diunduh.
     public function index(): View
     {
         $students = $this->studentProfileService
             ->getAllByUserId(auth()->id())
             ->load('classRoom');
 
-        // Map: student_id → collection raport approved milik anak itu
-        $raportPerAnak = $students->mapWithKeys(fn($student) => [
-            $student->student_id => $this->reportCardService
+        $data = $students->map(function ($student) {
+            $raports = $this->reportCardService
                 ->getByStudent($student->student_id)
-                ->load('period')
-                ->sortByDesc(fn($r) => $r->period->tahun_ajaran . $r->period->semester),
-        ]);
+                ->load('period');
 
-        return view('orang-tua.akademik.index', compact('students', 'raportPerAnak'));
+            $approvedCount = $raports->where('status', 'approved')->count();
+            $totalCount = $raports->count();
+
+            return [
+                'student' => $student,
+                'approvedCount' => $approvedCount,
+                'totalCount' => $totalCount,
+            ];
+        });
+
+        return view('orang-tua.akademik.index', compact('data'));
     }
 
-    // Download PDF raport. Hanya boleh jika raport sudah approved dan milik anak orang tua ini.
+    public function detail(Student $student): View
+    {
+        abort_if($student->user_id !== auth()->id(), 403);
+
+        $student->load('classRoom');
+
+        $raports = $this->reportCardService
+            ->getByStudent($student->student_id)
+            ->load('period')
+            ->sortByDesc(fn($r) => $r->period->tahun_ajaran . $r->period->semester);
+
+        return view('orang-tua.akademik.detail', compact('student', 'raports'));
+    }
+
     public function download(int $id)
     {
         $raport = StudentReportCard::with('student')->findOrFail($id);

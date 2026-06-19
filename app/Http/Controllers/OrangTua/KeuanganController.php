@@ -5,6 +5,7 @@ namespace App\Http\Controllers\OrangTua;
 use App\Http\Controllers\Controller;
 use App\Models\RegistrationFee;
 use App\Models\SppInvoice;
+use App\Models\Student;
 use App\Services\Registration\RegistrationFeeService;
 use App\Services\Registration\RegistrationTransactionService;
 use App\Services\Spp\SppInvoiceService;
@@ -55,16 +56,25 @@ class KeuanganController extends Controller
         $data = $students->map(function ($student) {
             $fee = $this->registrationFeeService->findByStudentId($student->student_id);
 
-            $pendingTx = $fee
-                ? $this->registrationTransactionService
-                    ->getByRegistrationFeeId($fee->registration_fee_id)
-                    ->firstWhere('status', 'pending')
-                : null;
-
-            return compact('student', 'fee', 'pendingTx');
+            return compact('student', 'fee');
         });
 
         return view('orang-tua.keuangan.pendaftaran', compact('data'));
+    }
+
+    public function pendaftaranDetail(Student $student): View
+    {
+        abort_if($student->user_id !== auth()->id(), 403);
+
+        $fee = RegistrationFee::with(['transactions', 'installments'])
+            ->where('student_id', $student->student_id)
+            ->first();
+
+        $pendingTx = $fee
+            ? $fee->transactions->firstWhere('status', 'pending')
+            : null;
+
+        return view('orang-tua.keuangan.pendaftaran-detail', compact('student', 'fee', 'pendingTx'));
     }
 
     public function spp(): View
@@ -76,10 +86,26 @@ class KeuanganController extends Controller
                 ->getByStudentId($student->student_id)
                 ->filter(fn($inv) => in_array($inv->status, ['unpaid', 'overdue', 'pending']));
 
-            return compact('student', 'invoices');
+            $overdueCount = $invoices->where('status', 'overdue')->count();
+            $pendingCount = $invoices->where('status', 'pending')->count();
+            $unpaidCount  = $invoices->where('status', 'unpaid')->count();
+            $totalUnpaid  = $invoices->whereIn('status', ['unpaid', 'overdue'])->sum('jumlah');
+
+            return compact('student', 'invoices', 'overdueCount', 'pendingCount', 'unpaidCount', 'totalUnpaid');
         });
 
         return view('orang-tua.keuangan.spp', compact('data'));
+    }
+
+    public function sppDetail(Student $student): View
+    {
+        abort_if($student->user_id !== auth()->id(), 403);
+
+        $invoices = $this->sppInvoiceService
+            ->getByStudentId($student->student_id)
+            ->filter(fn($inv) => in_array($inv->status, ['unpaid', 'overdue', 'pending']));
+
+        return view('orang-tua.keuangan.spp-detail', compact('student', 'invoices'));
     }
 
     public function storeRegistrationPayment(Request $request, RegistrationFee $fee): RedirectResponse
@@ -107,7 +133,7 @@ class KeuanganController extends Controller
             'payment_category'        => $data['payment_category'],
         ]);
 
-        return redirect()->route('pembayaran.pendaftaran.index')
+        return redirect()->route('pembayaran.pendaftaran.detail', $fee->student_id)
             ->with('success', 'Bukti pembayaran pendaftaran berhasil dikirim, menunggu konfirmasi admin.');
     }
 
@@ -133,7 +159,7 @@ class KeuanganController extends Controller
             'gambar_bukti_pembayaran' => $path,
         ]);
 
-        return redirect()->route('pembayaran.spp.index')
+        return redirect()->route('pembayaran.spp.detail', $invoice->student_id)
             ->with('success', 'Bukti pembayaran SPP berhasil dikirim, menunggu konfirmasi admin.');
     }
 }
