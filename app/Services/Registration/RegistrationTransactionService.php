@@ -4,7 +4,10 @@ namespace App\Services\Registration;
 
 use App\Models\Admin;
 use App\Models\RegistrationTransaction;
+use App\Models\User;
+use App\Notifications\RegistrationPaymentUploadedNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class RegistrationTransactionService
 {
@@ -14,7 +17,7 @@ class RegistrationTransactionService
 
     public function upload(array $data): RegistrationTransaction
     {
-        return RegistrationTransaction::create([
+        $transaction = RegistrationTransaction::create([
             'registration_fee_id'     => $data['registration_fee_id'],
             'payment_date'            => $data['payment_date'],
             'jumlah_bayar'            => $data['jumlah_bayar'],
@@ -23,6 +26,12 @@ class RegistrationTransactionService
             'payment_category'        => $data['payment_category'],
             'status'                  => 'pending',
         ]);
+
+        $transaction->load('registrationFee.student');
+        $admins = User::whereHas('role', fn ($q) => $q->where('role_name', 'Admin'))->get();
+        Notification::send($admins, new RegistrationPaymentUploadedNotification($transaction));
+
+        return $transaction;
     }
 
     public function approve(int $transactionId, int $approvedByUserId): bool
