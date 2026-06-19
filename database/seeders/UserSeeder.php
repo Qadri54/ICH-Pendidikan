@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassRoom;
 use App\Services\User\UserService;
 use Illuminate\Database\Seeder;
 
@@ -23,15 +24,28 @@ class UserSeeder extends Seeder {
             'NIP' => 'NIP001',
         ]);
 
-        // Guru
-        $this->userService->createUser([
-            'name' => 'Guru Satu',
+        // Guru Kelas — Sofia Aurora Susanto, S.Pd
+        $sofia = $this->userService->createUser([
+            'name' => 'Sofia Aurora Susanto',
             'email' => 'guru@iqra.com',
             'no_hp' => '08123456702',
             'password' => 'password123',
             'status' => 'active',
             'role_name' => 'Guru',
             'NIP' => 'NIP002',
+            'tipe' => 'Guru TK',
+            'hire_date' => '2023-01-01',
+        ]);
+
+        // Guru Kelas — Lisma Farida Pane, S.Pd
+        $lisma = $this->userService->createUser([
+            'name' => 'Lisma Farida Pane',
+            'email' => 'lisma.pane@iqra.com',
+            'no_hp' => '08123456708',
+            'password' => 'password123',
+            'status' => 'active',
+            'role_name' => 'Guru',
+            'NIP' => 'NIP006',
             'tipe' => 'Guru TK',
             'hire_date' => '2023-01-01',
         ]);
@@ -49,9 +63,9 @@ class UserSeeder extends Seeder {
             'hire_date' => '2023-01-01',
         ]);
 
-        // Kepala Sekolah
+        // Kepala Sekolah — Adli Qarin, S.S. M.Ikom
         $this->userService->createUser([
-            'name' => 'Kepala Sekolah IQRA',
+            'name' => 'Adli Qarin',
             'email' => 'kepsek@iqra.com',
             'no_hp' => '08123456704',
             'password' => 'password123',
@@ -97,6 +111,14 @@ class UserSeeder extends Seeder {
             'nama_ayah' => 'Ayah Satu',
             'nama_ibu' => 'Ibu Satu',
             'class_id' => 1,
+        ]);
+
+        // Assign wali kelas
+        ClassRoom::where('class_id', 1)->update([
+            'homeroom_teacher_id' => $lisma->teacher->teacher_id,
+        ]);
+        ClassRoom::where('class_id', 2)->update([
+            'homeroom_teacher_id' => $sofia->teacher->teacher_id,
         ]);
     }
 }
