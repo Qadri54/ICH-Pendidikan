@@ -11,7 +11,73 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gray-100 h-full overflow-hidden">
+<body class="font-sans antialiased bg-gray-100 h-full overflow-hidden"
+      x-data="{
+          pageLoading: false,
+          cm: { show: false, title: '', message: '', action: '', method: 'POST', fields: {}, btnText: 'Konfirmasi', danger: false }
+      }"
+      @page-loading.window="pageLoading = true"
+      @open-confirm.window="cm = { show: true, method: 'POST', fields: {}, btnText: 'Konfirmasi', danger: false, ...$event.detail }">
+
+{{-- Global Loading Overlay --}}
+<div x-show="pageLoading" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/20 backdrop-blur-[2px]" x-cloak>
+    <div class="bg-white rounded-2xl shadow-xl px-8 py-6 flex flex-col items-center gap-3">
+        <svg class="animate-spin h-8 w-8 text-ich-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm font-ui font-semibold text-ich-ink-600">Memproses...</span>
+    </div>
+</div>
+
+{{-- Global Confirm Modal --}}
+<div x-show="cm.show" x-cloak
+     class="fixed inset-0 z-[9998] flex items-center justify-center px-4"
+     x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="fixed inset-0 bg-black/50" @click="cm.show = false"></div>
+    <div class="relative w-full max-w-sm bg-white rounded-2xl shadow-xl z-10"
+         x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+         @keydown.escape.window="cm.show && (cm.show = false)">
+        <div class="px-6 py-6">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                     :class="cm.danger ? 'bg-ich-error-soft' : 'bg-ich-green-surface'">
+                    <svg x-show="!cm.danger" class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <svg x-show="cm.danger" x-cloak class="w-5 h-5 text-ich-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-display font-bold text-ich-ink-900" x-text="cm.title"></h2>
+            </div>
+            <p class="text-sm font-sans text-ich-ink-600 mb-5 leading-relaxed" x-text="cm.message"></p>
+            <form :action="cm.action" method="POST">
+                @csrf
+                <template x-if="cm.method !== 'POST'">
+                    <input type="hidden" name="_method" :value="cm.method">
+                </template>
+                <template x-for="[key, val] in Object.entries(cm.fields || {})" :key="key">
+                    <input type="hidden" :name="key" :value="val">
+                </template>
+                <div class="flex gap-3">
+                    <button type="submit"
+                            class="flex-1 py-2.5 font-ui font-bold text-sm text-white rounded-ich-lg transition-colors"
+                            :class="cm.danger ? 'bg-ich-error hover:opacity-90' : 'bg-ich-green hover:bg-ich-green-dark shadow-ich-btn'"
+                            x-text="cm.btnText">
+                    </button>
+                    <button type="button" @click="cm.show = false"
+                            class="flex-1 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
@@ -181,5 +247,21 @@
 </div>
 
 @livewireScripts
+<script>
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#' || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (link.hasAttribute('download') || link.target === '_blank') return;
+    if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (link.hasAttribute('@click.prevent') || link.hasAttribute('x-on:click.prevent')) return;
+    window.dispatchEvent(new CustomEvent('page-loading'));
+});
+document.addEventListener('submit', function(e) {
+    if (e.target.closest('.no-loading')) return;
+    window.dispatchEvent(new CustomEvent('page-loading'));
+});
+</script>
 </body>
 </html>
