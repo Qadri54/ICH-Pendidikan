@@ -153,26 +153,28 @@
                                         </a>
                                         @if(! $isReadOnly)
                                             @if($raport->status === 'submitted')
-                                                <form method="POST"
-                                                      action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
-                                                      onsubmit="return confirm('Setujui raport ini?')">
-                                                    @csrf
-                                                    <button type="submit"
-                                                            class="text-xs font-ui font-bold text-ich-success hover:underline">
-                                                        Setujui
-                                                    </button>
-                                                </form>
+                                                <button type="button"
+                                                        @click="$dispatch('open-confirm', {
+                                                            title: 'Setujui Raport',
+                                                            message: 'Setujui raport {{ $raport->student->nama_siswa }}?',
+                                                            action: '{{ route('admin.raport.approve', $raport->report_card_id) }}',
+                                                            btnText: 'Setujui'
+                                                        })"
+                                                        class="text-xs font-ui font-bold text-ich-success hover:underline">
+                                                    Setujui
+                                                </button>
                                             @endif
                                             @if($raport->status === 'draft')
-                                                <form method="POST"
-                                                      action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
-                                                      onsubmit="return confirm('Submit raport ini?')">
-                                                    @csrf
-                                                    <button type="submit"
-                                                            class="text-xs font-ui font-bold text-ich-warning hover:underline">
-                                                        Submit
-                                                    </button>
-                                                </form>
+                                                <button type="button"
+                                                        @click="$dispatch('open-confirm', {
+                                                            title: 'Submit Raport',
+                                                            message: 'Submit raport {{ $raport->student->nama_siswa }} untuk disetujui?',
+                                                            action: '{{ route('admin.raport.submit', $raport->report_card_id) }}',
+                                                            btnText: 'Submit'
+                                                        })"
+                                                        class="text-xs font-ui font-bold text-ich-warning hover:underline">
+                                                    Submit
+                                                </button>
                                                 <button @click="openDelete('{{ $raport->report_card_id }}', '{{ $raport->student->nama_siswa }}')"
                                                         class="text-xs font-ui font-bold text-ich-error hover:underline">
                                                     Hapus

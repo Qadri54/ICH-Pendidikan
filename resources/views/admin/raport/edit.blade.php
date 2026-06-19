@@ -44,25 +44,29 @@
                 </span>
                 @if(! $isReadOnly)
                     @if($raport->status === 'draft')
-                        <form method="POST" action="{{ route('admin.raport.submit', $raport->report_card_id) }}"
-                              onsubmit="return confirm('Submit raport ini untuk disetujui?')">
-                            @csrf
-                            <button type="submit"
-                                    class="px-3 py-1.5 bg-[#E09F17] text-white font-ui font-bold text-xs
-                                           rounded-lg hover:bg-[#c08a13] transition-colors">
-                                Submit
-                            </button>
-                        </form>
+                        <button type="button"
+                                @click="$dispatch('open-confirm', {
+                                    title: 'Submit Raport',
+                                    message: 'Submit raport {{ $raport->student->nama_siswa }} untuk disetujui?',
+                                    action: '{{ route('admin.raport.submit', $raport->report_card_id) }}',
+                                    btnText: 'Submit'
+                                })"
+                                class="px-3 py-1.5 bg-[#E09F17] text-white font-ui font-bold text-xs
+                                       rounded-lg hover:bg-[#c08a13] transition-colors">
+                            Submit
+                        </button>
                     @elseif($raport->status === 'submitted')
-                        <form method="POST" action="{{ route('admin.raport.approve', $raport->report_card_id) }}"
-                              onsubmit="return confirm('Setujui raport ini?')">
-                            @csrf
-                            <button type="submit"
-                                    class="px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
-                                           rounded-lg hover:bg-ich-green-dark transition-colors">
-                                Setujui
-                            </button>
-                        </form>
+                        <button type="button"
+                                @click="$dispatch('open-confirm', {
+                                    title: 'Setujui Raport',
+                                    message: 'Setujui raport {{ $raport->student->nama_siswa }}?',
+                                    action: '{{ route('admin.raport.approve', $raport->report_card_id) }}',
+                                    btnText: 'Setujui'
+                                })"
+                                class="px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
+                                       rounded-lg hover:bg-ich-green-dark transition-colors">
+                            Setujui
+                        </button>
                     @endif
                 @endif
             </div>
@@ -133,15 +137,17 @@
                                                     <p class="text-xs text-ich-ink-400 mt-1 truncate">{{ $photo->caption }}</p>
                                                 @endif
                                                 @if(! $isReadOnly && $raport->status !== 'approved')
-                                                    <form method="POST"
-                                                          action="{{ route('admin.raport.photo.destroy', $photo->photo_id) }}"
-                                                          onsubmit="return confirm('Hapus foto ini?')"
-                                                          class="absolute top-1 right-1">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit"
-                                                                class="w-6 h-6 bg-ich-error text-white rounded-full text-xs font-bold
-                                                                       opacity-0 group-hover:opacity-100 transition-opacity">×</button>
-                                                    </form>
+                                                    <button type="button"
+                                                            @click="$dispatch('open-confirm', {
+                                                                title: 'Hapus Foto',
+                                                                message: 'Hapus foto ini dari narasi?',
+                                                                action: '{{ route('admin.raport.photo.destroy', $photo->photo_id) }}',
+                                                                method: 'DELETE',
+                                                                btnText: 'Hapus',
+                                                                danger: true
+                                                            })"
+                                                            class="absolute top-1 right-1 w-6 h-6 bg-ich-error text-white rounded-full text-xs font-bold
+                                                                   opacity-0 group-hover:opacity-100 transition-opacity">×</button>
                                                 @endif
                                             </div>
                                         @endforeach
