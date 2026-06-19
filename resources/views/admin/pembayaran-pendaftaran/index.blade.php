@@ -1,5 +1,7 @@
 @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Pembayaran Pendaftaran">
+<div x-data="{ reject: { show: false, name: '', action: '' } }"
+     @open-reject.window="reject = { show: true, ...$event.detail }">
 
     <div class="mb-6 flex items-center gap-3">
         <div class="w-11 h-11 rounded-xl bg-ich-purple-soft flex items-center justify-center">
@@ -76,7 +78,7 @@
                                 default        => ['label' => 'Belum Bayar', 'class' => 'bg-ich-warning-soft text-ich-warning'],
                             };
                         @endphp
-                        <tr class="hover:bg-ich-surface transition-colors" x-data="{ rejectOpen: false }">
+                        <tr class="hover:bg-ich-surface transition-colors">
 
                             {{-- Siswa --}}
                             <td class="px-5 py-4">
@@ -147,46 +149,28 @@
                             <td class="px-5 py-4">
                                 @if($pendingTx && ! $isReadOnly)
                                     <div class="flex flex-col gap-2 min-w-[120px]">
-                                        {{-- Setujui --}}
-                                        <form method="POST"
-                                              action="{{ route('admin.pembayaran-pendaftaran.approve', $pendingTx) }}"
-                                              onsubmit="return confirm('Konfirmasi pembayaran ini?')">
-                                            @csrf
-                                            <button type="submit"
-                                                    class="w-full px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
-                                                           rounded-lg hover:bg-ich-green-dark transition-colors">
-                                                Setujui
-                                            </button>
-                                        </form>
+                                        <button type="button"
+                                                @click="$dispatch('open-confirm', {
+                                                    title: 'Setujui Pembayaran',
+                                                    message: 'Konfirmasi pembayaran pendaftaran dari {{ $fee->student?->nama_siswa ?? '-' }} sebesar Rp {{ number_format($pendingTx->jumlah_bayar, 0, ',', '.') }}?',
+                                                    action: '{{ route('admin.pembayaran-pendaftaran.approve', $pendingTx) }}',
+                                                    btnText: 'Setujui'
+                                                })"
+                                                class="w-full px-3 py-1.5 bg-ich-green text-white font-ui font-bold text-xs
+                                                       rounded-lg hover:bg-ich-green-dark transition-colors">
+                                            Setujui
+                                        </button>
 
-                                        <button type="button" x-show="!rejectOpen" @click="rejectOpen = true"
+                                        <button type="button"
+                                                @click="$dispatch('open-reject', {
+                                                    name: '{{ $fee->student?->nama_siswa ?? '-' }}',
+                                                    action: '{{ route('admin.pembayaran-pendaftaran.reject', $pendingTx) }}'
+                                                })"
                                                 class="w-full px-3 py-1.5 bg-white border-2 border-ich-error text-ich-error
                                                        font-ui font-bold text-xs rounded-lg
                                                        hover:bg-ich-error hover:text-white transition-colors">
                                             Tolak
                                         </button>
-
-                                        <form x-show="rejectOpen" method="POST"
-                                              action="{{ route('admin.pembayaran-pendaftaran.reject', $pendingTx) }}"
-                                              class="space-y-1.5">
-                                            @csrf
-                                            <textarea name="rejection_reason" rows="2"
-                                                      placeholder="Alasan penolakan..."
-                                                      class="w-full px-2 py-1.5 border-2 border-ich-error rounded-lg
-                                                             font-sans text-xs focus:outline-none resize-none"></textarea>
-                                            <div class="flex gap-1.5">
-                                                <button type="submit"
-                                                        class="flex-1 py-1.5 bg-ich-error text-white font-ui font-bold text-xs
-                                                               rounded-lg hover:opacity-90 transition-opacity">
-                                                    Konfirmasi
-                                                </button>
-                                                <button type="button" @click="rejectOpen = false"
-                                                        class="px-2 py-1.5 border border-ich-line text-ich-ink-600
-                                                               font-ui text-xs rounded-lg hover:bg-gray-50 transition-colors">
-                                                    Batal
-                                                </button>
-                                            </div>
-                                        </form>
                                     </div>
                                 @else
                                     <span class="text-xs text-ich-ink-400">—</span>
@@ -211,4 +195,34 @@
         @endif
     </div>
 
+    {{-- Reject Modal --}}
+    <x-admin-modal show="reject.show" title="Tolak Pembayaran" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-4">Tolak pembayaran dari <strong x-text="reject.name"></strong>?</p>
+        <form :action="reject.action" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">
+                    Alasan Penolakan
+                </label>
+                <textarea name="rejection_reason" rows="3"
+                          placeholder="Tuliskan alasan penolakan (opsional)..."
+                          class="w-full px-3 py-2.5 border-2 border-ich-line rounded-ich-lg font-sans text-sm
+                                 focus:outline-none focus:border-ich-error resize-none"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="flex-1 py-2.5 bg-ich-error text-white font-ui font-bold text-sm
+                               rounded-ich-lg hover:opacity-90 transition-opacity">
+                    Konfirmasi Tolak
+                </button>
+                <button type="button" @click="reject.show = false"
+                        class="flex-1 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm
+                               rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+</div>
 </x-main-layout>

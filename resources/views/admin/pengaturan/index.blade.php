@@ -222,15 +222,19 @@
                                                 Aktifkan
                                             </button>
                                         </form>
-                                        <form method="POST" action="{{ route('admin.pengaturan.semester.destroy', $sem) }}"
-                                              onsubmit="return confirm('Hapus semester ini?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit"
-                                                    class="px-3 py-1.5 text-xs font-ui font-bold bg-red-50 text-ich-error
-                                                           rounded-lg hover:bg-ich-error hover:text-white transition-colors">
-                                                Hapus
-                                            </button>
-                                        </form>
+                                        <button type="button"
+                                                @click="$dispatch('open-confirm', {
+                                                    title: 'Hapus Semester',
+                                                    message: 'Hapus semester {{ $sem->semester }} T.A {{ $sem->tahun_ajaran }}? Data yang terkait akan ikut terhapus.',
+                                                    action: '{{ route('admin.pengaturan.semester.destroy', $sem) }}',
+                                                    method: 'DELETE',
+                                                    btnText: 'Hapus',
+                                                    danger: true
+                                                })"
+                                                class="px-3 py-1.5 text-xs font-ui font-bold bg-red-50 text-ich-error
+                                                       rounded-lg hover:bg-ich-error hover:text-white transition-colors">
+                                            Hapus
+                                        </button>
                                     @endif
                                 </div>
                             </div>

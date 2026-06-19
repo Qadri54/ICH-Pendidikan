@@ -56,15 +56,17 @@
                                font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-colors">
                     + Buat Tagihan Manual
                 </button>
-                <form method="POST" action="{{ route('admin.keuangan.generate') }}"
-                      onsubmit="return confirm('Generate tagihan SPP untuk semua siswa bulan ini?')">
-                    @csrf
-                    <button type="submit"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                                   font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                        + Generate Tagihan Bulan Ini
-                    </button>
-                </form>
+                <button type="button"
+                        @click="$dispatch('open-confirm', {
+                            title: 'Generate Tagihan SPP',
+                            message: 'Generate tagihan SPP untuk semua siswa bulan ini? Tagihan yang sudah ada tidak akan dibuat ulang.',
+                            action: '{{ route('admin.keuangan.generate') }}',
+                            btnText: 'Generate'
+                        })"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
+                               font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    + Generate Tagihan Bulan Ini
+                </button>
             @endif
         </div>
     </div>

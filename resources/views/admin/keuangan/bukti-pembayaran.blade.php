@@ -96,22 +96,27 @@
                             <td class="px-4 py-3">
                                 <div class="flex items-center justify-center gap-2">
                                     @if($p->status === 'pending')
-                                        <form method="POST" action="{{ route('admin.keuangan.pembayaran.approve', $p->payment_id) }}"
-                                              onsubmit="return confirm('Setujui pembayaran ini?')">
-                                            @csrf
-                                            <button type="submit"
-                                                    class="px-2.5 py-1 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded hover:bg-ich-green hover:text-white transition-colors">
-                                                Setujui
-                                            </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('admin.keuangan.pembayaran.reject', $p->payment_id) }}"
-                                              onsubmit="return confirm('Tolak pembayaran ini?')">
-                                            @csrf
-                                            <button type="submit"
-                                                    class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
-                                                Tolak
-                                            </button>
-                                        </form>
+                                        <button type="button"
+                                                @click="$dispatch('open-confirm', {
+                                                    title: 'Setujui Pembayaran',
+                                                    message: 'Setujui pembayaran SPP dari {{ $p->student?->nama_siswa ?? '-' }} sebesar Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}?',
+                                                    action: '{{ route('admin.keuangan.pembayaran.approve', $p->payment_id) }}',
+                                                    btnText: 'Setujui'
+                                                })"
+                                                class="px-2.5 py-1 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded hover:bg-ich-green hover:text-white transition-colors">
+                                            Setujui
+                                        </button>
+                                        <button type="button"
+                                                @click="$dispatch('open-confirm', {
+                                                    title: 'Tolak Pembayaran',
+                                                    message: 'Tolak pembayaran SPP dari {{ $p->student?->nama_siswa ?? '-' }}?',
+                                                    action: '{{ route('admin.keuangan.pembayaran.reject', $p->payment_id) }}',
+                                                    btnText: 'Tolak',
+                                                    danger: true
+                                                })"
+                                                class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
+                                            Tolak
+                                        </button>
                                     @elseif($p->status === 'paid')
                                         <span class="text-xs text-ich-ink-400">{{ $p->approvedBy?->name ?? '-' }}</span>
                                     @else

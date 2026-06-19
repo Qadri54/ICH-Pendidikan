@@ -121,50 +121,59 @@
             </div>
 
             @if($pendaftaran->status === 'pending' && ! $isReadOnly)
-                <form method="POST" action="{{ route('admin.pendaftaran.update', $pendaftaran) }}"
-                      class="space-y-3" x-data="{ showReject: false }">
-                    @csrf @method('PATCH')
-
-                    <button type="submit" name="status" value="accepted"
-                            onclick="return confirm('Terima pendaftaran ini? Siswa akan dibuat dan biaya pendaftaran akan digenerate otomatis.')"
+                <div class="space-y-3" x-data="{ showReject: false }">
+                    <button type="button"
+                            @click="$dispatch('open-confirm', {
+                                title: 'Terima Pendaftaran',
+                                message: 'Siswa akan dibuat dan biaya pendaftaran akan digenerate otomatis. Lanjutkan?',
+                                action: '{{ route('admin.pendaftaran.update', $pendaftaran) }}',
+                                method: 'PATCH',
+                                fields: { status: 'accepted' },
+                                btnText: 'Terima'
+                            })"
                             class="w-full py-2.5 bg-ich-green text-white font-ui font-bold text-sm
                                    rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                         Terima Pendaftaran
                     </button>
 
-                    <div x-show="!showReject">
-                        <button type="button" @click="showReject = true"
-                                class="w-full py-2.5 bg-white border-2 border-ich-error text-ich-error font-ui font-bold text-sm
-                                       rounded-ich-lg hover:bg-ich-error-soft transition-colors">
-                            Tolak Pendaftaran
-                        </button>
-                    </div>
+                    <button type="button" @click="showReject = true"
+                            class="w-full py-2.5 bg-white border-2 border-ich-error text-ich-error font-ui font-bold text-sm
+                                   rounded-ich-lg hover:bg-ich-error-soft transition-colors">
+                        Tolak Pendaftaran
+                    </button>
 
-                    <div x-show="showReject" class="space-y-2">
-                        <label class="block font-ui font-bold text-xs text-ich-ink-600">
-                            Alasan Penolakan <span class="text-ich-error">*</span>
-                        </label>
-                        <textarea name="rejection_reason" rows="3"
-                                  placeholder="Tuliskan alasan penolakan yang akan dilihat oleh orang tua..."
-                                  class="w-full px-3 py-2 border-2 border-ich-error rounded-ich-lg font-sans text-sm
-                                         focus:outline-none resize-none">{{ old('rejection_reason') }}</textarea>
-                        @error('rejection_reason')
-                            <p class="text-ich-error text-xs">{{ $message }}</p>
-                        @enderror
-                        <div class="flex gap-2">
-                            <button type="submit" name="status" value="rejected"
-                                    class="flex-1 py-2.5 bg-ich-error text-white font-ui font-bold text-sm
-                                           rounded-ich-lg hover:opacity-90 transition-opacity">
-                                Konfirmasi Tolak
-                            </button>
-                            <button type="button" @click="showReject = false"
-                                    class="px-4 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm
-                                           rounded-ich-lg hover:bg-gray-50 transition-colors">
-                                Batal
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                    {{-- Reject Modal --}}
+                    <x-admin-modal show="showReject" title="Tolak Pendaftaran" maxWidth="sm">
+                        <form method="POST" action="{{ route('admin.pendaftaran.update', $pendaftaran) }}" class="space-y-4">
+                            @csrf @method('PATCH')
+                            <input type="hidden" name="status" value="rejected">
+                            <div>
+                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">
+                                    Alasan Penolakan <span class="text-ich-error">*</span>
+                                </label>
+                                <textarea name="rejection_reason" rows="3"
+                                          placeholder="Tuliskan alasan penolakan yang akan dilihat oleh orang tua..."
+                                          class="w-full px-3 py-2.5 border-2 border-ich-line rounded-ich-lg font-sans text-sm
+                                                 focus:outline-none focus:border-ich-error resize-none">{{ old('rejection_reason') }}</textarea>
+                                @error('rejection_reason')
+                                    <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit"
+                                        class="flex-1 py-2.5 bg-ich-error text-white font-ui font-bold text-sm
+                                               rounded-ich-lg hover:opacity-90 transition-opacity">
+                                    Konfirmasi Tolak
+                                </button>
+                                <button type="button" @click="showReject = false"
+                                        class="flex-1 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm
+                                               rounded-ich-lg hover:bg-gray-50 transition-colors">
+                                    Batal
+                                </button>
+                            </div>
+                        </form>
+                    </x-admin-modal>
+                </div>
             @elseif($pendaftaran->status === 'pending' && $isReadOnly)
                 <p class="text-sm text-ich-ink-400 font-sans">Anda tidak memiliki akses untuk mengubah status.</p>
             @else
