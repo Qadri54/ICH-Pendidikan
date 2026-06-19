@@ -24,6 +24,10 @@ class DashboardController extends Controller
         $user = auth()->user();
         $role = $user->role?->role_name ?? '';
 
+        if ($role === 'Orang Tua') {
+            return redirect()->route('beranda');
+        }
+
         if (in_array($role, ['Guru', 'Guru Ngaji'])) {
             return view('guru.dashboard', compact('user'));
         }
@@ -42,7 +46,7 @@ class DashboardController extends Controller
         $totalPendaftaran = $this->registrationFeeService->getTotalCollected();
 
         $stats = [
-            'total_siswa'       => Student::count(),
+            'total_siswa'       => Student::aktif()->count(),
             'total_guru'        => Teacher::count() + ReligiousTeacher::count(),
             'total_pendapatan'  => $totalSpp + $totalPendaftaran,
             'tagihan_berjalan'  => $sppSummary['tagihan_berjalan'],

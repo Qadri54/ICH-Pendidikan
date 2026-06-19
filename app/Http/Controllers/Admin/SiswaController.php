@@ -32,7 +32,10 @@ class SiswaController extends Controller
             'nama_ayah'     => 'required|string|max:255',
             'nama_ibu'      => 'required|string|max:255',
             'user_id'       => 'nullable|exists:users,user_id',
+            'status'        => 'nullable|in:aktif,alumni,keluar',
         ]);
+
+        $data['status'] = $data['status'] ?? 'aktif';
 
         Student::create($data);
 
@@ -48,6 +51,7 @@ class SiswaController extends Controller
                   ->orWhere('NIS', 'like', "%{$request->search}%")
             )
             ->when($request->kelas, fn($q) => $q->where('class_id', $request->kelas))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->orderBy('nama_siswa')
             ->paginate(15)->withQueryString();
 
@@ -81,6 +85,7 @@ class SiswaController extends Controller
             'tempat_lahir'  => 'required|string|max:255',
             'nama_ayah'     => 'required|string|max:255',
             'nama_ibu'      => 'required|string|max:255',
+            'status'        => 'required|in:aktif,alumni,keluar',
         ]);
 
         $siswa->update($data);

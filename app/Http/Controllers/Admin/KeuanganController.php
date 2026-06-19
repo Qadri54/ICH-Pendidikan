@@ -26,7 +26,7 @@ class KeuanganController extends Controller
         );
 
         $summary = $this->invoiceService->getSummary();
-        $siswa   = Student::with('classRoom')->orderBy('nama_siswa')->get();
+        $siswa   = Student::aktif()->with('classRoom')->orderBy('nama_siswa')->get();
 
         return view('admin.keuangan.index', [
             'invoices'      => $invoices,
@@ -49,7 +49,7 @@ class KeuanganController extends Controller
 
     public function create()
     {
-        $siswa = Student::with('classRoom')->orderBy('nama_siswa')->get();
+        $siswa = Student::aktif()->with('classRoom')->orderBy('nama_siswa')->get();
 
         return view('admin.keuangan.create', compact('siswa'));
     }

@@ -33,7 +33,8 @@ class SppInvoiceService
             ->pluck('student_id')
             ->all();
 
-        $students = Student::whereNotIn('student_id', $existingIds)
+        $students = Student::aktif()
+            ->whereNotIn('student_id', $existingIds)
             ->pluck('student_id')
             ->all();
 
