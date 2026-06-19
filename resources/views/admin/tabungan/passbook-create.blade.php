@@ -8,7 +8,7 @@
     </div>
 
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -74,7 +74,7 @@
             <div class="flex gap-3 pt-2">
                 <a href="{{ route('admin.tabungan.show', $tabungan) }}"
                    class="flex-1 h-11 flex items-center justify-center bg-white border-2 border-ich-line
-                          text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-[#F5F6FA]">
+                          text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-ich-surface">
                     Batal
                 </a>
                 <button type="submit" {{ $students->isEmpty() ? 'disabled' : '' }}

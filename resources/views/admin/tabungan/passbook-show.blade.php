@@ -1,3 +1,4 @@
+@php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Detail Buku Tabungan">
 
     <div class="mb-6">
@@ -9,12 +10,12 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-[#D1FAE5] text-[#009966] rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-[#FEE2E2] text-ich-error rounded-lg text-sm font-semibold">
+        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
             {{ session('error') }}
         </div>
     @endif
@@ -35,16 +36,22 @@
                 </div>
             </div>
 
+            {{-- Form setor/tarik hanya untuk Admin --}}
+            @if($isReadOnly)
+                <div class="bg-white rounded-xl shadow-ich-card p-5 text-center">
+                    <p class="font-sans text-sm text-ich-ink-400">Hanya Admin yang dapat mencatat transaksi.</p>
+                </div>
+            @else
             {{-- Deposit Form --}}
             <div x-data="{ tab: 'deposit' }" class="bg-white rounded-xl shadow-ich-card p-5">
                 <div class="flex gap-2 mb-4">
                     <button @click="tab = 'deposit'" type="button"
-                            :class="tab === 'deposit' ? 'bg-ich-green text-white' : 'bg-[#F5F6FA] text-ich-ink-600'"
+                            :class="tab === 'deposit' ? 'bg-ich-green text-white' : 'bg-ich-surface text-ich-ink-600'"
                             class="flex-1 h-9 rounded-lg font-ui font-bold text-sm transition-colors">
                         Setor
                     </button>
                     <button @click="tab = 'withdraw'" type="button"
-                            :class="tab === 'withdraw' ? 'bg-ich-error text-white' : 'bg-[#F5F6FA] text-ich-ink-600'"
+                            :class="tab === 'withdraw' ? 'bg-ich-error text-white' : 'bg-ich-surface text-ich-ink-600'"
                             class="flex-1 h-9 rounded-lg font-ui font-bold text-sm transition-colors">
                         Tarik
                     </button>
@@ -116,6 +123,7 @@
                     </button>
                 </form>
             </div>
+            @endif
         </div>
 
         {{-- Riwayat Transaksi --}}
@@ -126,7 +134,7 @@
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-[#F5F6FA]">
+                    <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">No. Transaksi</th>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal</th>
@@ -140,19 +148,19 @@
                             @php
                                 $isDeposit = $trx->transaction_type === 'deposit';
                             @endphp
-                            <tr class="hover:bg-[#F5F6FA]">
+                            <tr class="hover:bg-ich-surface transition-colors">
                                 <td class="px-4 py-3 font-sans text-xs text-ich-ink-400">{{ $trx->transaction_number }}</td>
                                 <td class="px-4 py-3 font-sans text-ich-ink-600">
                                     {{ $trx->transaction_date->translatedFormat('d M Y') }}
                                 </td>
                                 <td class="px-4 py-3">
                                     <span class="px-2 py-1 rounded-full text-xs font-ui font-bold
-                                        {{ $isDeposit ? 'bg-[#D1FAE5] text-[#009966]' : 'bg-[#FEE2E2] text-ich-error' }}">
+                                        {{ $isDeposit ? 'bg-ich-success-soft text-ich-success' : 'bg-ich-error-soft text-ich-error' }}">
                                         {{ $isDeposit ? 'Setoran' : 'Penarikan' }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-right font-ui font-semibold
-                                           {{ $isDeposit ? 'text-[#009966]' : 'text-ich-error' }}">
+                                           {{ $isDeposit ? 'text-ich-success' : 'text-ich-error' }}">
                                     {{ $isDeposit ? '+' : '-' }} Rp {{ number_format($trx->amount, 0, ',', '.') }}
                                 </td>
                                 <td class="px-4 py-3 text-ich-ink-500 font-sans text-xs">

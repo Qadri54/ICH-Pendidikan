@@ -1,39 +1,189 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+<div class="relative flex flex-col min-h-screen lg:min-h-0 lg:static" x-data="{ show: false }">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    {{-- Mobile-only: hero photo background --}}
+    <div class="lg:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
+         style="background-image: url('{{ asset('images/hero-students.jpg') }}')"></div>
+    <div class="lg:hidden absolute inset-0" style="background: var(--ich-green-soft); opacity: 0.45"></div>
+
+    {{-- Content container --}}
+    <div class="relative z-10 lg:static flex flex-col flex-1 lg:flex-none
+                px-5 pt-5 pb-6 lg:px-0 lg:pt-0 lg:pb-0 gap-4">
+
+        {{-- Mobile header: back button + title --}}
+        <div class="lg:hidden flex items-center gap-3 mt-2">
+            <a href="{{ route('login') }}"
+               class="w-9 h-9 rounded-[10px] flex items-center justify-center no-underline flex-shrink-0"
+               style="background:rgba(255,255,255,0.2)">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <div class="font-special font-bold text-[28px] text-white leading-tight"
+                 style="text-shadow:0 4px 4px rgba(0,0,0,0.25)">
+                Reset Password
+            </div>
+        </div>
+        <div class="lg:hidden font-sans text-[12px] text-white mb-1" style="opacity:.95">
+            Buat password baru untuk akun Anda
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        {{-- Desktop header --}}
+        <div class="hidden lg:block mb-2">
+            <h2 class="font-special font-bold text-[28px] text-ich-ink-900 leading-tight">Reset Password</h2>
+            <p class="font-sans text-[13px] text-ich-ink-400 mt-1">
+                Buat password baru untuk akun Anda
+            </p>
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        {{-- Form --}}
+        <form method="POST" action="{{ route('password.store') }}" class="flex flex-col gap-4">
+            @csrf
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            {{-- Email --}}
+            <div class="flex flex-col gap-1.5">
+                <label for="email"
+                       class="font-ui font-bold text-[12px] text-white lg:text-ich-ink-600 mobile-label-glow">
+                    Email
+                </label>
+                <div class="h-[46px] bg-white border-2 rounded-ich-lg flex items-center px-3.5 gap-2.5 shadow-ich-lift
+                            {{ $errors->has('email') ? 'border-ich-error' : 'border-ich-teal' }}">
+                    <svg class="w-[22px] h-[22px] shrink-0 {{ $errors->has('email') ? 'text-ich-error' : 'text-ich-teal' }}"
+                         fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8
+                                 M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+                    </svg>
+                    <input id="email" name="email" type="email"
+                           value="{{ old('email', $request->email) }}"
+                           placeholder="Masukkan email..."
+                           required autofocus autocomplete="username"
+                           class="flex-1 border-0 outline-none ring-0 bg-transparent
+                                  font-sans font-semibold text-[13px] text-ich-ink-900
+                                  placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">
+                </div>
+                @error('email')
+                    <p class="font-sans text-[11px] text-red-200 lg:text-ich-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Password --}}
+            <div class="flex flex-col gap-1.5">
+                <label for="password"
+                       class="font-ui font-bold text-[12px] text-white lg:text-ich-ink-600 mobile-label-glow">
+                    Password Baru
+                </label>
+                <div class="h-[46px] bg-white border-2 rounded-ich-lg flex items-center px-3.5 gap-2.5 shadow-ich-lift
+                            {{ $errors->has('password') ? 'border-ich-error' : 'border-ich-teal' }}">
+                    <svg class="w-[22px] h-[22px] shrink-0 {{ $errors->has('password') ? 'text-ich-error' : 'text-ich-teal' }}"
+                         fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke-linejoin="round"/>
+                        <path stroke-linecap="round" d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                        <circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <input id="password" name="password"
+                           :type="show ? 'text' : 'password'"
+                           placeholder="Masukkan password baru..."
+                           required autocomplete="new-password"
+                           class="flex-1 border-0 outline-none ring-0 bg-transparent
+                                  font-sans font-semibold text-[13px] text-ich-ink-900
+                                  placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">
+                    <button type="button" @click="show = !show"
+                            class="shrink-0 bg-transparent border-none cursor-pointer p-0 text-ich-teal">
+                        <svg x-show="!show" x-cloak class="w-[18px] h-[18px]"
+                             fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <svg x-show="show" x-cloak class="w-[18px] h-[18px]"
+                             fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                                     a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4
+                                     c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19
+                                     m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                @error('password')
+                    <p class="font-sans text-[11px] text-red-200 lg:text-ich-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Konfirmasi Password --}}
+            <div class="flex flex-col gap-1.5">
+                <label for="password_confirmation"
+                       class="font-ui font-bold text-[12px] text-white lg:text-ich-ink-600 mobile-label-glow">
+                    Konfirmasi Password
+                </label>
+                <div class="h-[46px] bg-white border-2 rounded-ich-lg flex items-center px-3.5 gap-2.5 shadow-ich-lift
+                            {{ $errors->has('password_confirmation') ? 'border-ich-error' : 'border-ich-teal' }}">
+                    <svg class="w-[22px] h-[22px] shrink-0 text-ich-teal"
+                         fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke-linejoin="round"/>
+                        <path stroke-linecap="round" d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                        <circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <input id="password_confirmation" name="password_confirmation"
+                           :type="show ? 'text' : 'password'"
+                           placeholder="Konfirmasi password..."
+                           required autocomplete="new-password"
+                           class="flex-1 border-0 outline-none ring-0 bg-transparent
+                                  font-sans font-semibold text-[13px] text-ich-ink-900
+                                  placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">
+                </div>
+                @error('password_confirmation')
+                    <p class="font-sans text-[11px] text-red-200 lg:text-ich-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Show password toggle --}}
+            <div class="flex items-center mx-0.5">
+                <label class="flex items-center gap-2 cursor-pointer" @click="show = !show">
+                    <span class="w-[18px] h-[18px] rounded-[5px] bg-ich-teal flex items-center justify-center shrink-0">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor"
+                             stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </span>
+                    <span class="font-sans font-semibold text-[12px] text-white lg:text-ich-ink-600">
+                        Perlihatkan Password
+                    </span>
+                </label>
+            </div>
+
+            {{-- Tombol Reset --}}
+            <button type="submit"
+                    class="mt-1 w-full h-[46px] bg-ich-teal text-white font-sans font-bold text-[14px]
+                           rounded-ich-lg border-none cursor-pointer flex items-center justify-center
+                           shadow-ich-btn hover:bg-ich-teal-dark transition-colors">
+                Reset Password
+            </button>
+
+        </form>
+
+        {{-- Link ke login --}}
+        <div class="text-center font-sans text-[12px] text-white lg:text-ich-ink-500 mt-1">
+            Kembali ke halaman
+            <a href="{{ route('login') }}"
+               class="font-bold text-white lg:text-ich-teal underline">
+                Masuk
+            </a>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        {{-- Mobile-only: spacer + copyright --}}
+        <div class="lg:hidden flex-1"></div>
+        <div class="lg:hidden text-center font-sans text-[10px] text-white py-3" style="opacity:.9">
+            Copyright &copy; {{ date('Y') }} IQRA' CREATIVE GROUP. All Rights Reserved.
         </div>
-    </form>
+
+    </div>
+</div>
+
 </x-guest-layout>

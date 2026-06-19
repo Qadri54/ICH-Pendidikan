@@ -5,10 +5,44 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
+    public function create()
+    {
+        $kelas   = ClassRoom::orderBy('nama_kelas')->get();
+        $parents = User::whereHas('role', fn($q) => $q->where('role_name', 'Orang Tua'))
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.siswa.create', compact('kelas', 'parents'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nama_siswa'    => 'required|string|max:255',
+            'NIS'           => 'nullable|string|max:50|unique:students,NIS',
+            'class_id'      => 'required|exists:classes,class_id',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tanggal_lahir' => 'required|date',
+            'tempat_lahir'  => 'required|string|max:255',
+            'nama_ayah'     => 'required|string|max:255',
+            'nama_ibu'      => 'required|string|max:255',
+            'user_id'       => 'nullable|exists:users,user_id',
+            'status'        => 'nullable|in:aktif,alumni,keluar',
+        ]);
+
+        $data['status'] = $data['status'] ?? 'aktif';
+
+        Student::create($data);
+
+        return redirect()->route('admin.siswa.index')
+            ->with('success', "Siswa {$data['nama_siswa']} berhasil ditambahkan.");
+    }
+
     public function index(Request $request)
     {
         $siswa = Student::with('classRoom')
@@ -17,12 +51,15 @@ class SiswaController extends Controller
                   ->orWhere('NIS', 'like', "%{$request->search}%")
             )
             ->when($request->kelas, fn($q) => $q->where('class_id', $request->kelas))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->orderBy('nama_siswa')
             ->paginate(15)->withQueryString();
 
         $kelas = ClassRoom::orderBy('nama_kelas')->get();
+        $parents = User::whereHas('role', fn($q) => $q->where('role_name', 'Orang Tua'))
+            ->orderBy('name')->get();
 
-        return view('admin.siswa.index', compact('siswa', 'kelas'));
+        return view('admin.siswa.index', compact('siswa', 'kelas', 'parents'));
     }
 
     public function show(Student $siswa)
@@ -48,6 +85,7 @@ class SiswaController extends Controller
             'tempat_lahir'  => 'required|string|max:255',
             'nama_ayah'     => 'required|string|max:255',
             'nama_ibu'      => 'required|string|max:255',
+            'status'        => 'required|in:aktif,alumni,keluar',
         ]);
 
         $siswa->update($data);

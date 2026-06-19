@@ -16,7 +16,9 @@ class KelasController extends Controller
             ->orderBy('nama_kelas')
             ->paginate(15);
 
-        return view('admin.kelas.index', compact('kelas'));
+        $guru = Teacher::with('user')->get();
+
+        return view('admin.kelas.index', compact('kelas', 'guru'));
     }
 
     public function create()

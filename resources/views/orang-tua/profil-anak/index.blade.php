@@ -1,5 +1,11 @@
 <x-mobile-layout title="Profil Anak" page-title="Profil Anak">
 
+    @if(session('success'))
+        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if($students->isEmpty())
         <div class="bg-white rounded-xl shadow-ich-card p-8 text-center">
             <x-ich-icon name="user_circle" :size="40" color="#99A1AF" class="mx-auto mb-3"/>
@@ -13,55 +19,46 @@
             </a>
         </div>
     @else
-        <div class="space-y-5">
+        <div class="space-y-3">
         @foreach($students as $student)
-            <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
-
-                {{-- Header --}}
-                <div class="bg-ich-green px-5 py-4 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <x-ich-icon name="user" :size="24" color="white"/>
+            <a href="{{ route('profil-anak.detail', $student->student_id) }}"
+               class="block bg-white rounded-xl shadow-ich-card p-5 hover:shadow-md transition-shadow active:scale-[0.98]">
+                <div class="flex items-center gap-4">
+                    <div class="shrink-0">
+                        @if($student->foto)
+                            <img src="{{ Storage::url($student->foto) }}"
+                                 alt="{{ $student->nama_siswa }}"
+                                 class="w-12 h-12 rounded-xl object-cover">
+                        @else
+                            <div class="w-12 h-12 rounded-xl bg-ich-green-surface flex items-center justify-center">
+                                <span class="font-display font-bold text-lg text-ich-green">
+                                    {{ strtoupper(substr($student->nama_siswa, 0, 1)) }}
+                                </span>
+                            </div>
+                        @endif
                     </div>
-                    <div class="min-w-0">
-                        <p class="font-display font-bold text-base text-white leading-tight">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-ui font-bold text-sm text-ich-ink-900 truncate">
                             {{ $student->nama_siswa }}
                         </p>
-                        <div class="flex items-center gap-2 mt-1">
-                            @if($student->classRoom)
-                                <span class="px-2 py-0.5 bg-white/20 text-white font-ui font-bold text-xs rounded-full">
-                                    {{ $student->classRoom->nama_kelas }}
+                        <p class="font-sans text-xs text-ich-ink-400 mt-0.5">
+                            {{ $student->classRoom?->nama_kelas ?? 'Belum Ditempatkan' }}
+                            @if($student->NIS) · NIS: {{ $student->NIS }} @endif
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            <span class="px-2 py-0.5 bg-ich-info-soft text-ich-info text-xs font-ui font-bold rounded-full">
+                                {{ $student->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                            </span>
+                            @if($student->tanggal_lahir)
+                                <span class="px-2 py-0.5 bg-ich-surface text-ich-ink-500 text-xs font-ui font-bold rounded-full">
+                                    {{ $student->tanggal_lahir->translatedFormat('d M Y') }}
                                 </span>
-                            @else
-                                <span class="px-2 py-0.5 bg-white/20 text-white/70 font-ui text-xs rounded-full">
-                                    Belum Ditempatkan
-                                </span>
-                            @endif
-                            @if($student->NIS)
-                                <span class="text-white/60 text-xs font-sans">NIS: {{ $student->NIS }}</span>
                             @endif
                         </div>
                     </div>
+                    <x-ich-icon name="chevron_right" :size="20" color="#99A1AF"/>
                 </div>
-
-                {{-- Detail --}}
-                <div class="divide-y divide-ich-line">
-                    @foreach([
-                        ['Jenis Kelamin', $student->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan'],
-                        ['Tempat Lahir',  $student->tempat_lahir ?? '-'],
-                        ['Tanggal Lahir', $student->tanggal_lahir?->translatedFormat('d F Y') ?? '-'],
-                        ['Nama Ayah',     $student->nama_ayah ?? '-'],
-                        ['Nama Ibu',      $student->nama_ibu ?? '-'],
-                    ] as [$label, $value])
-                        <div class="flex gap-3 px-5 py-3">
-                            <span class="w-28 shrink-0 font-ui font-bold text-xs text-ich-ink-400 pt-0.5">
-                                {{ $label }}
-                            </span>
-                            <span class="font-sans text-sm text-ich-ink-900">{{ $value }}</span>
-                        </div>
-                    @endforeach
-                </div>
-
-            </div>
+            </a>
         @endforeach
         </div>
     @endif

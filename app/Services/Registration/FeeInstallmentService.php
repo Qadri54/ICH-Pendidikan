@@ -3,6 +3,7 @@
 namespace App\Services\Registration;
 
 use App\Models\FeeInstallment;
+use App\Notifications\RegistrationFeeOverdueNotification;
 use Illuminate\Support\Carbon;
 
 class FeeInstallmentService {
@@ -50,9 +51,21 @@ class FeeInstallmentService {
             ->update(['tanggal_jatuh_tempo' => $newDueDate]);
     }
 
-    public function checkOverdue(): void {
-        FeeInstallment::where('status', 'unpaid')
+    public function checkOverdue(): int {
+        $installments = FeeInstallment::with('registrationFee.student.user')
+            ->where('status', 'unpaid')
             ->where('tanggal_jatuh_tempo', '<', now())
-            ->update(['status' => 'overdue']);
+            ->get();
+
+        foreach ($installments as $installment) {
+            $installment->update(['status' => 'overdue']);
+
+            $user = $installment->registrationFee?->student?->user;
+            if ($user) {
+                $user->notify(new RegistrationFeeOverdueNotification($installment));
+            }
+        }
+
+        return $installments->count();
     }
 } 

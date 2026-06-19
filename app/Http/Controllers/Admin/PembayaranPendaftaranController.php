@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\RegistrationTransaction;
+use App\Services\Registration\RegistrationFeeService;
 use App\Services\Registration\RegistrationTransactionService;
 use Illuminate\Http\Request;
 
@@ -11,16 +12,17 @@ class PembayaranPendaftaranController extends Controller
 {
     public function __construct(
         private RegistrationTransactionService $transactionService,
+        private RegistrationFeeService $feeService,
     ) {}
 
     public function index(Request $request)
     {
-        $transaksi = $this->transactionService->getPaginated(
+        $fees = $this->feeService->getPaginated(
             $request->search,
             $request->status,
         );
 
-        return view('admin.pembayaran-pendaftaran.index', compact('transaksi'));
+        return view('admin.pembayaran-pendaftaran.index', compact('fees'));
     }
 
     public function approve(RegistrationTransaction $transaksi)

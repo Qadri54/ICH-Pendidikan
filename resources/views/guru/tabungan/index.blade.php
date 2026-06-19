@@ -13,7 +13,7 @@
         <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-[#F5F6FA]">
+                    <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Th. Akademik</th>
@@ -27,7 +27,7 @@
                             @php
                                 $isActive = $ledger->status === 'Active';
                             @endphp
-                            <tr class="hover:bg-[#F5F6FA]">
+                            <tr class="hover:bg-ich-surface transition-colors">
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                     {{ $ledger->ledger_name }}
                                 </td>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-center">
                                     <span class="px-2 py-1 rounded-full text-xs font-ui font-bold
-                                        {{ $isActive ? 'bg-[#D1FAE5] text-[#009966]' : 'bg-[#F5F6FA] text-ich-ink-400' }}">
+                                        {{ $isActive ? 'bg-ich-success-soft text-ich-success' : 'bg-ich-surface text-ich-ink-400' }}">
                                         {{ $ledger->status }}
                                     </span>
                                 </td>

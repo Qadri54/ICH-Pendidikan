@@ -9,7 +9,7 @@ $variants = [
     'primary' => 'bg-ich-teal       text-white shadow-ich-btn hover:bg-ich-teal-dark',
     'accent'  => 'bg-ich-yellow     text-white shadow-ich-btn hover:bg-ich-yellow-dark',
     'green'   => 'bg-ich-green      text-white shadow-ich-btn hover:bg-ich-green-dark',
-    'ghost'   => 'bg-white          text-ich-teal border border-ich-teal hover:bg-[#F4F7FC]',
+    'ghost'   => 'bg-white          text-ich-teal border border-ich-teal hover:bg-ich-info-soft',
     'dark'    => 'bg-ich-ink-800    text-white hover:bg-ich-ink-900',
 ];
 $cls = $variants[$variant] ?? $variants['primary'];

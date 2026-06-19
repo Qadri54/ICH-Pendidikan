@@ -13,9 +13,10 @@ class UserController extends Controller {
 
     public function index(Request $request) {
         $roles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Guru', 'Guru Ngaji', 'Orang Tua'];
+        $createRoles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Orang Tua'];
         $users = $this->userService->getPaginated($request->search, $request->role);
 
-        return view('admin.user.index', compact('users', 'roles'));
+        return view('admin.user.index', compact('users', 'roles', 'createRoles'));
     }
 
     public function create() {

@@ -4,7 +4,10 @@ namespace App\Services\Spp;
 
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
+use App\Models\User;
+use App\Notifications\SppPaymentUploadedNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class SppPaymentService
 {
@@ -14,7 +17,7 @@ class SppPaymentService
      */
     public function upload(array $data): SppPayment
     {
-        return SppPayment::create([
+        $payment = SppPayment::create([
             'student_id'               => $data['student_id'],
             'invoice_id'               => $data['invoice_id'],
             'payment_date'             => $data['payment_date'],
@@ -24,6 +27,12 @@ class SppPaymentService
             'approved_by'              => null,
             'status'                   => 'pending',
         ]);
+
+        $payment->load('student');
+        $admins = User::whereHas('role', fn ($q) => $q->where('role_name', 'Admin'))->get();
+        Notification::send($admins, new SppPaymentUploadedNotification($payment));
+
+        return $payment;
     }
 
     /**
@@ -58,6 +67,16 @@ class SppPaymentService
         $payment->update(['status' => 'cancelled']);
 
         return $payment;
+    }
+
+    public function getPaginated(?string $search, ?string $status, int $perPage = 15)
+    {
+        return SppPayment::with(['student.classRoom', 'invoice', 'approvedBy'])
+            ->when($search, fn ($q) => $q->whereHas('student', fn ($s) => $s->where('nama_siswa', 'like', "%{$search}%")))
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     /**

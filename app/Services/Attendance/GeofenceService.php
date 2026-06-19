@@ -26,6 +26,42 @@ class GeofenceService
         return $distance <= $radiusMeter;
     }
 
+    // Simpan atau update titik koordinat dan radius geofence sekolah.
+    // Menggunakan AttendanceSetting agar konsisten dengan isWithinZone().
+    public function saveZone(float $lat, float $lng, float $radiusMeter): void
+    {
+        $settings = [
+            'geofence_latitude'     => $lat,
+            'geofence_longitude'    => $lng,
+            'geofence_radius_meter' => $radiusMeter,
+        ];
+
+        foreach ($settings as $key => $value) {
+            AttendanceSetting::updateOrCreate(
+                ['setting_key' => $key],
+                ['setting_value' => $value]
+            );
+        }
+    }
+
+    // Ambil konfigurasi geofence aktif. Null jika belum pernah disimpan.
+    public function getZone(): ?array
+    {
+        $settings = AttendanceSetting::whereIn('setting_key', [
+            'geofence_latitude', 'geofence_longitude', 'geofence_radius_meter',
+        ])->pluck('setting_value', 'setting_key');
+
+        if ($settings->count() < 3) {
+            return null;
+        }
+
+        return [
+            'latitude'     => (float) $settings['geofence_latitude'],
+            'longitude'    => (float) $settings['geofence_longitude'],
+            'radius_meter' => (float) $settings['geofence_radius_meter'],
+        ];
+    }
+
     // Hitung jarak antara dua titik koordinat GPS menggunakan rumus Haversine.
     // Haversine memperhitungkan kelengkungan bumi sehingga hasilnya akurat
     // untuk jarak pendek maupun jauh. Return nilai dalam meter.

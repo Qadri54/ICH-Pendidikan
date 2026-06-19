@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_08 — Tabungan Siswa (Setor / Tarik)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="1160" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: Guru / Admin -->
+    <mxCell id="lane1" value="Guru / Admin" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="380" height="1100" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="400" y="60" width="380" height="1100" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== GURU / ADMIN LANE ===== -->
+
+    <mxCell id="u_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="210" y="90" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_open" value="Buka Halaman Tabungan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="160" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_pilih_ledger" value="Pilih Ledger Tabungan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="310" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_pilih_passbook" value="Pilih Passbook Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="460" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_lihat_saldo" value="Lihat Detail Saldo&lt;br&gt;&amp; Riwayat Transaksi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="610" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_pilih_aksi" value="Pilih Aksi" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="160" y="705" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Branch Setor -->
+    <mxCell id="u_isi_setor" value="Masukkan Nominal Setoran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="820" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_konfirm_setor" value="Konfirmasi Setoran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="910" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Branch Tarik -->
+    <mxCell id="u_isi_tarik" value="Masukkan Nominal Penarikan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="1000" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_konfirm_tarik" value="Konfirmasi Penarikan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="1090" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="u_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="208" y="1108" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <mxCell id="sys_load_ledger" value="Tampilkan Daftar Ledger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="220" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_load_passbook" value="Tampilkan Passbook&lt;br&gt;dalam Ledger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="370" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_load_saldo" value="Tampilkan Saldo &amp;&lt;br&gt;Riwayat Transaksi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="520" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Setor -->
+    <mxCell id="sys_simpan_setor" value="Simpan Transaksi Debit&lt;br&gt;Update Saldo Passbook&lt;br&gt;&amp; Ledger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="900" width="180" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- Tarik -->
+    <mxCell id="sys_dec_saldo" value="Saldo Cukup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="540" y="1020" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_error_saldo" value="Tampil Error:&lt;br&gt;Saldo Tidak Cukup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="1120" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_simpan_tarik" value="Simpan Transaksi Kredit&lt;br&gt;Update Saldo Passbook&lt;br&gt;&amp; Ledger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="1120" width="180" height="65" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_start" target="u_open" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Open → SYS load ledger -->
+    <mxCell id="e02" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_open" target="sys_load_ledger" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_load_ledger" target="u_pilih_ledger" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih ledger → SYS load passbook -->
+    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_pilih_ledger" target="sys_load_passbook" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_load_passbook" target="u_pilih_passbook" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih passbook → SYS load saldo -->
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_pilih_passbook" target="sys_load_saldo" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_load_saldo" target="u_lihat_saldo" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Lihat saldo → pilih aksi -->
+    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_lihat_saldo" target="u_pilih_aksi" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih aksi → Setor -->
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_pilih_aksi" target="u_isi_setor" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e09_lbl" value="Setor" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e09">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Isi setor → konfirm setor -->
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_isi_setor" target="u_konfirm_setor" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Konfirm setor → SYS simpan setor -->
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_konfirm_setor" target="sys_simpan_setor" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS simpan setor → end -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_simpan_setor" target="u_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Pilih aksi → Tarik -->
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_pilih_aksi" target="u_isi_tarik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e13_lbl" value="Tarik" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e13">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Isi tarik → konfirm tarik → SYS dec saldo -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_isi_tarik" target="u_konfirm_tarik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="u_konfirm_tarik" target="sys_dec_saldo" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS dec saldo → error (Tidak) -->
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_saldo" target="sys_error_saldo" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e16_lbl" value="Tidak" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e16">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- SYS error → User isi tarik (loop) -->
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_error_saldo" target="u_isi_tarik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS dec saldo → simpan tarik (Ya) -->
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_dec_saldo" target="sys_simpan_tarik" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e18_lbl" value="Ya" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e18">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- SYS simpan tarik → end -->
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_simpan_tarik" target="u_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
+  </diagram>
+</mxfile>

@@ -4,6 +4,7 @@ namespace App\Services\Spp;
 
 use App\Models\SppInvoice;
 use App\Models\Student;
+use App\Notifications\SppOverdueNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +33,8 @@ class SppInvoiceService
             ->pluck('student_id')
             ->all();
 
-        $students = Student::whereNotIn('student_id', $existingIds)
+        $students = Student::aktif()
+            ->whereNotIn('student_id', $existingIds)
             ->pluck('student_id')
             ->all();
 
@@ -90,6 +92,17 @@ class SppInvoiceService
         ];
     }
 
+    public function createSingle(array $data): SppInvoice
+    {
+        return SppInvoice::create([
+            'student_id'    => $data['student_id'],
+            'tanggal_tahun' => $data['tanggal_tahun'],
+            'jumlah'        => $data['jumlah'],
+            'jatuh_tempo'   => $data['jatuh_tempo'],
+            'status'        => $data['status'] ?? 'unpaid',
+        ]);
+    }
+
     /**
      * Hapus invoice beserta data payment-nya.
      */
@@ -121,13 +134,24 @@ class SppInvoiceService
     }
 
     /**
-     * Tandai semua invoice yang melewati jatuh_tempo sebagai overdue.
-     * Menggunakan single bulk query — tidak ada loop.
+     * Tandai semua invoice yang melewati jatuh_tempo sebagai overdue
+     * dan kirim notifikasi ke Orang Tua siswa yang bersangkutan.
      */
     public function checkOverdue(): int
     {
-        return SppInvoice::where('status', 'unpaid')
+        $invoices = SppInvoice::with('student.user')
+            ->where('status', 'unpaid')
             ->where('jatuh_tempo', '<', Carbon::today()->toDateString())
-            ->update(['status' => 'overdue']);
+            ->get();
+
+        foreach ($invoices as $invoice) {
+            $invoice->update(['status' => 'overdue']);
+
+            if ($invoice->student?->user) {
+                $invoice->student->user->notify(new SppOverdueNotification($invoice));
+            }
+        }
+
+        return $invoices->count();
     }
 }

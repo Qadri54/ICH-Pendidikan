@@ -15,12 +15,14 @@ class Student extends Model
         'class_id',
         'user_id',
         'nama_siswa',
+        'foto',
         'NIS',
         'jenis_kelamin',
         'tanggal_lahir',
         'tempat_lahir',
         'nama_ayah',
         'nama_ibu',
+        'status',
     ];
 
     protected function casts(): array
@@ -30,7 +32,11 @@ class Student extends Model
         ];
     }
 
-    // Relationships
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'aktif');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');

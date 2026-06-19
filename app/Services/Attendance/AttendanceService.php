@@ -49,7 +49,7 @@ class AttendanceService
             'check_in_accuracy'   => $data['accuracy'],
             'selfie_path'         => $selfiePath,
             'is_within_geofence'  => $isWithinGeofence ? 'ya' : 'tidak',
-            'attendance_status'   => 'Masuk',
+            'attendance_status'   => 'Hadir',
         ]);
     }
 
@@ -150,10 +150,11 @@ class AttendanceService
                     ?? 'Tidak diketahui';
 
                 return [
-                    'nama'  => $nama,
-                    'masuk' => $records->where('attendance_status', 'Masuk')->count(),
-                    'izin'  => $records->where('attendance_status', 'Izin')->count(),
-                    'sakit' => $records->where('attendance_status', 'Sakit')->count(),
+                    'nama'              => $nama,
+                    'hadir'             => $records->where('attendance_status', 'Hadir')->count(),
+                    'izin'              => $records->where('attendance_status', 'Izin')->count(),
+                    'sakit'             => $records->where('attendance_status', 'Sakit')->count(),
+                    'tanpa_keterangan'  => $records->where('attendance_status', 'Tanpa Keterangan')->count(),
                 ];
             })
             ->values();

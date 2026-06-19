@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Title -->
+    <mxCell id="title" value="AD_03 — Pembayaran Biaya Pendaftaran" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="10" width="1160" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 1: Orang Tua -->
+    <mxCell id="lane1" value="Orang Tua" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="20" y="60" width="380" height="1000" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 2: System -->
+    <mxCell id="lane2" value="System" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="400" y="60" width="380" height="1000" as="geometry"/>
+    </mxCell>
+
+    <!-- Lane 3: Admin -->
+    <mxCell id="lane3" value="Admin" style="swimlane;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="780" y="60" width="380" height="1000" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ORANG TUA LANE ===== -->
+
+    <mxCell id="ot_start" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="210" y="90" width="30" height="30" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_keuangan" value="Buka Halaman Keuangan&lt;br&gt;→ Biaya Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="160" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_lihat_tagihan" value="Lihat Total / Sudah Dibayar&lt;br&gt;/ Sisa Tagihan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="310" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_dec_lunas" value="Sudah Lunas?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="160" y="400" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_end_lunas" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="208" y="510" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_upload" value="Isi Nominal &amp; Upload&lt;br&gt;Bukti Transfer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="510" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_tunggu" value="Menunggu Konfirmasi&lt;br&gt;Admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="680" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_dec_hasil" value="Hasil?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="160" y="790" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_approved" value="Tagihan Terupdate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="910" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_rejected" value="Lihat Alasan Penolakan&lt;br&gt;&amp; Upload Ulang" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="135" y="910" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="ot_end" value="" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=4;" vertex="1" parent="1">
+      <mxGeometry x="208" y="1000" width="34" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== SYSTEM LANE ===== -->
+
+    <mxCell id="sys_load" value="Tampilkan Data&lt;br&gt;RegistrationFee Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="220" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_simpan_tx" value="Simpan Transaksi&lt;br&gt;(status: pending)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="600" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_update_approve" value="Update Sisa Tagihan&lt;br&gt;RegistrationFee" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="910" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="sys_hapus_tx" value="Hapus Transaksi Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="515" y="1000" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== ADMIN LANE ===== -->
+
+    <mxCell id="adm_lihat" value="Lihat Halaman Pembayaran&lt;br&gt;Pendaftaran" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="600" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_review" value="Review Bukti Bayar&lt;br&gt;yang Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="690" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_dec" value="Bukti Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="920" y="780" width="130" height="65" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_approve" value="Klik Approve" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="900" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="adm_reject" value="Klik Reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=20;" vertex="1" parent="1">
+      <mxGeometry x="895" y="990" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ===== EDGES ===== -->
+
+    <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_start" target="ot_keuangan" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT keuangan → SYS load data -->
+    <mxCell id="e02" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_keuangan" target="sys_load" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS load → OT lihat tagihan -->
+    <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_load" target="ot_lihat_tagihan" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT lihat tagihan → dec lunas -->
+    <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_lihat_tagihan" target="ot_dec_lunas" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- Dec lunas → end (Ya) -->
+    <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_lunas" target="ot_end_lunas" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e05_lbl" value="Ya" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e05">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- Dec lunas → upload (Belum) -->
+    <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_lunas" target="ot_upload" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e06_lbl" value="Belum" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e06">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- OT upload → SYS simpan tx -->
+    <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_upload" target="sys_simpan_tx" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS simpan tx → ADM lihat -->
+    <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_simpan_tx" target="adm_lihat" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS simpan tx → OT tunggu -->
+    <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_simpan_tx" target="ot_tunggu" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ADM: lihat → review → dec -->
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_lihat" target="adm_review" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_review" target="adm_dec" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ADM dec → approve (Valid) -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_approve" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e12_lbl" value="Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e12">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- ADM dec → reject (Tidak Valid) -->
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_dec" target="adm_reject" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e13_lbl" value="Tidak Valid" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e13">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+    <!-- ADM approve → SYS update -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_approve" target="sys_update_approve" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ADM reject → SYS hapus tx -->
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="adm_reject" target="sys_hapus_tx" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS update → OT approved result -->
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_update_approve" target="ot_approved" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- SYS hapus tx → OT rejected result -->
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="sys_hapus_tx" target="ot_rejected" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT approved/rejected → end -->
+    <mxCell id="e18" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_approved" target="ot_end" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_rejected" target="ot_upload" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT tunggu → OT dec hasil -->
+    <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_tunggu" target="ot_dec_hasil" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- OT dec hasil → approved/rejected (connected via SYS) -->
+    <mxCell id="e21" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_hasil" target="ot_approved" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e21_lbl" value="Disetujui" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e21">
+      <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+    <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot_dec_hasil" target="ot_rejected" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="e22_lbl" value="Ditolak" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e22">
+      <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
+  </diagram>
+</mxfile>

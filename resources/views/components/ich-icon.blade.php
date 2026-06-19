@@ -15,6 +15,7 @@ $paths = [
     'menu'          => '<path d="M4 7h16 M4 12h16 M4 17h16"/>',
     'close'         => '<path d="M6 6l12 12 M18 6l-12 12"/>',
     'check'         => '<path d="M5 12l5 5L20 7"/>',
+    'user_check'    => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>',
     'chevron_right' => '<path d="M9 6l6 6-6 6"/>',
     'chevron_left'  => '<path d="M15 6l-6 6 6 6"/>',
     'chevron_down'  => '<path d="M6 9l6 6 6-6"/>',

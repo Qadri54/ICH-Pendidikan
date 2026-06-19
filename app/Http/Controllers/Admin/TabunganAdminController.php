@@ -25,8 +25,9 @@ class TabunganAdminController extends Controller
     public function index(Request $request): View
     {
         $ledgers = $this->ledgerService->getPaginated($request->search, $request->status);
+        $guru    = Teacher::with('user')->get();
 
-        return view('admin.tabungan.index', compact('ledgers'));
+        return view('admin.tabungan.index', compact('ledgers', 'guru'));
     }
 
     public function create(): View
@@ -54,7 +55,10 @@ class TabunganAdminController extends Controller
     public function show(SavingLedger $tabungan): View
     {
         $tabungan = $this->ledgerService->getById($tabungan->ledger_id);
-        return view('admin.tabungan.show', compact('tabungan'));
+        $existingStudentIds = $tabungan->passbooks()->pluck('student_id');
+        $students = Student::with('classRoom')->whereNotIn('student_id', $existingStudentIds)->orderBy('nama_siswa')->get();
+
+        return view('admin.tabungan.show', compact('tabungan', 'students'));
     }
 
     public function destroy(SavingLedger $tabungan): RedirectResponse
