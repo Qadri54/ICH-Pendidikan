@@ -25,12 +25,50 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
 
         {{-- Profile Header Card --}}
         <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
-            <div class="h-24 bg-gradient-to-r from-ich-teal to-ich-green"></div>
-            <div class="px-6 pb-6 -mt-10">
-                <div class="flex {{ $isMobile ? 'flex-col items-center text-center' : 'items-end gap-5' }}">
-                    <div class="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center ring-4 ring-white flex-shrink-0">
-                        <span class="text-2xl font-display font-bold text-ich-teal">{{ $initials }}</span>
+            <div class="px-6 pt-6 pb-6">
+                <div class="flex {{ $isMobile ? 'flex-col items-center text-center' : 'items-end gap-5' }}"
+                     x-data="{ uploading: false }">
+                    {{-- Foto profil --}}
+                    <div class="relative flex-shrink-0">
+                        @if($user->foto)
+                            <img src="{{ Storage::url($user->foto) }}"
+                                 alt="{{ $user->name }}"
+                                 class="w-20 h-20 rounded-full object-cover border-3 border-ich-line">
+                        @else
+                            <div class="w-20 h-20 rounded-full bg-ich-green-surface flex items-center justify-center border-3 border-ich-line">
+                                <span class="text-2xl font-display font-bold text-ich-green">{{ $initials }}</span>
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('profile.foto') }}"
+                              enctype="multipart/form-data"
+                              x-ref="fotoForm"
+                              @submit="uploading = true">
+                            @csrf
+                            <label class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-ich-teal
+                                          flex items-center justify-center cursor-pointer
+                                          shadow-md hover:bg-ich-teal-dark transition-colors">
+                                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <input type="file" name="foto" accept="image/jpg,image/jpeg,image/png"
+                                       class="hidden"
+                                       @change="$refs.fotoForm.submit()">
+                            </label>
+                        </form>
                     </div>
+
+                    {{-- Loading indicator --}}
+                    <div x-show="uploading" x-cloak class="{{ $isMobile ? 'mt-2' : 'absolute left-24 top-14' }}">
+                        <svg class="animate-spin h-5 w-5 text-ich-teal mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+
                     <div class="{{ $isMobile ? 'mt-3' : 'pb-1' }}">
                         <h1 class="text-xl font-display font-bold text-ich-ink-900">{{ $user->name }}</h1>
                         <div class="flex {{ $isMobile ? 'justify-center' : '' }} items-center gap-2 mt-1">
