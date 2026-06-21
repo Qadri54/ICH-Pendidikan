@@ -57,21 +57,26 @@
                             lat: '', lng: '', acc: '',
                             loading: false,
                             error: '',
+                            accuracyWarning: false,
                             getLocation() {
                                 this.loading = true;
                                 this.error = '';
+                                this.accuracyWarning = false;
                                 navigator.geolocation.getCurrentPosition(
                                     pos => {
-                                        this.lat     = pos.coords.latitude;
-                                        this.lng     = pos.coords.longitude;
-                                        this.acc     = pos.coords.accuracy;
+                                        this.lat = pos.coords.latitude;
+                                        this.lng = pos.coords.longitude;
+                                        this.acc = pos.coords.accuracy;
                                         this.loading = false;
+                                        if (this.acc > 200) {
+                                            this.accuracyWarning = true;
+                                        }
                                     },
                                     err => {
-                                        this.error   = 'Gagal mendapatkan lokasi: ' + err.message;
+                                        this.error = 'Gagal mendapatkan lokasi: ' + err.message;
                                         this.loading = false;
                                     },
-                                    { enableHighAccuracy: true, timeout: 10000 }
+                                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
                                 );
                             }
                          }">
@@ -104,13 +109,21 @@
 
                                 {{-- Lokasi --}}
                                 <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
-                                    <template x-if="lat">
+                                    <template x-if="lat && !accuracyWarning">
                                         <p class="text-ich-green font-semibold">
                                             Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
                                             (akurasi ±<span x-text="Math.round(acc)"></span>m)
                                         </p>
                                     </template>
-                                    <template x-if="!lat">
+                                    <template x-if="lat && accuracyWarning">
+                                        <div>
+                                            <p class="text-ich-warning font-semibold">
+                                                Akurasi GPS terlalu rendah (±<span x-text="Math.round(acc).toLocaleString()"></span>m)
+                                            </p>
+                                            <p class="text-ich-ink-400 mt-1">Pastikan GPS aktif dan izin lokasi diberikan, lalu tekan "Ambil Lokasi" lagi.</p>
+                                        </div>
+                                    </template>
+                                    <template x-if="!lat && !error">
                                         <p class="text-ich-ink-400">Lokasi belum diambil</p>
                                     </template>
                                     <template x-if="error">
@@ -127,8 +140,8 @@
                                         <span x-text="loading ? 'Mengambil...' : 'Ambil Lokasi'"></span>
                                     </button>
                                     <button type="submit"
-                                            :disabled="!lat"
-                                            :class="lat ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
+                                            :disabled="!lat || accuracyWarning"
+                                            :class="(lat && !accuracyWarning) ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
                                             class="flex-1 py-2.5 text-white font-ui font-bold text-sm
                                                    rounded-ich-lg shadow-ich-btn transition-colors">
                                         Check-in
