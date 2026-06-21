@@ -68,7 +68,7 @@
                                         this.lng = pos.coords.longitude;
                                         this.acc = pos.coords.accuracy;
                                         this.loading = false;
-                                        if (this.acc > 200) {
+                                        if (this.acc > {{ $zone['radius_meter'] ?? 200 }}) {
                                             this.accuracyWarning = true;
                                         }
                                     },
@@ -120,7 +120,7 @@
                                             <p class="text-ich-warning font-semibold">
                                                 Akurasi GPS terlalu rendah (±<span x-text="Math.round(acc).toLocaleString()"></span>m)
                                             </p>
-                                            <p class="text-ich-ink-400 mt-1">Pastikan GPS aktif dan izin lokasi diberikan, lalu tekan "Ambil Lokasi" lagi.</p>
+                                            <p class="text-ich-ink-400 mt-1">Akurasi harus di bawah {{ number_format($zone['radius_meter']) }}m. Pastikan GPS aktif, lalu tekan "Ambil Lokasi" lagi.</p>
                                         </div>
                                     </template>
                                     <template x-if="!lat && !error">
