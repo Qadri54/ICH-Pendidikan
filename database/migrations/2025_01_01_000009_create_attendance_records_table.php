@@ -21,9 +21,6 @@ return new class extends Migration
             $table->string('check_in_accuracy')->nullable();
             $table->enum('is_within_geofence', ['ya', 'tidak'])->nullable();
             $table->enum('attendance_status', ['Hadir', 'Izin', 'Sakit', 'Tanpa Keterangan']);
-            $table->dateTime('check_out_time')->nullable();
-            $table->decimal('check_out_latitude', 10, 7)->nullable();
-            $table->decimal('check_out_longitude', 10, 7)->nullable();
             $table->timestamps();
 
             $table->foreign('teacher_id')->references('teacher_id')->on('teachers')->onDelete('set null');

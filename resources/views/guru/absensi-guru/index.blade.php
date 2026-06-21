@@ -174,73 +174,6 @@
                 </div>
             </div>
 
-        @elseif($todayRecord->check_out_time === null && $todayRecord->attendance_status === 'Hadir')
-            {{-- Sudah check-in, belum check-out --}}
-            <div class="bg-white rounded-xl shadow-ich-card p-6">
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-full bg-ich-success-soft flex items-center justify-center">
-                        <x-ich-icon name="check_circle" :size="20" color="#009966"/>
-                    </div>
-                    <div>
-                        <p class="font-ui font-bold text-ich-green">Sudah Check-in</p>
-                        <p class="font-sans text-xs text-ich-ink-400">
-                            {{ $todayRecord->check_in_time->format('H:i') }} WIB
-                            @if($todayRecord->is_within_geofence === 'ya')
-                                · <span class="text-ich-success">Dalam area</span>
-                            @elseif($todayRecord->is_within_geofence === 'tidak')
-                                · <span class="text-ich-error">Di luar area</span>
-                            @endif
-                        </p>
-                    </div>
-                </div>
-
-                {{-- Form Check-out --}}
-                <div x-data="{
-                    lat: '', lng: '', loading: false, error: '',
-                    getLocation() {
-                        this.loading = true;
-                        navigator.geolocation.getCurrentPosition(
-                            pos => { this.lat = pos.coords.latitude; this.lng = pos.coords.longitude; this.loading = false; },
-                            err => { this.error = 'Gagal mendapatkan lokasi.'; this.loading = false; },
-                            { enableHighAccuracy: true, timeout: 10000 }
-                        );
-                    }
-                }">
-                    <form method="POST" action="{{ route('guru.absensi-guru.checkout') }}">
-                        @csrf
-                        <input type="hidden" name="record_id" value="{{ $todayRecord->attendance_record_id }}">
-                        <input type="hidden" name="latitude"  :value="lat">
-                        <input type="hidden" name="longitude" :value="lng">
-
-                        <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
-                            <template x-if="lat">
-                                <p class="text-ich-green font-semibold">
-                                    Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
-                                </p>
-                            </template>
-                            <template x-if="!lat">
-                                <p class="text-ich-ink-400">Lokasi belum diambil</p>
-                            </template>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <button @click.prevent="getLocation()" type="button"
-                                    class="flex-1 py-2.5 bg-ich-blue-soft text-ich-teal font-ui font-bold text-sm
-                                           rounded-ich-lg border-2 border-ich-teal/20 hover:bg-ich-teal/10">
-                                <span x-text="loading ? 'Mengambil...' : 'Ambil Lokasi'"></span>
-                            </button>
-                            <button type="submit"
-                                    :disabled="!lat"
-                                    :class="lat ? 'bg-ich-ink-900 hover:bg-ich-ink-700' : 'bg-ich-ink-200 cursor-not-allowed'"
-                                    class="flex-1 py-2.5 text-white font-ui font-bold text-sm
-                                           rounded-ich-lg shadow-ich-btn transition-colors">
-                                Check-out
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
         @else
             {{-- Absensi hari ini sudah selesai --}}
             <div class="bg-white rounded-xl shadow-ich-card p-6">
@@ -268,12 +201,8 @@
                 @if($todayRecord->attendance_status === 'Hadir')
                     <div class="space-y-2 text-sm font-sans text-ich-ink-600">
                         <div class="flex justify-between">
-                            <span>Check-in</span>
+                            <span>Jam Absensi</span>
                             <span class="font-semibold">{{ $todayRecord->check_in_time?->format('H:i') ?? '-' }} WIB</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Check-out</span>
-                            <span class="font-semibold">{{ $todayRecord->check_out_time?->format('H:i') ?? 'Belum check-out' }} WIB</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Geofence</span>

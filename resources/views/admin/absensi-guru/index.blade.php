@@ -82,8 +82,7 @@
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Nama Guru</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Tipe</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Tanggal</th>
-                                    <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Check In</th>
-                                    <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Check Out</th>
+                                    <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Jam Absensi</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Geofence</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Status</th>
                                 </tr>
@@ -109,9 +108,6 @@
                                         </td>
                                         <td class="px-4 py-3 font-sans text-ich-ink-600">
                                             {{ $record->check_in_time ? $record->check_in_time->format('H:i') : '-' }}
-                                        </td>
-                                        <td class="px-4 py-3 font-sans text-ich-ink-600">
-                                            {{ $record->check_out_time ? $record->check_out_time->format('H:i') : '-' }}
                                         </td>
                                         <td class="px-4 py-3">
                                             @if($record->is_within_geofence === 'ya')

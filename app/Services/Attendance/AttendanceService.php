@@ -53,25 +53,6 @@ class AttendanceService
         ]);
     }
 
-    // Proses check-out guru dengan GPS.
-    // Validasi: record harus milik guru yang login dan belum check-out sebelumnya.
-    public function checkOut(int $recordId, float $lat, float $lng): AttendanceRecord
-    {
-        $record = AttendanceRecord::findOrFail($recordId);
-
-        if ($record->check_out_time !== null) {
-            throw new \InvalidArgumentException('Anda sudah melakukan check-out hari ini.');
-        }
-
-        $record->update([
-            'check_out_time'      => now(),
-            'check_out_latitude'  => $lat,
-            'check_out_longitude' => $lng,
-        ]);
-
-        return $record->fresh();
-    }
-
     // Input absensi Izin atau Sakit — tanpa GPS dan tanpa selfie.
     // Validasi: guru belum punya record absensi hari ini.
     public function recordIzinSakit(array $data): AttendanceRecord

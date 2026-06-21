@@ -54,29 +54,6 @@ class AbsensiGuruController extends Controller
         }
     }
 
-    // Proses check-out dengan GPS.
-    public function checkOut(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'record_id' => 'required|exists:attendance_records,attendance_record_id',
-            'latitude'  => 'required|numeric',
-            'longitude' => 'required|numeric',
-        ]);
-
-        try {
-            $this->attendanceService->checkOut(
-                (int) $validated['record_id'],
-                (float) $validated['latitude'],
-                (float) $validated['longitude']
-            );
-
-            return redirect()->route('guru.absensi-guru.index')
-                ->with('success', 'Check-out berhasil. Sampai jumpa!');
-        } catch (\InvalidArgumentException $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
     // Guru mencatat izin atau sakit sendiri (tanpa GPS).
     public function izinSakit(Request $request): RedirectResponse
     {

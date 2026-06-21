@@ -26,7 +26,7 @@
         $menus = [
             [
                 'label'  => 'Absensi Saya',
-                'desc'   => 'Check-in & check-out',
+                'desc'   => 'Absensi kehadiran',
                 'icon'   => 'user_check',
                 'route'  => 'guru.absensi-guru.index',
                 'color'  => 'bg-ich-green-surface text-ich-green',
