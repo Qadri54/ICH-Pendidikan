@@ -39,6 +39,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "pgrep php-fpm || exit 1"]
       interval: 10s
@@ -64,6 +66,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - ich-net
@@ -83,6 +87,23 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - ich-net
+
+  # ── Redis ─────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: unless-stopped
     networks:
       - ich-net
@@ -91,10 +112,10 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
       MYSQL_DATABASE: "${DB_DATABASE:-ich_pendidikan}"
       MYSQL_USER: "${DB_USERNAME:-ich_user}"
-      MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
@@ -119,6 +140,7 @@ services:
 
 volumes:
   mysql-data:
+  redis-data:
   app-storage:
   app-public:
   certbot-etc:
