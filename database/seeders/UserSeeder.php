@@ -59,7 +59,7 @@ class UserSeeder extends Seeder {
             'status' => 'active',
             'role_name' => 'Guru Ngaji',
             'NIP' => 'NIP003',
-            'tipe' => 'Guru Quran',
+            'tipe' => 'Guru Ngaji',
             'hire_date' => '2023-01-01',
         ]);
 
