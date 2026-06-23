@@ -17,4 +17,5 @@ referensi
 *.md
 .vscode
 .idea
-docker
+docker/nginx
+docker/deploy.sh
