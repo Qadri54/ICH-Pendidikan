@@ -12,7 +12,6 @@ class UserService
     public function __construct(
         private AdminProfileService $adminProfileService,
         private TeacherProfileService $teacherProfileService,
-        private ReligiousTeacherProfileService $religiousTeacherProfileService,
         private StudentProfileService $studentProfileService,
         private FoundationHeadProfileService $foundationHeadProfileService,
     ) {}
@@ -105,7 +104,7 @@ class UserService
         match ($role) {
             'Admin'           => $this->adminProfileService->createProfile($userId, $data),
             'Guru'            => $this->teacherProfileService->createProfile($userId, $data),
-            'Guru Ngaji'      => $this->religiousTeacherProfileService->createProfile($userId, $data),
+            'Guru Ngaji'      => $this->teacherProfileService->createProfile($userId, $data),
             'Student'         => $this->studentProfileService->createProfile($userId, $data),
             'Kepala Sekolah',
             'Kepala Yayasan'  => $this->foundationHeadProfileService->createProfile($userId, $data),
@@ -118,7 +117,7 @@ class UserService
         match ($role) {
             'Admin'           => $this->adminProfileService->updateProfile($userId, $data),
             'Guru'            => $this->teacherProfileService->updateProfile($userId, $data),
-            'Guru Ngaji'      => $this->religiousTeacherProfileService->updateProfile($userId, $data),
+            'Guru Ngaji'      => $this->teacherProfileService->updateProfile($userId, $data),
             'Student'         => $this->studentProfileService->updateProfile($userId, $data),
             'Kepala Sekolah',
             'Kepala Yayasan'  => $this->foundationHeadProfileService->updateProfile($userId, $data),
@@ -131,7 +130,7 @@ class UserService
         match ($role) {
             'Admin'           => $this->adminProfileService->deleteProfile($userId),
             'Guru'            => $this->teacherProfileService->deleteProfile($userId),
-            'Guru Ngaji'      => $this->religiousTeacherProfileService->deleteProfile($userId),
+            'Guru Ngaji'      => $this->teacherProfileService->deleteProfile($userId),
             'Student'         => $this->studentProfileService->deleteProfile($userId),
             'Kepala Sekolah',
             'Kepala Yayasan'  => $this->foundationHeadProfileService->deleteProfile($userId),

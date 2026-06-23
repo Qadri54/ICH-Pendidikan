@@ -20,14 +20,12 @@ class AttendanceService
     //   2. Validasi geofence via GeofenceService
     //   3. Simpan foto selfie ke storage
     //   4. Buat record baru dengan status Masuk
-    // $data harus berisi: teacher_id atau religious_teacher_id, latitude,
-    //   longitude, accuracy, selfie (UploadedFile)
+    // $data harus berisi: teacher_id, latitude, longitude, accuracy, selfie (UploadedFile)
     public function checkIn(array $data): AttendanceRecord
     {
-        $teacherId         = $data['teacher_id'] ?? null;
-        $religiousTeacherId = $data['religious_teacher_id'] ?? null;
+        $teacherId = $data['teacher_id'];
 
-        if ($this->getTodayRecord($teacherId, $religiousTeacherId)) {
+        if ($this->getTodayRecord($teacherId)) {
             throw new \InvalidArgumentException('Anda sudah melakukan absensi hari ini.');
         }
 
@@ -36,13 +34,10 @@ class AttendanceService
             (float) $data['longitude']
         );
 
-        // Simpan foto selfie ke storage/app/public/attendance/selfies/
-        // File bisa diakses publik via URL: /storage/attendance/selfies/namafile.jpg
         $selfiePath = $data['selfie']->store('attendance/selfies', 'public');
 
         return AttendanceRecord::create([
             'teacher_id'          => $teacherId,
-            'religious_teacher_id' => $religiousTeacherId,
             'check_in_time'       => now(),
             'check_in_latitude'   => $data['latitude'],
             'check_in_longitude'  => $data['longitude'],
@@ -53,60 +48,38 @@ class AttendanceService
         ]);
     }
 
-    // Proses check-out guru dengan GPS.
-    // Validasi: record harus milik guru yang login dan belum check-out sebelumnya.
-    public function checkOut(int $recordId, float $lat, float $lng): AttendanceRecord
-    {
-        $record = AttendanceRecord::findOrFail($recordId);
-
-        if ($record->check_out_time !== null) {
-            throw new \InvalidArgumentException('Anda sudah melakukan check-out hari ini.');
-        }
-
-        $record->update([
-            'check_out_time'      => now(),
-            'check_out_latitude'  => $lat,
-            'check_out_longitude' => $lng,
-        ]);
-
-        return $record->fresh();
-    }
-
     // Input absensi Izin atau Sakit — tanpa GPS dan tanpa selfie.
     // Validasi: guru belum punya record absensi hari ini.
     public function recordIzinSakit(array $data): AttendanceRecord
     {
-        $teacherId          = $data['teacher_id'] ?? null;
-        $religiousTeacherId = $data['religious_teacher_id'] ?? null;
+        $teacherId = $data['teacher_id'];
 
-        if ($this->getTodayRecord($teacherId, $religiousTeacherId)) {
+        if ($this->getTodayRecord($teacherId)) {
             throw new \InvalidArgumentException('Anda sudah melakukan absensi hari ini.');
         }
 
         return AttendanceRecord::create([
-            'teacher_id'           => $teacherId,
-            'religious_teacher_id' => $religiousTeacherId,
-            'attendance_status'    => $data['status'],
+            'teacher_id'        => $teacherId,
+            'attendance_status' => $data['status'],
         ]);
     }
 
     // Ambil record absensi hari ini milik guru yang sedang login.
     // Mengembalikan null jika guru belum absen hari ini.
     // Dipakai untuk: cek status di halaman absensi guru + validasi duplikasi.
-    public function getTodayRecord(?int $teacherId, ?int $religiousTeacherId): ?AttendanceRecord
+    public function getTodayRecord(int $teacherId): ?AttendanceRecord
     {
         return AttendanceRecord::whereDate('created_at', Carbon::today())
-            ->when($teacherId, fn($q) => $q->where('teacher_id', $teacherId))
-            ->when($religiousTeacherId, fn($q) => $q->where('religious_teacher_id', $religiousTeacherId))
+            ->where('teacher_id', $teacherId)
             ->first();
     }
 
     // Ambil semua record absensi dengan filter opsional.
-    // Filter yang tersedia: tanggal, status, teacher_id, religious_teacher_id.
+    // Filter yang tersedia: tanggal, status, teacher_id.
     // Dipakai di halaman rekap admin.
     public function getAll(array $filters = []): Collection
     {
-        $query = AttendanceRecord::with(['teacher.user', 'religiousTeacher.user'])
+        $query = AttendanceRecord::with(['teacher.user'])
             ->latest();
 
         if (!empty($filters['tanggal'])) {
@@ -117,9 +90,6 @@ class AttendanceService
         }
         if (!empty($filters['teacher_id'])) {
             $query->where('teacher_id', $filters['teacher_id']);
-        }
-        if (!empty($filters['religious_teacher_id'])) {
-            $query->where('religious_teacher_id', $filters['religious_teacher_id']);
         }
 
         return $query->get();
@@ -134,20 +104,14 @@ class AttendanceService
     // ]
     public function getMonthlyRecap(int $year, int $month): Collection
     {
-        return AttendanceRecord::with(['teacher.user', 'religiousTeacher.user'])
+        return AttendanceRecord::with(['teacher.user'])
             ->whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->get()
-            ->groupBy(fn($record) => $record->teacher_id
-                ? 'teacher_' . $record->teacher_id
-                : 'religious_' . $record->religious_teacher_id
-            )
+            ->groupBy('teacher_id')
             ->map(function ($records) {
-                // Ambil nama guru dari relasi yang tersedia
                 $first = $records->first();
-                $nama  = $first->teacher?->user?->name
-                    ?? $first->religiousTeacher?->user?->name
-                    ?? 'Tidak diketahui';
+                $nama  = $first->teacher?->user?->name ?? 'Tidak diketahui';
 
                 return [
                     'nama'              => $nama,

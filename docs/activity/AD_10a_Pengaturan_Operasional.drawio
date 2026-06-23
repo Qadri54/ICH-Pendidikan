@@ -52,7 +52,7 @@
     <!-- ── Jam Absensi (branch kanan, via x=390) ── -->
 
     <!-- y=745 -->
-    <mxCell id="a_jam" value="Isi Jam Check-in&lt;br&gt;&amp; Check-out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
+    <mxCell id="a_jam" value="Isi Jam Absensi&lt;br&gt;(Check-in)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;arcSize=20;" vertex="1" parent="1">
       <mxGeometry x="140" y="745" width="180" height="50" as="geometry"/>
     </mxCell>
 
@@ -90,7 +90,7 @@
     </mxCell>
 
     <!-- y=835: sejajar a_simpan_jam -->
-    <mxCell id="s_save_jam" value="Simpan AttendanceSetting&lt;br&gt;(waktu check-in/out)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
+    <mxCell id="s_save_jam" value="Simpan AttendanceSetting&lt;br&gt;(jam absensi)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=20;" vertex="1" parent="1">
       <mxGeometry x="540" y="835" width="180" height="50" as="geometry"/>
     </mxCell>
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
-use App\Models\ReligiousTeacher;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\Student;
@@ -31,7 +30,7 @@ class LaporanController extends Controller
 
         $stats = [
             'total_siswa'            => Student::count(),
-            'total_guru'             => Teacher::count() + ReligiousTeacher::count(),
+            'total_guru'             => Teacher::count(),
             'tagihan_berjalan'       => $summary['tagihan_berjalan'],
             'tagihan_lunas'          => $summary['total_lunas'],
             'total_tagihan'          => $summary['total_tagihan'],

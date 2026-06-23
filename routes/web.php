@@ -84,7 +84,6 @@ Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
 Route::middleware(['auth', 'role:Guru,Guru Ngaji'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('absensi-guru',              [GuruAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
     Route::post('absensi-guru/checkin',     [GuruAbsensiGuruController::class, 'checkIn'])->name('absensi-guru.checkin');
-    Route::post('absensi-guru/checkout',    [GuruAbsensiGuruController::class, 'checkOut'])->name('absensi-guru.checkout');
     Route::post('absensi-guru/izin-sakit',  [GuruAbsensiGuruController::class, 'izinSakit'])->name('absensi-guru.izin-sakit');
 });
 

@@ -19,8 +19,7 @@ Yang perlu dibangun: migration tambahan (selfie), Service, Controller, Request, 
 
 ```
 attendance_record_id   PK
-teacher_id             FK → teachers (nullable)
-religious_teacher_id   FK → religious_teachers (nullable)
+teacher_id             FK → teachers
 check_in_time          datetime (nullable)
 check_in_latitude      decimal(10,7) (nullable)
 check_in_longitude     decimal(10,7) (nullable)
@@ -64,28 +63,24 @@ public function calculateDistance(float $lat1, float $lng1, float $lat2, float $
 **AttendanceService**
 ```php
 public function checkIn(array $data): AttendanceRecord
-// $data: teacher_id atau religious_teacher_id, lat, lng, accuracy, selfie file
+// $data: teacher_id, lat, lng, accuracy, selfie file
 // Validasi: belum ada record hari ini
 // Panggil GeofenceService untuk isi is_within_geofence
 // Simpan selfie ke storage/app/public/attendance/selfies/
 // Return AttendanceRecord
 
-public function checkOut(int $recordId, float $lat, float $lng): AttendanceRecord
-// Validasi: record milik guru yang login, belum check-out
-// Update check_out_time, check_out_latitude, check_out_longitude
-
 public function recordIzinSakit(array $data): AttendanceRecord
-// $data: teacher_id atau religious_teacher_id, status (Izin/Sakit)
+// $data: teacher_id, status (Izin/Sakit)
 // Validasi: belum ada record hari ini
 // Simpan tanpa GPS dan selfie
 
-public function getTodayRecord(int $teacherId, ?int $religiousTeacherId): ?AttendanceRecord
+public function getTodayRecord(int $teacherId): ?AttendanceRecord
 // Cari record hari ini milik guru yang login
 // Return null jika belum ada
 
 public function getAll(array $filters = []): Collection
 // Filter: tanggal, status, nama guru
-// Eager load: teacher.user, religiousTeacher.user
+// Eager load: teacher.user
 
 public function getMonthlyRecap(int $year, int $month): Collection
 // Rekap per guru per bulan

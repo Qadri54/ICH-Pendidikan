@@ -7,7 +7,7 @@
     </div>
 
     <div class="max-w-xl bg-white rounded-xl shadow-ich-card p-6">
-        <form method="POST" action="{{ route('admin.guru.update', $guru->teacher_id ?? $guru->religious_teacher_id) }}" class="space-y-4">
+        <form method="POST" action="{{ route('admin.guru.update', $guru->teacher_id) }}" class="space-y-4">
             @csrf @method('PUT')
 
             <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-bold">

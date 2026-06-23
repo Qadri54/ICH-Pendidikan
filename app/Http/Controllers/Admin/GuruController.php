@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ReligiousTeacher;
 use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
@@ -13,28 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller {
     public function index(Request $request) {
-        // Gabungkan guru kelas dan guru ngaji
-        $guruKelas = Teacher::with('user')
-            ->when($request->search, fn($q) =>
-                $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$request->search}%"))
-                    ->orWhere('NIP', 'like', "%{$request->search}%")
-            )
-            ->get()
-            ->toBase()                          // Eloquent\Collection → base Collection
-            ->map(fn($t) => (object) [
-                'id' => $t->teacher_id,
-                'tipe' => 'Guru Kelas',
-                'nama' => $t->user?->name ?? '-',
-                'NIP' => $t->NIP,
-                'info' => $t->subject ?? '-',
-                'model' => 'teacher',
-                'no_hp' => $t->user?->no_hp ?? '',
-                'hire_date' => $t->hire_date ?? '',
-                'subject' => $t->subject ?? '',
-                'email' => $t->user?->email ?? '',
-            ]);
-
-        $guruNgaji = ReligiousTeacher::with('user')
+        $guru = Teacher::with('user')
             ->when($request->search, fn($q) =>
                 $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$request->search}%"))
                     ->orWhere('NIP', 'like', "%{$request->search}%")
@@ -42,19 +20,20 @@ class GuruController extends Controller {
             ->get()
             ->toBase()
             ->map(fn($t) => (object) [
-                'id' => $t->religious_teacher_id,
-                'tipe' => 'Guru Ngaji',
+                'id' => $t->teacher_id,
+                'tipe' => $t->tipe,
                 'nama' => $t->user?->name ?? '-',
                 'NIP' => $t->NIP,
                 'info' => '-',
-                'model' => 'religious_teacher',
+                'model' => 'teacher',
                 'no_hp' => $t->user?->no_hp ?? '',
                 'hire_date' => $t->hire_date ?? '',
                 'subject' => '',
                 'email' => $t->user?->email ?? '',
-            ]);
+            ])
+            ->sortBy('nama')
+            ->values();
 
-        $guru = $guruKelas->merge($guruNgaji)->sortBy('nama')->values();
         return view('admin.guru.index', compact('guru'));
     }
 
@@ -84,19 +63,12 @@ class GuruController extends Controller {
 
             $user->role()->create(['role_name' => $data['tipe_guru']]);
 
-            if ($data['tipe_guru'] === 'Guru') {
-                Teacher::create([
-                    'user_id' => $user->user_id,
-                    'NIP' => $data['NIP'],
-                    'hire_date' => $data['hire_date'],
-                ]);
-            } else {
-                ReligiousTeacher::create([
-                    'user_id' => $user->user_id,
-                    'NIP' => $data['NIP'],
-                    'hire_date' => $data['hire_date'],
-                ]);
-            }
+            Teacher::create([
+                'user_id' => $user->user_id,
+                'NIP' => $data['NIP'],
+                'tipe' => $data['tipe_guru'] === 'Guru' ? 'Guru TK' : 'Guru Ngaji',
+                'hire_date' => $data['hire_date'],
+            ]);
         });
 
         return redirect()->route('admin.guru.index')
@@ -104,14 +76,8 @@ class GuruController extends Controller {
     }
 
     public function edit(string $id) {
-        // Cek apakah teacher atau religious teacher
-        $teacher = Teacher::with('user')->find($id);
-        if ($teacher) {
-            return view('admin.guru.edit', ['guru' => $teacher, 'tipe' => 'Guru']);
-        }
-
-        $teacher = ReligiousTeacher::with('user')->findOrFail($id);
-        return view('admin.guru.edit', ['guru' => $teacher, 'tipe' => 'Guru Ngaji']);
+        $teacher = Teacher::with('user')->findOrFail($id);
+        return view('admin.guru.edit', ['guru' => $teacher, 'tipe' => $teacher->tipe === 'Guru Ngaji' ? 'Guru Ngaji' : 'Guru']);
     }
 
     public function update(Request $request, string $id) {
@@ -122,7 +88,7 @@ class GuruController extends Controller {
             'hire_date' => 'nullable|date',
         ]);
 
-        $teacher = Teacher::find($id) ?? ReligiousTeacher::findOrFail($id);
+        $teacher = Teacher::findOrFail($id);
         $teacher->user->update(['name' => $data['name'], 'no_hp' => $data['no_hp']]);
         $teacher->update([
             'NIP' => $data['NIP'],
@@ -135,10 +101,9 @@ class GuruController extends Controller {
 
     public function destroy(string $id) {
         DB::transaction(function () use ($id) {
-            $teacher = Teacher::find($id) ?? ReligiousTeacher::findOrFail($id);
+            $teacher = Teacher::findOrFail($id);
             $user = $teacher->user;
 
-            // Hapus profile dulu (FK ke users), baru role, baru user
             $teacher->delete();
             $user?->role?->delete();
             $user?->delete();

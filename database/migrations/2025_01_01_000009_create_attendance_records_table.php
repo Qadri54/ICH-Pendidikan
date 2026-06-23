@@ -14,20 +14,17 @@ return new class extends Migration
         Schema::create('attendance_records', function (Blueprint $table) {
             $table->id('attendance_record_id');
             $table->unsignedBigInteger('teacher_id')->nullable();
-            $table->unsignedBigInteger('religious_teacher_id')->nullable();
+
             $table->dateTime('check_in_time')->nullable();
             $table->decimal('check_in_latitude', 10, 7)->nullable();
             $table->decimal('check_in_longitude', 10, 7)->nullable();
             $table->string('check_in_accuracy')->nullable();
             $table->enum('is_within_geofence', ['ya', 'tidak'])->nullable();
             $table->enum('attendance_status', ['Hadir', 'Izin', 'Sakit', 'Tanpa Keterangan']);
-            $table->dateTime('check_out_time')->nullable();
-            $table->decimal('check_out_latitude', 10, 7)->nullable();
-            $table->decimal('check_out_longitude', 10, 7)->nullable();
             $table->timestamps();
 
             $table->foreign('teacher_id')->references('teacher_id')->on('teachers')->onDelete('set null');
-            $table->foreign('religious_teacher_id')->references('religious_teacher_id')->on('religious_teachers')->onDelete('set null');
+
         });
     }
 
