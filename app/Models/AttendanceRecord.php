@@ -13,7 +13,6 @@ class AttendanceRecord extends Model
 
     protected $fillable = [
         'teacher_id',
-        'religious_teacher_id',
         'check_in_time',
         'check_in_latitude',
         'check_in_longitude',
@@ -38,8 +37,4 @@ class AttendanceRecord extends Model
         return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
     }
 
-    public function religiousTeacher()
-    {
-        return $this->belongsTo(ReligiousTeacher::class, 'religious_teacher_id', 'religious_teacher_id');
-    }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
-use App\Models\ReligiousTeacher;
 use App\Models\Teacher;
 use App\Services\Attendance\AttendanceService;
 use App\Services\Attendance\GeofenceService;
@@ -18,17 +17,15 @@ class AbsensiGuruController extends Controller
         private GeofenceService   $geofenceService,
     ) {}
 
-    // Tampilkan status absensi guru hari ini beserta form check-in/out.
     public function index(): View
     {
-        [$teacherId, $religiousTeacherId] = $this->resolveIds();
-        $todayRecord = $this->attendanceService->getTodayRecord($teacherId, $religiousTeacherId);
+        $teacherId   = $this->resolveTeacherId();
+        $todayRecord = $this->attendanceService->getTodayRecord($teacherId);
         $zone        = $this->geofenceService->getZone();
 
         return view('guru.absensi-guru.index', compact('todayRecord', 'zone'));
     }
 
-    // Proses check-in dengan GPS dan selfie (koordinat dikirim dari JavaScript browser).
     public function checkIn(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -38,13 +35,12 @@ class AbsensiGuruController extends Controller
             'selfie'    => 'required|image|max:5120',
         ]);
 
-        [$teacherId, $religiousTeacherId] = $this->resolveIds();
+        $teacherId = $this->resolveTeacherId();
 
         try {
             $this->attendanceService->checkIn([
                 ...$validated,
-                'teacher_id'           => $teacherId,
-                'religious_teacher_id' => $religiousTeacherId,
+                'teacher_id' => $teacherId,
             ]);
 
             return redirect()->route('guru.absensi-guru.index')
@@ -54,20 +50,18 @@ class AbsensiGuruController extends Controller
         }
     }
 
-    // Guru mencatat izin atau sakit sendiri (tanpa GPS).
     public function izinSakit(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'status' => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
         ]);
 
-        [$teacherId, $religiousTeacherId] = $this->resolveIds();
+        $teacherId = $this->resolveTeacherId();
 
         try {
             $this->attendanceService->recordIzinSakit([
-                'status'               => $validated['status'],
-                'teacher_id'           => $teacherId,
-                'religious_teacher_id' => $religiousTeacherId,
+                'status'     => $validated['status'],
+                'teacher_id' => $teacherId,
             ]);
 
             return redirect()->route('guru.absensi-guru.index')
@@ -77,18 +71,8 @@ class AbsensiGuruController extends Controller
         }
     }
 
-    // Tentukan teacher_id atau religious_teacher_id berdasarkan profil user.
-    // Guru TK → teachers; Guru Ngaji/Quran/Iqra → religious_teachers.
-    private function resolveIds(): array
+    private function resolveTeacherId(): int
     {
-        $teacher = Teacher::where('user_id', auth()->id())->first();
-
-        if ($teacher) {
-            return [$teacher->teacher_id, null];
-        }
-
-        $religious = ReligiousTeacher::where('user_id', auth()->id())->firstOrFail();
-
-        return [null, $religious->religious_teacher_id];
+        return Teacher::where('user_id', auth()->id())->firstOrFail()->teacher_id;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registration;
-use App\Models\ReligiousTeacher;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\Student;
@@ -47,7 +46,7 @@ class DashboardController extends Controller
 
         $stats = [
             'total_siswa'       => Student::aktif()->count(),
-            'total_guru'        => Teacher::count() + ReligiousTeacher::count(),
+            'total_guru'        => Teacher::count(),
             'total_pendapatan'  => $totalSpp + $totalPendaftaran,
             'tagihan_berjalan'  => $sppSummary['tagihan_berjalan'],
             'tagihan_lunas'     => $sppSummary['total_lunas'],

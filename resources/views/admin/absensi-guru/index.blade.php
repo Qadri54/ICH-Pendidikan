@@ -90,8 +90,8 @@
                             <tbody class="divide-y divide-ich-line">
                                 @foreach($records as $record)
                                     @php
-                                        $nama  = $record->teacher?->user?->name ?? $record->religiousTeacher?->user?->name ?? '-';
-                                        $tipe  = $record->teacher ? 'Guru TK' : 'Guru Ngaji';
+                                        $nama  = $record->teacher?->user?->name ?? '-';
+                                        $tipe  = $record->teacher?->tipe ?? '-';
                                         $stCfg = match($record->attendance_status) {
                                             'Hadir'             => ['label' => 'Hadir',            'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
                                             'Izin'              => ['label' => 'Izin',             'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
@@ -142,43 +142,18 @@
                     Catat absensi atas nama guru yang tidak bisa input sendiri.
                 </p>
 
-                <form method="POST" action="{{ route('admin.absensi-guru.store') }}" x-data="{ tipe: 'guru' }">
+                <form method="POST" action="{{ route('admin.absensi-guru.store') }}">
                     @csrf
 
-                    {{-- Tipe Guru --}}
+                    {{-- Pilih Guru --}}
                     <div class="mb-4">
-                        <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Tipe Guru</label>
-                        <select name="tipe_guru" x-model="tipe"
-                                class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                       font-sans text-sm focus:outline-none focus:border-ich-teal
-                                       @error('tipe_guru') border-ich-error @enderror">
-                            <option value="guru">Guru TK</option>
-                            <option value="guru_ngaji">Guru Ngaji</option>
-                        </select>
-                    </div>
-
-                    {{-- Pilih Guru TK --}}
-                    <div x-show="tipe === 'guru'" class="mb-4">
                         <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Nama Guru</label>
                         <select name="teacher_id"
                                 class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
                                        font-sans text-sm focus:outline-none focus:border-ich-teal">
                             <option value="">-- Pilih Guru --</option>
                             @foreach($teachers as $t)
-                                <option value="{{ $t->teacher_id }}">{{ $t->user?->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- Pilih Guru Ngaji --}}
-                    <div x-show="tipe === 'guru_ngaji'" class="mb-4">
-                        <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Nama Guru Ngaji</label>
-                        <select name="religious_id"
-                                class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                       font-sans text-sm focus:outline-none focus:border-ich-teal">
-                            <option value="">-- Pilih Guru Ngaji --</option>
-                            @foreach($religiousTeachers as $rt)
-                                <option value="{{ $rt->religious_teacher_id }}">{{ $rt->user?->name }}</option>
+                                <option value="{{ $t->teacher_id }}">{{ $t->user?->name }} ({{ $t->tipe }})</option>
                             @endforeach
                         </select>
                     </div>
