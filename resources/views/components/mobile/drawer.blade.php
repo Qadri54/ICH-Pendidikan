@@ -28,9 +28,8 @@ $initials = strtoupper(substr($user?->name ?? 'U', 0, 1));
 
         {{-- Header --}}
         <div class="flex items-center gap-3 px-4 py-5 border-b border-white/15">
-            <div class="w-11 h-11 rounded-[12px] bg-white flex items-center justify-center
-                        font-display font-extrabold text-[14px] text-ich-green shrink-0">
-                ICH
+            <div class="w-11 h-11 rounded-[12px] bg-white flex items-center justify-center shrink-0 overflow-hidden">
+                <img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" class="w-8 h-8 object-contain">
             </div>
             <div class="min-w-0">
                 <div class="font-ui font-bold text-[14px] truncate">{{ $user?->name ?? 'Pengguna' }}</div>

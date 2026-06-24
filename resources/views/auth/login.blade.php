@@ -18,9 +18,8 @@
 
         {{-- Mobile header: logo + Raleway title + subtitle --}}
         <div class="lg:hidden flex flex-col items-center gap-2.5 mt-5 mb-2">
-            <div class="w-[72px] h-[72px] rounded-[18px] bg-white flex items-center justify-center
-                        font-display font-extrabold text-[22px] text-ich-green shadow-ich-logo">
-                ICH
+            <div class="w-[72px] h-[72px] rounded-[18px] bg-white flex items-center justify-center shadow-ich-logo overflow-hidden">
+                <img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
             </div>
             <div class="font-special font-bold text-[32px] text-white leading-tight"
                  style="text-shadow:0 4px 4px rgba(0,0,0,0.25)">

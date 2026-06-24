@@ -100,7 +100,7 @@
     <table class="header-table">
         <tr>
             <td class="header-logo">
-                <div class="header-logo-circle">ICH</div>
+                <img src="{{ public_path('images/Logo.png') }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: contain;">
             </td>
             <td class="header-info">
                 <p class="header-school">TK IQRA' Creative House</p>

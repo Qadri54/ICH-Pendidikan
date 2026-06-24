@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ config('app.name', 'ICH Pendidikan') }}</title>
-<link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+<link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
@@ -200,7 +200,7 @@
 <!-- NAV -->
 <nav class="nav" id="nav">
   <a href="#" class="nav-logo">
-    <div class="mark">ICH</div>
+    <div class="mark" style="overflow:hidden;padding:4px;"><img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" style="width:100%;height:100%;object-fit:contain;"></div>
     <div class="wordmark">
       <strong>IQRA' Creative House</strong>
       <span>Pendidikan Islam Kreatif</span>
@@ -484,7 +484,7 @@
 <footer id="kontak">
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="mark">ICH</div>
+      <div class="mark" style="overflow:hidden;padding:4px;"><img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" style="width:100%;height:100%;object-fit:contain;"></div>
       <p>IQRA' Creative House adalah lembaga pendidikan PG-TK Islam yang berfokus pada pembentukan generasi Qurani dan kreatif.</p>
       <p style="margin-top:12px;">✉ info@ich.sch.id</p>
       <div class="socials">

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $code }} — {{ $title }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-ich-surface">
@@ -12,9 +12,8 @@
     <div class="min-h-screen flex flex-col items-center justify-center px-6 py-12">
 
         {{-- Logo --}}
-        <div class="w-[72px] h-[72px] rounded-[18px] bg-white flex items-center justify-center
-                    font-display font-extrabold text-[22px] text-ich-green shadow-ich-card mb-8">
-            ICH
+        <div class="w-[72px] h-[72px] rounded-[18px] bg-white flex items-center justify-center shadow-ich-card mb-8 overflow-hidden">
+            <img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
         </div>
 
         {{-- Icon --}}

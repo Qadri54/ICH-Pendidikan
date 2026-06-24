@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? config('app.name', 'ICH Pendidikan') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -94,7 +94,7 @@
 
         {{-- Logo --}}
         <a href="{{ $logoRoute }}" class="mb-2">
-            <img src="{{ asset('images/logo.svg') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
+            <img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" class="w-14 h-14 object-contain">
         </a>
 
         <x-sidebar-nav :role="$role" />

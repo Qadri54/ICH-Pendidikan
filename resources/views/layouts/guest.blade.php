@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'ICH Pendidikan') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <style>[x-cloak]{display:none!important}</style>
@@ -24,9 +24,10 @@
 
         {{-- Brand content --}}
         <div class="relative z-10 flex flex-col items-center text-center px-12 gap-5">
-            <div class="w-20 h-20 rounded-2xl bg-white flex items-center justify-center
-                        font-display font-extrabold text-2xl text-ich-green"
-                 style="box-shadow:0 10px 24px rgba(0,0,0,0.2)">ICH</div>
+            <div class="w-20 h-20 rounded-2xl bg-white flex items-center justify-center overflow-hidden"
+                 style="box-shadow:0 10px 24px rgba(0,0,0,0.2)">
+                <img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" class="w-16 h-16 object-contain">
+            </div>
             <div>
                 <h1 class="text-white font-display font-bold text-4xl leading-tight"
                     style="text-shadow:0 4px 8px rgba(0,0,0,0.3)">
