@@ -13,12 +13,14 @@ services:
       - certbot-etc:/etc/letsencrypt:ro
       - certbot-var:/var/lib/letsencrypt
       - certbot-webroot:/var/www/certbot
+      - banksumut_certbot_conf:/etc/letsencrypt-banksumut:ro
     depends_on:
       app:
         condition: service_healthy
     restart: unless-stopped
     networks:
       - ich-net
+      - banksumut_net
 
   # ── PHP-FPM (Laravel app) ──────────────────
   app:
@@ -33,7 +35,8 @@ services:
       SESSION_DRIVER: database
       CACHE_STORE: database
     volumes:
-      - ./.env:/var/www/html/.env
+      - .:/var/www/html
+      - app-vendor:/var/www/html/vendor
       - app-storage:/var/www/html/storage/app/public
       - app-public:/var/www/html/public
     depends_on:
@@ -141,12 +144,19 @@ services:
 volumes:
   mysql-data:
   redis-data:
+  app-vendor:
   app-storage:
   app-public:
   certbot-etc:
   certbot-var:
   certbot-webroot:
+  banksumut_certbot_conf:
+    external: true
+    name: maturitas_digital_banksumut_certbot_conf
 
 networks:
   ich-net:
     driver: bridge
+  banksumut_net:
+    external: true
+    name: maturitas_digital_banksumut_banksumut_net
