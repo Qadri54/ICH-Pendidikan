@@ -119,20 +119,16 @@
                 @enderror
             </div>
 
-            {{-- Show password toggle + lupa password --}}
+            {{-- Remember me + lupa password --}}
             <div class="flex items-center justify-between mx-0.5">
-                <button type="button" class="flex items-center gap-2 cursor-pointer bg-transparent border-none p-0" @click="show = !show">
-                    <span class="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
-                          :class="show ? 'bg-ich-teal' : 'bg-white border-2 border-ich-ink-300'">
-                        <svg x-show="show" x-cloak class="w-3 h-3 text-white" fill="none" stroke="currentColor"
-                             stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                        </svg>
-                    </span>
+                <label for="remember_me" class="flex items-center gap-2 cursor-pointer">
+                    <input id="remember_me" type="checkbox" name="remember"
+                           class="w-[18px] h-[18px] rounded-[5px] border-2 border-ich-ink-300
+                                  text-ich-teal focus:ring-ich-teal focus:ring-offset-0 cursor-pointer">
                     <span class="font-sans font-semibold text-[12px] text-white lg:text-ich-ink-600">
-                        Tampilkan Password
+                        Ingat Saya
                     </span>
-                </button>
+                </label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}"
                        class="font-sans font-bold text-[12px] text-white lg:text-ich-teal no-underline"
