@@ -80,6 +80,69 @@
         </div>
     </div>
 
+    {{-- Chart: Pendapatan Bulanan --}}
+    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b border-ich-line flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-ich-green-surface flex items-center justify-center">
+                    <svg class="w-4 h-4 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <div>
+                    <h2 class="font-ui font-bold text-sm text-ich-ink-900">Grafik Pendapatan Bulanan</h2>
+                    <p class="text-xs text-ich-ink-400">Tahun {{ $year }}</p>
+                </div>
+            </div>
+            <form method="GET" action="{{ route('admin.laporan.index') }}" class="flex items-center gap-2">
+                <select name="year" onchange="this.form.submit()"
+                        class="h-9 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-xs focus:outline-none focus:border-ich-teal transition-colors">
+                    @for($y = now()->year; $y >= now()->year - 3; $y--)
+                        <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endfor
+                </select>
+            </form>
+        </div>
+        <div class="p-6">
+            <div style="height: 320px; position: relative;">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+        {{-- Monthly summary table --}}
+        <div class="px-6 pb-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-ich-surface">
+                        <tr>
+                            <th class="px-3 py-2 text-left font-ui font-bold text-ich-ink-600 text-xs">Bulan</th>
+                            <th class="px-3 py-2 text-right font-ui font-bold text-ich-ink-600 text-xs">SPP</th>
+                            <th class="px-3 py-2 text-right font-ui font-bold text-ich-ink-600 text-xs">Pendaftaran</th>
+                            <th class="px-3 py-2 text-right font-ui font-bold text-ich-ink-600 text-xs">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-ich-line">
+                        @php $totalSppChart = 0; $totalRegChart = 0; @endphp
+                        @foreach($monthlySummary as $ms)
+                            @php $totalSppChart += $ms['spp']; $totalRegChart += $ms['pendaftaran']; @endphp
+                            <tr class="hover:bg-ich-surface transition-colors">
+                                <td class="px-3 py-2 font-ui text-ich-ink-900 text-xs">{{ $ms['label'] }}</td>
+                                <td class="px-3 py-2 text-right font-ui text-ich-ink-600 text-xs">Rp {{ number_format($ms['spp'], 0, ',', '.') }}</td>
+                                <td class="px-3 py-2 text-right font-ui text-ich-ink-600 text-xs">Rp {{ number_format($ms['pendaftaran'], 0, ',', '.') }}</td>
+                                <td class="px-3 py-2 text-right font-ui font-semibold text-ich-ink-900 text-xs">Rp {{ number_format($ms['spp'] + $ms['pendaftaran'], 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-ich-green-surface">
+                            <td class="px-3 py-2 font-ui font-bold text-ich-ink-900 text-xs">Total Setahun</td>
+                            <td class="px-3 py-2 text-right font-ui font-bold text-ich-green text-xs">Rp {{ number_format($totalSppChart, 0, ',', '.') }}</td>
+                            <td class="px-3 py-2 text-right font-ui font-bold text-ich-green text-xs">Rp {{ number_format($totalRegChart, 0, ',', '.') }}</td>
+                            <td class="px-3 py-2 text-right font-ui font-bold text-ich-green text-xs">Rp {{ number_format($totalSppChart + $totalRegChart, 0, ',', '.') }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
     {{-- Data Tables --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {{-- Pelunasan Pendaftaran --}}
@@ -195,7 +258,7 @@
             </div>
             <div>
                 <h2 class="font-ui font-bold text-ich-ink-900">Export Laporan</h2>
-                <p class="text-xs text-ich-ink-400">Download laporan dalam format PDF atau CSV</p>
+                <p class="text-xs text-ich-ink-400">Download laporan dalam format PDF atau Excel</p>
             </div>
         </div>
 
@@ -212,17 +275,17 @@
 
             {{-- Keuangan export --}}
             <div x-show="tab === 'keuangan'" x-cloak>
-                <p class="text-sm text-ich-ink-400 font-sans mb-4">Download laporan keuangan SPP lengkap.</p>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Download laporan keuangan SPP lengkap dengan ringkasan bulanan dan grafik.</p>
                 <div class="flex gap-3">
-                    <a href="{{ route('admin.laporan.export.keuangan-pdf') }}"
+                    <a href="{{ route('admin.laporan.export.keuangan-pdf') }}?year={{ $year }}"
                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         PDF
                     </a>
-                    <a href="{{ route('admin.laporan.export.keuangan-csv') }}"
-                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                    <a href="{{ route('admin.laporan.export.keuangan-excel') }}?year={{ $year }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        CSV
+                        Excel
                     </a>
                 </div>
             </div>
@@ -263,10 +326,10 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         PDF
                     </button>
-                    <button onclick="exportAbsensiSiswa('csv')"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                    <button onclick="exportAbsensiSiswa('excel')"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        CSV
+                        Excel
                     </button>
                 </div>
             </div>
@@ -297,17 +360,93 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         PDF
                     </button>
-                    <button onclick="exportAbsensiGuru('csv')"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                    <button onclick="exportAbsensiGuru('excel')"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        CSV
+                        Excel
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    {{-- Chart.js CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const monthlyData = @json($monthlySummary);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: monthlyData.map(d => d.label),
+                    datasets: [
+                        {
+                            label: 'SPP',
+                            data: monthlyData.map(d => d.spp),
+                            backgroundColor: 'rgba(61, 167, 70, 0.8)',
+                            borderColor: 'rgba(61, 167, 70, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        },
+                        {
+                            label: 'Pendaftaran',
+                            data: monthlyData.map(d => d.pendaftaran),
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded',
+                                padding: 16,
+                                font: { size: 11, family: "'Inter', sans-serif" }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                                    if (value >= 1000) return 'Rp ' + (value / 1000).toFixed(0) + 'rb';
+                                    return 'Rp ' + value;
+                                },
+                                font: { size: 10 }
+                            },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+
         function exportAbsensiSiswa(format) {
             const form = document.getElementById('formAbsensiSiswa');
             const classId = form.querySelector('[name=class_id]').value;
@@ -316,7 +455,7 @@
             if (!classId) { alert('Pilih kelas terlebih dahulu'); return; }
             const url = format === 'pdf'
                 ? '{{ route("admin.laporan.export.absensi-siswa-pdf") }}'
-                : '{{ route("admin.laporan.export.absensi-siswa-csv") }}';
+                : '{{ route("admin.laporan.export.absensi-siswa-excel") }}';
             window.location.href = url + '?class_id=' + classId + '&year=' + year + '&month=' + month;
         }
 
@@ -326,7 +465,7 @@
             const year = form.querySelector('[name=year]').value;
             const url = format === 'pdf'
                 ? '{{ route("admin.laporan.export.absensi-guru-pdf") }}'
-                : '{{ route("admin.laporan.export.absensi-guru-csv") }}';
+                : '{{ route("admin.laporan.export.absensi-guru-excel") }}';
             window.location.href = url + '?year=' + year + '&month=' + month;
         }
     </script>
