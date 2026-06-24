@@ -22,7 +22,7 @@ FROM composer:2 AS composer-build
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
 
 COPY . .
 RUN composer dump-autoload --optimize
@@ -30,7 +30,7 @@ RUN composer dump-autoload --optimize
 # ============================================
 # Stage 3: Production image (PHP-FPM)
 # ============================================
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 RUN apk add --no-cache \
     libpng-dev libjpeg-turbo-dev freetype-dev \
