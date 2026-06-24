@@ -21,8 +21,10 @@ class LaporanController extends Controller
         private LaporanExportService $exportService,
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
+        $year = $request->integer('year', now()->year);
+
         $summary = $this->invoiceService->getSummary();
 
         $totalSpp          = SppInvoice::where('status', 'paid')->sum('jumlah');
@@ -40,6 +42,8 @@ class LaporanController extends Controller
             'total_tabungan'         => SavingLedger::sum('total_balance'),
         ];
 
+        $monthlySummary = $this->exportService->getMonthlySummary($year);
+
         $pembayaranSpp = SppInvoice::with(['student.classRoom'])
             ->where('status', 'paid')
             ->latest('updated_at')
@@ -50,17 +54,19 @@ class LaporanController extends Controller
 
         $classes = ClassRoom::orderBy('nama_kelas')->get();
 
-        return view('admin.laporan.index', compact('stats', 'pembayaranSpp', 'lunasPendaftaran', 'classes'));
+        return view('admin.laporan.index', compact(
+            'stats', 'pembayaranSpp', 'lunasPendaftaran', 'classes', 'monthlySummary', 'year'
+        ));
     }
 
-    public function exportKeuanganPdf()
+    public function exportKeuanganPdf(Request $request)
     {
-        return $this->exportService->exportKeuanganPdf();
+        return $this->exportService->exportKeuanganPdf($request->integer('year', now()->year));
     }
 
-    public function exportKeuanganCsv()
+    public function exportKeuanganExcel(Request $request)
     {
-        return $this->exportService->exportKeuanganCsv();
+        return $this->exportService->exportKeuanganExcel($request->integer('year', now()->year));
     }
 
     public function exportAbsensiSiswaPdf(Request $request)
@@ -78,7 +84,7 @@ class LaporanController extends Controller
         );
     }
 
-    public function exportAbsensiSiswaCsv(Request $request)
+    public function exportAbsensiSiswaExcel(Request $request)
     {
         $request->validate([
             'class_id' => 'required|exists:classes,class_id',
@@ -86,7 +92,7 @@ class LaporanController extends Controller
             'month'    => 'required|integer|min:1|max:12',
         ]);
 
-        return $this->exportService->exportAbsensiSiswaCsv(
+        return $this->exportService->exportAbsensiSiswaExcel(
             $request->integer('class_id'),
             $request->integer('year'),
             $request->integer('month')
@@ -106,14 +112,14 @@ class LaporanController extends Controller
         );
     }
 
-    public function exportAbsensiGuruCsv(Request $request)
+    public function exportAbsensiGuruExcel(Request $request)
     {
         $request->validate([
             'year'  => 'required|integer|min:2020',
             'month' => 'required|integer|min:1|max:12',
         ]);
 
-        return $this->exportService->exportAbsensiGuruCsv(
+        return $this->exportService->exportAbsensiGuruExcel(
             $request->integer('year'),
             $request->integer('month')
         );

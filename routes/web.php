@@ -143,12 +143,12 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show');
         Route::get('pembayaran-pendaftaran',       [PembayaranPendaftaranController::class, 'index'])->name('pembayaran-pendaftaran.index');
 
-        Route::get('laporan/export/keuangan-pdf',      [LaporanController::class, 'exportKeuanganPdf'])->name('laporan.export.keuangan-pdf');
-        Route::get('laporan/export/keuangan-csv',      [LaporanController::class, 'exportKeuanganCsv'])->name('laporan.export.keuangan-csv');
-        Route::get('laporan/export/absensi-siswa-pdf',  [LaporanController::class, 'exportAbsensiSiswaPdf'])->name('laporan.export.absensi-siswa-pdf');
-        Route::get('laporan/export/absensi-siswa-csv',  [LaporanController::class, 'exportAbsensiSiswaCsv'])->name('laporan.export.absensi-siswa-csv');
-        Route::get('laporan/export/absensi-guru-pdf',   [LaporanController::class, 'exportAbsensiGuruPdf'])->name('laporan.export.absensi-guru-pdf');
-        Route::get('laporan/export/absensi-guru-csv',   [LaporanController::class, 'exportAbsensiGuruCsv'])->name('laporan.export.absensi-guru-csv');
+        Route::get('laporan/export/keuangan-pdf',       [LaporanController::class, 'exportKeuanganPdf'])->name('laporan.export.keuangan-pdf');
+        Route::get('laporan/export/keuangan-excel',     [LaporanController::class, 'exportKeuanganExcel'])->name('laporan.export.keuangan-excel');
+        Route::get('laporan/export/absensi-siswa-pdf',   [LaporanController::class, 'exportAbsensiSiswaPdf'])->name('laporan.export.absensi-siswa-pdf');
+        Route::get('laporan/export/absensi-siswa-excel', [LaporanController::class, 'exportAbsensiSiswaExcel'])->name('laporan.export.absensi-siswa-excel');
+        Route::get('laporan/export/absensi-guru-pdf',    [LaporanController::class, 'exportAbsensiGuruPdf'])->name('laporan.export.absensi-guru-pdf');
+        Route::get('laporan/export/absensi-guru-excel',  [LaporanController::class, 'exportAbsensiGuruExcel'])->name('laporan.export.absensi-guru-excel');
         Route::get('laporan',    [LaporanController::class,    'index'])->name('laporan.index');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
 
