@@ -50,19 +50,6 @@ class UserSeeder extends Seeder {
             'hire_date' => '2023-01-01',
         ]);
 
-        // Guru Ngaji
-        $this->userService->createUser([
-            'name' => 'Guru Ngaji Satu',
-            'email' => 'guruNgaji@iqra.com',
-            'no_hp' => '08123456703',
-            'password' => 'password123',
-            'status' => 'active',
-            'role_name' => 'Guru Ngaji',
-            'NIP' => 'NIP003',
-            'tipe' => 'Guru Ngaji',
-            'hire_date' => '2023-01-01',
-        ]);
-
         // Kepala Sekolah — Adli Qarin, S.S. M.Ikom
         $this->userService->createUser([
             'name' => 'Adli Qarin',
