@@ -3,28 +3,26 @@
 <head>
     <meta charset="utf-8">
     <title>Rekap Absensi Guru</title>
+    @include('exports.partials.pdf-header-footer', ['reportTitle' => 'Rekap Absensi Guru'])
     <style>
-        body { font-family: sans-serif; font-size: 11px; color: #333; }
-        h1 { font-size: 18px; margin-bottom: 2px; }
-        .subtitle { color: #666; font-size: 12px; margin-bottom: 4px; }
-        .filter-info { color: #888; font-size: 11px; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background: #f0f0f0; text-align: left; padding: 6px 8px; border: 1px solid #ddd; font-size: 10px; }
-        td { padding: 5px 8px; border: 1px solid #ddd; font-size: 10px; }
-        tr:nth-child(even) { background: #fafafa; }
+        .filter-info { color: #555; font-size: 11px; margin-bottom: 16px; background: #f9fafb; padding: 8px 12px; border-radius: 4px; }
+        .filter-info strong { color: #333; }
+        h3 { font-size: 13px; margin: 0 0 6px 0; color: #333; }
+        table.data { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        table.data th { background: #f0f0f0; text-align: left; padding: 6px 8px; border: 1px solid #ddd; font-size: 10px; }
+        table.data td { padding: 5px 8px; border: 1px solid #ddd; font-size: 10px; }
+        table.data tr:nth-child(even) { background: #fafafa; }
         .text-center { text-align: center; }
         tfoot td { font-weight: bold; background: #f0f0f0; }
     </style>
 </head>
 <body>
-    <h1>TK IQRA' Creative House</h1>
-    <div class="subtitle">Rekap Absensi Guru</div>
+    <h3>Rekap Absensi Guru</h3>
     <div class="filter-info">
-        Periode: {{ \Carbon\Carbon::create($year, $month)->translatedFormat('F Y') }} &middot;
-        Dicetak: {{ now()->translatedFormat('d F Y') }}
+        <strong>Periode:</strong> {{ \Carbon\Carbon::create($year, $month)->translatedFormat('F Y') }}
     </div>
 
-    <table>
+    <table class="data">
         <thead>
             <tr>
                 <th>No</th>
