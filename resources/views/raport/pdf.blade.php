@@ -53,8 +53,9 @@
         padding-top: 35mm;
     }
     .cover-page .garuda {
-        width: 60px;
+        width: 55px;
         margin-bottom: 10px;
+        opacity: 0.35;
     }
     .cover-title {
         font-size: 12pt;
@@ -727,28 +728,24 @@
     {{-- Tanda Tangan --}}
     <table class="sign-table" style="margin-top:30px;">
         <tr>
-            <td colspan="3" style="text-align:right; padding-bottom:10px;">
+            <td style="width:33%;">&nbsp;</td>
+            <td style="width:34%;">&nbsp;</td>
+            <td style="width:33%; text-align:right; padding-bottom:5px;">
                 Medan, {{ $raport->approved_at?->translatedFormat('d F Y') ?? now()->translatedFormat('d F Y') }}
             </td>
         </tr>
         <tr>
             <td style="width:33%;">
-                <p style="margin-bottom:50px;">Orang Tua / Wali Murid</p>
+                <p style="margin-bottom:60px;">Orang Tua / Wali Murid</p>
                 <div class="sign-name">(___________________)</div>
             </td>
             <td style="width:34%;">
-                <p style="margin-bottom:50px;">Wali Kelas</p>
-                <div class="sign-name">{{ $waliKelas?->name ?? '(__________________)' }}</div>
+                <p style="margin-bottom:60px;">Wali Kelas</p>
+                <div class="sign-name">{{ $waliKelas?->name ?? '(____________________)' }}</div>
             </td>
             <td style="width:33%;">
-                &nbsp;
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" style="padding-top:20px;">
-                Mengetahui<br>
-                Kepala Sekolah TK Iqra' Creative House
-                <br><br><br><br>
+                <p>Mengetahui,</p>
+                <p style="margin-bottom:35px;">Kepala Sekolah</p>
                 <div class="sign-name">{{ $kepalaSekolah }}</div>
             </td>
         </tr>
