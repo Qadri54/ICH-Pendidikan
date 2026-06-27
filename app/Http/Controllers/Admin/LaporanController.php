@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicPeriod;
 use App\Models\ClassRoom;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
@@ -53,9 +54,10 @@ class LaporanController extends Controller
         $lunasPendaftaran = $this->registrationFeeService->getPaidFees();
 
         $classes = ClassRoom::orderBy('nama_kelas')->get();
+        $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
 
         return view('admin.laporan.index', compact(
-            'stats', 'pembayaranSpp', 'lunasPendaftaran', 'classes', 'monthlySummary', 'year'
+            'stats', 'pembayaranSpp', 'lunasPendaftaran', 'classes', 'monthlySummary', 'year', 'periods'
         ));
     }
 

@@ -256,6 +256,7 @@ document.addEventListener('click', function(e) {
     if (link.hasAttribute('download') || link.target === '_blank') return;
     if (e.ctrlKey || e.metaKey || e.shiftKey) return;
     if (link.hasAttribute('@click.prevent') || link.hasAttribute('x-on:click.prevent')) return;
+    if (link.closest('.no-loading') || link.classList.contains('no-loading')) return;
     window.dispatchEvent(new CustomEvent('page-loading'));
 });
 document.addEventListener('submit', function(e) {

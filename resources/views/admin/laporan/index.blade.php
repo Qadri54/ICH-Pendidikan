@@ -251,7 +251,21 @@
     </div>
 
     {{-- Export Laporan --}}
-    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden" x-data="{ tab: 'keuangan' }">
+    @php
+        $periodsData = $periods->map(function($p) {
+            $months = [];
+            $d = $p->tanggal_mulai->copy()->startOfMonth();
+            $end = $p->tanggal_selesai->copy()->startOfMonth();
+            while ($d->lte($end)) {
+                $months[] = ['m' => $d->month, 'y' => $d->year, 'label' => $d->translatedFormat('F')];
+                $d->addMonth();
+            }
+            return ['id' => $p->period_id, 'label' => $p->tahun_ajaran . ' - Semester ' . $p->semester, 'year' => $p->tanggal_mulai->year, 'months' => $months];
+        });
+        $activePeriodId = $periods->firstWhere('is_active', true)?->period_id ?? $periods->first()?->period_id;
+    @endphp
+    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden no-loading"
+         x-data="exportLaporan()">
         <div class="px-6 py-4 border-b border-ich-line flex items-center gap-3">
             <div class="w-9 h-9 rounded-lg bg-ich-blue-soft flex items-center justify-center">
                 <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -263,6 +277,20 @@
         </div>
 
         <div class="p-6">
+            {{-- Periode / Semester selector --}}
+            <div class="mb-5 pb-5 border-b border-ich-line">
+                <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1.5">Periode / Semester</label>
+                <select x-model="periodId"
+                        class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors w-full max-w-xs">
+                    <template x-for="p in periods" :key="p.id">
+                        <option :value="p.id" x-text="p.label" :selected="p.id == periodId"></option>
+                    </template>
+                </select>
+                <p class="text-xs text-ich-ink-400 mt-1.5" x-show="period">
+                    Periode: <span class="font-semibold" x-text="period ? (period.months[0]?.label + ' ' + period.months[0]?.y + ' — ' + period.months[period.months.length - 1]?.label + ' ' + period.months[period.months.length - 1]?.y) : ''"></span>
+                </p>
+            </div>
+
             {{-- Tab buttons --}}
             <div class="flex gap-2 mb-5">
                 <button @click="tab = 'keuangan'" :class="tab === 'keuangan' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
@@ -276,13 +304,13 @@
             {{-- Keuangan export --}}
             <div x-show="tab === 'keuangan'" x-cloak>
                 <p class="text-sm text-ich-ink-400 font-sans mb-4">Download laporan keuangan SPP lengkap dengan ringkasan bulanan dan grafik.</p>
-                <div class="flex gap-3">
-                    <a href="{{ route('admin.laporan.export.keuangan-pdf') }}?year={{ $year }}"
+                <div class="flex gap-3 no-loading">
+                    <a :href="'{{ route('admin.laporan.export.keuangan-pdf') }}?year=' + (period ? period.year : {{ $year }})"
                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         PDF
                     </a>
-                    <a href="{{ route('admin.laporan.export.keuangan-excel') }}?year={{ $year }}"
+                    <a :href="'{{ route('admin.laporan.export.keuangan-excel') }}?year=' + (period ? period.year : {{ $year }})"
                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         Excel
@@ -305,20 +333,14 @@
                     </div>
                     <div>
                         <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Bulan</label>
-                        <select name="month" required
+                        <select name="month" x-model="selectedMonth" required
                                 class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors">
-                            @for($m = 1; $m <= 12; $m++)
-                                <option value="{{ $m }}" {{ $m === now()->month ? 'selected' : '' }}>
-                                    {{ \Carbon\Carbon::create(null, $m)->translatedFormat('F') }}
-                                </option>
-                            @endfor
+                            <template x-for="mo in months" :key="mo.m">
+                                <option :value="mo.m" x-text="mo.label + ' ' + mo.y"></option>
+                            </template>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Tahun</label>
-                        <input type="number" name="year" value="{{ now()->year }}" min="2020" required
-                               class="h-10 w-24 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors">
-                    </div>
+                    <input type="hidden" name="year" :value="monthData.y">
                 </form>
                 <div class="flex gap-3">
                     <button onclick="exportAbsensiSiswa('pdf')"
@@ -339,20 +361,14 @@
                 <form id="formAbsensiGuru" class="flex flex-wrap items-end gap-3 mb-4">
                     <div>
                         <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Bulan</label>
-                        <select name="month" required
+                        <select name="month" x-model="selectedMonth" required
                                 class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors">
-                            @for($m = 1; $m <= 12; $m++)
-                                <option value="{{ $m }}" {{ $m === now()->month ? 'selected' : '' }}>
-                                    {{ \Carbon\Carbon::create(null, $m)->translatedFormat('F') }}
-                                </option>
-                            @endfor
+                            <template x-for="mo in months" :key="mo.m">
+                                <option :value="mo.m" x-text="mo.label + ' ' + mo.y"></option>
+                            </template>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Tahun</label>
-                        <input type="number" name="year" value="{{ now()->year }}" min="2020" required
-                               class="h-10 w-24 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors">
-                    </div>
+                    <input type="hidden" name="year" :value="monthData.y">
                 </form>
                 <div class="flex gap-3">
                     <button onclick="exportAbsensiGuru('pdf')"
@@ -373,6 +389,28 @@
     {{-- Chart.js CDN --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
     <script>
+        function exportLaporan() {
+            return {
+                tab: 'keuangan',
+                periodId: @json($activePeriodId),
+                periods: @json($periodsData),
+                selectedMonth: null,
+                get period() { return this.periods.find(p => p.id == this.periodId) },
+                get months() { return this.period ? this.period.months : [] },
+                get monthData() {
+                    return this.months.find(m => m.m == this.selectedMonth) || this.months[0] || { m: 1, y: new Date().getFullYear() };
+                },
+                init() {
+                    this.resetMonth();
+                    this.$watch('periodId', () => this.resetMonth());
+                },
+                resetMonth() {
+                    const cm = new Date().getMonth() + 1;
+                    this.selectedMonth = this.months.find(m => m.m == cm) ? cm : (this.months[0]?.m ?? 1);
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('revenueChart').getContext('2d');
             const monthlyData = @json($monthlySummary);
