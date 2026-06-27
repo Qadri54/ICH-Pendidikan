@@ -4,9 +4,11 @@ namespace App\Services\Export;
 
 use App\Models\ClassRoom;
 use App\Models\RegistrationTransaction;
+use App\Models\Role;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
+use App\Models\User;
 use App\Services\Attendance\AttendanceService;
 use App\Services\Attendance\StudentAttendanceService;
 use App\Services\Registration\RegistrationFeeService;
@@ -61,19 +63,25 @@ class LaporanExportService
         return $months;
     }
 
+    private function getKepalaSekolahName(): string
+    {
+        return User::whereHas('role', fn ($q) => $q->where('role_name', 'Kepala Sekolah'))
+            ->value('name') ?? 'Kepala Sekolah';
+    }
+
     // ─── PDF ─────────────────────────────────────────
 
     public function exportKeuanganPdf(?int $year = null): Response
     {
         $year             = $year ?? now()->year;
-        $invoices         = SppInvoice::with('student.classRoom')->latest('jatuh_tempo')->get();
-        $totalSpp         = $invoices->where('status', 'paid')->sum('jumlah');
+        $totalSpp         = SppInvoice::where('status', 'paid')->sum('jumlah');
         $totalPendaftaran = $this->registrationFeeService->getTotalCollected();
         $totalTabungan    = SavingLedger::sum('total_balance');
         $monthlySummary   = $this->getMonthlySummary($year);
+        $kepalaSekolah    = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.keuangan-pdf', compact(
-            'invoices', 'totalSpp', 'totalPendaftaran', 'totalTabungan', 'monthlySummary'
+            'totalSpp', 'totalPendaftaran', 'totalTabungan', 'monthlySummary', 'kepalaSekolah'
         ))->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-keuangan-' . now()->format('Y-m-d') . '.pdf');
@@ -81,11 +89,13 @@ class LaporanExportService
 
     public function exportAbsensiSiswaPdf(int $classId, int $year, int $month): Response
     {
-        $classroom = ClassRoom::findOrFail($classId);
-        $recap     = $this->studentAttendanceService->getMonthlyRecap($classId, $year, $month);
+        $classroom     = ClassRoom::with('homeroomTeacher.user')->findOrFail($classId);
+        $recap         = $this->studentAttendanceService->getMonthlyRecap($classId, $year, $month);
+        $waliKelas     = $classroom->homeroomTeacher?->user?->name;
+        $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.absensi-siswa-pdf', compact(
-            'classroom', 'recap', 'year', 'month'
+            'classroom', 'recap', 'year', 'month', 'waliKelas', 'kepalaSekolah'
         ));
 
         return $pdf->download("rekap-absensi-siswa-{$classroom->nama_kelas}-{$year}-{$month}.pdf");
@@ -93,9 +103,10 @@ class LaporanExportService
 
     public function exportAbsensiGuruPdf(int $year, int $month): Response
     {
-        $recap = $this->attendanceService->getMonthlyRecap($year, $month);
+        $recap         = $this->attendanceService->getMonthlyRecap($year, $month);
+        $kepalaSekolah = $this->getKepalaSekolahName();
 
-        $pdf = Pdf::loadView('exports.absensi-guru-pdf', compact('recap', 'year', 'month'));
+        $pdf = Pdf::loadView('exports.absensi-guru-pdf', compact('recap', 'year', 'month', 'kepalaSekolah'));
 
         return $pdf->download("rekap-absensi-guru-{$year}-{$month}.pdf");
     }

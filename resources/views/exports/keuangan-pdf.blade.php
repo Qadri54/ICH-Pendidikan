@@ -16,10 +16,6 @@
         table.data td { padding: 5px 8px; border: 1px solid #ddd; font-size: 10px; }
         table.data tr:nth-child(even) { background: #fafafa; }
         .text-right { text-align: right; }
-        .badge { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
-        .badge-paid { background: #d1fae5; color: #065f46; }
-        .badge-unpaid { background: #fef3c7; color: #92400e; }
-        .badge-overdue { background: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body>
@@ -75,36 +71,6 @@
     </table>
     @endif
 
-    <h3>Detail Tagihan SPP ({{ $invoices->count() }} data)</h3>
-    <table class="data">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Periode</th>
-                <th class="text-right">Jumlah</th>
-                <th>Jatuh Tempo</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($invoices as $i => $inv)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>{{ $inv->student?->nama_siswa ?? '-' }}</td>
-                    <td>{{ $inv->student?->classRoom?->nama_kelas ?? '-' }}</td>
-                    <td>{{ $inv->tanggal_tahun?->translatedFormat('F Y') ?? '-' }}</td>
-                    <td class="text-right">Rp {{ number_format($inv->jumlah, 0, ',', '.') }}</td>
-                    <td>{{ $inv->jatuh_tempo?->format('d/m/Y') ?? '-' }}</td>
-                    <td>
-                        <span class="badge badge-{{ $inv->status }}">
-                            {{ ucfirst($inv->status) }}
-                        </span>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @include('exports.partials.pdf-validation')
 </body>
 </html>

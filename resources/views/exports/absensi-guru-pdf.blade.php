@@ -61,5 +61,7 @@
             </tfoot>
         @endif
     </table>
+
+    @include('exports.partials.pdf-validation')
 </body>
 </html>
