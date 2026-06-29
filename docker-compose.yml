@@ -21,6 +21,8 @@ services:
     networks:
       - ich-net
       - banksumut_net
+      - mariska_net
+      - englishich_net
 
   # ── PHP-FPM (Laravel app) ──────────────────
   app:
@@ -160,3 +162,9 @@ networks:
   banksumut_net:
     external: true
     name: maturitas_digital_banksumut_banksumut_net
+  mariska_net:
+    external: true
+    name: mariska_adversting_mariska_net
+  englishich_net:
+    external: true
+    name: englishich_app-net
