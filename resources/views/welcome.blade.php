@@ -237,9 +237,9 @@
   <div class="hero-bg"></div>
   <div class="hero-wash"></div>
   <div class="hero-content">
-    <div class="hero-badge">PG &amp; TK Islam Terpadu · Tahun Ajaran 2025/2026</div>
-    <h1 class="hero-title">Membangun Generasi<br>Qurani &amp; Kreatif</h1>
-    <p class="hero-sub">IQRA' Creative House membimbing anak-anak dengan ilmu, akhlak, dan kreativitas melalui pendekatan islami yang menyenangkan.</p>
+    <div class="hero-badge">PG/TK Plus · Hafidz, Arab, English, Jepang, Mandarin</div>
+    <h1 class="hero-title">Smart dan Religius</h1>
+    <p class="hero-sub">Menyiapkan Generasi Era Digital Berakhlak Mulia Dari Usia Dini. IQRA' Creative House membimbing anak-anak dengan ilmu, akhlak, dan kreativitas.</p>
     <div class="hero-btns">
       <a href="#program" class="btn-primary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a4 4 0 014 4v12H8a4 4 0 01-4-4z"/><path d="M20 4h-7a4 4 0 00-4 4v12h7a4 4 0 004-4z"/></svg>
@@ -256,19 +256,19 @@
       <div class="stat-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a4 4 0 014 4v12H8a4 4 0 01-4-4z"/><path d="M20 4h-7a4 4 0 00-4 4v12h7a4 4 0 004-4z"/></svg>
       </div>
-      <div class="stat-text"><strong>Belajar Al-Qur'an</strong><span>Mengaji, Tahsin &amp; Tahfidz</span></div>
+      <div class="stat-text"><strong>Hafidz &amp; Al-Qur'an</strong><span>Tahsin, Tahfidz &amp; Bahasa Arab</span></div>
     </div>
     <div class="hero-stat">
       <div class="stat-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 5-10 5L2 8z"/><path d="M6 10v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>
       </div>
-      <div class="stat-text"><strong>Program Terstruktur</strong><span>Kurikulum Islami Terintegrasi</span></div>
+      <div class="stat-text"><strong>5 Bahasa</strong><span>Arab, English, Jepang, Mandarin</span></div>
     </div>
     <div class="hero-stat">
       <div class="stat-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2 2-3.5 4-3.5s2.5 1 2.5 2"/></svg>
       </div>
-      <div class="stat-text"><strong>Bimbingan Akhlak</strong><span>Pendidikan Karakter Islami</span></div>
+      <div class="stat-text"><strong>Smart &amp; Religius</strong><span>Pendidikan Akhlak Mulia</span></div>
     </div>
   </div>
 </section>
@@ -282,34 +282,34 @@
            loading="lazy"
            onerror="this.src='https://placehold.co/800x600/3DA746/white?text=ICH+Pendidikan'">
       <div class="about-img-badge">
-        <div class="num">10+</div>
-        <div class="txt">Tahun Pengalaman<br>Pendidikan Islam</div>
+        <div class="num">3</div>
+        <div class="txt">Angkatan Lulusan<br>PG/TK Plus ICH</div>
       </div>
     </div>
     <div>
       <div class="section-label">Tentang Kami</div>
-      <h2 class="section-title">Kami Membimbing dengan<br>Ilmu &amp; Akhlak</h2>
+      <h2 class="section-title">Smart dan Religius<br>Sejak Usia Dini</h2>
       <p style="font-family:'Inter',sans-serif;font-size:15px;color:#687182;line-height:1.75;margin-bottom:24px;">
-        IQRA' Creative House berfokus pada pembelajaran Al-Qur'an, pembentukan akhlak, dan pengembangan potensi peserta didik dengan pendekatan islami dan kreatif. Kami percaya setiap anak adalah amanah yang perlu dibimbing dengan kasih sayang.
+        IQRA' Creative House adalah PG/TK Plus yang mengintegrasikan program Hafidz, Bahasa Arab, English, Jepang, dan Mandarin. Kami menyiapkan generasi era digital yang berakhlak mulia dari usia dini.
       </p>
       <div class="about-features">
         <div class="about-feat">
           <div class="dot">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
           </div>
-          <p><strong>Metode belajar menyenangkan</strong> — belajar sambil bermain agar anak tidak bosan dan mudah menyerap ilmu.</p>
+          <p><strong>Multilingual</strong> — program 5 bahasa: Hafidz, Arab, English, Jepang, dan Mandarin sejak usia dini.</p>
         </div>
         <div class="about-feat">
           <div class="dot">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
           </div>
-          <p><strong>Ustadzah berpengalaman</strong> — pengajar terlatih yang sabar, berdedikasi, dan memahami psikologi anak usia dini.</p>
+          <p><strong>Pendidikan akhlak mulia</strong> — membentuk karakter islami melalui pembiasaan adab dan praktik langsung.</p>
         </div>
         <div class="about-feat">
           <div class="dot">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
           </div>
-          <p><strong>Laporan perkembangan berkala</strong> — orang tua mendapat update kehadiran, nilai, dan aktivitas anak secara real-time.</p>
+          <p><strong>Laporan perkembangan digital</strong> — orang tua memantau kehadiran, pembayaran, dan raport anak secara real-time.</p>
         </div>
       </div>
       <a href="{{ route('register') }}" class="btn-primary" style="margin-top:32px;display:inline-flex;">Daftar Sekarang</a>
@@ -322,51 +322,51 @@
   <div class="programs-inner">
     <div class="center">
       <div class="section-label">Program Unggulan</div>
-      <h2 class="section-title">Kurikulum Islami Terpadu</h2>
-      <p class="section-sub">Setiap program dirancang untuk membentuk generasi yang cerdas, berakhlak mulia, dan mencintai Al-Qur'an sejak dini.</p>
+      <h2 class="section-title">Program Unggulan ICH</h2>
+      <p class="section-sub">Setiap program dirancang untuk membentuk generasi yang smart dan religius, siap menghadapi era digital dengan akhlak mulia.</p>
     </div>
     <div class="programs-grid">
       <div class="prog-card">
         <div class="prog-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a4 4 0 014 4v12H8a4 4 0 01-4-4z"/><path d="M20 4h-7a4 4 0 00-4 4v12h7a4 4 0 004-4z"/></svg>
         </div>
-        <div class="prog-title">Mengaji &amp; Tahsin</div>
-        <div class="prog-desc">Belajar membaca Al-Qur'an dari iqra hingga hafalan, dengan bimbingan tajwid yang benar dan menyenangkan.</div>
+        <div class="prog-title">Hafidz</div>
+        <div class="prog-desc">Program hafalan Al-Qur'an terstruktur dari Iqra hingga hafalan surat pendek, dengan bimbingan tajwid dan muroja'ah harian.</div>
       </div>
       <div class="prog-card">
         <div class="prog-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6L12 17l-5.4 2.6 1-6L3.3 9.4l6-.9z"/></svg>
         </div>
-        <div class="prog-title">Tahfidz Al-Qur'an</div>
-        <div class="prog-desc">Program hafalan Al-Qur'an terstruktur dengan metode muroja'ah harian dan pemantauan progress setiap minggu.</div>
+        <div class="prog-title">Bahasa Arab</div>
+        <div class="prog-desc">Pengenalan kosakata dan percakapan dasar Bahasa Arab untuk membangun fondasi pemahaman Al-Qur'an sejak dini.</div>
       </div>
       <div class="prog-card">
         <div class="prog-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 5-10 5L2 8z"/><path d="M6 10v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>
         </div>
-        <div class="prog-title">Pendidikan Akhlak</div>
-        <div class="prog-desc">Membentuk karakter islami — adab terhadap orang tua, guru, teman, dan lingkungan — melalui kisah dan praktek langsung.</div>
+        <div class="prog-title">English</div>
+        <div class="prog-desc">Pembelajaran Bahasa Inggris melalui lagu, cerita, dan aktivitas interaktif yang menyenangkan bagi anak usia dini.</div>
       </div>
       <div class="prog-card">
         <div class="prog-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         </div>
-        <div class="prog-title">Kajian Islami</div>
-        <div class="prog-desc">Pengenalan sejarah Islam, doa sehari-hari, dan nilai-nilai keislaman yang disampaikan dengan cerita yang menarik bagi anak.</div>
+        <div class="prog-title">Bahasa Jepang</div>
+        <div class="prog-desc">Pengenalan bahasa dan budaya Jepang melalui permainan edukatif dan kosakata dasar yang mudah dipahami anak.</div>
       </div>
       <div class="prog-card">
         <div class="prog-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18 M7 15l4-4 3 3 5-6"/></svg>
         </div>
-        <div class="prog-title">Akademik Terpadu</div>
-        <div class="prog-desc">Matematika, Bahasa Indonesia, IPA, dan IPS dikemas dalam kurikulum tematik islami yang integratif dan kontekstual.</div>
+        <div class="prog-title">Bahasa Mandarin</div>
+        <div class="prog-desc">Pengenalan kosakata dan percakapan dasar Bahasa Mandarin untuk memperluas wawasan bahasa anak sejak dini.</div>
       </div>
       <div class="prog-card" style="background:linear-gradient(135deg,#3DA746 0%,#3B8249 100%);">
         <div class="prog-icon" style="background:rgba(255,255,255,0.2);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
         </div>
-        <div class="prog-title" style="color:#fff;">Kreativitas &amp; Dakwah</div>
-        <div class="prog-desc" style="color:rgba(255,255,255,0.85);">Menulis, seni islami, dan kegiatan kreatif yang membangun rasa percaya diri dan semangat berdakwah sejak dini.</div>
+        <div class="prog-title" style="color:#fff;">Pendidikan Akhlak</div>
+        <div class="prog-desc" style="color:rgba(255,255,255,0.85);">Membentuk karakter islami — adab terhadap orang tua, guru, teman, dan lingkungan — melalui kisah dan praktik langsung.</div>
       </div>
     </div>
   </div>
@@ -376,18 +376,18 @@
 <section class="activities" id="aktivitas">
   <div class="activities-inner">
     <div class="center">
-      <div class="section-label">Aktivitas Terbaru</div>
+      <div class="section-label">Aktivitas </div>
       <h2 class="section-title">Kegiatan Belajar Anak</h2>
       <p class="section-sub">Potret keseharian santri IQRA' Creative House yang penuh semangat belajar dan berkreasi.</p>
     </div>
     <div class="acts-grid">
       @foreach ([
-        ['img' => 'activity-1.jpg', 'tag' => 'Al-Qur\'an', 'title' => 'Belajar Mengaji Dari Nol',       'meta' => 'Kelas PG A · 18 Feb 2026'],
-        ['img' => 'activity-3.jpg', 'tag' => 'Tahfidz',    'title' => "Tahfidz Iqra & Muroja'ah",      'meta' => 'Kelas TK B · 15 Feb 2026'],
-        ['img' => 'activity-4.jpg', 'tag' => 'Akhlak',     'title' => 'Adab & Akhlak Islami',          'meta' => 'Seluruh Kelas · 10 Feb 2026'],
-        ['img' => 'activity-2.jpg', 'tag' => 'Tahsin',     'title' => 'Tahsin & Tajwid Intensif',      'meta' => 'Kelas TK A · 8 Feb 2026'],
-        ['img' => 'activity-5.jpg', 'tag' => 'Kajian',     'title' => 'Kajian Islam & Sirah Nabawi',   'meta' => 'Kelas TK B · 5 Feb 2026'],
-        ['img' => null,             'tag' => 'Kreativitas','title' => 'Menulis & Dakwah Kreatif',       'meta' => 'Kelas TK A & B · 1 Feb 2026'],
+        ['img' => 'images_ich/kegiatan1.jpeg', 'tag' => 'Hafidz',    'title' => 'Kegiatan Mengaji & Hafalan',     'meta' => 'Seluruh Kelas'],
+        ['img' => 'images_ich/kegiatan2.jpeg', 'tag' => 'Wisuda',    'title' => 'Wisuda & Pelepasan Angkatan 3',  'meta' => 'Tahun Ajaran 2025/2026'],
+        ['img' => 'activity-1.jpg',            'tag' => 'Arab',      'title' => 'Belajar Bahasa Arab',            'meta' => 'Kelas PG & TK'],
+        ['img' => 'activity-3.jpg',            'tag' => 'English',   'title' => 'Pembelajaran Bahasa Inggris',    'meta' => 'Kelas PG & TK'],
+        ['img' => 'activity-4.jpg',            'tag' => 'Akhlak',    'title' => 'Pendidikan Adab & Akhlak',       'meta' => 'Seluruh Kelas'],
+        ['img' => 'activity-2.jpg',            'tag' => 'Kreativitas','title' => 'Kegiatan Seni & Kreativitas',   'meta' => 'Seluruh Kelas'],
       ] as $act)
       <div class="act-card">
         <div class="act-img">
@@ -466,7 +466,7 @@
 <div class="cta-section">
   <div class="cta-box">
     <h2 class="cta-title">Daftarkan Putra-Putri Anda<br>Bersama Kami</h2>
-    <p class="cta-sub">Tahun ajaran 2025/2026 masih menerima pendaftaran. Tempat terbatas — jangan sampai terlewat!</p>
+    <p class="cta-sub">Pendaftaran dibuka Januari – Juli 2026, jam 08.00–12.00 WIB. Tempat terbatas — jangan sampai terlewat!</p>
     <div class="cta-btns">
       <a href="https://wa.me/6281360765971" target="_blank" class="btn-white">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A9E5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
@@ -485,8 +485,8 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div class="mark" style="overflow:hidden;padding:4px;"><img src="{{ asset('images/Logo.png') }}" alt="ICH Logo" style="width:100%;height:100%;object-fit:contain;"></div>
-      <p>IQRA' Creative House adalah lembaga pendidikan PG-TK Islam yang berfokus pada pembentukan generasi Qurani dan kreatif.</p>
-      <p style="margin-top:12px;">✉ info@ich.sch.id</p>
+      <p>IQRA' Creative House adalah PG/TK Plus dengan program Hafidz, Arab, English, Jepang, dan Mandarin. Smart dan Religius.</p>
+      <p style="margin-top:12px;">✉ ichsumut@gmail.com</p>
       <div class="socials">
         <a href="#">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 8a6 6 0 01-8 8 6 6 0 010-8"/><circle cx="12" cy="12" r="3"/></svg>
@@ -502,11 +502,11 @@
     <div class="footer-col">
       <h4>Program</h4>
       <ul>
-        <li><a href="#">Mengaji &amp; Tahsin</a></li>
-        <li><a href="#">Tahfidz Al-Qur'an</a></li>
-        <li><a href="#">Pendidikan Akhlak</a></li>
-        <li><a href="#">Kajian Islami</a></li>
-        <li><a href="#">Kreativitas</a></li>
+        <li><a href="#">Hafidz</a></li>
+        <li><a href="#">Bahasa Arab</a></li>
+        <li><a href="#">English</a></li>
+        <li><a href="#">Bahasa Jepang</a></li>
+        <li><a href="#">Bahasa Mandarin</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -522,8 +522,9 @@
     <div class="footer-col">
       <h4>Kontak</h4>
       <ul>
-        <li><a href="mailto:info@ich.sch.id">info@ich.sch.id</a></li>
-        <li>Senin – Sabtu<br>07.00 – 14.00 WIB</li>
+        <li><a href="mailto:ichsumut@gmail.com">ichsumut@gmail.com</a></li>
+        <li>Jl. Datuk Kabu Gg. Ridho No. 11E, Medan</li>
+        <li>Senin – Sabtu<br>08.00 – 12.00 WIB</li>
         <li>0813-6076-5971</li>
         <li style="margin-top:8px;">
           <a href="https://wa.me/6281360765971" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;padding:8px 14px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;">
@@ -536,7 +537,7 @@
   </div>
   <div class="footer-bottom">
     <span>Copyright &copy; {{ date('Y') }} IQRA' CREATIVE GROUP. All Rights Reserved.</span>
-    <span>ICH GROUP · Membangun Generasi Qurani &amp; Kreatif</span>
+    <span>ICH · Smart dan Religius</span>
   </div>
 </footer>
 
