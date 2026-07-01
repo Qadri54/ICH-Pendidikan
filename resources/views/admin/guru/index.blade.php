@@ -38,7 +38,7 @@
             </div>
             <div>
                 <h1 class="text-2xl font-display font-bold text-ich-ink-900">Daftar Guru</h1>
-                <p class="text-sm text-ich-ink-400 mt-0.5">Guru Kelas & Guru Ngaji</p>
+                <p class="text-sm text-ich-ink-400 mt-0.5">Kelola data guru</p>
             </div>
         </div>
         @if(! $isReadOnly)
@@ -65,26 +65,18 @@
         <table class="w-full text-sm">
             <thead class="bg-ich-surface">
                 <tr>
-                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tipe</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIP</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Mata Pelajaran</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">No HP</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($guru as $g)
                     <tr class="hover:bg-ich-surface transition-colors">
-                        <td class="px-4 py-3">
-                            @if($g->tipe === 'Guru Kelas')
-                                <span class="px-2 py-1 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full">Guru Kelas</span>
-                            @else
-                                <span class="px-2 py-1 bg-ich-purple-soft text-ich-purple font-ui font-bold text-xs rounded-full">Guru Ngaji</span>
-                            @endif
-                        </td>
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $g->nama }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->NIP ?: '-' }}</td>
-                        <td class="px-4 py-3 text-ich-ink-600">{{ $g->info }}</td>
+                        <td class="px-4 py-3 text-ich-ink-500">{{ $g->no_hp ?: '-' }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
@@ -102,7 +94,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
+                        <td colspan="4" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -116,20 +108,7 @@
             @csrf
             <input type="hidden" name="_modal" value="create">
 
-            <div>
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tipe Guru <span class="text-ich-error">*</span></label>
-                <div class="flex gap-3">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="tipe_guru" value="Guru" x-model="tipe" class="text-ich-green focus:ring-ich-green">
-                        <span class="font-sans text-sm text-ich-ink-900">Guru Kelas</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="tipe_guru" value="Guru Ngaji" x-model="tipe" class="text-ich-green focus:ring-ich-green">
-                        <span class="font-sans text-sm text-ich-ink-900">Guru Ngaji</span>
-                    </label>
-                </div>
-                @error('tipe_guru') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
+            <input type="hidden" name="tipe_guru" value="Guru">
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Lengkap <span class="text-ich-error">*</span></label>
@@ -178,8 +157,6 @@
             @csrf @method('PUT')
             <input type="hidden" name="_modal" value="edit">
             <input type="hidden" name="_edit_id" :value="editId">
-
-            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-bold" x-text="'Tipe: ' + editTipe"></div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
