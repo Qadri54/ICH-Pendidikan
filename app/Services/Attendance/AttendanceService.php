@@ -34,6 +34,10 @@ class AttendanceService
             (float) $data['longitude']
         );
 
+        if (! $isWithinGeofence) {
+            throw new \InvalidArgumentException('Anda berada di luar area sekolah. Check-in hanya dapat dilakukan di dalam radius geofence.');
+        }
+
         $selfiePath = $data['selfie']->store('attendance/selfies', 'public');
 
         return AttendanceRecord::create([
@@ -43,7 +47,7 @@ class AttendanceService
             'check_in_longitude'  => $data['longitude'],
             'check_in_accuracy'   => $data['accuracy'],
             'selfie_path'         => $selfiePath,
-            'is_within_geofence'  => $isWithinGeofence ? 'ya' : 'tidak',
+            'is_within_geofence'  => 'ya',
             'attendance_status'   => 'Hadir',
         ]);
     }
