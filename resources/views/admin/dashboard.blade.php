@@ -172,6 +172,60 @@
         </div>
     </div>
 
+    {{-- Pendapatan Bulanan --}}
+    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-ich-line flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-ich-green-surface flex items-center justify-center">
+                    <svg class="w-4 h-4 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <div>
+                    <h2 class="font-ui font-bold text-ich-ink-900">Pendapatan Bulanan {{ $currentYear }}</h2>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">SPP & Pendaftaran per bulan</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-ui">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-ich-green inline-block"></span>SPP</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-ich-teal inline-block"></span>Pendaftaran</span>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="relative h-56">
+                <canvas id="dashboardRevenueChart"></canvas>
+            </div>
+        </div>
+        <div class="overflow-x-auto border-t border-ich-line">
+            <table class="w-full text-xs">
+                <thead class="bg-ich-surface">
+                    <tr>
+                        <th class="px-4 py-2 text-left font-ui font-bold text-ich-ink-600">Bulan</th>
+                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-green">SPP</th>
+                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-teal">Pendaftaran</th>
+                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-ink-600">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-ich-line">
+                    @php $grandSpp = 0; $grandReg = 0; @endphp
+                    @foreach($monthlyIncome as $row)
+                        @php $grandSpp += $row['spp']; $grandReg += $row['pendaftaran']; @endphp
+                        <tr class="hover:bg-ich-surface transition-colors">
+                            <td class="px-4 py-2 font-ui font-semibold text-ich-ink-700">{{ $row['label'] }}</td>
+                            <td class="px-4 py-2 text-right text-ich-green">Rp {{ number_format($row['spp'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-2 text-right text-ich-teal">Rp {{ number_format($row['pendaftaran'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-2 text-right font-ui font-bold text-ich-ink-900">Rp {{ number_format($row['spp'] + $row['pendaftaran'], 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                    <tr class="bg-ich-surface font-ui font-bold text-xs">
+                        <td class="px-4 py-2 text-ich-ink-700">Total</td>
+                        <td class="px-4 py-2 text-right text-ich-green">Rp {{ number_format($grandSpp, 0, ',', '.') }}</td>
+                        <td class="px-4 py-2 text-right text-ich-teal">Rp {{ number_format($grandReg, 0, ',', '.') }}</td>
+                        <td class="px-4 py-2 text-right text-ich-ink-900">Rp {{ number_format($grandSpp + $grandReg, 0, ',', '.') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {{-- Recent SPP Payments --}}
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="px-6 py-4 border-b border-ich-line flex items-center justify-between">
@@ -228,5 +282,55 @@
             </table>
         </div>
     </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script>
+    (function () {
+        const labels = @json($monthlyIncome->pluck('label'));
+        const sppData = @json($monthlyIncome->pluck('spp'));
+        const regData = @json($monthlyIncome->pluck('pendaftaran'));
+
+        new Chart(document.getElementById('dashboardRevenueChart'), {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'SPP',
+                        data: sppData,
+                        backgroundColor: '#3DA746',
+                        borderRadius: 4,
+                    },
+                    {
+                        label: 'Pendaftaran',
+                        data: regData,
+                        backgroundColor: '#2A8A94',
+                        borderRadius: 4,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f0f0f0' },
+                        ticks: {
+                            font: { size: 11 },
+                            callback: v => 'Rp ' + (v >= 1000000
+                                ? (v / 1000000).toFixed(1) + 'jt'
+                                : (v / 1000).toFixed(0) + 'rb'),
+                        },
+                    },
+                },
+            },
+        });
+    })();
+    </script>
+    @endpush
 
 </x-main-layout>

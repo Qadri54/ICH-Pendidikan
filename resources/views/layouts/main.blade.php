@@ -264,5 +264,6 @@ document.addEventListener('submit', function(e) {
     window.dispatchEvent(new CustomEvent('page-loading'));
 });
 </script>
+@stack('scripts')
 </body>
 </html>

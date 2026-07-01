@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registration;
+use App\Models\RegistrationTransaction;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\Student;
@@ -10,6 +11,7 @@ use App\Models\StudentReportCard;
 use App\Models\Teacher;
 use App\Services\Registration\RegistrationFeeService;
 use App\Services\Spp\SppInvoiceService;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -61,6 +63,25 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments'));
+        $currentYear = now()->year;
+        $monthlyIncome = collect(range(1, now()->month))->map(function ($m) use ($currentYear) {
+            $spp = SppInvoice::where('status', 'paid')
+                ->whereYear('tanggal_tahun', $currentYear)
+                ->whereMonth('tanggal_tahun', $m)
+                ->sum('jumlah');
+
+            $pendaftaran = RegistrationTransaction::where('status', 'approved')
+                ->whereYear('payment_date', $currentYear)
+                ->whereMonth('payment_date', $m)
+                ->sum('jumlah_bayar');
+
+            return [
+                'label'       => Carbon::create($currentYear, $m)->translatedFormat('M'),
+                'spp'         => (int) $spp,
+                'pendaftaran' => (int) $pendaftaran,
+            ];
+        });
+
+        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear'));
     }
 }
