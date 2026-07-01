@@ -510,7 +510,7 @@
                                     </div>
                                 </div>
                                 <button type="button"
-                                        @click="waEnabled = waEnabled === 'true' ? 'false' : 'true'"
+                                        @click="waEnabled = waEnabled === 'true' ? 'false' : 'true'; $nextTick(() => $el.closest('form').submit())"
                                         class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors"
                                         :class="waEnabled === 'true' ? 'bg-ich-green' : 'bg-ich-ink-300'">
                                     <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-transform"
