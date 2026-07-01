@@ -90,10 +90,12 @@ class GuruController extends Controller {
 
         $teacher = Teacher::findOrFail($id);
         $teacher->user->update(['name' => $data['name'], 'no_hp' => $data['no_hp']]);
-        $teacher->update([
-            'NIP' => $data['NIP'],
-            'hire_date' => $data['hire_date'],
-        ]);
+
+        $updateData = ['NIP' => $data['NIP']];
+        if (! empty($data['hire_date'])) {
+            $updateData['hire_date'] = $data['hire_date'];
+        }
+        $teacher->update($updateData);
 
         return redirect()->route('admin.guru.index')
             ->with('success', "Data guru berhasil diperbarui.");
