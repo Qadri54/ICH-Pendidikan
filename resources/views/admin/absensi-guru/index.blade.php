@@ -63,7 +63,22 @@
             </form>
 
             {{-- Tabel Rekap --}}
-            <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
+            <div class="bg-white rounded-xl shadow-ich-card overflow-hidden" x-data="{ photoUrl: '' }">
+
+                {{-- Lightbox --}}
+                <div x-show="photoUrl" x-cloak
+                     class="fixed inset-0 z-[9990] flex items-center justify-center bg-black/75 p-4"
+                     @click="photoUrl = ''" @keydown.escape.window="photoUrl && (photoUrl = '')">
+                    <img :src="photoUrl" @click.stop
+                         class="max-h-[85vh] max-w-[90vw] rounded-xl shadow-2xl object-contain">
+                    <button @click="photoUrl = ''"
+                            class="absolute top-4 right-4 w-10 h-10 bg-black/40 rounded-full flex items-center justify-center text-white hover:bg-black/60">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
                 <div class="px-5 py-4 border-b border-ich-line">
                     <h2 class="font-ui font-bold text-ich-ink-900">Rekap Absensi</h2>
                     <p class="text-xs text-ich-ink-400 mt-0.5">{{ $records->count() }} data ditemukan</p>
@@ -85,6 +100,7 @@
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Jam Absensi</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Geofence</th>
                                     <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Status</th>
+                                    <th class="px-4 py-3 text-left font-ui font-bold text-xs text-ich-ink-500">Foto Selfie</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-ich-line">
@@ -123,6 +139,19 @@
                                                          {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
                                                 {{ $stCfg['label'] }}
                                             </span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            @if($record->selfie_path)
+                                                @php $selfieUrl = asset('storage/' . $record->selfie_path); @endphp
+                                                <button type="button"
+                                                        @click="photoUrl = '{{ $selfieUrl }}'"
+                                                        class="block w-12 h-12 rounded-lg overflow-hidden border-2 border-ich-line hover:border-ich-teal transition-colors focus:outline-none">
+                                                    <img src="{{ $selfieUrl }}" alt="Selfie {{ $nama }}"
+                                                         class="w-full h-full object-cover">
+                                                </button>
+                                            @else
+                                                <span class="text-xs text-ich-ink-300">-</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

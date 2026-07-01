@@ -14,6 +14,7 @@ services:
       - certbot-var:/var/lib/letsencrypt
       - certbot-webroot:/var/www/certbot
       - banksumut_certbot_conf:/etc/letsencrypt-banksumut:ro
+      - wa_server_certbot_conf:/etc/letsencrypt-wa-notification:ro
     depends_on:
       app:
         condition: service_healthy
@@ -21,6 +22,7 @@ services:
     networks:
       - ich-net
       - banksumut_net
+      - wa_server_net
 
   # ── PHP-FPM (Laravel app) ──────────────────
   app:
@@ -154,6 +156,9 @@ volumes:
   banksumut_certbot_conf:
     external: true
     name: maturitas_digital_banksumut_certbot_conf
+  wa_server_certbot_conf:
+    external: true
+    name: wa-server_certbot-etc
 
 networks:
   ich-net:
@@ -161,3 +166,6 @@ networks:
   banksumut_net:
     external: true
     name: maturitas_digital_banksumut_banksumut_net
+  wa_server_net:
+    external: true
+    name: wa-server_wa-net
