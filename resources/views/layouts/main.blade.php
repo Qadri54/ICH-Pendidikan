@@ -263,6 +263,11 @@ document.addEventListener('submit', function(e) {
     if (e.target.closest('.no-loading')) return;
     window.dispatchEvent(new CustomEvent('page-loading'));
 });
+window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+        document.querySelector('[x-data]').__x.$data.pageLoading = false;
+    }
+});
 </script>
 @stack('scripts')
 </body>
