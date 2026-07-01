@@ -14,7 +14,7 @@
                 Password Saat Ini <span class="text-ich-error">*</span>
             </label>
             <input id="update_password_current_password" name="current_password" type="password"
-                   autocomplete="current-password"
+                   minlength="8" autocomplete="current-password"
                    class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg font-sans text-sm
                           focus:outline-none focus:border-ich-teal-dark
                           @error('current_password', 'updatePassword') border-ich-error @else border-ich-teal @enderror">
@@ -29,7 +29,7 @@
                 Password Baru <span class="text-ich-error">*</span>
             </label>
             <input id="update_password_password" name="password" type="password"
-                   autocomplete="new-password"
+                   minlength="8" autocomplete="new-password"
                    class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg font-sans text-sm
                           focus:outline-none focus:border-ich-teal-dark
                           @error('password', 'updatePassword') border-ich-error @else border-ich-teal @enderror">
@@ -44,7 +44,7 @@
                 Konfirmasi Password Baru <span class="text-ich-error">*</span>
             </label>
             <input id="update_password_password_confirmation" name="password_confirmation" type="password"
-                   autocomplete="new-password"
+                   minlength="8" autocomplete="new-password"
                    class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm
                           focus:outline-none focus:border-ich-teal-dark">
             @error('password_confirmation', 'updatePassword')

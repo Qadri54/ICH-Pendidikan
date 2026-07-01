@@ -61,7 +61,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Password <span class="text-ich-error">*</span></label>
-                    <input type="password" name="password"
+                    <input type="password" name="password" minlength="8"
                            class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg font-sans text-sm
                                   focus:outline-none @error('password') border-ich-error @else border-ich-teal @enderror">
                     @error('password') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror

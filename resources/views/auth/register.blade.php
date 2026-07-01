@@ -144,7 +144,7 @@
                     </svg>
                     <input id="password" name="password" type="password"
                            placeholder="Masukkan password..."
-                           required autocomplete="new-password"
+                           required minlength="8" autocomplete="new-password"
                            class="flex-1 border-0 outline-none ring-0 bg-transparent
                                   font-sans font-semibold text-[13px] text-ich-ink-900
                                   placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">
@@ -170,7 +170,7 @@
                     </svg>
                     <input id="password_confirmation" name="password_confirmation" type="password"
                            placeholder="Konfirmasi password..."
-                           required autocomplete="new-password"
+                           required minlength="8" autocomplete="new-password"
                            class="flex-1 border-0 outline-none ring-0 bg-transparent
                                   font-sans font-semibold text-[13px] text-ich-ink-900
                                   placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">

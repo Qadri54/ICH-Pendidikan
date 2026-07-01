@@ -32,7 +32,7 @@
                     Password
                 </label>
                 <input id="password" name="password" type="password"
-                       placeholder="Masukkan password Anda"
+                       placeholder="Masukkan password Anda" minlength="8"
                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg
                               font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
                 @error('password', 'userDeletion')

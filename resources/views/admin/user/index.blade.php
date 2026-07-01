@@ -163,12 +163,12 @@
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Password <span class="text-ich-error">*</span></label>
-                <input type="password" name="password" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <input type="password" name="password" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 @error('password') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Konfirmasi Password <span class="text-ich-error">*</span></label>
-                <input type="password" name="password_confirmation" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <input type="password" name="password_confirmation" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
             <div class="flex gap-3 pt-2">
@@ -209,11 +209,11 @@
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Password Baru <span class="text-ich-ink-300 font-normal">(kosongkan jika tidak diubah)</span></label>
-                <input type="password" name="password" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <input type="password" name="password" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Konfirmasi Password</label>
-                <input type="password" name="password_confirmation" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <input type="password" name="password_confirmation" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
             <div class="flex gap-3 pt-2">

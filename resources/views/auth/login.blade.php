@@ -90,7 +90,7 @@
                     <input id="password" name="password"
                            :type="show ? 'text' : 'password'"
                            placeholder="Password"
-                           required autocomplete="current-password"
+                           required minlength="8" autocomplete="current-password"
                            class="flex-1 border-0 outline-none ring-0 bg-transparent
                                   font-sans font-semibold text-[13px] text-ich-ink-900
                                   placeholder:text-ich-ink-300 focus:outline-none focus:ring-0">

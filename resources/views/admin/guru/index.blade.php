@@ -135,7 +135,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Password <span class="text-ich-error">*</span></label>
-                    <input type="password" name="password" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <input type="password" name="password" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     @error('password') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
