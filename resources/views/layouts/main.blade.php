@@ -265,7 +265,9 @@ document.addEventListener('submit', function(e) {
 });
 window.addEventListener('pageshow', function(e) {
     if (e.persisted) {
-        document.querySelector('[x-data]').__x.$data.pageLoading = false;
+        var el = document.querySelector('[x-show="pageLoading"]');
+        if (el) el.style.display = 'none';
+        Alpine.evaluate(document.body, 'pageLoading = false');
     }
 });
 </script>
