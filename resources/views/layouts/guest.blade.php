@@ -12,7 +12,7 @@
 </head>
 <body class="bg-[#101828]">
 
-<div class="min-h-screen lg:flex">
+<div class="min-h-screen lg:flex" style="min-height:100dvh">
 
     {{-- ── Desktop left panel: hero + ICH branding (hidden on mobile) ── --}}
     <div class="hidden lg:flex lg:w-5/12 xl:w-[45%] flex-shrink-0 relative flex-col items-center justify-center overflow-hidden">
@@ -56,7 +56,7 @@
         {{-- Mobile  : max-w-[430px] min-h-screen → full-height mobile frame --}}
         {{-- Desktop : max-w-[400px], no min-height → natural form height --}}
         <div class="w-full max-w-[430px] min-h-screen relative
-                    lg:max-w-[400px] lg:min-h-0 lg:py-10">
+                    lg:max-w-[400px] lg:min-h-0 lg:py-10" style="min-height:100dvh">
             {{ $slot }}
         </div>
     </div>

@@ -26,7 +26,7 @@
                 :notif-count="auth()->user()->notifications()->count()" :notif-url="route('notifications.index')" />
 
             {{-- Scrollable page content --}}
-            <main class="flex-1 overflow-y-auto bg-ich-surface
+            <main class="flex-1 bg-ich-surface
                  px-6 pt-4 pb-[calc(64px+env(safe-area-inset-bottom,0px))]">
                 {{ $slot }}
             </main>
