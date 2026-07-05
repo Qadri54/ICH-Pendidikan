@@ -16,9 +16,9 @@
         </style>
     </head>
 
-    <body class="bg-[#101828] lg:bg-ich-surface flex justify-center lg:block">
+    <body class="bg-ich-surface">
 
-        {{-- Mobile app frame (max 430px, centered) --}}
+        {{-- Mobile app frame (full width) --}}
         <div class="ich-app flex flex-col">
 
             {{-- Topbar: uses drawerOpen from x-data above --}}

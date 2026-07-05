@@ -76,17 +76,9 @@
   background: var(--surface-200);
   min-height: 100vh;
   min-height: 100dvh;
-  max-width: 430px;
+  width: 100%;
   margin: 0 auto;
   position: relative;
-}
-
-/* Desktop: hapus frame HP, full width */
-@media (min-width: 1024px) {
-  .ich-app {
-    max-width: 100%;
-    margin: 0;
-  }
 }
 
 /* Auth label glow — mobile only (overlaid on hero bg) */
