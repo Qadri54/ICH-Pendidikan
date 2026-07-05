@@ -102,6 +102,12 @@
   .about-feat p { font-family: 'Inter', sans-serif; font-size: 14px; color: var(--muted); line-height: 1.6; }
   .about-feat p strong { color: var(--ink); font-weight: 600; }
 
+  /* —— STRUKTUR ORGANISASI —— */
+  .struktur { background: var(--bg); }
+  .struktur-inner { max-width: 1200px; margin: 0 auto; }
+  .struktur-img-wrap { margin-top: 48px; display: flex; justify-content: center; }
+  .struktur-img-wrap img { width: 100%; max-width: 900px; border-radius: 16px; box-shadow: 0 4px 24px rgba(16,24,40,0.1); display: block; }
+
   /* —— PROGRAMS —— */
   .programs { background: var(--bg); }
   .programs-inner { max-width: 1200px; margin: 0 auto; }
@@ -208,6 +214,7 @@
   </a>
   <div class="nav-links">
     <a href="#tentang">Tentang Kami</a>
+    <a href="#struktur">Struktur</a>
     <a href="#program">Program</a>
     <a href="#aktivitas">Aktivitas</a>
     <a href="#testimoni">Testimoni</a>
@@ -226,6 +233,7 @@
 <div class="mobile-menu">
   <button class="mobile-menu-close" onclick="document.querySelector('.mobile-menu').classList.remove('open')">✕</button>
   <a href="#tentang" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Tentang Kami</a>
+  <a href="#struktur" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Struktur</a>
   <a href="#program"  onclick="document.querySelector('.mobile-menu').classList.remove('open')">Program</a>
   <a href="#aktivitas" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Aktivitas</a>
   <a href="#testimoni" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Testimoni</a>
@@ -317,6 +325,22 @@
         </div>
       </div>
       <a href="{{ route('register') }}" class="btn-primary" style="margin-top:32px;display:inline-flex;">Daftar Sekarang</a>
+    </div>
+  </div>
+</section>
+
+<!-- STRUKTUR ORGANISASI -->
+<section class="struktur" id="struktur">
+  <div class="struktur-inner">
+    <div class="center">
+      <div class="section-label">Organisasi</div>
+      <h2 class="section-title">Struktur Organisasi Yayasan</h2>
+      <p class="section-sub">Struktur organisasi IQRA' Creative House yang mendukung pengelolaan pendidikan secara profesional dan terintegrasi.</p>
+    </div>
+    <div class="struktur-img-wrap">
+      <img src="{{ asset('images/struktur-yayasan.jpg') }}"
+           alt="Struktur Organisasi Yayasan IQRA' Creative House"
+           loading="lazy">
     </div>
   </div>
 </section>
