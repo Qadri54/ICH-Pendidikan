@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttendanceRecord;
+use App\Models\ClassRoom;
 use App\Models\Registration;
 use App\Models\RegistrationTransaction;
 use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\StudentReportCard;
 use App\Models\Teacher;
 use App\Services\Registration\RegistrationFeeService;
@@ -30,7 +33,10 @@ class DashboardController extends Controller
         }
 
         if (in_array($role, ['Guru', 'Guru Ngaji'])) {
-            return view('guru.dashboard', compact('user'));
+            $attendanceData = $this->getAttendanceData();
+            $teacherId = $user->teacher?->teacher_id;
+            $teacherRecap = $teacherId ? $this->getTeacherRecap($teacherId) : [];
+            return view('guru.dashboard', compact('user') + $attendanceData + $teacherRecap);
         }
 
         if (in_array($role, ['Admin', 'Kepala Sekolah', 'Kepala Yayasan'])) {
@@ -83,5 +89,53 @@ class DashboardController extends Controller
         });
 
         return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear'));
+    }
+
+    private function getAttendanceData(): array
+    {
+        $tanggal = request('tanggal', now()->toDateString());
+        $filterKelas = request('kelas');
+
+        $query = StudentAttendance::with(['student.classRoom'])
+            ->whereDate('created_at', $tanggal);
+
+        if ($filterKelas) {
+            $query->whereHas('student', fn ($q) => $q->where('class_id', $filterKelas));
+        }
+
+        $attendances = $query->get();
+
+        $attendanceSummary = [
+            'hadir' => $attendances->where('status', 'Hadir')->count(),
+            'sakit' => $attendances->where('status', 'Sakit')->count(),
+            'izin'  => $attendances->where('status', 'Izin')->count(),
+            'alpha' => $attendances->where('status', 'Alpha')->count(),
+        ];
+
+        $classes = ClassRoom::orderBy('nama_kelas')->get();
+
+        return compact('tanggal', 'filterKelas', 'attendances', 'attendanceSummary', 'classes');
+    }
+
+    private function getTeacherRecap(int $teacherId): array
+    {
+        $bulan = request('bulan', now()->format('Y-m'));
+        $parsed = Carbon::createFromFormat('Y-m', $bulan);
+
+        $records = AttendanceRecord::where('teacher_id', $teacherId)
+            ->whereYear('check_in_time', $parsed->year)
+            ->whereMonth('check_in_time', $parsed->month)
+            ->orderBy('check_in_time')
+            ->get();
+
+        $recapSummary = [
+            'hadir'             => $records->where('attendance_status', 'Hadir')->count(),
+            'izin'              => $records->where('attendance_status', 'Izin')->count(),
+            'sakit'             => $records->where('attendance_status', 'Sakit')->count(),
+            'tanpa_keterangan'  => $records->where('attendance_status', 'Tanpa Keterangan')->count(),
+            'total'             => $records->count(),
+        ];
+
+        return compact('bulan', 'records', 'recapSummary');
     }
 }
