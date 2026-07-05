@@ -73,4 +73,9 @@ class StudentReportCard extends Model
     {
         return $this->hasOne(HealthCondition::class, 'report_card_id', 'report_card_id');
     }
+
+    public function snapshot()
+    {
+        return $this->hasOne(ReportCardSnapshot::class, 'report_card_id', 'report_card_id');
+    }
 }

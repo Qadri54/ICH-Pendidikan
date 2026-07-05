@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 class ReportCardService
 {
+    public function __construct(private ReportCardSnapshotService $snapshotService) {}
     // Ambil semua raport dengan filter opsional.
     // Filter yang tersedia: period_id, class_id, status, homeroom_teacher_id.
     // Eager load student, period, classRoom untuk menghindari N+1 query.
@@ -112,11 +113,15 @@ class ReportCardService
             throw new InvalidArgumentException('Hanya raport berstatus submitted yang dapat diapprove.');
         }
 
-        return (bool) $raport->update([
+        $result = $raport->update([
             'status'      => 'approved',
             'approved_by' => $approvedBy,
             'approved_at' => now(),
         ]);
+
+        $this->snapshotService->createSnapshot($id);
+
+        return (bool) $result;
     }
 
     // Hapus raport beserta semua isinya (cascade di database).

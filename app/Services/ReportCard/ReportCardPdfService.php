@@ -2,7 +2,7 @@
 
 namespace App\Services\ReportCard;
 
-use App\Models\Role;
+use App\Models\ReportCardSnapshot;
 use App\Models\StudentAttendance;
 use App\Models\StudentReportCard;
 use App\Models\User;
@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReportCardPdfService
 {
+    public function __construct(private ReportCardSnapshotService $snapshotService) {}
+
     private function loadRaport(int $reportCardId): StudentReportCard
     {
         return StudentReportCard::with([
@@ -50,7 +52,7 @@ class ReportCardPdfService
         return $kepsek?->name ?? 'Kepala Sekolah';
     }
 
-    private function buildPdf(StudentReportCard $raport)
+    private function buildPdfFromLive(StudentReportCard $raport)
     {
         $attendance = $this->getAttendance($raport);
         $kepalaSekolah = $this->getKepalaSekolah();
@@ -59,10 +61,28 @@ class ReportCardPdfService
             ->setPaper('a4', 'portrait');
     }
 
+    private function buildPdfFromSnapshot(array $snapshotData)
+    {
+        $viewData = $this->snapshotService->hydrateForPdf($snapshotData);
+
+        return Pdf::loadView('raport.pdf', $viewData)
+            ->setPaper('a4', 'portrait');
+    }
+
+    private function buildPdf(int $reportCardId)
+    {
+        $snapshot = ReportCardSnapshot::where('report_card_id', $reportCardId)->first();
+
+        if ($snapshot) {
+            return $this->buildPdfFromSnapshot($snapshot->snapshot_data);
+        }
+
+        return $this->buildPdfFromLive($this->loadRaport($reportCardId));
+    }
+
     public function generate(int $reportCardId): string
     {
-        $raport = $this->loadRaport($reportCardId);
-        $pdf = $this->buildPdf($raport);
+        $pdf = $this->buildPdf($reportCardId);
 
         $path = "raport/pdf/{$reportCardId}.pdf";
         Storage::disk('public')->put($path, $pdf->output());
@@ -72,6 +92,20 @@ class ReportCardPdfService
 
     public function download(int $reportCardId): Response
     {
+        $snapshot = ReportCardSnapshot::where('report_card_id', $reportCardId)->first();
+
+        if ($snapshot) {
+            $data = $snapshot->snapshot_data;
+            $filename = \sprintf(
+                'raport_%s_%s_sem%s.pdf',
+                $data['student']['NIS'] ?? 'unknown',
+                str_replace('/', '-', $data['period']['tahun_ajaran'] ?? ''),
+                $data['period']['semester'] ?? '',
+            );
+
+            return $this->buildPdfFromSnapshot($data)->download($filename);
+        }
+
         $raport = $this->loadRaport($reportCardId);
 
         $filename = \sprintf(
@@ -81,6 +115,6 @@ class ReportCardPdfService
             $raport->period->semester
         );
 
-        return $this->buildPdf($raport)->download($filename);
+        return $this->buildPdfFromLive($raport)->download($filename);
     }
 }
