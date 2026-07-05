@@ -17,7 +17,7 @@ class ReportCardPdfService
     private function loadRaport(int $reportCardId): StudentReportCard
     {
         return StudentReportCard::with([
-            'student',
+            'student.user',
             'period',
             'classRoom',
             'homeroomTeacher.user',

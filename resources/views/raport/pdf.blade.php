@@ -2,8 +2,9 @@
     $student   = $raport->student;
     $period    = $raport->period;
     $kelas     = $raport->classRoom;
-    $waliKelas = $raport->homeroomTeacher?->user;
-    $pm        = $raport->physicalMeasurement;
+    $waliKelas  = $raport->homeroomTeacher?->user;
+    $orangTua   = $student->user;
+    $pm         = $raport->physicalMeasurement;
     $hc        = $raport->healthCondition;
     $intra     = $raport->narrativeAssessments->where('kategori', 'intrakurikuler');
     $koku      = $raport->narrativeAssessments->where('kategori', 'kokurikuler');
@@ -737,7 +738,7 @@
         <tr>
             <td style="width:33%;">
                 <p style="margin-bottom:60px;">Orang Tua / Wali Murid</p>
-                <div class="sign-name">(___________________)</div>
+                <div class="sign-name">{{ $orangTua?->name ?? '(____________________)' }}</div>
             </td>
             <td style="width:34%;">
                 <p style="margin-bottom:60px;">Wali Kelas</p>
