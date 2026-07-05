@@ -104,12 +104,12 @@
 
   /* —— STRUKTUR ORGANISASI —— */
   .struktur { background: var(--bg); }
-  .struktur-inner { max-width: 1200px; margin: 0 auto; }
+  .struktur-inner { max-width: 1400px; margin: 0 auto; }
   .org-scroll { margin-top: 48px; overflow-x: auto; padding-bottom: 24px; }
-  .org-tree { --ln: #B8D8BA; min-width: 1020px; padding: 0 16px; }
+  .org-tree { --ln: #B8D8BA; min-width: 1200px; padding: 0 24px; }
   .org-tree ul { margin: 0; padding: 24px 0 0; list-style: none; display: flex; justify-content: center; position: relative; }
   .org-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--ln); }
-  .org-tree li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 24px 6px 0; }
+  .org-tree li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 24px 12px 0; }
   .org-tree li::before, .org-tree li::after { content: ''; position: absolute; top: 0; width: 50%; height: 24px; }
   .org-tree li::before { right: 50%; border-top: 2px solid var(--ln); }
   .org-tree li::after { left: 50%; border-top: 2px solid var(--ln); border-left: 2px solid var(--ln); }
@@ -117,19 +117,19 @@
   .org-tree li:last-child::after { border-top: none; }
   .org-tree li:only-child::before { display: none; }
   .org-tree li:only-child::after { border-top: none; }
-  .org-tree > ul { padding-top: 0; gap: 20px; }
+  .org-tree > ul { padding-top: 0; gap: 40px; }
   .org-tree > ul::before { display: none; }
   .org-tree > ul > li { padding-top: 0; }
   .org-tree > ul > li::before, .org-tree > ul > li::after { display: none; }
-  .org-card { background: #fff; border-radius: 10px; padding: 10px 14px; box-shadow: 0 2px 8px rgba(16,24,40,0.08); text-align: center; min-width: 120px; max-width: 164px; border-top: 3px solid var(--green); }
-  .org-card.oc-head { border-top-color: var(--yellow); background: linear-gradient(to bottom, #FFFBF0, #fff); min-width: 152px; }
-  .org-card.oc-adv { border-top-color: var(--teal); }
-  .org-card.oc-unit { border-top-color: #d4e8d6; min-width: 100px; }
+  .org-card { background: #fff; border-radius: 10px; padding: 12px 18px; box-shadow: 0 2px 8px rgba(16,24,40,0.08); text-align: center; min-width: 140px; max-width: 190px; border-top: 3px solid var(--green); }
+  .org-card.oc-head { border-top-color: var(--yellow); background: linear-gradient(to bottom, #FFFBF0, #fff); min-width: 172px; }
+  .org-card.oc-adv { border-top-color: var(--teal); min-width: 160px; }
+  .org-card.oc-unit { border-top-color: #d4e8d6; min-width: 120px; }
   .org-card.oc-end { background: var(--green); border-top-color: var(--green-d); }
   .org-card.oc-end .oc-name { color: #fff; }
   .org-card.oc-end .oc-role { color: rgba(255,255,255,0.8); }
-  .oc-role { font-family: 'Inter', sans-serif; font-size: 9.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 3px; line-height: 1.3; }
-  .oc-name { font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--ink); line-height: 1.3; }
+  .oc-role { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; line-height: 1.3; }
+  .oc-name { font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--ink); line-height: 1.35; }
 
   /* —— PROGRAMS —— */
   .programs { background: var(--bg); }
