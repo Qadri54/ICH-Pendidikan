@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
+use App\Models\Student;
 use App\Services\Attendance\StudentAttendanceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -60,6 +61,26 @@ class AbsensiSiswaController extends Controller
         return view('admin.absensi.recap', compact(
             'classes', 'selectedClass', 'selectedYear', 'selectedMonth',
             'recap', 'classroom'
+        ));
+    }
+
+    public function recapDetail(Request $request, int $studentId): View
+    {
+        $student = Student::with('classRoom')->findOrFail($studentId);
+        $year    = $request->integer('year', now()->year);
+        $month   = $request->integer('month', now()->month);
+
+        $records = $this->attendanceService->getStudentMonthlyDetail($studentId, $year, $month);
+
+        $summary = [
+            'hadir'            => $records->where('status', 'hadir')->count(),
+            'izin'             => $records->where('status', 'izin')->count(),
+            'sakit'            => $records->where('status', 'sakit')->count(),
+            'tanpa_keterangan' => $records->where('status', 'tanpa keterangan')->count(),
+        ];
+
+        return view('admin.absensi.recap-detail', compact(
+            'student', 'year', 'month', 'records', 'summary'
         ));
     }
 

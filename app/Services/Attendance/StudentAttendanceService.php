@@ -114,10 +114,11 @@ class StudentAttendanceService
             ->whereMonth('created_at', $month)
             ->get()
             ->groupBy('student_id')
-            ->map(function ($records) {
+            ->map(function ($records, $studentId) {
                 $student = $records->first()->student;
 
                 return [
+                    'student_id'        => $studentId,
                     'nama'              => $student->nama_siswa,
                     'hadir'             => $records->where('status', 'hadir')->count(),
                     'izin'              => $records->where('status', 'izin')->count(),
@@ -126,5 +127,14 @@ class StudentAttendanceService
                 ];
             })
             ->values();
+    }
+
+    public function getStudentMonthlyDetail(int $studentId, int $year, int $month): Collection
+    {
+        return StudentAttendance::where('student_id', $studentId)
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->orderBy('created_at')
+            ->get();
     }
 }

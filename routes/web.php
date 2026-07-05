@@ -131,6 +131,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::resource('tabungan', TabunganAdminController::class)->only(['index', 'show']);
         Route::get('tabungan/passbooks/{passbook}', [TabunganAdminController::class, 'showPassbook'])->name('tabungan.passbook.show');
 
+        Route::get('absensi/recap/{student}', [AdminAbsensiController::class, 'recapDetail'])->name('absensi.recap.detail');
         Route::get('absensi/recap', [AdminAbsensiController::class,     'recap'])->name('absensi.recap');
         Route::get('absensi',      [AdminAbsensiController::class,    'index'])->name('absensi.index');
         Route::get('absensi-guru/recap', [AdminAbsensiGuruController::class, 'recap'])->name('absensi-guru.recap');
