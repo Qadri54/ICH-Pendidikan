@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder {
             DevelopmentCategorySeeder::class,
             ReportCardSeeder::class,
             DummyDataSeeder::class,
+            LandingSectionSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();

@@ -20,6 +20,7 @@
         ['label' => 'Pmbyr Daftar',   'route' => 'admin.pembayaran-pendaftaran.index','icon' => 'card'],
         ['label' => 'Tabungan',       'route' => 'admin.tabungan.index',              'icon' => 'piggy'],
         ['label' => 'Pendaftaran',    'route' => 'admin.pendaftaran.index',           'icon' => 'clipboard', 'badge' => $pendingRegistrationCount],
+        ['label' => 'Landing Page',   'route' => 'admin.landing.index',               'icon' => 'home'],
         ['label' => 'Pengaturan',     'route' => 'admin.pengaturan.index',            'icon' => 'settings'],
     ];
 

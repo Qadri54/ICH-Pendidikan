@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\AbsensiSiswaController as AdminAbsensiController;
 use App\Http\Controllers\Admin\AbsensiGuruController as AdminAbsensiGuruController;
 use App\Http\Controllers\Admin\RaportController as AdminRaportController;
+use App\Http\Controllers\Admin\LandingController;
 use App\Http\Controllers\OrangTua\PendaftaranController as OrangTuaPendaftaranController;
 use App\Http\Controllers\OrangTua\KeuanganController as OrangTuaKeuanganController;
 use App\Http\Controllers\OrangTua\TabunganController as OrangTuaTabunganController;
@@ -34,7 +35,12 @@ Route::get('/', function () {
         return redirect()->route('dashboard');
     }
 
-    return view('welcome');
+    $sections = \App\Models\LandingSection::where('is_active', true)
+        ->orderBy('order')
+        ->get()
+        ->keyBy('key');
+
+    return view('welcome', compact('sections'));
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -199,6 +205,11 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pengaturan/whatsapp',      [PengaturanController::class, 'updateWhatsApp'])->name('pengaturan.whatsapp.update');
             Route::post('pengaturan/whatsapp/test',  [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
             Route::get('pengaturan/whatsapp/qr',     [PengaturanController::class, 'whatsappQr'])->name('pengaturan.whatsapp.qr');
+
+            Route::get('landing',              [LandingController::class, 'index'])->name('landing.index');
+            Route::get('landing/{key}/edit',   [LandingController::class, 'edit'])->name('landing.edit');
+            Route::put('landing/{key}',        [LandingController::class, 'update'])->name('landing.update');
+            Route::post('landing/{key}/toggle',[LandingController::class, 'toggle'])->name('landing.toggle');
         });
     });
 
