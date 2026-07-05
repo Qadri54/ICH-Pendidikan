@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full overflow-hidden">
+<html lang="id" class="h-full overflow-hidden" style="height:100dvh">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gray-100 h-full overflow-hidden"
+<body class="font-sans antialiased bg-gray-100 h-full overflow-hidden" style="height:100dvh"
       x-data="{
           pageLoading: false,
           cm: { show: false, title: '', message: '', action: '', method: 'POST', fields: {}, btnText: 'Konfirmasi', danger: false }
@@ -79,7 +79,7 @@
     </div>
 </div>
 
-<div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+<div class="flex h-screen overflow-hidden" style="height:100dvh" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     {{-- SIDEBAR --}}
     <aside class="bg-ich-sidebar flex flex-col items-center flex-shrink-0 transition-all duration-200"
