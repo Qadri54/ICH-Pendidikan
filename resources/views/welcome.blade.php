@@ -142,8 +142,8 @@
   /* —— STRUKTUR ORGANISASI —— */
   .struktur { background: var(--bg); }
   .struktur-inner { max-width: 1400px; margin: 0 auto; }
-  .org-wrap { margin-top: 48px; overflow: hidden; }
-  .org-tree { --ln: #B8D8BA; padding: 0 24px; transform-origin: top center; }
+  .org-wrap { margin-top: 48px; overflow-x: auto; padding-bottom: 24px; }
+  .org-tree { --ln: #B8D8BA; min-width: 1100px; padding: 0 24px; }
   .org-tree ul { margin: 0; padding: 24px 0 0; list-style: none; display: flex; justify-content: center; position: relative; }
   .org-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--ln); }
   .org-tree li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 24px 12px 0; }
@@ -635,18 +635,6 @@
     });
   });
 
-  // Auto-scale org chart to fit container
-  function scaleOrgTree() {
-    const wrap = document.querySelector('.org-wrap');
-    const tree = document.getElementById('orgTree');
-    if (!wrap || !tree) return;
-    tree.style.transform = 'none';
-    const scale = Math.min(1, wrap.clientWidth / tree.scrollWidth);
-    tree.style.transform = 'scale(' + scale + ')';
-    wrap.style.height = (tree.offsetHeight * scale) + 'px';
-  }
-  window.addEventListener('load', scaleOrgTree);
-  window.addEventListener('resize', scaleOrgTree);
 </script>
 </body>
 </html>
