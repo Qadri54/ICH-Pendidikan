@@ -158,24 +158,32 @@
 
                     {{-- Form Izin/Sakit --}}
                     <div x-show="tab === 'izin'" x-cloak>
-                        <form method="POST" action="{{ route('guru.absensi-guru.izin-sakit') }}">
+                        <form method="POST" action="{{ route('guru.absensi-guru.izin-sakit') }}" x-data="{ izinStatus: '' }">
                             @csrf
                             <div class="mb-4">
-                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Keterangan</label>
+                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Status</label>
                                 <div class="flex gap-3">
                                     <label class="flex-1 flex items-center gap-2 cursor-pointer p-3 rounded-lg
                                                   border-2 border-ich-line has-[:checked]:border-[#8B5CF6]
                                                   has-[:checked]:bg-ich-purple-soft transition-colors">
-                                        <input type="radio" name="status" value="Izin" class="accent-[#8B5CF6]">
+                                        <input type="radio" name="status" value="Izin" class="accent-[#8B5CF6]"
+                                               @change="izinStatus = 'Izin'">
                                         <span class="font-ui font-bold text-sm">Izin</span>
                                     </label>
                                     <label class="flex-1 flex items-center gap-2 cursor-pointer p-3 rounded-lg
                                                   border-2 border-ich-line has-[:checked]:border-ich-error
                                                   has-[:checked]:bg-ich-error-soft transition-colors">
-                                        <input type="radio" name="status" value="Sakit" class="accent-ich-error">
+                                        <input type="radio" name="status" value="Sakit" class="accent-ich-error"
+                                               @change="izinStatus = 'Sakit'">
                                         <span class="font-ui font-bold text-sm">Sakit</span>
                                     </label>
                                 </div>
+                            </div>
+                            <div class="mb-4" x-show="izinStatus === 'Izin'" x-transition>
+                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1.5">Keterangan Izin</label>
+                                <textarea name="keterangan_izin" rows="2" placeholder="Tuliskan alasan izin..."
+                                          class="w-full px-3 py-2 bg-white border-2 border-ich-line rounded-ich-lg
+                                                 font-sans text-sm focus:outline-none focus:border-ich-teal resize-none"></textarea>
                             </div>
                             <button type="submit"
                                     class="w-full py-2.5 bg-ich-green text-white font-ui font-bold text-sm

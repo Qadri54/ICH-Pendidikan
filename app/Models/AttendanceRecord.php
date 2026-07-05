@@ -20,6 +20,7 @@ class AttendanceRecord extends Model
         'selfie_path',
         'is_within_geofence',
         'attendance_status',
+        'keterangan_izin',
     ];
 
     protected function casts(): array

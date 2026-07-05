@@ -53,15 +53,17 @@ class AbsensiGuruController extends Controller
     public function izinSakit(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
+            'status'          => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
+            'keterangan_izin' => 'nullable|required_if:status,Izin|string|max:255',
         ]);
 
         $teacherId = $this->resolveTeacherId();
 
         try {
             $this->attendanceService->recordIzinSakit([
-                'status'     => $validated['status'],
-                'teacher_id' => $teacherId,
+                'status'          => $validated['status'],
+                'teacher_id'      => $teacherId,
+                'keterangan_izin' => $validated['status'] === 'Izin' ? ($validated['keterangan_izin'] ?? null) : null,
             ]);
 
             return redirect()->route('guru.absensi-guru.index')

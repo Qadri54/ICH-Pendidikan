@@ -65,6 +65,7 @@ class AttendanceService
         return AttendanceRecord::create([
             'teacher_id'        => $teacherId,
             'attendance_status' => $data['status'],
+            'keterangan_izin'   => $data['keterangan_izin'] ?? null,
         ]);
     }
 
