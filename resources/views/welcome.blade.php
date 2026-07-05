@@ -143,7 +143,7 @@
   .struktur { background: var(--bg); }
   .struktur-inner { max-width: 1400px; margin:  auto; }
   .org-wrap { margin-top: 48px; padding-bottom: 24px; overflow-x: auto; }
-  .org-tree { --ln: #B8D8BA; min-width: 1100px; padding: 16px 40px 16px; }
+  .org-tree { --ln: #B8D8BA; width: fit-content; min-width: 100%; padding: 16px 40px; margin: 0 auto; }
   .org-tree ul { margin: 0; padding: 24px 0 0; list-style: none; display: flex; justify-content: center; position: relative; }
   .org-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--ln); }
   .org-tree li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 24px 12px 0; }
