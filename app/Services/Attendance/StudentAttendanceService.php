@@ -13,7 +13,7 @@ class StudentAttendanceService
     // Hanya mencatat siswa yang TIDAK hadir (izin/sakit/tanpa keterangan).
     // teacher_id diisi dari guru yang sedang login agar tercatat siapa yang input.
     // Validasi: satu siswa hanya boleh punya satu record per hari.
-    public function record(int $studentId, ?int $teacherId, string $status): StudentAttendance
+    public function record(int $studentId, ?int $teacherId, string $status, ?string $keteranganIzin = null): StudentAttendance
     {
         $existing = $this->getTodayRecord($studentId);
 
@@ -22,10 +22,11 @@ class StudentAttendanceService
         }
 
         return StudentAttendance::create([
-            'student_id' => $studentId,
-            'teacher_id' => $teacherId,
-            'status'     => $status,
-            'created_at' => now(),
+            'student_id'     => $studentId,
+            'teacher_id'     => $teacherId,
+            'status'         => $status,
+            'keterangan_izin' => $status === 'izin' ? $keteranganIzin : null,
+            'created_at'     => now(),
         ]);
     }
 
@@ -40,10 +41,11 @@ class StudentAttendanceService
             }
 
             $rows[] = [
-                'student_id' => $item['student_id'],
-                'teacher_id' => $teacherId,
-                'status'     => $item['status'],
-                'created_at' => $now,
+                'student_id'     => $item['student_id'],
+                'teacher_id'     => $teacherId,
+                'status'         => $item['status'],
+                'keterangan_izin' => $item['status'] === 'izin' ? ($item['keterangan_izin'] ?? null) : null,
+                'created_at'     => $now,
             ];
         }
 

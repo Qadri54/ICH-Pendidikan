@@ -17,6 +17,7 @@ class StudentAttendance extends Model {
         'student_id',
         'teacher_id',
         'status',
+        'keterangan_izin',
         'created_at',
     ];
 

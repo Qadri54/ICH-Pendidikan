@@ -86,53 +86,66 @@
                 <div class="divide-y divide-ich-line">
                     @forelse($students as $i => $student)
                         @php $existing = $absences->get($student->student_id); @endphp
-                        <div class="px-5 py-3 flex items-center gap-4">
-                            <div class="flex-1">
-                                <p class="font-ui font-semibold text-sm text-ich-ink-900">{{ $student->nama_siswa }}</p>
-                                @if($existing)
-                                    @php
-                                        $cfg = match($existing->status) {
-                                            'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-ich-success-soft','text'=>'text-ich-success'],
-                                            'izin'             => ['label'=>'Izin',             'bg'=>'bg-ich-purple-soft','text'=>'text-ich-purple'],
-                                            'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-ich-error-soft','text'=>'text-ich-error'],
-                                            'tanpa keterangan' => ['label'=>'Tanpa Keterangan', 'bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning'],
-                                            default            => ['label'=>$existing->status,  'bg'=>'bg-ich-surface','text'=>'text-ich-ink-400'],
-                                        };
-                                    @endphp
-                                    <span class="text-xs font-ui font-bold px-2 py-0.5 rounded-full mt-0.5 inline-block
-                                                 {{ $cfg['bg'] }} {{ $cfg['text'] }}">
-                                        {{ $cfg['label'] }}
-                                    </span>
+                        <div class="px-5 py-3" x-data="{ sts{{ $i }}: 'tanpa keterangan' }">
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1">
+                                    <p class="font-ui font-semibold text-sm text-ich-ink-900">{{ $student->nama_siswa }}</p>
+                                    @if($existing)
+                                        @php
+                                            $cfg = match($existing->status) {
+                                                'hadir'            => ['label'=>'Hadir',            'bg'=>'bg-ich-success-soft','text'=>'text-ich-success'],
+                                                'izin'             => ['label'=>'Izin',             'bg'=>'bg-ich-purple-soft','text'=>'text-ich-purple'],
+                                                'sakit'            => ['label'=>'Sakit',            'bg'=>'bg-ich-error-soft','text'=>'text-ich-error'],
+                                                'tanpa keterangan' => ['label'=>'Tanpa Keterangan', 'bg'=>'bg-ich-warning-soft','text'=>'text-ich-warning'],
+                                                default            => ['label'=>$existing->status,  'bg'=>'bg-ich-surface','text'=>'text-ich-ink-400'],
+                                            };
+                                        @endphp
+                                        <span class="text-xs font-ui font-bold px-2 py-0.5 rounded-full mt-0.5 inline-block
+                                                     {{ $cfg['bg'] }} {{ $cfg['text'] }}">
+                                            {{ $cfg['label'] }}
+                                        </span>
+                                        @if($existing->status === 'izin' && $existing->keterangan_izin)
+                                            <p class="text-xs text-ich-ink-400 font-sans mt-0.5">{{ $existing->keterangan_izin }}</p>
+                                        @endif
+                                    @endif
+                                </div>
+
+                                @if($isToday && ! $existing && ! $isReadOnly)
+                                    <input type="hidden" name="absences[{{ $i }}][student_id]" value="{{ $student->student_id }}">
+                                    <div class="w-[280px] grid grid-cols-4 text-center">
+                                        <label class="flex justify-center cursor-pointer">
+                                            <input type="radio" name="absences[{{ $i }}][status]" value="hadir"
+                                                   @change="sts{{ $i }} = 'hadir'" class="accent-[#009966] w-4 h-4">
+                                        </label>
+                                        <label class="flex justify-center cursor-pointer">
+                                            <input type="radio" name="absences[{{ $i }}][status]" value="izin"
+                                                   @change="sts{{ $i }} = 'izin'" class="accent-[#8B5CF6] w-4 h-4">
+                                        </label>
+                                        <label class="flex justify-center cursor-pointer">
+                                            <input type="radio" name="absences[{{ $i }}][status]" value="sakit"
+                                                   @change="sts{{ $i }} = 'sakit'" class="accent-[#EF4444] w-4 h-4">
+                                        </label>
+                                        <label class="flex justify-center cursor-pointer">
+                                            <input type="radio" name="absences[{{ $i }}][status]" value="tanpa keterangan"
+                                                   @change="sts{{ $i }} = 'tanpa keterangan'" checked class="accent-[#E09F17] w-4 h-4">
+                                        </label>
+                                    </div>
+                                @elseif(! $isToday && ! $existing)
+                                    <div class="w-[280px] text-center">
+                                        <span class="text-xs text-ich-ink-300 font-sans italic">Tidak dapat diubah</span>
+                                    </div>
+                                @elseif($existing)
+                                    <div class="w-[280px] text-center">
+                                        <span class="text-xs text-ich-ink-300 font-sans italic">Sudah diinput</span>
+                                    </div>
                                 @endif
                             </div>
-
                             @if($isToday && ! $existing && ! $isReadOnly)
-                                <input type="hidden" name="absences[{{ $i }}][student_id]" value="{{ $student->student_id }}">
-                                <div class="w-[280px] grid grid-cols-4 text-center">
-                                    <label class="flex justify-center cursor-pointer">
-                                        <input type="radio" name="absences[{{ $i }}][status]" value="hadir"
-                                               class="accent-[#009966] w-4 h-4">
-                                    </label>
-                                    <label class="flex justify-center cursor-pointer">
-                                        <input type="radio" name="absences[{{ $i }}][status]" value="izin"
-                                               class="accent-[#8B5CF6] w-4 h-4">
-                                    </label>
-                                    <label class="flex justify-center cursor-pointer">
-                                        <input type="radio" name="absences[{{ $i }}][status]" value="sakit"
-                                               class="accent-[#EF4444] w-4 h-4">
-                                    </label>
-                                    <label class="flex justify-center cursor-pointer">
-                                        <input type="radio" name="absences[{{ $i }}][status]" value="tanpa keterangan"
-                                               checked class="accent-[#E09F17] w-4 h-4">
-                                    </label>
-                                </div>
-                            @elseif(! $isToday && ! $existing)
-                                <div class="w-[280px] text-center">
-                                    <span class="text-xs text-ich-ink-300 font-sans italic">Tidak dapat diubah</span>
-                                </div>
-                            @elseif($existing)
-                                <div class="w-[280px] text-center">
-                                    <span class="text-xs text-ich-ink-300 font-sans italic">Sudah diinput</span>
+                                <div class="mt-2" x-show="sts{{ $i }} === 'izin'" x-transition x-cloak>
+                                    <input type="text" name="absences[{{ $i }}][keterangan_izin]"
+                                           placeholder="Tuliskan alasan izin..."
+                                           class="w-full px-3 py-1.5 bg-white border-2 border-ich-line rounded-lg
+                                                  font-sans text-xs focus:outline-none focus:border-ich-teal">
                                 </div>
                             @endif
                         </div>

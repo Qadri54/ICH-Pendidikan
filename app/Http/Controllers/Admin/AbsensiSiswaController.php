@@ -66,10 +66,11 @@ class AbsensiSiswaController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'class_id'               => 'required|exists:classes,class_id',
-            'absences'               => 'required|array',
-            'absences.*.student_id'  => 'required|integer|exists:students,student_id',
-            'absences.*.status'      => 'required|in:hadir,izin,sakit,tanpa keterangan',
+            'class_id'                    => 'required|exists:classes,class_id',
+            'absences'                    => 'required|array',
+            'absences.*.student_id'       => 'required|integer|exists:students,student_id',
+            'absences.*.status'           => 'required|in:hadir,izin,sakit,tanpa keterangan',
+            'absences.*.keterangan_izin'  => 'nullable|string|max:255',
         ]);
 
         $count = $this->attendanceService->recordBulk(
