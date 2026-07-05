@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full overflow-hidden" style="height:100dvh">
+<html lang="id" class="lg:h-full lg:overflow-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gray-100 h-full overflow-hidden" style="height:100dvh"
+<body class="font-sans antialiased bg-gray-100 lg:h-full lg:overflow-hidden"
       x-data="{
           pageLoading: false,
           cm: { show: false, title: '', message: '', action: '', method: 'POST', fields: {}, btnText: 'Konfirmasi', danger: false }
@@ -79,7 +79,7 @@
     </div>
 </div>
 
-<div class="flex h-screen overflow-hidden" style="height:100dvh" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+<div class="flex min-h-screen lg:h-screen lg:overflow-hidden" style="min-height:100dvh" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     {{-- SIDEBAR --}}
     <aside class="bg-ich-sidebar flex flex-col items-center flex-shrink-0 transition-all duration-200"
@@ -104,7 +104,7 @@
     <div class="flex flex-col flex-1 overflow-hidden">
 
         {{-- TOPBAR --}}
-        <header class="bg-ich-green h-14 flex items-center px-6 gap-4 flex-shrink-0">
+        <header class="bg-ich-green h-14 flex items-center px-6 gap-4 flex-shrink-0 sticky top-0 z-20">
             {{-- Hamburger --}}
             <button @click="sidebarOpen = !sidebarOpen" class="text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +225,7 @@
         </header>
 
         {{-- PAGE CONTENT --}}
-        <main class="flex-1 overflow-y-auto p-6">
+        <main class="flex-1 lg:overflow-y-auto p-6">
 
             @if(session('success'))
                 <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold flex items-center gap-2">
