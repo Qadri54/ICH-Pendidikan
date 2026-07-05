@@ -52,6 +52,7 @@ class SiswaController extends Controller
             )
             ->when($request->kelas, fn($q) => $q->where('class_id', $request->kelas))
             ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->orderByRaw("FIELD(status, 'aktif', 'alumni', 'keluar')")
             ->orderBy('nama_siswa')
             ->paginate(15)->withQueryString();
 
