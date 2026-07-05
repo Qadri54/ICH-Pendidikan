@@ -46,16 +46,12 @@
     </div>
 
     {{-- ── Right panel: mobile full-screen / desktop form area ── --}}
-    {{-- Mobile  : flex justify-center → centers the 430px slot container --}}
-    {{-- Desktop : flex-1, white gradient, centers slot vertically --}}
     <div class="flex justify-center
                 lg:flex-1 lg:bg-gradient-to-b lg:from-white lg:to-ich-green-surface
                 lg:flex lg:items-center lg:justify-center lg:overflow-y-auto">
 
         {{-- Slot wrapper --}}
-        {{-- Mobile  : max-w-[430px] min-h-screen → full-height mobile frame --}}
-        {{-- Desktop : max-w-[400px], no min-height → natural form height --}}
-        <div class="w-full max-w-[430px] min-h-screen relative
+        <div class="w-full min-h-screen relative
                     lg:max-w-[400px] lg:min-h-0 lg:py-10" style="min-height:100dvh">
             {{ $slot }}
         </div>
