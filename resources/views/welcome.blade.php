@@ -54,7 +54,7 @@
 
   /* —— HERO —— */
   .hero {
-    position: relative; min-height: 100vh;
+    position: relative; min-height: 100vh; min-height: 100dvh;
     display: flex; align-items: center; justify-content: center;
     text-align: center;
     overflow: hidden;
@@ -230,6 +230,10 @@
   <a href="#aktivitas" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Aktivitas</a>
   <a href="#testimoni" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Testimoni</a>
   <a href="https://wa.me/6281360765971" target="_blank" rel="noopener" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="color:#F5A623">Kontak</a>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;width:80%;max-width:280px;">
+    <a href="{{ route('login') }}" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="display:block;text-align:center;padding:14px 0;border-radius:8px;border:1.5px solid rgba(255,255,255,0.6);background:transparent;color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:16px;text-decoration:none;">Masuk</a>
+    <a href="{{ route('register') }}" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="display:block;text-align:center;padding:14px 0;border-radius:8px;border:none;background:#fff;color:var(--teal);font-family:'Inter',sans-serif;font-weight:700;font-size:16px;text-decoration:none;">Daftar</a>
+  </div>
 </div>
 
 <!-- HERO -->
