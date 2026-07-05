@@ -161,7 +161,8 @@
   .org-card { background: #fff; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(16,24,40,0.08); text-align: center; min-width: 120px; max-width: 180px; border-top: 3px solid var(--green); }
   .org-card.oc-head { border-top-color: var(--yellow); background: linear-gradient(to bottom, #FFFBF0, #fff); min-width: 152px; }
   .org-card.oc-adv { border-top-color: var(--teal); min-width: 140px; }
-  .org-card.oc-unit { border-top-color: #d4e8d6; min-width: 100px; }
+  .org-card.oc-unit { border-top-color: #d4e8d6; min-width: 100px; max-width: 180px; }
+  .org-card { word-wrap: break-word; overflow-wrap: break-word; }
   .org-card.oc-end { background: var(--green); border-top-color: var(--green-d); }
   .org-card.oc-end .oc-name { color: #fff; }
   .org-card.oc-end .oc-role { color: rgba(255,255,255,0.8); }
