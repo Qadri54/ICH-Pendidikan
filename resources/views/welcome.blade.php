@@ -105,8 +105,31 @@
   /* —— STRUKTUR ORGANISASI —— */
   .struktur { background: var(--bg); }
   .struktur-inner { max-width: 1200px; margin: 0 auto; }
-  .struktur-img-wrap { margin-top: 48px; display: flex; justify-content: center; }
-  .struktur-img-wrap img { width: 100%; max-width: 900px; border-radius: 16px; box-shadow: 0 4px 24px rgba(16,24,40,0.1); display: block; }
+  .org-scroll { margin-top: 48px; overflow-x: auto; padding-bottom: 24px; }
+  .org-tree { --ln: #B8D8BA; min-width: 1020px; padding: 0 16px; }
+  .org-tree ul { margin: 0; padding: 24px 0 0; list-style: none; display: flex; justify-content: center; position: relative; }
+  .org-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--ln); }
+  .org-tree li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 24px 6px 0; }
+  .org-tree li::before, .org-tree li::after { content: ''; position: absolute; top: 0; width: 50%; height: 24px; }
+  .org-tree li::before { right: 50%; border-top: 2px solid var(--ln); }
+  .org-tree li::after { left: 50%; border-top: 2px solid var(--ln); border-left: 2px solid var(--ln); }
+  .org-tree li:first-child::before { border-top: none; }
+  .org-tree li:last-child::after { border-top: none; }
+  .org-tree li:only-child::before { display: none; }
+  .org-tree li:only-child::after { border-top: none; }
+  .org-tree > ul { padding-top: 0; gap: 20px; }
+  .org-tree > ul::before { display: none; }
+  .org-tree > ul > li { padding-top: 0; }
+  .org-tree > ul > li::before, .org-tree > ul > li::after { display: none; }
+  .org-card { background: #fff; border-radius: 10px; padding: 10px 14px; box-shadow: 0 2px 8px rgba(16,24,40,0.08); text-align: center; min-width: 120px; max-width: 164px; border-top: 3px solid var(--green); }
+  .org-card.oc-head { border-top-color: var(--yellow); background: linear-gradient(to bottom, #FFFBF0, #fff); min-width: 152px; }
+  .org-card.oc-adv { border-top-color: var(--teal); }
+  .org-card.oc-unit { border-top-color: #d4e8d6; min-width: 100px; }
+  .org-card.oc-end { background: var(--green); border-top-color: var(--green-d); }
+  .org-card.oc-end .oc-name { color: #fff; }
+  .org-card.oc-end .oc-role { color: rgba(255,255,255,0.8); }
+  .oc-role { font-family: 'Inter', sans-serif; font-size: 9.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 3px; line-height: 1.3; }
+  .oc-name { font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--ink); line-height: 1.3; }
 
   /* —— PROGRAMS —— */
   .programs { background: var(--bg); }
@@ -337,10 +360,138 @@
       <h2 class="section-title">Struktur Organisasi Yayasan</h2>
       <p class="section-sub">Struktur organisasi IQRA' Creative House yang mendukung pengelolaan pendidikan secara profesional dan terintegrasi.</p>
     </div>
-    <div class="struktur-img-wrap">
-      <img src="{{ asset('images/struktur-yayasan.jpg') }}"
-           alt="Struktur Organisasi Yayasan IQRA' Creative House"
-           loading="lazy">
+    <div class="org-scroll">
+      <div class="org-tree">
+        <ul>
+          {{-- ═══ PEMBINA (kiri) ═══ --}}
+          <li>
+            <div class="org-card oc-adv">
+              <div class="oc-role">Pembina</div>
+              <div class="oc-name">Antoni</div>
+            </div>
+            <ul>
+              <li>
+                <div class="org-card">
+                  <div class="oc-role">Kord. Maghrib Mengaji</div>
+                  <div class="oc-name">Novi Hariyanti</div>
+                </div>
+                <ul>
+                  <li>
+                    <div class="org-card">
+                      <div class="oc-role">Guru Iqra</div>
+                      <div class="oc-name">Novi Hariyanti</div>
+                    </div>
+                    <ul>
+                      <li>
+                        <div class="org-card oc-unit">
+                          <div class="oc-name">Mutiara Shahira A.Md.A.B.</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="org-card oc-unit">
+                          <div class="oc-name">Almira Salsabila</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="org-card">
+                      <div class="oc-role">Administrasi</div>
+                      <div class="oc-name">Rangga Alif Mulya</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="org-card">
+                      <div class="oc-role">Guru Al-Qur'an</div>
+                      <div class="oc-name">Yun Anggraini</div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          {{-- ═══ KETUA YAYASAN (tengah) ═══ --}}
+          <li>
+            <div class="org-card oc-head">
+              <div class="oc-role">Ketua Yayasan</div>
+              <div class="oc-name">Aulia, S.Si., M.Sc</div>
+            </div>
+            <ul>
+              <li>
+                <div class="org-card">
+                  <div class="oc-role">Kepala Sekolah TK</div>
+                  <div class="oc-name">Adli Qarin, S.S., M.Ikom</div>
+                </div>
+                <ul>
+                  <li>
+                    <div class="org-card">
+                      <div class="oc-role">Bendahara</div>
+                      <div class="oc-name">Almira Salsabila</div>
+                    </div>
+                    <ul>
+                      <li>
+                        <div class="org-card">
+                          <div class="oc-role">Kurikulum</div>
+                          <div class="oc-name">Mutiara Shahira A.Md.A.B.</div>
+                        </div>
+                        <ul>
+                          <li>
+                            <div class="org-card oc-unit">
+                              <div class="oc-role">Guru / Wali Kelas</div>
+                              <div class="oc-name">Sofia Aurora Susanto S.Pd</div>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="org-card oc-unit">
+                              <div class="oc-role">Guru / Wali Kelas</div>
+                              <div class="oc-name">Lisma Farida Pane S.Pd.I</div>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="org-card">
+                      <div class="oc-role">Tata Usaha</div>
+                      <div class="oc-name">Rangga Alif Mulya</div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div class="org-card">
+                  <div class="oc-role">Direktur Training / R&B</div>
+                  <div class="oc-name">Prof. Dr. Ir. Roslina, M.I.T.</div>
+                </div>
+                <ul>
+                  <li>
+                    <div class="org-card oc-unit">
+                      <div class="oc-role">Training</div>
+                      <div class="oc-name">Tim</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="org-card oc-unit">
+                      <div class="oc-role">R & D</div>
+                      <div class="oc-name">Tim</div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          {{-- ═══ PENGAWAS (kanan) ═══ --}}
+          <li>
+            <div class="org-card oc-adv">
+              <div class="oc-role">Pengawas</div>
+              <div class="oc-name">Adzkia Safitri, A.Md.Kom</div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
