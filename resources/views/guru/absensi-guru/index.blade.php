@@ -57,29 +57,33 @@
                             lat: '', lng: '', acc: '',
                             loading: false,
                             error: '',
-                            accuracyWarning: false,
+                            watchId: null,
                             maxAccuracy: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }},
+                            get ready() { return this.lat && this.acc <= this.maxAccuracy },
                             getLocation() {
+                                if (this.watchId) navigator.geolocation.clearWatch(this.watchId);
                                 this.loading = true;
                                 this.error = '';
-                                this.accuracyWarning = false;
-                                navigator.geolocation.getCurrentPosition(
+                                this.lat = '';
+                                this.watchId = navigator.geolocation.watchPosition(
                                     pos => {
-                                        this.lat = pos.coords.latitude;
-                                        this.lng = pos.coords.longitude;
-                                        this.acc = pos.coords.accuracy;
-                                        this.loading = false;
-                                        if (this.acc > this.maxAccuracy) {
-                                            this.accuracyWarning = true;
+                                        this.acc = Math.round(pos.coords.accuracy);
+                                        if (pos.coords.accuracy <= this.maxAccuracy) {
+                                            this.lat = pos.coords.latitude;
+                                            this.lng = pos.coords.longitude;
+                                            this.loading = false;
+                                            navigator.geolocation.clearWatch(this.watchId);
+                                            this.watchId = null;
                                         }
                                     },
                                     err => {
                                         this.error = 'Gagal mendapatkan lokasi: ' + err.message;
                                         this.loading = false;
                                     },
-                                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                                    { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
                                 );
-                            }
+                            },
+                            destroy() { if (this.watchId) navigator.geolocation.clearWatch(this.watchId); }
                          }">
 
                         @if(! $zone)
@@ -110,21 +114,19 @@
 
                                 {{-- Lokasi --}}
                                 <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
-                                    <template x-if="lat && !accuracyWarning">
+                                    <template x-if="ready">
                                         <p class="text-ich-green font-semibold">
                                             Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
-                                            (akurasi ±<span x-text="Math.round(acc)"></span>m)
+                                            (akurasi ±<span x-text="acc"></span>m)
                                         </p>
                                     </template>
-                                    <template x-if="lat && accuracyWarning">
+                                    <template x-if="loading">
                                         <div>
-                                            <p class="text-ich-warning font-semibold">
-                                                Akurasi GPS terlalu rendah (±<span x-text="Math.round(acc).toLocaleString()"></span>m)
-                                            </p>
-                                            <p class="text-ich-ink-400 mt-1">Akurasi harus di bawah <span x-text="maxAccuracy"></span>m. Pastikan GPS aktif, lalu tekan "Ambil Lokasi" lagi.</p>
+                                            <p class="text-ich-teal font-semibold">Mencari sinyal GPS yang akurat...</p>
+                                            <p class="text-ich-ink-400 mt-1" x-show="acc">Akurasi saat ini: ±<span x-text="acc"></span>m (butuh ≤<span x-text="maxAccuracy"></span>m)</p>
                                         </div>
                                     </template>
-                                    <template x-if="!lat && !error">
+                                    <template x-if="!lat && !loading && !error">
                                         <p class="text-ich-ink-400">Lokasi belum diambil</p>
                                     </template>
                                     <template x-if="error">
@@ -138,11 +140,11 @@
                                                    rounded-ich-lg border-2 border-ich-teal/20 transition-colors
                                                    hover:bg-ich-teal/10"
                                             :disabled="loading">
-                                        <span x-text="loading ? 'Mengambil...' : 'Ambil Lokasi'"></span>
+                                        <span x-text="loading ? 'Mencari...' : (ready ? 'Ambil Ulang' : 'Ambil Lokasi')"></span>
                                     </button>
                                     <button type="submit"
-                                            :disabled="!lat || accuracyWarning"
-                                            :class="(lat && !accuracyWarning) ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
+                                            :disabled="!ready"
+                                            :class="ready ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
                                             class="flex-1 py-2.5 text-white font-ui font-bold text-sm
                                                    rounded-ich-lg shadow-ich-btn transition-colors">
                                         Check-in
