@@ -21,7 +21,7 @@
     detail: {},
     deleteId: null,
     deleteName: '',
-    selected: [],
+    selected: JSON.parse(sessionStorage.getItem('siswa_selected') || '[]'),
     bulkStatus: 'alumni',
     allIds: {{ $siswa->pluck('student_id')->toJson() }},
     get selectedCount() { return this.selected.length; },
@@ -33,6 +33,7 @@
             this.selected = [...new Set([...this.selected, ...this.allIds])];
         }
     },
+    clearSelection() { this.selected = []; },
     openEdit(s) {
         this.editId = s.student_id;
         this.e = {
@@ -56,6 +57,12 @@
         this.deleteId = id;
         this.deleteName = name;
         this.showDelete = true;
+    },
+    init() {
+        this.$watch('selected', val => sessionStorage.setItem('siswa_selected', JSON.stringify(val)));
+        @if(session('success'))
+            this.selected = [];
+        @endif
     }
 }">
 
@@ -127,7 +134,7 @@
              class="mb-4 px-4 py-3 bg-ich-purple-soft rounded-xl flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2">
                 <span class="font-ui font-bold text-sm text-ich-purple" x-text="selectedCount + ' siswa dipilih'"></span>
-                <button type="button" @click="selected = []"
+                <button type="button" @click="clearSelection()"
                         class="text-xs font-ui font-bold text-ich-error hover:underline">Batal pilih</button>
             </div>
             <div class="flex items-center gap-3">
