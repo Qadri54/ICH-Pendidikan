@@ -5,6 +5,7 @@
     showEdit: {{ $errors->any() && old('_modal') === 'edit' ? 'true' : 'false' }},
     showDetail: false,
     showDelete: false,
+    showBulk: false,
     editId: '{{ old('_edit_id', '') }}',
     e: {
         nama_siswa: '{{ old('nama_siswa', '') }}',
@@ -20,6 +21,18 @@
     detail: {},
     deleteId: null,
     deleteName: '',
+    selected: [],
+    bulkStatus: 'alumni',
+    allIds: {{ $siswa->pluck('student_id')->toJson() }},
+    get selectedCount() { return this.selected.length; },
+    get allChecked() { return this.allIds.length > 0 && this.allIds.every(id => this.selected.includes(id)); },
+    toggleAll() {
+        if (this.allChecked) {
+            this.selected = this.selected.filter(id => !this.allIds.includes(id));
+        } else {
+            this.selected = [...new Set([...this.selected, ...this.allIds])];
+        }
+    },
     openEdit(s) {
         this.editId = s.student_id;
         this.e = {
@@ -69,7 +82,8 @@
         <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
-    <form method="GET" class="flex gap-3 mb-4">
+    {{-- Filter --}}
+    <form method="GET" class="flex flex-wrap gap-3 mb-4">
         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama / NIS..."
                class="flex-1 max-w-xs h-10 px-3.5 bg-white border border-ich-line rounded-ich-md font-sans text-sm text-ich-ink-900 placeholder:text-ich-ink-300 focus:outline-none focus:border-ich-teal">
         <select name="kelas" class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none focus:border-ich-teal">
@@ -90,11 +104,58 @@
         @endif
     </form>
 
+    {{-- Periode Semester Info --}}
+    @if($periods->isNotEmpty())
+        @php $activePeriod = $periods->firstWhere('is_active', true); @endphp
+        <div class="mb-4 px-4 py-3 bg-ich-blue-soft rounded-lg flex items-center gap-3">
+            <svg class="w-5 h-5 text-ich-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <p class="text-sm font-sans text-ich-ink-600">
+                Periode aktif:
+                @if($activePeriod)
+                    <span class="font-ui font-bold text-ich-ink-900">{{ $activePeriod->tahun_ajaran }} — Semester {{ $activePeriod->semester }}</span>
+                    <span class="text-ich-ink-400">({{ $activePeriod->tanggal_mulai->format('d M Y') }} – {{ $activePeriod->tanggal_selesai->format('d M Y') }})</span>
+                @else
+                    <span class="font-ui font-bold text-ich-warning">Belum ada periode aktif</span>
+                @endif
+            </p>
+        </div>
+    @endif
+
+    {{-- Bulk Action Bar --}}
+    @if(! $isReadOnly)
+        <div x-show="selectedCount > 0" x-transition x-cloak
+             class="mb-4 px-4 py-3 bg-ich-purple-soft rounded-xl flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-ui font-bold text-sm text-ich-purple" x-text="selectedCount + ' siswa dipilih'"></span>
+                <button type="button" @click="selected = []"
+                        class="text-xs font-ui font-bold text-ich-error hover:underline">Batal pilih</button>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-ui font-bold text-ich-ink-600">Ubah status ke:</span>
+                <select x-model="bulkStatus" class="h-9 px-3 bg-white border border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                    <option value="aktif">Aktif</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="keluar">Keluar</option>
+                </select>
+                <button type="button" @click="showBulk = true"
+                        class="h-9 px-4 bg-ich-green text-white font-ui font-bold text-sm rounded-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                    Terapkan
+                </button>
+            </div>
+        </div>
+    @endif
+
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-ich-surface">
                 <tr>
+                    @if(! $isReadOnly)
+                        <th class="px-4 py-3 w-10">
+                            <input type="checkbox" :checked="allChecked" @click="toggleAll()"
+                                   class="w-4 h-4 accent-ich-green rounded cursor-pointer">
+                        </th>
+                    @endif
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIS</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Siswa</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
@@ -107,7 +168,14 @@
             </thead>
             <tbody class="divide-y divide-ich-line">
                 @forelse($siswa as $s)
-                    <tr class="hover:bg-ich-surface transition-colors">
+                    <tr class="hover:bg-ich-surface transition-colors"
+                        :class="selected.includes({{ $s->student_id }}) && 'bg-ich-purple-soft/40'">
+                        @if(! $isReadOnly)
+                            <td class="px-4 py-3">
+                                <input type="checkbox" value="{{ $s->student_id }}" x-model.number="selected"
+                                       class="w-4 h-4 accent-ich-green rounded cursor-pointer">
+                            </td>
+                        @endif
                         <td class="px-4 py-3 font-sans text-ich-ink-500">{{ $s->NIS }}</td>
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $s->nama_siswa }}</td>
                         <td class="px-4 py-3">
@@ -142,7 +210,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data siswa.</td>
+                        <td colspan="{{ $isReadOnly ? 8 : 9 }}" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data siswa.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -330,6 +398,34 @@
             <div class="flex gap-3">
                 <button type="submit" class="px-6 py-2.5 bg-ich-error text-white font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-opacity">Hapus</button>
                 <button type="button" @click="showDelete = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Bulk Status Confirm --}}
+    <x-admin-modal show="showBulk" title="Konfirmasi Ubah Status" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-4">
+            Ubah status <strong x-text="selectedCount"></strong> siswa menjadi
+            <strong x-text="bulkStatus.charAt(0).toUpperCase() + bulkStatus.slice(1)"></strong>?
+        </p>
+        <form method="POST" action="{{ route('admin.siswa.bulk-status') }}">
+            @csrf
+            <template x-for="id in selected" :key="id">
+                <input type="hidden" name="student_ids[]" :value="id">
+            </template>
+            <input type="hidden" name="status" :value="bulkStatus">
+            @if(request('search'))
+                <input type="hidden" name="search" value="{{ request('search') }}">
+            @endif
+            @if(request('kelas'))
+                <input type="hidden" name="kelas" value="{{ request('kelas') }}">
+            @endif
+            @if(request('status'))
+                <input type="hidden" name="status_filter" value="{{ request('status') }}">
+            @endif
+            <div class="flex gap-3">
+                <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Ya, Ubah</button>
+                <button type="button" @click="showBulk = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
             </div>
         </form>
     </x-admin-modal>

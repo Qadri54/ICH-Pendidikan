@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicPeriod;
 use App\Models\ClassRoom;
 use App\Models\Student;
 use App\Models\User;
@@ -59,8 +60,24 @@ class SiswaController extends Controller
         $kelas = ClassRoom::orderBy('nama_kelas')->get();
         $parents = User::whereHas('role', fn($q) => $q->where('role_name', 'Orang Tua'))
             ->orderBy('name')->get();
+        $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
 
-        return view('admin.siswa.index', compact('siswa', 'kelas', 'parents'));
+        return view('admin.siswa.index', compact('siswa', 'kelas', 'parents', 'periods'));
+    }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $data = $request->validate([
+            'student_ids' => 'required|array|min:1',
+            'student_ids.*' => 'integer|exists:students,student_id',
+            'status' => 'required|in:aktif,alumni,keluar',
+        ]);
+
+        $count = Student::whereIn('student_id', $data['student_ids'])
+            ->update(['status' => $data['status']]);
+
+        return redirect()->route('admin.siswa.index', $request->only(['search', 'kelas', 'status']))
+            ->with('success', "Status {$count} siswa berhasil diubah menjadi " . ucfirst($data['status']) . ".");
     }
 
     public function show(Student $siswa)

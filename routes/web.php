@@ -165,6 +165,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::middleware('role:Admin')->group(function () {
 
             Route::resource('siswa',    SiswaController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+            Route::post('siswa/bulk-status', [SiswaController::class, 'bulkUpdateStatus'])->name('siswa.bulk-status');
             Route::resource('kelas',    KelasController::class, ['parameters' => ['kelas' => 'kelas']])->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('guru',     GuruController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
             Route::resource('user',     UserController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
