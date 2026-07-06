@@ -80,7 +80,7 @@
                                 @if($rec->attendance_status === 'Izin')
                                     {{ $rec->keterangan_izin ?? '-' }}
                                 @elseif($rec->attendance_status === 'Hadir')
-                                    {{ $rec->is_within_geofence === 'ya' ? 'Dalam area' : 'Di luar area' }} · ±{{ $rec->check_in_accuracy ? round($rec->check_in_accuracy) : '-' }}m
+                                    {{ $rec->is_within_geofence === 'ya' ? 'Dalam area' : 'Di luar area' }} · ±{{ $rec->check_in_accuracy ? round((float) $rec->check_in_accuracy) : '-' }}m
                                 @else
                                     -
                                 @endif

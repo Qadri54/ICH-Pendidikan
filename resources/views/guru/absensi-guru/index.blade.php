@@ -261,7 +261,7 @@
                             </div>
                             <div class="flex justify-between">
                                 <span>Akurasi GPS</span>
-                                <span class="font-semibold">±{{ $todayRecord->check_in_accuracy ? round($todayRecord->check_in_accuracy) : '-' }}m</span>
+                                <span class="font-semibold">±{{ $todayRecord->check_in_accuracy ? round((float) $todayRecord->check_in_accuracy) : '-' }}m</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Status Lokasi</span>
