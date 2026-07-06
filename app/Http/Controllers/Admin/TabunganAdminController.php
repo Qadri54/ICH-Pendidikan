@@ -25,7 +25,7 @@ class TabunganAdminController extends Controller
     public function index(Request $request): View
     {
         $ledgers = $this->ledgerService->getPaginated($request->search, $request->status);
-        $guru    = Teacher::with('user')->get();
+        $guru    = Teacher::with(['user', 'homeroomClass'])->get();
 
         return view('admin.tabungan.index', compact('ledgers', 'guru'));
     }

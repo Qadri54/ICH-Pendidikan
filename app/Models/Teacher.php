@@ -61,4 +61,9 @@ class Teacher extends Model
     {
         return $this->hasMany(StudentReportCard::class, 'homeroom_teacher_id', 'teacher_id');
     }
+
+    public function homeroomClass()
+    {
+        return $this->hasOne(ClassRoom::class, 'homeroom_teacher_id', 'teacher_id');
+    }
 }

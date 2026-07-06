@@ -107,16 +107,36 @@
                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 @error('ledger_name') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
-            <div>
+            <div x-data="{
+                selectedTeacher: '{{ old('teacher_id', '') }}',
+                teachers: {{ Js::from($guru->map(fn($g) => [
+                    'id' => $g->teacher_id,
+                    'nama' => $g->user?->name ?? 'Guru #'.$g->teacher_id,
+                    'kelas' => $g->homeroomClass?->nama_kelas,
+                ])) }},
+                get info() {
+                    if (!this.selectedTeacher) return null;
+                    return this.teachers.find(t => t.id == this.selectedTeacher);
+                }
+            }">
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Guru PJ <span class="text-ich-error">*</span></label>
-                <select name="teacher_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <select name="teacher_id" x-model="selectedTeacher" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     <option value="">-- Pilih Guru --</option>
                     @foreach($guru as $g)
                         <option value="{{ $g->teacher_id }}" {{ old('teacher_id') == $g->teacher_id ? 'selected' : '' }}>
                             {{ $g->user?->name ?? 'Guru #'.$g->teacher_id }}
+                            @if($g->homeroomClass) — Wali Kelas {{ $g->homeroomClass->nama_kelas }} @endif
                         </option>
                     @endforeach
                 </select>
+                <div x-show="info" x-transition x-cloak class="mt-1.5">
+                    <p x-show="info?.kelas" class="text-xs font-ui font-bold text-ich-green">
+                        Wali Kelas: <span x-text="info?.kelas"></span>
+                    </p>
+                    <p x-show="!info?.kelas" class="text-xs font-ui text-ich-ink-400">
+                        Guru ini belum ditugaskan sebagai wali kelas
+                    </p>
+                </div>
                 @error('teacher_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div class="grid grid-cols-2 gap-4">
