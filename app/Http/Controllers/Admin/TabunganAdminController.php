@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AcademicPeriod;
+use App\Models\ClassRoom;
 use App\Models\SavingLedger;
 use App\Models\Student;
 use App\Models\StudentPassbook;
@@ -58,9 +59,14 @@ class TabunganAdminController extends Controller
     {
         $tabungan = $this->ledgerService->getById($tabungan->ledger_id);
         $existingStudentIds = $tabungan->passbooks()->pluck('student_id');
-        $students = Student::with('classRoom')->whereNotIn('student_id', $existingStudentIds)->orderBy('nama_siswa')->get();
+        $availableStudents = Student::with('classRoom')
+            ->where('status', 'aktif')
+            ->whereNotIn('student_id', $existingStudentIds)
+            ->orderBy('nama_siswa')
+            ->get();
+        $classes = ClassRoom::orderBy('nama_kelas')->get();
 
-        return view('admin.tabungan.show', compact('tabungan', 'students'));
+        return view('admin.tabungan.show', compact('tabungan', 'availableStudents', 'classes'));
     }
 
     public function destroy(SavingLedger $tabungan): RedirectResponse
@@ -88,15 +94,21 @@ class TabunganAdminController extends Controller
     public function storePassbook(Request $request, SavingLedger $tabungan): RedirectResponse
     {
         $data = $request->validate([
-            'student_id'      => 'required|exists:students,student_id',
+            'student_ids'     => 'required|array|min:1',
+            'student_ids.*'   => 'integer|exists:students,student_id',
             'opening_date'    => 'required|date',
             'opening_balance' => 'nullable|numeric|min:0',
         ]);
 
         try {
-            $this->passbookService->open($tabungan->ledger_id, $data);
+            $count = $this->passbookService->bulkOpen(
+                $tabungan->ledger_id,
+                $data['student_ids'],
+                $data['opening_date'],
+                (int) ($data['opening_balance'] ?? 0)
+            );
             return redirect()->route('admin.tabungan.show', $tabungan)
-                ->with('success', 'Buku tabungan berhasil dibuka.');
+                ->with('success', "{$count} buku tabungan berhasil dibuka.");
         } catch (\InvalidArgumentException $e) {
             return back()->with('error', $e->getMessage());
         }

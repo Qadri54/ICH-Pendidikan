@@ -13,7 +13,7 @@ class PassbookService
     // Dipakai di halaman detail ledger untuk melihat daftar siswa peserta tabungan.
     public function getByLedger(int $ledgerId): Collection
     {
-        return StudentPassbook::with('student')
+        return StudentPassbook::with('student.classRoom')
             ->where('ledger_id', $ledgerId)
             ->get();
     }
@@ -67,5 +67,40 @@ class PassbookService
             'current_balance' => $data['opening_balance'] ?? 0,
             'last_update'     => now(),
         ]);
+    }
+
+    public function bulkOpen(int $ledgerId, array $studentIds, string $openingDate, int $openingBalance = 0): int
+    {
+        $ledger = SavingLedger::findOrFail($ledgerId);
+
+        if ($ledger->status === 'Closed') {
+            throw new \InvalidArgumentException('Tidak bisa membuka buku tabungan pada ledger yang sudah ditutup.');
+        }
+
+        $existingIds = StudentPassbook::where('ledger_id', $ledgerId)
+            ->whereIn('student_id', $studentIds)
+            ->pluck('student_id')
+            ->toArray();
+
+        $newIds = array_diff($studentIds, $existingIds);
+
+        if (empty($newIds)) {
+            throw new \InvalidArgumentException('Semua siswa yang dipilih sudah memiliki buku tabungan.');
+        }
+
+        $rows = array_map(fn($sid) => [
+            'student_id'      => $sid,
+            'ledger_id'       => $ledgerId,
+            'opening_date'    => $openingDate,
+            'opening_balance' => $openingBalance,
+            'current_balance' => $openingBalance,
+            'last_update'     => now(),
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ], $newIds);
+
+        StudentPassbook::insert($rows);
+
+        return count($newIds);
     }
 }

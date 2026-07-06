@@ -118,6 +118,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->name('guru.')->group(f
         Route::get('/passbooks/{passbook}',           [TabunganGuruController::class, 'showPassbook'])->name('passbook.show');
         Route::post('/passbooks/{passbook}/deposit',  [TabunganGuruController::class, 'deposit'])->name('passbook.deposit');
         Route::post('/passbooks/{passbook}/withdraw', [TabunganGuruController::class, 'withdraw'])->name('passbook.withdraw');
+        Route::post('/{ledger}/passbooks',            [TabunganGuruController::class, 'storePassbook'])->name('passbook.store');
         Route::get('/{ledger}',                       [TabunganGuruController::class, 'show'])->name('show');
     });
 });

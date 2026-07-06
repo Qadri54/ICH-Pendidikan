@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassRoom;
 use App\Models\SavingLedger;
+use App\Models\Student;
 use App\Models\StudentPassbook;
 use App\Models\Teacher;
 use App\Services\Saving\PassbookService;
@@ -31,12 +33,47 @@ class TabunganGuruController extends Controller
 
     public function show(SavingLedger $ledger): View
     {
-        $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
+        $teacher = Teacher::with('homeroomClass')->where('user_id', auth()->id())->firstOrFail();
         abort_if($ledger->teacher_id !== $teacher->teacher_id, 403);
 
         $passbooks = $this->passbookService->getByLedger($ledger->ledger_id);
 
-        return view('guru.tabungan.show', compact('ledger', 'passbooks'));
+        $existingStudentIds = $ledger->passbooks()->pluck('student_id');
+        $availableStudents = Student::with('classRoom')
+            ->where('status', 'aktif')
+            ->whereNotIn('student_id', $existingStudentIds)
+            ->orderBy('nama_siswa')
+            ->get();
+        $classes = ClassRoom::orderBy('nama_kelas')->get();
+        $homeroomClassId = $teacher->homeroomClass?->class_id;
+
+        return view('guru.tabungan.show', compact('ledger', 'passbooks', 'availableStudents', 'classes', 'homeroomClassId'));
+    }
+
+    public function storePassbook(Request $request, SavingLedger $ledger): RedirectResponse
+    {
+        $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
+        abort_if($ledger->teacher_id !== $teacher->teacher_id, 403);
+
+        $data = $request->validate([
+            'student_ids'     => 'required|array|min:1',
+            'student_ids.*'   => 'integer|exists:students,student_id',
+            'opening_date'    => 'required|date',
+            'opening_balance' => 'nullable|numeric|min:0',
+        ]);
+
+        try {
+            $count = $this->passbookService->bulkOpen(
+                $ledger->ledger_id,
+                $data['student_ids'],
+                $data['opening_date'],
+                (int) ($data['opening_balance'] ?? 0)
+            );
+            return redirect()->route('guru.tabungan.show', $ledger)
+                ->with('success', "{$count} buku tabungan berhasil dibuka.");
+        } catch (\InvalidArgumentException $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function showPassbook(StudentPassbook $passbook): View
