@@ -343,6 +343,10 @@
                                     <p class="text-xs text-ich-ink-400 font-sans">Radius</p>
                                     <p class="font-ui font-bold text-sm text-ich-ink-900">{{ ($settings['geofence_radius_meter'] ?? '-') . 'm' }}</p>
                                 </div>
+                                <div>
+                                    <p class="text-xs text-ich-ink-400 font-sans">Maks. Akurasi GPS</p>
+                                    <p class="font-ui font-bold text-sm text-ich-ink-900">{{ ($settings['max_gps_accuracy'] ?? '100') . 'm' }}</p>
+                                </div>
                             </div>
                         </div>
                         <div class="bg-ich-surface rounded-xl p-5">
@@ -407,6 +411,19 @@
                                     @error('geofence_radius_meter')
                                         <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
                                     @enderror
+                                </div>
+                                <div>
+                                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Maks. Akurasi GPS (meter)</label>
+                                    <input type="number" name="max_gps_accuracy"
+                                           value="{{ old('max_gps_accuracy', $settings['max_gps_accuracy'] ?? '100') }}"
+                                           placeholder="100"
+                                           class="w-full h-[46px] px-3.5 bg-white border-2 rounded-ich-lg
+                                                  font-sans text-sm focus:outline-none focus:border-ich-teal
+                                                  @error('max_gps_accuracy') border-ich-error @else border-ich-line @enderror">
+                                    @error('max_gps_accuracy')
+                                        <p class="text-ich-error text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                    <p class="text-xs text-ich-ink-400 mt-1">GPS dengan akurasi lebih dari nilai ini akan ditolak</p>
                                 </div>
                             </div>
                         </div>

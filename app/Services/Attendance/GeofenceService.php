@@ -15,7 +15,7 @@ class GeofenceService
     //   geofence_latitude     → latitude pusat sekolah
     //   geofence_longitude    → longitude pusat sekolah
     //   geofence_radius_meter → radius dalam meter (misal: 100)
-    public function isWithinZone(float $lat, float $lng): bool
+    public function isWithinZone(float $lat, float $lng, float $accuracy = 0): bool
     {
         $centerLat    = (float) AttendanceSetting::where('setting_key', 'geofence_latitude')->value('setting_value');
         $centerLng    = (float) AttendanceSetting::where('setting_key', 'geofence_longitude')->value('setting_value');
@@ -23,7 +23,7 @@ class GeofenceService
 
         $distance = $this->calculateDistance($lat, $lng, $centerLat, $centerLng);
 
-        return $distance <= $radiusMeter;
+        return ($distance + $accuracy) <= $radiusMeter;
     }
 
     // Simpan atau update titik koordinat dan radius geofence sekolah.

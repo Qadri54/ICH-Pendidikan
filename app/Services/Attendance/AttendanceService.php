@@ -3,6 +3,7 @@
 namespace App\Services\Attendance;
 
 use App\Models\AttendanceRecord;
+use App\Models\AttendanceSetting;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -24,14 +25,22 @@ class AttendanceService
     public function checkIn(array $data): AttendanceRecord
     {
         $teacherId = $data['teacher_id'];
+        $accuracy  = (float) $data['accuracy'];
 
         if ($this->getTodayRecord($teacherId)) {
             throw new \InvalidArgumentException('Anda sudah melakukan absensi hari ini.');
         }
 
+        $maxAccuracy = (float) (AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100);
+
+        if ($accuracy > $maxAccuracy) {
+            throw new \InvalidArgumentException("Akurasi GPS Anda terlalu rendah ({$accuracy}m). Maksimal yang diizinkan adalah {$maxAccuracy}m. Coba buka di tempat terbuka dan tunggu sinyal GPS stabil.");
+        }
+
         $isWithinGeofence = $this->geofenceService->isWithinZone(
             (float) $data['latitude'],
-            (float) $data['longitude']
+            (float) $data['longitude'],
+            $accuracy
         );
 
         if (! $isWithinGeofence) {

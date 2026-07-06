@@ -36,6 +36,7 @@ class PengaturanController extends Controller
             'geofence_latitude'     => 'required|numeric',
             'geofence_longitude'    => 'required|numeric',
             'geofence_radius_meter' => 'required|integer|min:10',
+            'max_gps_accuracy'      => 'required|integer|min:10|max:500',
             'check_in_start'        => 'required|date_format:H:i',
             'check_in_end'          => 'required|date_format:H:i',
         ]);
@@ -46,7 +47,7 @@ class PengaturanController extends Controller
             (float) $data['geofence_radius_meter']
         );
 
-        foreach (['check_in_start', 'check_in_end'] as $key) {
+        foreach (['check_in_start', 'check_in_end', 'max_gps_accuracy'] as $key) {
             AttendanceSetting::updateOrCreate(
                 ['setting_key' => $key],
                 ['setting_value' => $data[$key]]
