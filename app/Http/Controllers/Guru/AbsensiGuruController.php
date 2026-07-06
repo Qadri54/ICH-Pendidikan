@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\AttendanceRecord;
 use App\Models\Teacher;
 use App\Services\Attendance\AttendanceService;
 use App\Services\Attendance\GeofenceService;
@@ -22,8 +23,12 @@ class AbsensiGuruController extends Controller
         $teacherId   = $this->resolveTeacherId();
         $todayRecord = $this->attendanceService->getTodayRecord($teacherId);
         $zone        = $this->geofenceService->getZone();
+        $history     = AttendanceRecord::where('teacher_id', $teacherId)
+                            ->latest()
+                            ->take(30)
+                            ->get();
 
-        return view('guru.absensi-guru.index', compact('todayRecord', 'zone'));
+        return view('guru.absensi-guru.index', compact('todayRecord', 'zone', 'history'));
     }
 
     public function checkIn(Request $request): RedirectResponse
