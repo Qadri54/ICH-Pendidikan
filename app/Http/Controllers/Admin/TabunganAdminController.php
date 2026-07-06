@@ -72,6 +72,21 @@ class TabunganAdminController extends Controller
         return view('admin.tabungan.show', compact('tabungan', 'availableStudents', 'classes'));
     }
 
+    public function update(Request $request, SavingLedger $tabungan): RedirectResponse
+    {
+        $data = $request->validate([
+            'ledger_name' => 'required|string|max:255',
+            'teacher_id'  => 'required|exists:teachers,teacher_id',
+            'class_id'    => 'nullable|exists:classes,class_id',
+            'period_id'   => 'required|exists:academic_periods,period_id',
+        ]);
+
+        $this->ledgerService->update($tabungan->ledger_id, $data);
+
+        return redirect()->route('admin.tabungan.index')
+            ->with('success', 'Ledger berhasil diperbarui.');
+    }
+
     public function close(SavingLedger $tabungan): RedirectResponse
     {
         try {

@@ -57,6 +57,18 @@ class SavingLedgerService
         ]);
     }
 
+    public function update(int $ledgerId, array $data): bool
+    {
+        $ledger = SavingLedger::findOrFail($ledgerId);
+
+        return (bool) $ledger->update([
+            'ledger_name' => $data['ledger_name'],
+            'teacher_id'  => $data['teacher_id'],
+            'class_id'    => $data['class_id'] ?? null,
+            'period_id'   => $data['period_id'],
+        ]);
+    }
+
     // Tutup ledger — status Active → Closed.
     // Ledger yang sudah Closed tidak bisa menerima transaksi baru.
     // Throw jika ledger sudah berstatus Closed.

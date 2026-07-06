@@ -2,9 +2,23 @@
 <x-main-layout title="Tabungan Siswa">
 <div x-data="{
     showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
+    showEdit: {{ $errors->any() && old('_modal') === 'edit' ? 'true' : 'false' }},
     showDelete: false,
+    editId: '{{ old('_edit_id', '') }}',
+    editName: '{{ old('ledger_name', '') }}',
+    editTeacher: '{{ old('teacher_id', '') }}',
+    editClass: '{{ old('class_id', '') }}',
+    editPeriod: '{{ old('period_id', '') }}',
     deleteId: null,
     deleteName: '',
+    openEdit(ledger) {
+        this.editId = ledger.id;
+        this.editName = ledger.name;
+        this.editTeacher = ledger.teacher_id;
+        this.editClass = ledger.class_id || '';
+        this.editPeriod = ledger.period_id || '';
+        this.showEdit = true;
+    },
     openDelete(id, name) {
         this.deleteId = id;
         this.deleteName = name;
@@ -91,6 +105,16 @@
                                     Detail
                                 </a>
                                 @if(! $isReadOnly)
+                                    <button @click="openEdit({{ Js::from([
+                                                'id' => $l->ledger_id,
+                                                'name' => $l->ledger_name,
+                                                'teacher_id' => $l->teacher_id,
+                                                'class_id' => $l->class_id,
+                                                'period_id' => $l->period_id,
+                                            ]) }})"
+                                            class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-warning hover:text-white transition-colors">
+                                        Edit
+                                    </button>
                                     <button @click="openDelete('{{ $l->ledger_id }}', '{{ $l->ledger_name }}')"
                                             class="px-2.5 py-1 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded hover:bg-ich-error hover:text-white transition-colors">
                                         Hapus
@@ -193,6 +217,62 @@
             <div class="flex gap-3 pt-2">
                 <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Simpan</button>
                 <button type="button" @click="showCreate = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
+            </div>
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Edit --}}
+    <x-admin-modal show="showEdit" title="Edit Ledger Tabungan" maxWidth="md">
+        <form method="POST" :action="'{{ route('admin.tabungan.update', ':id') }}'.replace(':id', editId)" class="space-y-4">
+            @csrf @method('PUT')
+            <input type="hidden" name="_modal" value="edit">
+            <input type="hidden" name="_edit_id" :value="editId">
+
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ledger <span class="text-ich-error">*</span></label>
+                <input type="text" name="ledger_name" x-model="editName"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                @error('ledger_name') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Guru PJ <span class="text-ich-error">*</span></label>
+                <select name="teacher_id" x-model="editTeacher" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Guru --</option>
+                    @foreach($guru as $g)
+                        <option value="{{ $g->teacher_id }}">
+                            {{ $g->user?->name ?? 'Guru #'.$g->teacher_id }}
+                            @if($g->homeroomClass) — Wali Kelas {{ $g->homeroomClass->nama_kelas }} @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('teacher_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Kelas</label>
+                <select name="class_id" x-model="editClass" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">Semua Kelas (tidak dibatasi)</option>
+                    @foreach($classes as $c)
+                        <option value="{{ $c->class_id }}">{{ $c->nama_kelas }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Semester <span class="text-ich-error">*</span></label>
+                <select name="period_id" x-model="editPeriod" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Periode --</option>
+                    @foreach($periods as $p)
+                        <option value="{{ $p->period_id }}">
+                            {{ $p->tahun_ajaran }} — Semester {{ $p->semester }}
+                            @if($p->is_active) (Aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Simpan</button>
+                <button type="button" @click="showEdit = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
             </div>
         </form>
     </x-admin-modal>
