@@ -16,7 +16,7 @@
                     <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
-                            <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Th. Akademik</th>
+                            <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
                             <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Total Saldo</th>
                             <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
                             <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
@@ -32,7 +32,11 @@
                                     {{ $ledger->ledger_name }}
                                 </td>
                                 <td class="px-4 py-3 text-ich-ink-600">
-                                    {{ $ledger->academic_year ? \Carbon\Carbon::parse($ledger->academic_year)->format('Y') : '-' }}
+                                    @if($ledger->academicPeriod)
+                                        {{ $ledger->academicPeriod->tahun_ajaran }} — Smt {{ $ledger->academicPeriod->semester }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 text-right font-ui font-semibold text-ich-green">
                                     Rp {{ number_format($ledger->total_balance, 0, ',', '.') }}
@@ -40,7 +44,7 @@
                                 <td class="px-4 py-3 text-center">
                                     <span class="px-2 py-1 rounded-full text-xs font-ui font-bold
                                         {{ $isActive ? 'bg-ich-success-soft text-ich-success' : 'bg-ich-surface text-ich-ink-400' }}">
-                                        {{ $ledger->status }}
+                                        {{ $isActive ? 'Aktif' : 'Ditutup' }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-center">

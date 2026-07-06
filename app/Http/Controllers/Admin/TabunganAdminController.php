@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicPeriod;
 use App\Models\SavingLedger;
 use App\Models\Student;
 use App\Models\StudentPassbook;
@@ -26,8 +27,9 @@ class TabunganAdminController extends Controller
     {
         $ledgers = $this->ledgerService->getPaginated($request->search, $request->status);
         $guru    = Teacher::with(['user', 'homeroomClass'])->get();
+        $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
 
-        return view('admin.tabungan.index', compact('ledgers', 'guru'));
+        return view('admin.tabungan.index', compact('ledgers', 'guru', 'periods'));
     }
 
     public function create(): View
@@ -40,8 +42,8 @@ class TabunganAdminController extends Controller
     {
         $data = $request->validate([
             'teacher_id'      => 'required|exists:teachers,teacher_id',
+            'period_id'       => 'required|exists:academic_periods,period_id',
             'ledger_name'     => 'required|string|max:255',
-            'academic_year'   => 'required|date',
             'opening_date'    => 'required|date',
             'opening_balance' => 'required|numeric|min:0',
         ]);

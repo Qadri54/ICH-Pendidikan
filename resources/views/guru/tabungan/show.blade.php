@@ -5,7 +5,7 @@
            class="text-ich-teal text-sm font-ui font-semibold hover:underline">← Kembali</a>
         <h1 class="text-2xl font-display font-bold text-ich-ink-900 mt-1">{{ $ledger->ledger_name }}</h1>
         <p class="text-sm text-ich-ink-400 mt-0.5">
-            Tahun Akademik {{ $ledger->academic_year ? \Carbon\Carbon::parse($ledger->academic_year)->format('Y') : '-' }}
+            {{ $ledger->academicPeriod ? $ledger->academicPeriod->tahun_ajaran . ' — Smt ' . $ledger->academicPeriod->semester : '-' }}
             · Total Saldo: <span class="font-semibold text-ich-green">Rp {{ number_format($ledger->total_balance, 0, ',', '.') }}</span>
         </p>
     </div>

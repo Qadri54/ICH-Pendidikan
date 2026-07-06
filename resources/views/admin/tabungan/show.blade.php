@@ -27,10 +27,11 @@
             <h2 class="font-ui font-bold text-ich-ink-900 border-b border-ich-line pb-3">Info Ledger</h2>
             @foreach([
                 ['Guru PJ',      $tabungan->teacher?->user?->name ?? '-'],
-                ['Th. Akademik', $tabungan->academic_year ? \Carbon\Carbon::parse($tabungan->academic_year)->format('Y') : '-'],
+                ['Periode',      $tabungan->academicPeriod ? $tabungan->academicPeriod->tahun_ajaran . ' — Smt ' . $tabungan->academicPeriod->semester : '-'],
+                ['Tanggal Buka', $tabungan->opening_date?->translatedFormat('d F Y') ?? '-'],
                 ['Saldo Awal',   'Rp '.number_format($tabungan->opening_balance, 0, ',', '.')],
                 ['Total Saldo',  'Rp '.number_format($tabungan->total_balance, 0, ',', '.')],
-                ['Status',       $tabungan->status],
+                ['Status',       $tabungan->status === 'Active' ? 'Aktif' : 'Ditutup'],
             ] as [$label, $value])
                 <div class="flex gap-3 py-1.5 border-b border-ich-line last:border-0">
                     <div class="w-28 font-ui font-bold text-xs text-ich-ink-400 shrink-0">{{ $label }}</div>

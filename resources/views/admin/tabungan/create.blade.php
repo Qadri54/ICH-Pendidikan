@@ -32,17 +32,24 @@
                 @error('teacher_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tahun Akademik</label>
-                    <input type="date" name="academic_year" value="{{ old('academic_year') }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Buka</label>
-                    <input type="date" name="opening_date" value="{{ old('opening_date', now()->format('Y-m-d')) }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Semester <span class="text-ich-error">*</span></label>
+                <select name="period_id"
+                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Periode --</option>
+                    @foreach(\App\Models\AcademicPeriod::orderByDesc('tanggal_mulai')->get() as $p)
+                        <option value="{{ $p->period_id }}" {{ old('period_id') == $p->period_id ? 'selected' : '' }}>
+                            {{ $p->tahun_ajaran }} — Semester {{ $p->semester }}
+                            @if($p->is_active) (Aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Buka</label>
+                <input type="date" name="opening_date" value="{{ old('opening_date', now()->format('Y-m-d')) }}"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
             <div>

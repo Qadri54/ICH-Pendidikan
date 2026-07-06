@@ -13,8 +13,8 @@ class SavingLedger extends Model
 
     protected $fillable = [
         'teacher_id',
+        'period_id',
         'ledger_name',
-        'academic_year',
         'opening_date',
         'opening_balance',
         'total_balance',
@@ -24,15 +24,18 @@ class SavingLedger extends Model
     protected function casts(): array
     {
         return [
-            'academic_year'  => 'date',
-            'opening_date'   => 'date',
+            'opening_date' => 'date',
         ];
     }
 
-    // Relationships
     public function teacher()
     {
         return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function academicPeriod()
+    {
+        return $this->belongsTo(AcademicPeriod::class, 'period_id', 'period_id');
     }
 
     public function passbooks()

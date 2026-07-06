@@ -45,7 +45,8 @@
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Guru PJ</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tahun Akademik</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal Buka</th>
                     <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Total Saldo</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
@@ -57,15 +58,22 @@
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $l->ledger_name }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $l->teacher?->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">
-                            {{ $l->academic_year ? \Carbon\Carbon::parse($l->academic_year)->format('Y') : '-' }}
+                            @if($l->academicPeriod)
+                                {{ $l->academicPeriod->tahun_ajaran }} — Smt {{ $l->academicPeriod->semester }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="px-4 py-3 text-ich-ink-500">
+                            {{ $l->opening_date?->translatedFormat('d M Y') ?? '-' }}
                         </td>
                         <td class="px-4 py-3 text-right font-ui font-semibold text-ich-green">
                             Rp {{ number_format($l->total_balance, 0, ',', '.') }}
                         </td>
                         <td class="px-4 py-3 text-center">
                             <span class="px-2.5 py-1 font-ui font-bold text-xs rounded-full
-                                {{ $l->status === 'Aktif' ? 'bg-ich-success-soft text-ich-success' : 'bg-gray-100 text-ich-ink-500' }}">
-                                {{ $l->status }}
+                                {{ $l->status === 'Active' ? 'bg-ich-success-soft text-ich-success' : 'bg-gray-100 text-ich-ink-500' }}">
+                                {{ $l->status === 'Active' ? 'Aktif' : 'Ditutup' }}
                             </span>
                         </td>
                         <td class="px-4 py-3">
@@ -85,7 +93,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data tabungan.</td>
+                        <td colspan="7" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data tabungan.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -139,17 +147,23 @@
                 </div>
                 @error('teacher_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tahun Akademik</label>
-                    <input type="date" name="academic_year" value="{{ old('academic_year') }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Buka</label>
-                    <input type="date" name="opening_date" value="{{ old('opening_date', now()->format('Y-m-d')) }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Semester <span class="text-ich-error">*</span></label>
+                <select name="period_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">-- Pilih Periode --</option>
+                    @foreach($periods as $p)
+                        <option value="{{ $p->period_id }}" {{ old('period_id', $periods->firstWhere('is_active', true)?->period_id) == $p->period_id ? 'selected' : '' }}>
+                            {{ $p->tahun_ajaran }} — Semester {{ $p->semester }}
+                            @if($p->is_active) (Aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Buka</label>
+                <input type="date" name="opening_date" value="{{ old('opening_date', now()->format('Y-m-d')) }}"
+                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Saldo Awal (Rp)</label>
