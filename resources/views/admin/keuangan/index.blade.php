@@ -75,15 +75,24 @@
         <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
     @endif
 
-    <form method="GET" class="flex gap-3 mb-4">
+    <form method="GET" class="flex flex-wrap gap-3 mb-4">
         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa..."
                class="flex-1 max-w-xs h-10 px-3.5 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none focus:border-ich-teal">
-        <select name="status" class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none">
+        <select name="kelas" class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none focus:border-ich-teal">
+            <option value="">Semua Kelas</option>
+            @foreach($kelas as $k)
+                <option value="{{ $k->class_id }}" {{ request('kelas') == $k->class_id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
+            @endforeach
+        </select>
+        <select name="status" class="h-10 px-3 bg-white border border-ich-line rounded-ich-md font-sans text-sm focus:outline-none focus:border-ich-teal">
             <option value="">Semua Status</option>
             <option value="unpaid" {{ request('status') === 'unpaid' ? 'selected' : '' }}>Belum Bayar</option>
             <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Lunas</option>
         </select>
         <button type="submit" class="h-10 px-4 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-md hover:bg-ich-teal-dark">Cari</button>
+        @if(request()->hasAny(['search','kelas','status']))
+            <a href="{{ route('admin.keuangan.index') }}" class="h-10 px-4 flex items-center bg-white border border-ich-line text-ich-ink-500 font-ui text-sm rounded-ich-md hover:bg-gray-50 transition-colors">Reset</a>
+        @endif
     </form>
 
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">

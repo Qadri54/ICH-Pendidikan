@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassRoom;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
 use App\Models\Student;
@@ -23,16 +24,19 @@ class KeuanganController extends Controller
         $invoices = $this->invoiceService->getPaginated(
             $request->search,
             $request->status,
+            $request->integer('kelas') ?: null,
         );
 
         $summary = $this->invoiceService->getSummary();
         $siswa   = Student::aktif()->with('classRoom')->orderBy('nama_siswa')->get();
+        $kelas   = ClassRoom::orderBy('nama_kelas')->get();
 
         return view('admin.keuangan.index', [
             'invoices'      => $invoices,
             'totalTagihan'  => $summary['total_tagihan'],
             'totalLunas'    => $summary['total_lunas'],
             'siswa'         => $siswa,
+            'kelas'         => $kelas,
         ]);
     }
 
