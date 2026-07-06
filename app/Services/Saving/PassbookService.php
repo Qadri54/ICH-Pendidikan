@@ -103,4 +103,15 @@ class PassbookService
 
         return count($newIds);
     }
+
+    public function delete(int $passbookId): bool
+    {
+        $passbook = StudentPassbook::withCount('savingTransactions')->findOrFail($passbookId);
+
+        if ($passbook->saving_transactions_count > 0) {
+            throw new \InvalidArgumentException('Buku tabungan tidak bisa dihapus karena sudah ada transaksi.');
+        }
+
+        return (bool) $passbook->delete();
+    }
 }

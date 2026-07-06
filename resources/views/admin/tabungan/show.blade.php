@@ -3,6 +3,14 @@
 <div x-data="{
     showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
     showClose: false,
+    showDeletePb: false,
+    deletePbId: null,
+    deletePbName: '',
+    openDeletePb(id, name) {
+        this.deletePbId = id;
+        this.deletePbName = name;
+        this.showDeletePb = true;
+    }
 }">
 
     <div class="mb-6">
@@ -82,10 +90,18 @@
                                 Rp {{ number_format($pb->current_balance, 0, ',', '.') }}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <a href="{{ route('admin.tabungan.passbook.show', $pb) }}"
-                                   class="text-xs font-ui font-bold text-ich-teal hover:underline">
-                                    Detail →
-                                </a>
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="{{ route('admin.tabungan.passbook.show', $pb) }}"
+                                       class="text-xs font-ui font-bold text-ich-teal hover:underline">
+                                        Detail
+                                    </a>
+                                    @if(! $isReadOnly)
+                                        <button @click="openDeletePb('{{ $pb->passbook_id }}', '{{ $pb->student?->nama_siswa }}')"
+                                                class="text-xs font-ui font-bold text-ich-error hover:underline">
+                                            Hapus
+                                        </button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -225,6 +241,29 @@
                     </button>
                 </div>
             @endif
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Konfirmasi Hapus Passbook --}}
+    <x-admin-modal show="showDeletePb" title="Hapus Buku Tabungan" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-1">
+            Yakin ingin menghapus buku tabungan milik <strong x-text="deletePbName"></strong>?
+        </p>
+        <p class="text-xs text-ich-ink-400 mb-4">
+            Hanya bisa dihapus jika belum ada transaksi.
+        </p>
+        <form method="POST" :action="'{{ route('admin.tabungan.passbook.destroy', ':id') }}'.replace(':id', deletePbId)">
+            @csrf @method('DELETE')
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-error text-white font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-opacity">
+                    Hapus
+                </button>
+                <button type="button" @click="showDeletePb = false"
+                        class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
         </form>
     </x-admin-modal>
 

@@ -143,6 +143,19 @@ class TabunganAdminController extends Controller
         }
     }
 
+    public function destroyPassbook(StudentPassbook $passbook): RedirectResponse
+    {
+        $ledger = $passbook->ledger;
+
+        try {
+            $this->passbookService->delete($passbook->passbook_id);
+            return redirect()->route('admin.tabungan.show', $ledger)
+                ->with('success', 'Buku tabungan berhasil dihapus.');
+        } catch (\InvalidArgumentException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function showPassbook(StudentPassbook $passbook): View
     {
         $passbook = $this->passbookService->getById($passbook->passbook_id);
