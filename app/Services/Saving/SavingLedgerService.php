@@ -16,7 +16,7 @@ class SavingLedgerService
 
     public function getPaginated(?string $search, ?string $status, int $perPage = 15)
     {
-        return SavingLedger::with(['teacher.user', 'academicPeriod'])
+        return SavingLedger::with(['teacher.user', 'academicPeriod', 'classRoom'])
             ->when($search, fn($q) => $q->where('ledger_name', 'like', "%{$search}%"))
             ->when($status, fn($q) => $q->where('status', $status))
             ->latest()
@@ -27,7 +27,7 @@ class SavingLedgerService
     // Ambil semua ledger milik guru yang sedang login.
     public function getByTeacher(int $teacherId): Collection
     {
-        return SavingLedger::with(['teacher.user', 'academicPeriod'])
+        return SavingLedger::with(['teacher.user', 'academicPeriod', 'classRoom'])
             ->where('teacher_id', $teacherId)
             ->latest()
             ->get();
@@ -37,7 +37,7 @@ class SavingLedgerService
     // Dipakai di halaman detail ledger.
     public function getById(int $ledgerId): SavingLedger
     {
-        return SavingLedger::with(['teacher.user', 'academicPeriod', 'passbooks.student'])
+        return SavingLedger::with(['teacher.user', 'academicPeriod', 'classRoom', 'passbooks.student.classRoom'])
             ->findOrFail($ledgerId);
     }
 
@@ -47,6 +47,7 @@ class SavingLedgerService
     {
         return SavingLedger::create([
             'teacher_id'      => $data['teacher_id'],
+            'class_id'        => $data['class_id'] ?? null,
             'period_id'       => $data['period_id'],
             'ledger_name'     => $data['ledger_name'],
             'opening_date'    => $data['opening_date'],

@@ -13,6 +13,7 @@ class SavingLedger extends Model
 
     protected $fillable = [
         'teacher_id',
+        'class_id',
         'period_id',
         'ledger_name',
         'opening_date',
@@ -31,6 +32,11 @@ class SavingLedger extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function classRoom()
+    {
+        return $this->belongsTo(ClassRoom::class, 'class_id', 'class_id');
     }
 
     public function academicPeriod()

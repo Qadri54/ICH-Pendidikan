@@ -38,14 +38,16 @@ class TabunganGuruController extends Controller
 
         $passbooks = $this->passbookService->getByLedger($ledger->ledger_id);
 
+        $ledger->load('classRoom');
         $existingStudentIds = $ledger->passbooks()->pluck('student_id');
         $availableStudents = Student::with('classRoom')
             ->where('status', 'aktif')
             ->whereNotIn('student_id', $existingStudentIds)
+            ->when($ledger->class_id, fn($q) => $q->where('class_id', $ledger->class_id))
             ->orderBy('nama_siswa')
             ->get();
         $classes = ClassRoom::orderBy('nama_kelas')->get();
-        $homeroomClassId = $teacher->homeroomClass?->class_id;
+        $homeroomClassId = $ledger->class_id ?? $teacher->homeroomClass?->class_id;
 
         return view('guru.tabungan.show', compact('ledger', 'passbooks', 'availableStudents', 'classes', 'homeroomClassId'));
     }

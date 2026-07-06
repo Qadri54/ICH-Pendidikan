@@ -16,6 +16,7 @@
                     <thead class="bg-ich-surface">
                         <tr>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
+                            <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
                             <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
                             <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Total Saldo</th>
                             <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
@@ -30,6 +31,13 @@
                             <tr class="hover:bg-ich-surface transition-colors">
                                 <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">
                                     {{ $ledger->ledger_name }}
+                                </td>
+                                <td class="px-4 py-3">
+                                    @if($ledger->classRoom)
+                                        <span class="px-2 py-1 bg-ich-blue-soft text-ich-teal font-ui font-bold text-xs rounded-full">{{ $ledger->classRoom->nama_kelas }}</span>
+                                    @else
+                                        <span class="text-ich-ink-300 text-xs">Semua</span>
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 text-ich-ink-600">
                                     @if($ledger->academicPeriod)

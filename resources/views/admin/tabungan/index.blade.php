@@ -44,6 +44,7 @@
             <thead class="bg-ich-surface">
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Ledger</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Guru PJ</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal Buka</th>
@@ -56,6 +57,13 @@
                 @forelse($ledgers as $l)
                     <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $l->ledger_name }}</td>
+                        <td class="px-4 py-3">
+                            @if($l->classRoom)
+                                <span class="px-2 py-1 bg-ich-blue-soft text-ich-teal font-ui font-bold text-xs rounded-full">{{ $l->classRoom->nama_kelas }}</span>
+                            @else
+                                <span class="text-ich-ink-300 text-xs">Semua</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-ich-ink-600">{{ $l->teacher?->user?->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">
                             @if($l->academicPeriod)
@@ -93,7 +101,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data tabungan.</td>
+                        <td colspan="8" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data tabungan.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -146,6 +154,17 @@
                     </p>
                 </div>
                 @error('teacher_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Kelas</label>
+                <select name="class_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">Semua Kelas (tidak dibatasi)</option>
+                    @foreach($classes as $c)
+                        <option value="{{ $c->class_id }}" {{ old('class_id') == $c->class_id ? 'selected' : '' }}>{{ $c->nama_kelas }}</option>
+                    @endforeach
+                </select>
+                <p class="text-ich-ink-400 text-xs mt-1">Jika dipilih, hanya siswa dari kelas ini yang bisa membuka buku tabungan.</p>
+                @error('class_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Semester <span class="text-ich-error">*</span></label>

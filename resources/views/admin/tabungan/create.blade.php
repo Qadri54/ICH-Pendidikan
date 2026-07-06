@@ -33,6 +33,18 @@
             </div>
 
             <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Kelas</label>
+                <select name="class_id"
+                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <option value="">Semua Kelas (tidak dibatasi)</option>
+                    @foreach(\App\Models\ClassRoom::orderBy('nama_kelas')->get() as $c)
+                        <option value="{{ $c->class_id }}" {{ old('class_id') == $c->class_id ? 'selected' : '' }}>{{ $c->nama_kelas }}</option>
+                    @endforeach
+                </select>
+                <p class="text-ich-ink-400 text-xs mt-1">Jika dipilih, hanya siswa dari kelas ini yang bisa membuka buku tabungan.</p>
+                @error('class_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Semester <span class="text-ich-error">*</span></label>
                 <select name="period_id"
                         class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">

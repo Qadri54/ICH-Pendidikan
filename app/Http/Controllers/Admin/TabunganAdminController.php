@@ -29,8 +29,9 @@ class TabunganAdminController extends Controller
         $ledgers = $this->ledgerService->getPaginated($request->search, $request->status);
         $guru    = Teacher::with(['user', 'homeroomClass'])->get();
         $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
+        $classes = ClassRoom::orderBy('nama_kelas')->get();
 
-        return view('admin.tabungan.index', compact('ledgers', 'guru', 'periods'));
+        return view('admin.tabungan.index', compact('ledgers', 'guru', 'periods', 'classes'));
     }
 
     public function create(): View
@@ -43,6 +44,7 @@ class TabunganAdminController extends Controller
     {
         $data = $request->validate([
             'teacher_id'      => 'required|exists:teachers,teacher_id',
+            'class_id'        => 'nullable|exists:classes,class_id',
             'period_id'       => 'required|exists:academic_periods,period_id',
             'ledger_name'     => 'required|string|max:255',
             'opening_date'    => 'required|date',
@@ -62,6 +64,7 @@ class TabunganAdminController extends Controller
         $availableStudents = Student::with('classRoom')
             ->where('status', 'aktif')
             ->whereNotIn('student_id', $existingStudentIds)
+            ->when($tabungan->class_id, fn($q) => $q->where('class_id', $tabungan->class_id))
             ->orderBy('nama_siswa')
             ->get();
         $classes = ClassRoom::orderBy('nama_kelas')->get();

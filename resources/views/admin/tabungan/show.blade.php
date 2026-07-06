@@ -28,6 +28,7 @@
             <h2 class="font-ui font-bold text-ich-ink-900 border-b border-ich-line pb-3">Info Ledger</h2>
             @foreach([
                 ['Guru PJ',      $tabungan->teacher?->user?->name ?? '-'],
+                ['Kelas',        $tabungan->classRoom?->nama_kelas ?? 'Semua Kelas'],
                 ['Periode',      $tabungan->academicPeriod ? $tabungan->academicPeriod->tahun_ajaran . ' — Smt ' . $tabungan->academicPeriod->semester : '-'],
                 ['Tanggal Buka', $tabungan->opening_date?->translatedFormat('d F Y') ?? '-'],
                 ['Saldo Awal',   'Rp '.number_format($tabungan->opening_balance, 0, ',', '.')],
@@ -146,16 +147,22 @@
                     Semua siswa sudah memiliki buku tabungan di ledger ini.
                 </div>
             @else
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Filter Kelas</label>
-                    <select x-model="selectedClass"
-                            class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                        <option value="">Semua Kelas</option>
-                        @foreach($classes as $c)
-                            <option value="{{ $c->class_id }}">{{ $c->nama_kelas }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                @if($tabungan->class_id)
+                    <div class="px-3 py-2 bg-ich-green-surface rounded-ich-md text-sm text-ich-green font-ui font-semibold">
+                        Kelas: {{ $tabungan->classRoom->nama_kelas }}
+                    </div>
+                @else
+                    <div>
+                        <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Filter Kelas</label>
+                        <select x-model="selectedClass"
+                                class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                            <option value="">Semua Kelas</option>
+                            @foreach($classes as $c)
+                                <option value="{{ $c->class_id }}">{{ $c->nama_kelas }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
 
                 <div>
                     <div class="flex items-center justify-between mb-2">
