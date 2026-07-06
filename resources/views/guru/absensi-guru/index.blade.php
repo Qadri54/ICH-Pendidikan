@@ -58,6 +58,7 @@
                             loading: false,
                             error: '',
                             accuracyWarning: false,
+                            maxAccuracy: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }},
                             getLocation() {
                                 this.loading = true;
                                 this.error = '';
@@ -68,7 +69,7 @@
                                         this.lng = pos.coords.longitude;
                                         this.acc = pos.coords.accuracy;
                                         this.loading = false;
-                                        if (this.acc > {{ $zone['radius_meter'] ?? 200 }}) {
+                                        if (this.acc > this.maxAccuracy) {
                                             this.accuracyWarning = true;
                                         }
                                     },
@@ -120,7 +121,7 @@
                                             <p class="text-ich-warning font-semibold">
                                                 Akurasi GPS terlalu rendah (±<span x-text="Math.round(acc).toLocaleString()"></span>m)
                                             </p>
-                                            <p class="text-ich-ink-400 mt-1">Akurasi harus di bawah {{ number_format($zone['radius_meter']) }}m. Pastikan GPS aktif, lalu tekan "Ambil Lokasi" lagi.</p>
+                                            <p class="text-ich-ink-400 mt-1">Akurasi harus di bawah <span x-text="maxAccuracy"></span>m. Pastikan GPS aktif, lalu tekan "Ambil Lokasi" lagi.</p>
                                         </div>
                                     </template>
                                     <template x-if="!lat && !error">
