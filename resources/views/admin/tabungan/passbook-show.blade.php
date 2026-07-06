@@ -36,13 +36,17 @@
                 </div>
             </div>
 
-            {{-- Form setor/tarik hanya untuk Admin --}}
+            {{-- Form setor/tarik --}}
             @if($isReadOnly)
                 <div class="bg-white rounded-xl shadow-ich-card p-5 text-center">
                     <p class="font-sans text-sm text-ich-ink-400">Hanya Admin yang dapat mencatat transaksi.</p>
                 </div>
+            @elseif($passbook->ledger->status !== 'Active')
+                <div class="bg-ich-surface rounded-xl p-4 text-center">
+                    <p class="font-ui font-bold text-sm text-ich-ink-400">Ledger sudah ditutup</p>
+                    <p class="font-sans text-xs text-ich-ink-300 mt-1">Transaksi tidak dapat dilakukan.</p>
+                </div>
             @else
-            {{-- Deposit Form --}}
             <div x-data="{ tab: 'deposit' }" class="bg-white rounded-xl shadow-ich-card p-5">
                 <div class="flex gap-2 mb-4">
                     <button @click="tab = 'deposit'" type="button"
