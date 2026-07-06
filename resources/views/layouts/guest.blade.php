@@ -46,13 +46,13 @@
     </div>
 
     {{-- ── Right panel: mobile full-screen / desktop form area ── --}}
-    <div class="flex justify-center
+    <div class="flex items-center justify-center min-h-screen
                 lg:flex-1 lg:bg-gradient-to-b lg:from-white lg:to-ich-green-surface
                 lg:flex lg:items-center lg:justify-center lg:overflow-y-auto">
 
         {{-- Slot wrapper --}}
-        <div class="w-full min-h-screen relative
-                    lg:max-w-[400px] lg:min-h-0 lg:py-10" style="min-height:100dvh">
+        <div class="w-full relative
+                    lg:max-w-[400px] lg:py-10">
             {{ $slot }}
         </div>
     </div>
