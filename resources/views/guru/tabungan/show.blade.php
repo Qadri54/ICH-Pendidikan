@@ -11,17 +11,6 @@
         </p>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="px-5 py-4 border-b border-ich-line flex items-center justify-between">
             <h2 class="font-ui font-bold text-ich-ink-900">Daftar Tabungan Siswa</h2>

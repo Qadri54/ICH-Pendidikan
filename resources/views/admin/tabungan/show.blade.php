@@ -19,17 +19,6 @@
         <h1 class="text-2xl font-display font-bold text-ich-ink-900 mt-1">{{ $tabungan->ledger_name }}</h1>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <div class="bg-white rounded-xl shadow-ich-card p-6 space-y-3">

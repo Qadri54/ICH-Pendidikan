@@ -7,12 +7,6 @@
         <p class="text-sm text-ich-ink-400 mt-0.5">Ledger: {{ $tabungan->ledger_name }}</p>
     </div>
 
-    @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="max-w-lg">
         <form method="POST" action="{{ route('admin.tabungan.passbook.store', $tabungan) }}"
               class="bg-white rounded-xl shadow-ich-card p-6 space-y-5">

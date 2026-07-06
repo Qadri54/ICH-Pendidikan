@@ -45,13 +45,6 @@
         @endif
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold">{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="mb-4 px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-sm font-semibold">{{ session('error') }}</div>
-    @endif
-
     <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
         <div class="overflow-x-auto">
         <table class="w-full text-sm">
