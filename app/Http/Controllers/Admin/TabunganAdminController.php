@@ -69,6 +69,17 @@ class TabunganAdminController extends Controller
         return view('admin.tabungan.show', compact('tabungan', 'availableStudents', 'classes'));
     }
 
+    public function close(SavingLedger $tabungan): RedirectResponse
+    {
+        try {
+            $this->ledgerService->close($tabungan->ledger_id);
+            return redirect()->route('admin.tabungan.show', $tabungan)
+                ->with('success', 'Ledger berhasil ditutup.');
+        } catch (\InvalidArgumentException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function destroy(SavingLedger $tabungan): RedirectResponse
     {
         try {

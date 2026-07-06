@@ -179,6 +179,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('tabungan/{tabungan}/passbooks',          [TabunganAdminController::class, 'storePassbook'])->name('tabungan.passbook.store');
             Route::post('tabungan/passbooks/{passbook}/deposit',  [TabunganAdminController::class, 'deposit'])->name('tabungan.passbook.deposit');
             Route::post('tabungan/passbooks/{passbook}/withdraw', [TabunganAdminController::class, 'withdraw'])->name('tabungan.passbook.withdraw');
+            Route::post('tabungan/{tabungan}/close',             [TabunganAdminController::class, 'close'])->name('tabungan.close');
             Route::resource('tabungan', TabunganAdminController::class)->only(['create', 'store', 'destroy']);
 
             Route::post('absensi',     [AdminAbsensiController::class,    'store'])->name('absensi.store');

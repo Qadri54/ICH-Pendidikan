@@ -2,6 +2,7 @@
 <x-main-layout title="Detail Ledger Tabungan">
 <div x-data="{
     showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
+    showClose: false,
 }">
 
     <div class="mb-6">
@@ -38,6 +39,15 @@
                     <div class="font-sans text-sm text-ich-ink-900">{{ $value }}</div>
                 </div>
             @endforeach
+
+            @if(! $isReadOnly && $tabungan->status === 'Active')
+                <div class="pt-3 mt-1">
+                    <button @click="showClose = true"
+                            class="w-full px-4 py-2.5 bg-ich-error-soft text-ich-error font-ui font-bold text-sm rounded-ich-lg hover:bg-ich-error hover:text-white transition-colors">
+                        Tutup Ledger
+                    </button>
+                </div>
+            @endif
         </div>
 
         <div class="lg:col-span-2 bg-white rounded-xl shadow-ich-card overflow-hidden">
@@ -208,6 +218,29 @@
                     </button>
                 </div>
             @endif
+        </form>
+    </x-admin-modal>
+
+    {{-- Modal Konfirmasi Tutup Ledger --}}
+    <x-admin-modal show="showClose" title="Tutup Ledger" maxWidth="sm">
+        <p class="text-sm text-ich-ink-600 mb-1">
+            Yakin ingin menutup ledger <strong>{{ $tabungan->ledger_name }}</strong>?
+        </p>
+        <p class="text-xs text-ich-ink-400 mb-4">
+            Ledger yang ditutup tidak bisa menerima setoran atau penarikan baru.
+        </p>
+        <form method="POST" action="{{ route('admin.tabungan.close', $tabungan) }}">
+            @csrf
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-ich-error text-white font-ui font-bold text-sm rounded-ich-lg hover:opacity-90 transition-opacity">
+                    Ya, Tutup
+                </button>
+                <button type="button" @click="showClose = false"
+                        class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+            </div>
         </form>
     </x-admin-modal>
 
