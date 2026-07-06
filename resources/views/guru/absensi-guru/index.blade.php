@@ -54,23 +54,37 @@
                     {{-- Form Check-in GPS --}}
                     <div x-show="tab === 'checkin'" x-cloak
                          x-data="{
-                            lat: '', lng: '', acc: '',
+                            lat: '', lng: '', acc: '', dist: '',
                             loading: false,
                             error: '',
                             watchId: null,
+                            centerLat: {{ $zone['latitude'] }},
+                            centerLng: {{ $zone['longitude'] }},
+                            radius: {{ $zone['radius_meter'] }},
                             maxAccuracy: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }},
                             get ready() { return this.lat && this.acc <= this.maxAccuracy },
+                            get withinZone() { return this.ready && (this.dist + this.acc) <= this.radius },
+                            haversine(lat1, lng1, lat2, lng2) {
+                                const R = 6371000;
+                                const toRad = d => d * Math.PI / 180;
+                                const dLat = toRad(lat2 - lat1);
+                                const dLng = toRad(lng2 - lng1);
+                                const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+                                return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+                            },
                             getLocation() {
                                 if (this.watchId) navigator.geolocation.clearWatch(this.watchId);
                                 this.loading = true;
                                 this.error = '';
                                 this.lat = '';
+                                this.dist = '';
                                 this.watchId = navigator.geolocation.watchPosition(
                                     pos => {
                                         this.acc = Math.round(pos.coords.accuracy);
                                         if (pos.coords.accuracy <= this.maxAccuracy) {
                                             this.lat = pos.coords.latitude;
                                             this.lng = pos.coords.longitude;
+                                            this.dist = this.haversine(this.lat, this.lng, this.centerLat, this.centerLng);
                                             this.loading = false;
                                             navigator.geolocation.clearWatch(this.watchId);
                                             this.watchId = null;
@@ -114,11 +128,21 @@
 
                                 {{-- Lokasi --}}
                                 <div class="mb-4 p-3 bg-ich-surface rounded-lg text-xs font-sans">
-                                    <template x-if="ready">
-                                        <p class="text-ich-green font-semibold">
-                                            Lokasi: <span x-text="lat.toFixed(6)"></span>, <span x-text="lng.toFixed(6)"></span>
-                                            (akurasi ±<span x-text="acc"></span>m)
-                                        </p>
+                                    <template x-if="ready && withinZone">
+                                        <div>
+                                            <p class="text-ich-green font-semibold">
+                                                Anda berjarak <span x-text="dist"></span>m dari sekolah (akurasi ±<span x-text="acc"></span>m)
+                                            </p>
+                                            <p class="text-ich-ink-400 mt-1">Anda berada dalam area sekolah</p>
+                                        </div>
+                                    </template>
+                                    <template x-if="ready && !withinZone">
+                                        <div>
+                                            <p class="text-ich-error font-semibold">
+                                                Anda berjarak <span x-text="dist"></span>m dari sekolah (akurasi ±<span x-text="acc"></span>m)
+                                            </p>
+                                            <p class="text-ich-ink-400 mt-1">Anda berada di luar area sekolah (maks. <span x-text="radius"></span>m)</p>
+                                        </div>
                                     </template>
                                     <template x-if="loading">
                                         <div>
@@ -143,8 +167,8 @@
                                         <span x-text="loading ? 'Mencari...' : (ready ? 'Ambil Ulang' : 'Ambil Lokasi')"></span>
                                     </button>
                                     <button type="submit"
-                                            :disabled="!ready"
-                                            :class="ready ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
+                                            :disabled="!withinZone"
+                                            :class="withinZone ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
                                             class="flex-1 py-2.5 text-white font-ui font-bold text-sm
                                                    rounded-ich-lg shadow-ich-btn transition-colors">
                                         Check-in
@@ -153,7 +177,7 @@
 
                                 {{-- Radius info --}}
                                 <p class="text-xs text-ich-ink-400 font-sans mt-2 text-center">
-                                    Harus dalam radius {{ number_format($zone['radius_meter']) }}m dari sekolah
+                                    Radius sekolah: {{ $zone['radius_meter'] }}m · Maks. akurasi GPS: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }}m
                                 </p>
                             </form>
                         @endif
