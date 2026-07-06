@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Services\Attendance\StudentAttendanceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ class AbsensiSiswaController extends Controller
         $selectedMonth = $request->integer('month', now()->month);
 
         $recap     = collect();
+        $records   = collect();
         $classroom = null;
 
         if ($selectedClass) {
@@ -56,11 +58,17 @@ class AbsensiSiswaController extends Controller
             $recap     = $this->attendanceService->getMonthlyRecap(
                 $selectedClass, $selectedYear, $selectedMonth
             );
+            $records = StudentAttendance::with('student')
+                ->whereHas('student', fn ($q) => $q->where('class_id', $selectedClass))
+                ->whereYear('created_at', $selectedYear)
+                ->whereMonth('created_at', $selectedMonth)
+                ->latest('created_at')
+                ->get();
         }
 
         return view('admin.absensi.recap', compact(
             'classes', 'selectedClass', 'selectedYear', 'selectedMonth',
-            'recap', 'classroom'
+            'recap', 'records', 'classroom'
         ));
     }
 

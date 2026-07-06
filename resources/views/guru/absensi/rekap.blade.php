@@ -56,12 +56,25 @@
             $recordsJson = $records->map(fn ($r) => [
                 'date' => $r->created_at->format('Y-m-d'),
                 'day' => (int) $r->created_at->format('N'),
-                'day_name' => $r->created_at->translatedFormat('l'),
                 'date_display' => $r->created_at->translatedFormat('l, d M Y'),
                 'student' => $r->student?->nama_siswa ?? '-',
+                'student_id' => $r->student?->student_id,
                 'status' => $r->status,
                 'keterangan' => $r->keterangan_izin ?? '-',
             ])->values();
+
+            $overviewData = $records->groupBy(fn ($r) => $r->student?->student_id)->map(function ($group) {
+                $student = $group->first()->student;
+                return [
+                    'student_id' => $student?->student_id,
+                    'nama' => $student?->nama_siswa ?? '-',
+                    'hadir' => $group->where('status', 'hadir')->count(),
+                    'izin' => $group->where('status', 'izin')->count(),
+                    'sakit' => $group->where('status', 'sakit')->count(),
+                    'alpha' => $group->where('status', 'tanpa keterangan')->count(),
+                    'total' => $group->count(),
+                ];
+            })->sortBy('nama')->values();
 
             $dayNames = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
         @endphp
@@ -69,10 +82,13 @@
         <div x-data="{
             week: 'all',
             day: 'all',
+            selectedStudent: 'all',
             weeks: {{ json_encode($weeks) }},
             records: {{ $recordsJson->toJson() }},
+            overview: {{ $overviewData->toJson() }},
             dayNames: {{ json_encode($dayNames) }},
             setWeek(w) { this.week = w; this.day = 'all'; },
+            selectStudent(id) { this.selectedStudent = this.selectedStudent === id ? 'all' : id; },
             get filteredRecords() {
                 return this.records.filter(r => {
                     if (this.week !== 'all') {
@@ -80,6 +96,7 @@
                         if (r.date < w.start || r.date > w.end) return false;
                     }
                     if (this.day !== 'all' && r.day !== this.day) return false;
+                    if (this.selectedStudent !== 'all' && r.student_id !== this.selectedStudent) return false;
                     return true;
                 });
             },
@@ -93,6 +110,67 @@
             },
             count(status) { return this.filteredRecords.filter(r => r.status === status).length; },
         }">
+
+            {{-- Overview Per Siswa --}}
+            <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-6">
+                <div class="px-5 py-4 border-b border-ich-line">
+                    <h2 class="font-ui font-bold text-ich-ink-900">Ringkasan Per Siswa</h2>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">Klik nama siswa untuk filter detail di bawah</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-ich-surface">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600 w-12">No</th>
+                                <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama Siswa</th>
+                                <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Hadir</th>
+                                <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Izin</th>
+                                <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Sakit</th>
+                                <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Tanpa Ket.</th>
+                                <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-ich-line">
+                            <template x-for="(s, i) in overview" :key="s.student_id">
+                                <tr class="hover:bg-ich-surface transition-colors cursor-pointer"
+                                    :class="selectedStudent === s.student_id && 'bg-ich-green-surface'"
+                                    @click="selectStudent(s.student_id)">
+                                    <td class="px-4 py-3 text-ich-ink-400" x-text="i + 1"></td>
+                                    <td class="px-4 py-3 font-ui font-semibold"
+                                        :class="selectedStudent === s.student_id ? 'text-ich-green' : 'text-ich-teal'"
+                                        x-text="s.nama"></td>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="px-2 py-0.5 bg-ich-success-soft text-ich-success font-ui font-bold text-xs rounded-full" x-text="s.hadir"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="px-2 py-0.5 bg-ich-purple-soft text-ich-purple font-ui font-bold text-xs rounded-full" x-text="s.izin"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="px-2 py-0.5 bg-ich-info-soft text-ich-info font-ui font-bold text-xs rounded-full" x-text="s.sakit"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="px-2 py-0.5 bg-ich-error-soft text-ich-error font-ui font-bold text-xs rounded-full" x-text="s.alpha"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-center font-ui font-bold text-ich-ink-900" x-text="s.total"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <div x-show="overview.length === 0" class="px-4 py-10 text-center text-ich-ink-300 font-sans">
+                        Belum ada data absensi pada bulan ini.
+                    </div>
+                </div>
+            </div>
+
+            {{-- Detail Section --}}
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-display font-bold text-lg text-ich-ink-900">Detail Kehadiran</h2>
+                <button x-show="selectedStudent !== 'all'" @click="selectedStudent = 'all'" type="button"
+                        class="text-xs font-ui font-bold text-ich-error hover:underline" x-cloak>
+                    Reset filter siswa
+                </button>
+            </div>
+
             {{-- Filter Minggu --}}
             <div class="flex flex-wrap gap-2 mb-4">
                 <button @click="setWeek('all')" type="button"
@@ -146,7 +224,7 @@
                 </span>
             </div>
 
-            {{-- Table --}}
+            {{-- Detail Table --}}
             <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
