@@ -7,6 +7,7 @@ use App\Models\AttendanceRecord;
 use App\Models\Teacher;
 use App\Services\Attendance\AttendanceService;
 use App\Services\Attendance\GeofenceService;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -23,12 +24,8 @@ class AbsensiGuruController extends Controller
         $teacherId   = $this->resolveTeacherId();
         $todayRecord = $this->attendanceService->getTodayRecord($teacherId);
         $zone        = $this->geofenceService->getZone();
-        $history     = AttendanceRecord::where('teacher_id', $teacherId)
-                            ->latest()
-                            ->take(30)
-                            ->get();
 
-        return view('guru.absensi-guru.index', compact('todayRecord', 'zone', 'history'));
+        return view('guru.absensi-guru.index', compact('todayRecord', 'zone'));
     }
 
     public function checkIn(Request $request): RedirectResponse
@@ -76,6 +73,29 @@ class AbsensiGuruController extends Controller
         } catch (\InvalidArgumentException $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function rekap(): View
+    {
+        $teacherId = $this->resolveTeacherId();
+        $bulan     = request('bulan', now()->format('Y-m'));
+        $parsed    = Carbon::createFromFormat('Y-m', $bulan);
+
+        $records = AttendanceRecord::where('teacher_id', $teacherId)
+            ->whereYear('created_at', $parsed->year)
+            ->whereMonth('created_at', $parsed->month)
+            ->latest()
+            ->get();
+
+        $summary = [
+            'hadir'            => $records->where('attendance_status', 'Hadir')->count(),
+            'izin'             => $records->where('attendance_status', 'Izin')->count(),
+            'sakit'            => $records->where('attendance_status', 'Sakit')->count(),
+            'tanpa_keterangan' => $records->where('attendance_status', 'Tanpa Keterangan')->count(),
+            'total'            => $records->count(),
+        ];
+
+        return view('guru.absensi-guru.rekap', compact('records', 'summary', 'bulan'));
     }
 
     private function resolveTeacherId(): int

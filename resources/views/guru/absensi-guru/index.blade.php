@@ -223,8 +223,8 @@
             </div>
 
         @else
-            {{-- Absensi hari ini sudah selesai --}}
-            <div class="bg-white rounded-xl shadow-ich-card p-6">
+            {{-- Absensi hari ini sudah selesai — klik untuk expand detail --}}
+            <div class="bg-white rounded-xl shadow-ich-card p-6" x-data="{ open: false }">
                 @php
                     $stCfg = match($todayRecord->attendance_status) {
                         'Hadir'             => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-ich-success-soft', 'label' => 'Hadir'],
@@ -234,134 +234,70 @@
                         default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-ich-surface', 'label' => $todayRecord->attendance_status],
                     };
                 @endphp
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full {{ $stCfg['bg'] }} flex items-center justify-center">
-                        <x-ich-icon :name="$stCfg['icon']" :size="20" :color="$stCfg['color']"/>
+                <button @click="open = !open" type="button" class="w-full flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full {{ $stCfg['bg'] }} flex items-center justify-center">
+                            <x-ich-icon :name="$stCfg['icon']" :size="20" :color="$stCfg['color']"/>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-ui font-bold text-ich-ink-900">Absensi Selesai — {{ $stCfg['label'] }}</p>
+                            <p class="font-sans text-xs text-ich-ink-400">
+                                {{ $todayRecord->created_at->translatedFormat('l, d F Y') }}
+                                @if($todayRecord->check_in_time) · {{ $todayRecord->check_in_time->format('H:i') }} WIB @endif
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-ui font-bold text-ich-ink-900">Absensi Selesai — {{ $stCfg['label'] }}</p>
-                        <p class="font-sans text-xs text-ich-ink-400">
-                            {{ $todayRecord->created_at->translatedFormat('l, d F Y') }}
-                        </p>
-                    </div>
-                </div>
+                    <svg :class="open && 'rotate-180'" class="w-5 h-5 text-ich-ink-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
 
-                <div class="space-y-2 text-sm font-sans text-ich-ink-600">
-                    @if($todayRecord->attendance_status === 'Hadir')
+                <div x-show="open" x-collapse class="mt-4 pt-4 border-t border-ich-line">
+                    <div class="space-y-2 text-sm font-sans text-ich-ink-600">
+                        @if($todayRecord->attendance_status === 'Hadir')
+                            <div class="flex justify-between">
+                                <span>Jam Check-in</span>
+                                <span class="font-semibold">{{ $todayRecord->check_in_time?->format('H:i') ?? '-' }} WIB</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Akurasi GPS</span>
+                                <span class="font-semibold">±{{ $todayRecord->check_in_accuracy ? round($todayRecord->check_in_accuracy) : '-' }}m</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Status Lokasi</span>
+                                <span class="font-semibold {{ $todayRecord->is_within_geofence === 'ya' ? 'text-ich-success' : 'text-ich-error' }}">
+                                    {{ $todayRecord->is_within_geofence === 'ya' ? 'Dalam Area Sekolah' : 'Di Luar Area' }}
+                                </span>
+                            </div>
+                        @elseif($todayRecord->attendance_status === 'Izin')
+                            <div class="flex justify-between">
+                                <span>Keterangan</span>
+                                <span class="font-semibold">{{ $todayRecord->keterangan_izin ?? '-' }}</span>
+                            </div>
+                        @endif
                         <div class="flex justify-between">
-                            <span>Jam Check-in</span>
-                            <span class="font-semibold">{{ $todayRecord->check_in_time?->format('H:i') ?? '-' }} WIB</span>
+                            <span>Dicatat pada</span>
+                            <span class="font-semibold">{{ $todayRecord->created_at->format('H:i') }} WIB</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Akurasi GPS</span>
-                            <span class="font-semibold">±{{ $todayRecord->check_in_accuracy ? round($todayRecord->check_in_accuracy) : '-' }}m</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Status Lokasi</span>
-                            <span class="font-semibold {{ $todayRecord->is_within_geofence === 'ya' ? 'text-ich-success' : 'text-ich-error' }}">
-                                {{ $todayRecord->is_within_geofence === 'ya' ? 'Dalam Area Sekolah' : 'Di Luar Area' }}
-                            </span>
-                        </div>
-                    @elseif($todayRecord->attendance_status === 'Izin')
-                        <div class="flex justify-between">
-                            <span>Keterangan</span>
-                            <span class="font-semibold">{{ $todayRecord->keterangan_izin ?? '-' }}</span>
+                    </div>
+
+                    @if($todayRecord->selfie_path)
+                        <div class="mt-4">
+                            <p class="text-xs font-ui font-bold text-ich-ink-400 mb-2">Foto Selfie</p>
+                            <img src="{{ asset('storage/' . $todayRecord->selfie_path) }}" alt="Selfie check-in"
+                                 class="w-24 h-24 rounded-xl object-cover border-2 border-ich-line">
                         </div>
                     @endif
-                    <div class="flex justify-between">
-                        <span>Dicatat pada</span>
-                        <span class="font-semibold">{{ $todayRecord->created_at->format('H:i') }} WIB</span>
-                    </div>
                 </div>
-
-                @if($todayRecord->selfie_path)
-                    <div class="mt-4">
-                        <p class="text-xs font-ui font-bold text-ich-ink-400 mb-2">Foto Selfie</p>
-                        <img src="{{ asset('storage/' . $todayRecord->selfie_path) }}" alt="Selfie check-in"
-                             class="w-24 h-24 rounded-xl object-cover border-2 border-ich-line">
-                    </div>
-                @endif
             </div>
         @endif
 
+        {{-- Link ke Rekap --}}
+        <a href="{{ route('guru.absensi-guru.rekap') }}"
+           class="mt-4 block text-center py-3 bg-white rounded-xl shadow-ich-card text-sm font-ui font-bold text-ich-teal hover:shadow-md transition-all">
+            Lihat Rekap Absensi Saya
+        </a>
+
     </div>
-
-    {{-- Riwayat Absensi --}}
-    @if($history->count() > 0)
-        <div class="max-w-lg mt-8">
-            <h2 class="text-lg font-display font-bold text-ich-ink-900 mb-4">Riwayat Absensi</h2>
-
-            <div class="space-y-3">
-                @foreach($history as $record)
-                    @php
-                        $cfg = match($record->attendance_status) {
-                            'Hadir'             => ['icon' => 'check_circle', 'color' => '#009966', 'bg' => 'bg-ich-success-soft', 'pill' => 'success'],
-                            'Izin'              => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-ich-purple-soft', 'pill' => 'info'],
-                            'Sakit'             => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-ich-error-soft',  'pill' => 'error'],
-                            'Tanpa Keterangan'  => ['icon' => 'clock',        'color' => '#E09F17', 'bg' => 'bg-ich-warning-soft','pill' => 'warning'],
-                            default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-ich-surface',     'pill' => 'default'],
-                        };
-                    @endphp
-                    <div class="bg-white rounded-xl shadow-ich-card p-4" x-data="{ open: false }">
-                        <button @click="open = !open" type="button" class="w-full flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full {{ $cfg['bg'] }} flex items-center justify-center shrink-0">
-                                    <x-ich-icon :name="$cfg['icon']" :size="16" :color="$cfg['color']"/>
-                                </div>
-                                <div class="text-left">
-                                    <p class="font-ui font-bold text-sm text-ich-ink-900">
-                                        {{ $record->created_at->translatedFormat('l, d M Y') }}
-                                    </p>
-                                    <p class="text-xs text-ich-ink-400 font-sans">
-                                        {{ $record->attendance_status }}
-                                        @if($record->check_in_time) · {{ $record->check_in_time->format('H:i') }} WIB @endif
-                                    </p>
-                                </div>
-                            </div>
-                            <svg :class="open && 'rotate-180'" class="w-4 h-4 text-ich-ink-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-
-                        <div x-show="open" x-collapse class="mt-3 pt-3 border-t border-ich-line">
-                            <div class="space-y-2 text-xs font-sans text-ich-ink-600">
-                                @if($record->attendance_status === 'Hadir')
-                                    <div class="flex justify-between">
-                                        <span>Jam Check-in</span>
-                                        <span class="font-semibold">{{ $record->check_in_time?->format('H:i') ?? '-' }} WIB</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>Akurasi GPS</span>
-                                        <span class="font-semibold">±{{ $record->check_in_accuracy ? round($record->check_in_accuracy) : '-' }}m</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>Status Lokasi</span>
-                                        <span class="font-semibold {{ $record->is_within_geofence === 'ya' ? 'text-ich-success' : 'text-ich-error' }}">
-                                            {{ $record->is_within_geofence === 'ya' ? 'Dalam Area Sekolah' : 'Di Luar Area' }}
-                                        </span>
-                                    </div>
-                                    @if($record->selfie_path)
-                                        <div class="mt-2">
-                                            <img src="{{ asset('storage/' . $record->selfie_path) }}" alt="Selfie"
-                                                 class="w-16 h-16 rounded-lg object-cover border border-ich-line">
-                                        </div>
-                                    @endif
-                                @elseif($record->attendance_status === 'Izin')
-                                    <div class="flex justify-between">
-                                        <span>Keterangan</span>
-                                        <span class="font-semibold">{{ $record->keterangan_izin ?? '-' }}</span>
-                                    </div>
-                                @endif
-                                <div class="flex justify-between">
-                                    <span>Dicatat pada</span>
-                                    <span class="font-semibold">{{ $record->created_at->format('H:i') }} WIB</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
 
 </x-main-layout>

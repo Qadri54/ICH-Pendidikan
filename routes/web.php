@@ -89,6 +89,7 @@ Route::middleware(['auth', 'role:Orang Tua'])->group(function () {
 // ─── Absensi Guru (Guru TK + Guru Ngaji) ─────────────────────────────────────
 Route::middleware(['auth', 'role:Guru,Guru Ngaji'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('absensi-guru',              [GuruAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+    Route::get('absensi-guru/rekap',       [GuruAbsensiGuruController::class, 'rekap'])->name('absensi-guru.rekap');
     Route::post('absensi-guru/checkin',     [GuruAbsensiGuruController::class, 'checkIn'])->name('absensi-guru.checkin');
     Route::post('absensi-guru/izin-sakit',  [GuruAbsensiGuruController::class, 'izinSakit'])->name('absensi-guru.izin-sakit');
 });
@@ -97,6 +98,7 @@ Route::middleware(['auth', 'role:Guru,Guru Ngaji'])->prefix('guru')->name('guru.
 Route::middleware(['auth', 'role:Guru'])->prefix('guru')->name('guru.')->group(function () {
 
     Route::get('absensi',       [GuruAbsensiController::class, 'index'])->name('absensi.index');
+    Route::get('absensi/rekap', [GuruAbsensiController::class, 'rekap'])->name('absensi.rekap');
     Route::post('absensi',      [GuruAbsensiController::class, 'store'])->name('absensi.store');
 
     // Raport siswa (wali kelas)

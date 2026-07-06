@@ -163,6 +163,11 @@
                         </div>
                     </div>
                 </div>
+
+                <a href="{{ route('guru.absensi.rekap') }}"
+                   class="block text-center py-3 bg-white rounded-xl shadow-ich-card text-sm font-ui font-bold text-ich-teal hover:shadow-md transition-all">
+                    Lihat Rekap Absensi Siswa
+                </a>
             </div>
 
         </div>
