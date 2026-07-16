@@ -36,8 +36,12 @@ return [
     ],
 
     'whatsapp' => [
-        'enabled'     => env('WHATSAPP_ENABLED', false),
-        'gateway_url' => env('WHATSAPP_GATEWAY_URL', 'http://localhost:3000'),
+        'enabled' => env('WHATSAPP_ENABLED', false),
+    ],
+
+    'fonnte' => [
+        'token' => env('FONNTE_TOKEN', ''),
+        'url'   => 'https://api.fonnte.com',
     ],
 
 ];

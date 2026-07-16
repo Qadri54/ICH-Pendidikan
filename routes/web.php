@@ -208,9 +208,9 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pengaturan/semester/{semester}/activate', [PengaturanController::class, 'activateSemester'])->name('pengaturan.semester.activate');
             Route::delete('pengaturan/semester/{semester}',        [PengaturanController::class, 'destroySemester'])->name('pengaturan.semester.destroy');
 
-            Route::post('pengaturan/whatsapp',      [PengaturanController::class, 'updateWhatsApp'])->name('pengaturan.whatsapp.update');
-            Route::post('pengaturan/whatsapp/test',  [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
-            Route::get('pengaturan/whatsapp/qr',     [PengaturanController::class, 'whatsappQr'])->name('pengaturan.whatsapp.qr');
+            Route::post('pengaturan/whatsapp',         [PengaturanController::class, 'updateWhatsApp'])->name('pengaturan.whatsapp.update');
+            Route::post('pengaturan/whatsapp/test',   [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
+            Route::get('pengaturan/whatsapp/status',   [PengaturanController::class, 'whatsappStatus'])->name('pengaturan.whatsapp.status');
 
             Route::get('landing',              [LandingController::class, 'index'])->name('landing.index');
             Route::get('landing/{key}/edit',   [LandingController::class, 'edit'])->name('landing.edit');

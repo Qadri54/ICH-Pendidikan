@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class WhatsAppService
 {
+    private const BASE_URL = 'https://api.fonnte.com';
+
     public function isEnabled(): bool
     {
         $dbValue = WhatsAppSetting::getValue('whatsapp_enabled');
@@ -27,24 +29,32 @@ class WhatsAppService
             return false;
         }
 
-        try {
-            $baseUrl = $this->getGatewayUrl();
+        $token = $this->getToken();
+        if (empty($token)) {
+            Log::error('WhatsApp: FONNTE_TOKEN belum dikonfigurasi.');
+            return false;
+        }
 
-            $response = Http::timeout(15)->post("{$baseUrl}/api/send", [
-                'number'  => $phone,
-                'message' => $message,
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => $token,
+            ])->timeout(15)->post(self::BASE_URL . '/send', [
+                'target'      => $phone,
+                'message'     => $message,
+                'countryCode' => '62',
             ]);
 
-            if ($response->failed()) {
-                Log::error('WhatsApp: gagal kirim', [
+            $body = $response->json();
+
+            if (! ($body['status'] ?? false)) {
+                Log::error('WhatsApp: gagal kirim via Fonnte', [
                     'phone'  => $phone,
-                    'status' => $response->status(),
-                    'body'   => $response->body(),
+                    'reason' => $body['reason'] ?? 'unknown',
                 ]);
                 return false;
             }
 
-            Log::info('WhatsApp: pesan terkirim', ['phone' => $phone]);
+            Log::info('WhatsApp: pesan terkirim via Fonnte', ['phone' => $phone]);
             return true;
         } catch (\Throwable $e) {
             Log::error('WhatsApp: gagal kirim pesan', [
@@ -55,38 +65,34 @@ class WhatsAppService
         }
     }
 
-    public function getSessionStatus(): array
-    {
-        $baseUrl = $this->getGatewayUrl();
-
-        try {
-            $response = Http::timeout(5)->get("{$baseUrl}/api/status");
-            return $response->json() ?? ['status' => 'unknown'];
-        } catch (\Throwable) {
-            return ['status' => 'disconnected'];
-        }
-    }
-
-    public function getQrCode(): ?string
-    {
-        $baseUrl = $this->getGatewayUrl();
-
-        try {
-            $response = Http::timeout(10)->get("{$baseUrl}/api/qr");
-            return $response->json('qr') ?? null;
-        } catch (\Throwable) {
-            return null;
-        }
-    }
-
     public function testSend(string $phone): bool
     {
         return $this->send($phone, "Ini adalah pesan uji coba dari ICH Pendidikan.\nJika Anda menerima pesan ini, WhatsApp gateway telah berhasil dikonfigurasi. ✅");
     }
 
-    private function getGatewayUrl(): string
+    public function getDeviceStatus(): string
     {
-        return WhatsAppSetting::getValue('self_hosted_url')
-            ?? config('services.whatsapp.gateway_url', 'http://localhost:3000');
+        $token = $this->getToken();
+        if (empty($token)) {
+            return 'not_configured';
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => $token,
+            ])->timeout(5)->post(self::BASE_URL . '/device');
+
+            $body = $response->json();
+
+            return ($body['status'] ?? false) ? 'connected' : 'disconnected';
+        } catch (\Throwable) {
+            return 'error';
+        }
+    }
+
+    private function getToken(): string
+    {
+        return WhatsAppSetting::getValue('fonnte_token')
+            ?? config('services.fonnte.token', '');
     }
 }

@@ -537,47 +537,29 @@
                             </div>
                         </div>
 
-                        {{-- Gateway URL --}}
-                        <div>
-                            <p class="font-ui font-bold text-xs text-ich-ink-400 uppercase tracking-wider mb-3">Konfigurasi Gateway</p>
-                            <div>
-                                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">URL Gateway</label>
-                                <input type="text" name="self_hosted_url"
-                                       value="{{ $whatsappSettings['self_hosted_url'] ?? 'http://localhost:3000' }}"
-                                       placeholder="http://localhost:3000"
-                                       class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-line rounded-ich-lg
-                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
-                                <p class="font-sans text-xs text-ich-ink-400 mt-1.5">
-                                    URL server whatsapp-web.js yang berjalan di Node.js.
-                                </p>
-                            </div>
-                        </div>
-
-                        {{-- QR Code Scanner --}}
-                        <div class="bg-ich-surface rounded-xl p-5" x-data="{ qrLoading: false, qrData: null, sessionStatus: 'unknown' }">
+                        {{-- Status Device Fonnte --}}
+                        <div class="bg-ich-surface rounded-xl p-5" x-data="{ loading: false, deviceStatus: 'unknown' }">
                             <div class="flex items-center justify-between mb-3">
-                                <p class="font-ui font-bold text-sm text-ich-ink-700">Scan QR Code</p>
+                                <p class="font-ui font-bold text-sm text-ich-ink-700">Status Device Fonnte</p>
                                 <button type="button"
-                                        @click="qrLoading = true; fetch('{{ route('admin.pengaturan.whatsapp.qr') }}').then(r => r.json()).then(d => { qrData = d.qr; sessionStatus = d.status?.status || 'unknown'; qrLoading = false; }).catch(() => { qrLoading = false; sessionStatus = 'error'; })"
+                                        @click="loading = true; fetch('{{ route('admin.pengaturan.whatsapp.status') }}').then(r => r.json()).then(d => { deviceStatus = d.status; loading = false; }).catch(() => { loading = false; deviceStatus = 'error'; })"
                                         class="px-3 py-1.5 text-xs font-ui font-bold bg-ich-teal/10 text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
-                                    <span x-show="!qrLoading">Muat QR</span>
-                                    <span x-show="qrLoading">Memuat...</span>
+                                    <span x-show="!loading">Cek Status</span>
+                                    <span x-show="loading">Memeriksa...</span>
                                 </button>
                             </div>
-                            <div class="flex items-center gap-2 mb-3">
+                            <div class="flex items-center gap-2">
                                 <div class="w-2 h-2 rounded-full"
-                                     :class="sessionStatus === 'connected' ? 'bg-ich-success' : sessionStatus === 'error' ? 'bg-ich-error' : 'bg-ich-ink-300'"></div>
+                                     :class="deviceStatus === 'connected' ? 'bg-ich-success' : deviceStatus === 'error' || deviceStatus === 'disconnected' ? 'bg-ich-error' : deviceStatus === 'not_configured' ? 'bg-ich-warning' : 'bg-ich-ink-300'"></div>
                                 <span class="font-sans text-xs text-ich-ink-500" x-text="
-                                    sessionStatus === 'connected' ? 'Terhubung' :
-                                    sessionStatus === 'error' ? 'Gagal terhubung' :
-                                    sessionStatus === 'disconnected' ? 'Terputus' : 'Belum dicek'
+                                    deviceStatus === 'connected' ? 'Terhubung' :
+                                    deviceStatus === 'disconnected' ? 'Terputus — scan QR di dashboard Fonnte' :
+                                    deviceStatus === 'not_configured' ? 'Token belum dikonfigurasi' :
+                                    deviceStatus === 'error' ? 'Gagal memeriksa status' : 'Belum dicek'
                                 "></span>
                             </div>
-                            <div x-show="qrData" class="flex justify-center p-4 bg-white rounded-lg">
-                                <img :src="'data:image/png;base64,' + qrData" alt="QR Code" class="w-48 h-48">
-                            </div>
-                            <p x-show="!qrData && !qrLoading" class="text-center text-ich-ink-300 text-sm py-6 font-sans">
-                                Klik "Muat QR" untuk menampilkan QR code
+                            <p class="font-sans text-xs text-ich-ink-400 mt-3">
+                                Kelola device dan scan QR code di <a href="https://my.fonnte.com" target="_blank" class="text-ich-teal hover:underline font-bold">dashboard Fonnte</a>.
                             </p>
                         </div>
 

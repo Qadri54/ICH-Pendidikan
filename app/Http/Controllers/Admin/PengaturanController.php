@@ -117,15 +117,12 @@ class PengaturanController extends Controller
     {
         $data = $request->validate([
             'whatsapp_enabled' => 'required|in:true,false',
-            'self_hosted_url'  => 'nullable|string|max:255',
         ]);
 
-        foreach ($data as $key => $value) {
-            WhatsAppSetting::updateOrCreate(
-                ['setting_key' => $key],
-                ['setting_value' => $value ?? '']
-            );
-        }
+        WhatsAppSetting::updateOrCreate(
+            ['setting_key' => 'whatsapp_enabled'],
+            ['setting_value' => $data['whatsapp_enabled']]
+        );
 
         return redirect()->route('admin.pengaturan.index')
             ->with('success', 'Pengaturan WhatsApp berhasil disimpan.');
@@ -141,11 +138,10 @@ class PengaturanController extends Controller
             ->with($success ? 'success' : 'error', $success ? 'Pesan uji coba berhasil dikirim!' : 'Gagal mengirim pesan. Periksa konfigurasi.');
     }
 
-    public function whatsappQr(WhatsAppService $whatsAppService)
+    public function whatsappStatus(WhatsAppService $whatsAppService)
     {
         return response()->json([
-            'qr'     => $whatsAppService->getQrCode(),
-            'status' => $whatsAppService->getSessionStatus(),
+            'status' => $whatsAppService->getDeviceStatus(),
         ]);
     }
 }
