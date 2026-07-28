@@ -10,19 +10,23 @@ class TeacherProfileService
     {
         return Teacher::create([
             'user_id'   => $userId,
-            'NIP'       => $data['NIP'],
-            'tipe'      => $data['tipe'],
-            'hire_date' => $data['hire_date'],
+            'NIP'       => $data['NIP'] ?? null,
+            'tipe'      => $data['tipe'] ?? (($data['role_name'] ?? '') === 'Guru Ngaji' ? 'Guru Ngaji' : 'Guru TK'),
+            'hire_date' => $data['hire_date'] ?? now()->toDateString(),
         ]);
     }
 
     public function updateProfile(int $userId, array $data): bool
     {
-        return Teacher::where('user_id', $userId)->update([
-            'NIP'       => $data['NIP'],
-            'tipe'      => $data['tipe'],
-            'hire_date' => $data['hire_date'],
-        ]);
+        $teacher = Teacher::where('user_id', $userId)->first();
+        if (!$teacher) return false;
+
+        $update = [];
+        if (isset($data['NIP']))       $update['NIP']       = $data['NIP'];
+        if (isset($data['tipe']))      $update['tipe']      = $data['tipe'];
+        if (isset($data['hire_date'])) $update['hire_date'] = $data['hire_date'];
+
+        return empty($update) ? true : $teacher->update($update);
     }
 
     public function deleteProfile(int $userId): bool

@@ -202,7 +202,7 @@
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Role <span class="text-ich-error">*</span></label>
                 <select name="role_name" x-model="editRole" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @foreach($createRoles as $r)
+                    @foreach($editRoles as $r)
                         <option value="{{ $r }}">{{ $r }}</option>
                     @endforeach
                 </select>
