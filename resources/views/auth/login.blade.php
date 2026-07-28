@@ -43,6 +43,12 @@
             class="text-white lg:text-ich-ink-600 text-[12px] text-center"
             :status="session('status')"/>
 
+        @if(session('error'))
+            <div class="px-4 py-3 bg-ich-error-soft text-ich-error rounded-lg text-[12px] font-semibold text-center">
+                {{ session('error') }}
+            </div>
+        @endif
+
         {{-- Form --}}
         <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4">
             @csrf
