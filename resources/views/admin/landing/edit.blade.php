@@ -22,7 +22,8 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.landing.update', $section->key) }}" method="POST" enctype="multipart/form-data" class="max-w-4xl space-y-6">
+    <form action="{{ route('admin.landing.update', $section->key) }}" method="POST" enctype="multipart/form-data"
+          class="{{ $section->key === 'struktur' ? '' : 'max-w-4xl' }} space-y-6">
         @csrf
         @method('PUT')
 

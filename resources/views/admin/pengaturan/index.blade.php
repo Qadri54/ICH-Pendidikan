@@ -559,7 +559,7 @@
                                 "></span>
                             </div>
                             <p class="font-sans text-xs text-ich-ink-400 mt-3">
-                                Kelola device dan scan QR code di <a href="https://my.fonnte.com" target="_blank" class="text-ich-teal hover:underline font-bold">dashboard Fonnte</a>.
+                                Kelola device dan scan QR code di <a href="https://fonnte.com" target="_blank" class="text-ich-teal hover:underline font-bold">dashboard Fonnte</a>.
                             </p>
                         </div>
 
