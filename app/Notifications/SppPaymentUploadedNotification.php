@@ -26,7 +26,7 @@ class SppPaymentUploadedNotification extends Notification
             'nama_siswa' => $namaSiswa,
             'jumlah'     => $this->payment->jumlah_bayar,
             'message'    => "{$namaSiswa} mengirim bukti pembayaran SPP sebesar Rp {$jumlah}. Menunggu konfirmasi.",
-            'url'        => route('admin.keuangan.bukti-pembayaran', ['status' => 'pending']),
+            'url'        => route('admin.keuangan.bukti-pembayaran', ['status' => 'pending', 'highlight' => $this->payment->payment_id]),
         ];
     }
 

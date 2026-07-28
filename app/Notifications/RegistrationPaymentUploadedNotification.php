@@ -27,7 +27,7 @@ class RegistrationPaymentUploadedNotification extends Notification
             'jumlah'         => $this->transaction->jumlah_bayar,
             'kategori'       => $kategori,
             'message'        => "{$namaSiswa} mengirim bukti {$kategori} biaya pendaftaran sebesar Rp {$jumlah}. Menunggu konfirmasi.",
-            'url'            => route('admin.pembayaran-pendaftaran.index', ['status' => 'pending']),
+            'url'            => route('admin.pembayaran-pendaftaran.index', ['highlight' => $this->transaction->registration_fee_id]),
         ];
     }
 

@@ -59,7 +59,8 @@
                             default     => ['label' => $p->status,  'class' => 'bg-gray-100 text-gray-600'],
                         };
                     @endphp
-                    <tr class="hover:bg-ich-surface transition-colors">
+                    <tr id="payment-{{ $p->payment_id }}"
+                        class="hover:bg-ich-surface transition-colors {{ request('highlight') == $p->payment_id ? 'bg-yellow-50 ring-2 ring-yellow-300 ring-inset' : '' }}">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $p->student?->nama_siswa ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $p->student?->classRoom?->nama_kelas ?? '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-600">
@@ -153,6 +154,15 @@
             </button>
         </div>
     </x-admin-modal>
+
+    @if(request('highlight'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('payment-{{ request('highlight') }}');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        </script>
+    @endif
 
 </div>
 </x-main-layout>

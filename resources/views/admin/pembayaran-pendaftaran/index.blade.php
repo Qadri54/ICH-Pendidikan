@@ -78,7 +78,8 @@
                                 default        => ['label' => 'Belum Bayar', 'class' => 'bg-ich-warning-soft text-ich-warning'],
                             };
                         @endphp
-                        <tr class="hover:bg-ich-surface transition-colors">
+                        <tr id="fee-{{ $fee->registration_fee_id }}"
+                            class="hover:bg-ich-surface transition-colors {{ request('highlight') == $fee->registration_fee_id ? 'bg-yellow-50 ring-2 ring-yellow-300 ring-inset' : '' }}">
 
                             {{-- Siswa --}}
                             <td class="px-5 py-4">
@@ -223,6 +224,15 @@
             </div>
         </form>
     </x-admin-modal>
+
+    @if(request('highlight'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('fee-{{ request('highlight') }}');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        </script>
+    @endif
 
 </div>
 </x-main-layout>
