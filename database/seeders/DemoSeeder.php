@@ -5,7 +5,10 @@ namespace Database\Seeders;
 use App\Models\AcademicPeriod;
 use App\Models\Admin;
 use App\Models\ClassRoom;
+use App\Models\DevelopmentCategory;
 use App\Models\GeofenceZone;
+use App\Models\HealthCondition;
+use App\Models\NarrativeAssessment;
 use App\Models\PhysicalMeasurement;
 use App\Models\Registration;
 use App\Models\RegistrationFee;
@@ -17,6 +20,7 @@ use App\Models\SavingTransaction;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
 use App\Models\Student;
+use App\Models\StudentChecklistAssessment;
 use App\Models\StudentPassbook;
 use App\Models\StudentReportCard;
 use App\Models\Teacher;
@@ -35,6 +39,7 @@ class DemoSeeder extends Seeder
         $this->seedRegistrations();
         $this->seedSavings();
         $this->seedPhysicalMeasurements();
+        $this->seedSubmittedReportCard();
 
         $this->printDemoAccounts();
     }
@@ -317,6 +322,104 @@ class DemoSeeder extends Seeder
         }
 
         $this->command->info("Raport: {$cards->count()} pengukuran fisik ditambahkan");
+    }
+
+    // ─── RAPORT: SUBMITTED (MENUNGGU PERSETUJUAN ADMIN) ────────────────
+
+    private function seedSubmittedReportCard(): void
+    {
+        $student = Student::where('NIS', '2322')->first();
+        if (!$student) return;
+
+        if (StudentReportCard::where('student_id', $student->student_id)->exists()) return;
+
+        $period = AcademicPeriod::where('tahun_ajaran', '2025/2026')
+            ->where('semester', 1)->first();
+        if (!$period) return;
+
+        $class = ClassRoom::find($student->class_id);
+        $teacherId = $class?->homeroom_teacher_id;
+
+        $rc = StudentReportCard::create([
+            'student_id'          => $student->student_id,
+            'period_id'           => $period->period_id,
+            'class_id'            => $student->class_id,
+            'homeroom_teacher_id' => $teacherId,
+            'status'              => 'submitted',
+        ]);
+
+        $nama = 'Archilla';
+        $ortu = 'Ayah dan Mama';
+
+        NarrativeAssessment::create([
+            'report_card_id' => $rc->report_card_id,
+            'kategori'       => 'intrakurikuler',
+            'judul'          => 'Nilai Agama dan Budi Pekerti',
+            'isi_naratif'    => "Selama semester ini, Ananda {$nama} semakin menunjukkan pemahaman terhadap nilai-nilai agama dan budi pekerti. {$nama} sudah terbiasa berdoa sebelum dan sesudah kegiatan, serta mengucapkan salam setiap kali bertemu guru dan teman. {$nama} juga menjaga kebersihan dirinya dengan baik. Kami berharap {$nama} dapat lebih konsisten dalam menerapkan kebiasaan baik ini secara mandiri. Kami mengharapkan dukungan dari {$ortu} untuk terus membiasakan {$nama} menjalankan nilai-nilai agama di rumah.",
+        ]);
+
+        NarrativeAssessment::create([
+            'report_card_id' => $rc->report_card_id,
+            'kategori'       => 'kokurikuler',
+            'judul'          => 'Jati Diri',
+            'isi_naratif'    => "{$nama} menunjukkan kemajuan yang baik dalam mengenali dan mengelola emosinya. {$nama} juga sudah bisa menyatakan perasaan senang, sedih, atau marah dengan kata-kata sederhana. Selain itu, {$nama} semakin berani memulai percakapan dengan teman-teman barunya. Kami berharap {$ortu} di rumah dapat mendukung {$nama} dengan memberikan waktu untuk berbicara tentang perasaannya setiap hari.",
+        ]);
+
+        NarrativeAssessment::create([
+            'report_card_id' => $rc->report_card_id,
+            'kategori'       => 'kokurikuler',
+            'judul'          => 'Dasar-dasar Literasi, Matematika, Sains, Teknologi, Rekayasa, dan Seni',
+            'isi_naratif'    => "{$nama} menunjukkan minat yang besar pada kegiatan bercerita dan menggambar serta mampu menyebutkan huruf-huruf dalam namanya dan mengenali angka hingga 10. Dalam kegiatan eksplorasi sains, {$nama} sangat antusias saat mencoba permainan air dan pasir. Kami menyarankan {$ortu} mendampingi {$nama} dalam kegiatan seperti membaca buku cerita bergambar atau menghitung benda-benda sederhana di rumah.",
+        ]);
+
+        $leafIds = $this->getLeafCategoryIds();
+        $pattern = ['SM','MM','MM','SM','SM','MM','MM','SM','SM','SM','SM','SM','SM','MM','MM','SM','MM','SM','SM','MM','MM','MM','SM','MM','SM','MM','SM','MM','SM','MM','MM','MM','SM','MM','SM','SM','MM','SM','MM','MM','SM','MM','SM','SM','MM','MM','MM'];
+        foreach ($pattern as $i => $status) {
+            if (!isset($leafIds[$i])) continue;
+            StudentChecklistAssessment::create([
+                'report_card_id' => $rc->report_card_id,
+                'category_id'    => $leafIds[$i],
+                'status'         => $status,
+            ]);
+        }
+
+        HealthCondition::create([
+            'report_card_id' => $rc->report_card_id,
+            'pendengaran'    => 'Baik',
+            'penglihatan'    => 'Baik',
+        ]);
+
+        PhysicalMeasurement::create([
+            'report_card_id' => $rc->report_card_id,
+            'tinggi_badan'   => 108.5,
+            'berat_badan'    => 18.2,
+            'lingkar_kepala' => 50.5,
+            'tanggal_ukur'   => '2025-10-15',
+        ]);
+
+        $this->command->info("Raport: 1 raport submitted (Archilla - NIS 2322) siap di-approve admin");
+    }
+
+    private function getLeafCategoryIds(): array
+    {
+        $leaves = [];
+        $parents = DevelopmentCategory::whereNull('parent_id')
+            ->orderBy('urutan')->get();
+
+        foreach ($parents as $parent) {
+            $children = DevelopmentCategory::where('parent_id', $parent->category_id)
+                ->orderBy('urutan')->get();
+
+            if ($children->isEmpty()) {
+                $leaves[] = $parent->category_id;
+            } else {
+                foreach ($children as $child) {
+                    $leaves[] = $child->category_id;
+                }
+            }
+        }
+
+        return $leaves;
     }
 
     // ─── SUMMARY ─────────────────────────────────────────────────────────
