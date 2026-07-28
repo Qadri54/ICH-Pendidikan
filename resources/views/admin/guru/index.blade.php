@@ -67,6 +67,7 @@
                 <tr>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Nama</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIP</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Email</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">No HP</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
@@ -76,6 +77,7 @@
                     <tr class="hover:bg-ich-surface transition-colors">
                         <td class="px-4 py-3 font-ui font-semibold text-ich-ink-900">{{ $g->nama }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->NIP ?: '-' }}</td>
+                        <td class="px-4 py-3 text-ich-ink-500">{{ $g->email ?: '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->no_hp ?: '-' }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
@@ -94,7 +96,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
+                        <td colspan="5" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
                     </tr>
                 @endforelse
             </tbody>
