@@ -11,6 +11,7 @@
     editNoHp: '{{ old('no_hp', '') }}',
     editHireDate: '{{ old('hire_date', '') }}',
     editRoleName: '',
+    editStatus: 'active',
     deleteId: null,
     deleteName: '',
     openEdit(g) {
@@ -20,6 +21,7 @@
         this.editNoHp = g.no_hp || '';
         this.editHireDate = g.hire_date || '';
         this.editRoleName = g.role_name || 'Guru';
+        this.editStatus = g.status || 'active';
         this.showEdit = true;
     },
     openDelete(id, name) {
@@ -84,7 +86,7 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
-                                    <button @click="openEdit({{ Js::from(['id' => $g->id, 'nama' => $g->nama, 'NIP' => $g->NIP, 'no_hp' => $g->no_hp, 'hire_date' => $g->hire_date, 'role_name' => $g->role_name]) }})"
+                                    <button @click="openEdit({{ Js::from(['id' => $g->id, 'nama' => $g->nama, 'NIP' => $g->NIP, 'no_hp' => $g->no_hp, 'hire_date' => $g->hire_date, 'role_name' => $g->role_name, 'status' => $g->status]) }})"
                                             class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
                                     </button>
@@ -191,9 +193,18 @@
                     <input type="text" name="NIP" x-model="editNIP" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 </div>
             </div>
-            <div>
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
-                <input type="date" name="hire_date" x-model="editHireDate" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
+                    <input type="date" name="hire_date" x-model="editHireDate" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status</label>
+                    <select name="status" x-model="editStatus" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Nonaktif</option>
+                    </select>
+                </div>
             </div>
 
             <div class="flex gap-3 pt-2">

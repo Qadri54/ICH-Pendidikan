@@ -86,10 +86,11 @@ class GuruController extends Controller {
             'NIP' => 'nullable|string|max:50',
             'hire_date' => 'nullable|date',
             'tipe_guru' => 'required|in:Guru,Guru Ngaji',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $teacher = Teacher::with('user.role')->findOrFail($id);
-        $teacher->user->update(['name' => $data['name'], 'no_hp' => $data['no_hp']]);
+        $teacher->user->update(['name' => $data['name'], 'no_hp' => $data['no_hp'], 'status' => $data['status']]);
 
         $tipe = $data['tipe_guru'] === 'Guru Ngaji' ? 'Guru Ngaji' : 'Guru TK';
         $updateData = ['NIP' => $data['NIP'], 'tipe' => $tipe];
