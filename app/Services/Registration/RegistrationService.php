@@ -5,6 +5,8 @@ namespace App\Services\Registration;
 use App\Models\Registration;
 use App\Models\User;
 use App\Notifications\NewRegistrationNotification;
+use App\Notifications\RegistrationApprovedNotification;
+use App\Notifications\RegistrationRejectedNotification;
 use App\Services\User\UserService;
 use App\Services\User\StudentProfileService;
 use Illuminate\Support\Facades\DB;
@@ -100,6 +102,10 @@ class RegistrationService {
 
             $this->registrationFeeService->createFee($student->student_id);
 
+            if ($registration->user) {
+                $registration->user->notify(new RegistrationApprovedNotification($registration));
+            }
+
             return $registration;
         });
     }
@@ -109,6 +115,10 @@ class RegistrationService {
             'status'           => 'rejected',
             'rejection_reason' => $reason,
         ]);
+
+        if ($registration->user) {
+            $registration->user->notify(new RegistrationRejectedNotification($registration));
+        }
 
         return $registration;
     }

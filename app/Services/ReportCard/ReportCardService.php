@@ -3,6 +3,7 @@
 namespace App\Services\ReportCard;
 
 use App\Models\StudentReportCard;
+use App\Notifications\ReportCardApprovedNotification;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
@@ -120,6 +121,11 @@ class ReportCardService
         ]);
 
         $this->snapshotService->createSnapshot($id);
+
+        $raport->load('student.user', 'period');
+        if ($raport->student?->user) {
+            $raport->student->user->notify(new ReportCardApprovedNotification($raport));
+        }
 
         return (bool) $result;
     }

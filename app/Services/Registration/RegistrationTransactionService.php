@@ -5,6 +5,8 @@ namespace App\Services\Registration;
 use App\Models\Admin;
 use App\Models\RegistrationTransaction;
 use App\Models\User;
+use App\Notifications\RegistrationPaymentApprovedNotification;
+use App\Notifications\RegistrationPaymentRejectedNotification;
 use App\Notifications\RegistrationPaymentUploadedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -58,18 +60,33 @@ class RegistrationTransactionService
             $feeStatus = $totalPaid >= $fee->total_jumlah ? 'paid' : 'installments';
             $this->registrationFeeService->updateStatus($fee->registration_fee_id, $feeStatus);
 
+            $user = $transaction->registrationFee->student?->user;
+            if ($user) {
+                $user->notify(new RegistrationPaymentApprovedNotification($transaction));
+            }
+
             return true;
         });
     }
 
     public function reject(int $transactionId, ?string $reason = null): bool
     {
-        return RegistrationTransaction::where('registration_transaction_id', $transactionId)
+        $transaction = RegistrationTransaction::with('registrationFee.student.user')
+            ->where('registration_transaction_id', $transactionId)
             ->where('status', 'pending')
-            ->update([
-                'status'           => 'rejected',
-                'rejection_reason' => $reason,
-            ]);
+            ->firstOrFail();
+
+        $transaction->update([
+            'status'           => 'rejected',
+            'rejection_reason' => $reason,
+        ]);
+
+        $user = $transaction->registrationFee->student?->user;
+        if ($user) {
+            $user->notify(new RegistrationPaymentRejectedNotification($transaction));
+        }
+
+        return true;
     }
 
     public function getPaginated(?string $search, ?string $status, int $perPage = 15)

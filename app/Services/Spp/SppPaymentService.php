@@ -5,6 +5,8 @@ namespace App\Services\Spp;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
 use App\Models\User;
+use App\Notifications\SppPaymentApprovedNotification;
+use App\Notifications\SppPaymentRejectedNotification;
 use App\Notifications\SppPaymentUploadedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -54,6 +56,11 @@ class SppPaymentService
             SppInvoice::where('invoice_id', $payment->invoice_id)
                 ->update(['status' => 'paid']);
 
+            $payment->load('student.user', 'invoice');
+            if ($payment->student?->user) {
+                $payment->student->user->notify(new SppPaymentApprovedNotification($payment));
+            }
+
             return $payment;
         });
     }
@@ -65,6 +72,11 @@ class SppPaymentService
     {
         $payment = SppPayment::findOrFail($paymentId);
         $payment->update(['status' => 'cancelled']);
+
+        $payment->load('student.user', 'invoice');
+        if ($payment->student?->user) {
+            $payment->student->user->notify(new SppPaymentRejectedNotification($payment));
+        }
 
         return $payment;
     }
