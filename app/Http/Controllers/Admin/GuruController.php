@@ -27,6 +27,7 @@ class GuruController extends Controller {
                 'no_hp' => $t->user?->no_hp ?? '',
                 'hire_date' => $t->hire_date ?? '',
                 'email' => $t->user?->email ?? '',
+                'status' => $t->user?->status ?? 'active',
                 'role_name' => $t->user?->role?->role_name ?? '',
             ])
             ->sortBy('nama')

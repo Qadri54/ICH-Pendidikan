@@ -68,6 +68,7 @@
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">NIP</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Email</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">No HP</th>
+                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Status</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Aksi</th>
                 </tr>
             </thead>
@@ -79,6 +80,7 @@
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->NIP ?: '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->email ?: '-' }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">{{ $g->no_hp ?: '-' }}</td>
+                        <td class="px-4 py-3"><x-pill :tone="$g->status === 'active' ? 'success' : 'error'">{{ $g->status === 'active' ? 'Aktif' : 'Nonaktif' }}</x-pill></td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
@@ -96,7 +98,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
+                        <td colspan="7" class="px-4 py-10 text-center text-ich-ink-300 font-sans">Belum ada data guru.</td>
                     </tr>
                 @endforelse
             </tbody>
