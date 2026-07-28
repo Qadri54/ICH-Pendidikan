@@ -350,7 +350,7 @@ class DemoSeeder extends Seeder
             [
                 'name'  => 'Sari Dewi',
                 'email' => 'demo.ortu1@iqra.com',
-                'no_hp' => '081299000001',
+                'no_hp' => '081360765971',
                 'registration' => [
                     'jenis_pendaftaran' => 'TK',
                     'nama_siswa'        => 'Khalisa Zahra',
@@ -380,7 +380,7 @@ class DemoSeeder extends Seeder
             [
                 'name'  => 'Fitri Handayani',
                 'email' => 'demo.ortu2@iqra.com',
-                'no_hp' => '081299000002',
+                'no_hp' => '081360765971',
                 'registration' => [
                     'jenis_pendaftaran' => 'TK',
                     'nama_siswa'        => 'Arjuna Prasetyo',
@@ -410,7 +410,7 @@ class DemoSeeder extends Seeder
             [
                 'name'           => 'Maya Putri',
                 'email'          => 'demo.ortu3@iqra.com',
-                'no_hp'          => '081299000003',
+                'no_hp'          => '081360765971',
                 'create_student' => true,
                 'registration'   => [
                     'jenis_pendaftaran' => 'TK',

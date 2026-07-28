@@ -395,7 +395,7 @@ class ParentStudentSeeder extends Seeder
             [
                 'name'  => 'Aswan Lubis',
                 'email' => 'aswan.lubis@iqra.com',
-                'no_hp' => '081200000020',
+                'no_hp' => '081360765971',
                 'children' => [
                     [
                         'nama_siswa'    => 'Ahmad Sahydan Lubis',
