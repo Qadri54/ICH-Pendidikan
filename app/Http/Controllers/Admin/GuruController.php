@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller {
     public function index(Request $request) {
-        $guru = Teacher::with('user')
+        $guru = Teacher::with('user.role')
             ->when($request->search, fn($q) =>
                 $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$request->search}%"))
                     ->orWhere('NIP', 'like', "%{$request->search}%")
@@ -24,12 +24,10 @@ class GuruController extends Controller {
                 'tipe' => $t->tipe,
                 'nama' => $t->user?->name ?? '-',
                 'NIP' => $t->NIP,
-                'info' => '-',
-                'model' => 'teacher',
                 'no_hp' => $t->user?->no_hp ?? '',
                 'hire_date' => $t->hire_date ?? '',
-                'subject' => '',
                 'email' => $t->user?->email ?? '',
+                'role_name' => $t->user?->role?->role_name ?? '',
             ])
             ->sortBy('nama')
             ->values();
@@ -86,16 +84,22 @@ class GuruController extends Controller {
             'no_hp' => 'required|string|max:20',
             'NIP' => 'nullable|string|max:50',
             'hire_date' => 'nullable|date',
+            'tipe_guru' => 'required|in:Guru,Guru Ngaji',
         ]);
 
-        $teacher = Teacher::findOrFail($id);
+        $teacher = Teacher::with('user.role')->findOrFail($id);
         $teacher->user->update(['name' => $data['name'], 'no_hp' => $data['no_hp']]);
 
-        $updateData = ['NIP' => $data['NIP']];
+        $tipe = $data['tipe_guru'] === 'Guru Ngaji' ? 'Guru Ngaji' : 'Guru TK';
+        $updateData = ['NIP' => $data['NIP'], 'tipe' => $tipe];
         if (! empty($data['hire_date'])) {
             $updateData['hire_date'] = $data['hire_date'];
         }
         $teacher->update($updateData);
+
+        if ($teacher->user->role && $teacher->user->role->role_name !== $data['tipe_guru']) {
+            $teacher->user->role->update(['role_name' => $data['tipe_guru']]);
+        }
 
         return redirect()->route('admin.guru.index')
             ->with('success', "Data guru berhasil diperbarui.");

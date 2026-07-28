@@ -6,22 +6,20 @@
     showDelete: false,
     tipe: '{{ old('tipe_guru', 'Guru') }}',
     editId: '{{ old('_edit_id', '') }}',
-    editTipe: '',
     editName: '{{ old('name', '') }}',
     editNIP: '{{ old('NIP', '') }}',
     editNoHp: '{{ old('no_hp', '') }}',
     editHireDate: '{{ old('hire_date', '') }}',
-    editSubject: '',
+    editRoleName: '',
     deleteId: null,
     deleteName: '',
     openEdit(g) {
         this.editId = g.id;
-        this.editTipe = g.tipe;
         this.editName = g.nama;
         this.editNIP = g.NIP || '';
         this.editNoHp = g.no_hp || '';
         this.editHireDate = g.hire_date || '';
-        this.editSubject = g.subject || '';
+        this.editRoleName = g.role_name || 'Guru';
         this.showEdit = true;
     },
     openDelete(id, name) {
@@ -82,7 +80,7 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 @if(! $isReadOnly)
-                                    <button @click="openEdit({{ Js::from(['id' => $g->id, 'tipe' => $g->tipe, 'nama' => $g->nama, 'NIP' => $g->NIP, 'no_hp' => $g->no_hp, 'hire_date' => $g->hire_date, 'subject' => $g->subject]) }})"
+                                    <button @click="openEdit({{ Js::from(['id' => $g->id, 'nama' => $g->nama, 'NIP' => $g->NIP, 'no_hp' => $g->no_hp, 'hire_date' => $g->hire_date, 'role_name' => $g->role_name]) }})"
                                             class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
                                         Edit
                                     </button>
@@ -110,12 +108,13 @@
             @csrf
             <input type="hidden" name="_modal" value="create">
 
-            <input type="hidden" name="tipe_guru" value="Guru">
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Lengkap <span class="text-ich-error">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @error('name') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tipe Guru <span class="text-ich-error">*</span></label>
+                    <select name="tipe_guru" x-model="tipe" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                        <option value="Guru">Guru TK</option>
+                        <option value="Guru Ngaji">Guru Ngaji</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">NIP</label>
@@ -124,26 +123,31 @@
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Lengkap <span class="text-ich-error">*</span></label>
+                    <input type="text" name="name" value="{{ old('name') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    @error('name') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Email <span class="text-ich-error">*</span></label>
                     <input type="email" name="email" value="{{ old('email') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     @error('email') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">No HP <span class="text-ich-error">*</span></label>
                     <input type="tel" name="no_hp" value="{{ old('no_hp') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     @error('no_hp') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Password <span class="text-ich-error">*</span></label>
                     <input type="password" name="password" minlength="8" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     @error('password') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
-                    <input type="date" name="hire_date" value="{{ old('hire_date') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
+                <input type="date" name="hire_date" value="{{ old('hire_date') }}" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
             <div class="flex gap-3 pt-2">
@@ -162,23 +166,30 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Lengkap</label>
-                    <input type="text" name="name" x-model="editName" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tipe Guru</label>
+                    <select name="tipe_guru" x-model="editRoleName" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                        <option value="Guru">Guru TK</option>
+                        <option value="Guru Ngaji">Guru Ngaji</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">No HP</label>
-                    <input type="tel" name="no_hp" x-model="editNoHp" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Lengkap</label>
+                    <input type="text" name="name" x-model="editName" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">No HP</label>
+                    <input type="tel" name="no_hp" x-model="editNoHp" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                </div>
+                <div>
                     <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">NIP</label>
                     <input type="text" name="NIP" x-model="editNIP" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                 </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
-                    <input type="date" name="hire_date" x-model="editHireDate" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
+            </div>
+            <div>
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Bergabung</label>
+                <input type="date" name="hire_date" x-model="editHireDate" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
             </div>
 
             <div class="flex gap-3 pt-2">

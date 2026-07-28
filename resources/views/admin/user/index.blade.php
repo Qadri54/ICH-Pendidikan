@@ -155,7 +155,7 @@
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Role <span class="text-ich-error">*</span></label>
                 <select name="role_name" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     <option value="">-- Pilih Role --</option>
-                    @foreach($createRoles as $r)
+                    @foreach($roles as $r)
                         <option value="{{ $r }}" {{ old('role_name') === $r ? 'selected' : '' }}>{{ $r }}</option>
                     @endforeach
                 </select>
@@ -202,7 +202,7 @@
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Role <span class="text-ich-error">*</span></label>
                 <select name="role_name" x-model="editRole" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @foreach($editRoles as $r)
+                    @foreach($roles as $r)
                         <option value="{{ $r }}">{{ $r }}</option>
                     @endforeach
                 </select>

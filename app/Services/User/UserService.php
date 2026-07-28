@@ -21,7 +21,7 @@ class UserService
         return User::with('role')->get();
     }
 
-    public function getPaginated(?string $search, ?string $role = null, int $perPage = 15)
+    public function getPaginated(?string $search, ?string $role = null, array $excludeRoles = [], int $perPage = 15)
     {
         return User::with('role')
             ->when($search, fn($q) =>
@@ -30,6 +30,9 @@ class UserService
             )
             ->when($role, fn($q) =>
                 $q->whereHas('role', fn($r) => $r->where('role_name', $role))
+            )
+            ->when($excludeRoles, fn($q) =>
+                $q->whereDoesntHave('role', fn($r) => $r->whereIn('role_name', $excludeRoles))
             )
             ->orderBy('name')
             ->paginate($perPage)

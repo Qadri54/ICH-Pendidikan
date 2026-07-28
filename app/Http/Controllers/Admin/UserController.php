@@ -12,12 +12,10 @@ class UserController extends Controller {
     }
 
     public function index(Request $request) {
-        $roles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Guru', 'Guru Ngaji', 'Orang Tua'];
-        $createRoles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Orang Tua'];
-        $editRoles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Guru', 'Guru Ngaji', 'Orang Tua'];
-        $users = $this->userService->getPaginated($request->search, $request->role);
+        $roles = ['Admin', 'Kepala Sekolah', 'Kepala Yayasan', 'Orang Tua'];
+        $users = $this->userService->getPaginated($request->search, $request->role, excludeRoles: ['Guru', 'Guru Ngaji']);
 
-        return view('admin.user.index', compact('users', 'roles', 'createRoles', 'editRoles'));
+        return view('admin.user.index', compact('users', 'roles'));
     }
 
     public function create() {
@@ -55,7 +53,7 @@ class UserController extends Controller {
             'email' => "required|email|unique:users,email,{$user->user_id},user_id",
             'no_hp' => 'required|string|max:20',
             'password' => 'nullable|string|min:8|confirmed',
-            'role_name' => 'required|in:Admin,Kepala Sekolah,Kepala Yayasan,Guru,Guru Ngaji,Orang Tua',
+            'role_name' => 'required|in:Admin,Kepala Sekolah,Kepala Yayasan,Orang Tua',
             'NIP' => 'nullable|string|max:50',
         ]);
 
