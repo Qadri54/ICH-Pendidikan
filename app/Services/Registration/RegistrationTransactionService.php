@@ -23,7 +23,6 @@ class RegistrationTransactionService
             'registration_fee_id'     => $data['registration_fee_id'],
             'payment_date'            => $data['payment_date'],
             'jumlah_bayar'            => $data['jumlah_bayar'],
-            'nama_bank'               => $data['nama_bank'] ?? null,
             'gambar_bukti_pembayaran' => $data['gambar_bukti_pembayaran'],
             'payment_category'        => $data['payment_category'],
             'status'                  => 'pending',

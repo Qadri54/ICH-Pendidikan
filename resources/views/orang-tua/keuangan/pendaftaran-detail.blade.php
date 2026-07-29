@@ -164,21 +164,16 @@
                         <p class="font-ui font-bold text-xs text-ich-ink-500 uppercase tracking-wide">
                             Pelunasan — Rp {{ number_format($remaining, 0, ',', '.') }}
                         </p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
-                                <input type="number" name="jumlah_bayar"
-                                       value="{{ $remaining }}" readonly
-                                       class="w-full h-10 px-3 bg-ich-surface border-2 border-ich-line rounded-ich-lg
-                                              font-sans text-sm text-ich-ink-600">
-                            </div>
-                            <div>
-                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Nama Bank</label>
-                                <input type="text" name="nama_bank" value="{{ old('nama_bank') }}"
-                                       placeholder="BCA, BRI, dsb" required
-                                       class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
-                            </div>
+                        <div class="flex flex-col items-center gap-2 py-2">
+                            <img src="{{ asset('storage/qris.png') }}" alt="QRIS" class="w-48 rounded-lg">
+                            <p class="font-sans text-xs text-ich-ink-400">Scan QRIS untuk pembayaran</p>
+                        </div>
+                        <div>
+                            <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
+                            <input type="number" name="jumlah_bayar"
+                                   value="{{ $remaining }}" readonly
+                                   class="w-full h-10 px-3 bg-ich-surface border-2 border-ich-line rounded-ich-lg
+                                          font-sans text-sm text-ich-ink-600">
                         </div>
                         <div>
                             <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Bukti Transfer</label>
@@ -258,21 +253,16 @@
                                           class="px-5 py-4 space-y-3">
                                         @csrf
                                         <input type="hidden" name="payment_category" value="installment">
-                                        <div class="grid grid-cols-2 gap-3">
-                                            <div>
-                                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
-                                                <input type="number" name="jumlah_bayar"
-                                                       value="{{ $installment->jumlah }}" readonly
-                                                       class="w-full h-10 px-3 bg-ich-surface border-2 border-ich-line rounded-ich-lg
-                                                              font-sans text-sm text-ich-ink-600">
-                                            </div>
-                                            <div>
-                                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Nama Bank</label>
-                                                <input type="text" name="nama_bank" value="{{ old('nama_bank') }}"
-                                                       placeholder="BCA, BRI, dsb" required
-                                                       class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
-                                            </div>
+                                        <div class="flex flex-col items-center gap-2 py-2">
+                                            <img src="{{ asset('storage/qris.png') }}" alt="QRIS" class="w-48 rounded-lg">
+                                            <p class="font-sans text-xs text-ich-ink-400">Scan QRIS untuk pembayaran</p>
+                                        </div>
+                                        <div>
+                                            <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
+                                            <input type="number" name="jumlah_bayar"
+                                                   value="{{ $installment->jumlah }}" readonly
+                                                   class="w-full h-10 px-3 bg-ich-surface border-2 border-ich-line rounded-ich-lg
+                                                          font-sans text-sm text-ich-ink-600">
                                         </div>
                                         <div>
                                             <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Bukti Transfer</label>

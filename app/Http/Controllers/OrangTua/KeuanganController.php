@@ -116,7 +116,6 @@ class KeuanganController extends Controller
 
         $data = $request->validate([
             'jumlah_bayar'            => "required|integer|min:1|max:{$remaining}",
-            'nama_bank'               => 'required|string|max:100',
             'gambar_bukti_pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:5120',
             'payment_category'        => 'required|in:full,installment',
         ]);
@@ -128,7 +127,6 @@ class KeuanganController extends Controller
             'registration_fee_id'     => $fee->registration_fee_id,
             'payment_date'            => now(),
             'jumlah_bayar'            => $data['jumlah_bayar'],
-            'nama_bank'               => $data['nama_bank'],
             'gambar_bukti_pembayaran' => $path,
             'payment_category'        => $data['payment_category'],
         ]);
@@ -143,7 +141,6 @@ class KeuanganController extends Controller
 
         $data = $request->validate([
             'jumlah_bayar'            => 'required|integer|min:1',
-            'nama_bank'               => 'required|string|max:100',
             'gambar_bukti_pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
@@ -155,7 +152,6 @@ class KeuanganController extends Controller
             'invoice_id'              => $invoice->invoice_id,
             'payment_date'            => now(),
             'jumlah_bayar'            => $data['jumlah_bayar'],
-            'nama_bank'               => $data['nama_bank'],
             'gambar_bukti_pembayaran' => $path,
         ]);
 

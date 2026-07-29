@@ -24,7 +24,6 @@ class SppPaymentService
             'invoice_id'               => $data['invoice_id'],
             'payment_date'             => $data['payment_date'],
             'jumlah_bayar'             => $data['jumlah_bayar'],
-            'nama_bank'                => $data['nama_bank'],
             'gambar_bukti_pembayaran'  => $data['gambar_bukti_pembayaran'],
             'approved_by'              => null,
             'status'                   => 'pending',

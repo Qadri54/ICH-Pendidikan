@@ -40,7 +40,6 @@
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Kelas</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Periode</th>
                     <th class="px-4 py-3 text-right font-ui font-bold text-ich-ink-600">Jumlah</th>
-                    <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Bank</th>
                     <th class="px-4 py-3 text-left font-ui font-bold text-ich-ink-600">Tanggal</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Bukti</th>
                     <th class="px-4 py-3 text-center font-ui font-bold text-ich-ink-600">Status</th>
@@ -69,7 +68,6 @@
                         <td class="px-4 py-3 text-right font-ui font-semibold">
                             Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}
                         </td>
-                        <td class="px-4 py-3 text-ich-ink-600">{{ $p->nama_bank }}</td>
                         <td class="px-4 py-3 text-ich-ink-500">
                             {{ $p->payment_date?->format('d M Y') ?? '-' }}
                         </td>

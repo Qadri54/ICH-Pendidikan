@@ -122,7 +122,6 @@
                                     <div class="space-y-0.5">
                                         <p class="font-sans text-xs text-ich-ink-600">
                                             {{ $pendingTx->payment_date?->format('d M Y') }}
-                                            @if($pendingTx->nama_bank) · {{ $pendingTx->nama_bank }} @endif
                                         </p>
                                         <p class="font-ui font-semibold text-xs text-ich-ink-900">
                                             Rp {{ number_format($pendingTx->jumlah_bayar, 0, ',', '.') }}

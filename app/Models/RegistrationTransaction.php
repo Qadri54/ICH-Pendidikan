@@ -16,7 +16,6 @@ class RegistrationTransaction extends Model
         'approved_by',
         'payment_date',
         'jumlah_bayar',
-        'nama_bank',
         'gambar_bukti_pembayaran',
         'payment_category',
         'status',

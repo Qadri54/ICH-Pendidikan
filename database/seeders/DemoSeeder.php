@@ -74,7 +74,6 @@ class DemoSeeder extends Seeder
 
         $admin     = Admin::first();
         $adminUser = User::whereHas('role', fn ($q) => $q->where('role_name', 'Admin'))->first();
-        $banks     = ['BRI', 'BCA', 'Mandiri', 'BNI', 'Bank Sumut', 'BSI'];
 
         foreach ($this->getRegistrationData() as $data) {
             $user = User::create([
@@ -110,7 +109,7 @@ class DemoSeeder extends Seeder
             ]);
 
             $this->seedStudentFees($student, $admin);
-            $this->seedStudentSpp($student, $adminUser, $banks);
+            $this->seedStudentSpp($student, $adminUser);
         }
 
         $this->command->info('PPDB: 2 pending + 1 diterima (siswa + cicilan + SPP)');
@@ -129,7 +128,6 @@ class DemoSeeder extends Seeder
             'approved_by'             => $admin->admin_id,
             'payment_date'            => Carbon::create(2025, 12, 5),
             'jumlah_bayar'            => 1500000,
-            'nama_bank'               => 'BCA',
             'gambar_bukti_pembayaran' => 'bukti/demo-reg-1.jpg',
             'payment_category'        => 'installment',
             'status'                  => 'approved',
@@ -139,14 +137,13 @@ class DemoSeeder extends Seeder
             'registration_fee_id'     => $fee->registration_fee_id,
             'payment_date'            => Carbon::create(2026, 1, 10),
             'jumlah_bayar'            => 1000000,
-            'nama_bank'               => 'Mandiri',
             'gambar_bukti_pembayaran' => 'bukti/demo-reg-2.jpg',
             'payment_category'        => 'installment',
             'status'                  => 'pending',
         ]);
     }
 
-    private function seedStudentSpp(Student $student, User $adminUser, array $banks): void
+    private function seedStudentSpp(Student $student, User $adminUser): void
     {
         $sppAmount = 350000;
 
@@ -177,7 +174,6 @@ class DemoSeeder extends Seeder
                     'approved_by'             => $isPaid ? $adminUser->user_id : null,
                     'payment_date'            => $tanggal->copy()->addDays(rand(1, 8)),
                     'jumlah_bayar'            => $sppAmount,
-                    'nama_bank'               => $banks[array_rand($banks)],
                     'gambar_bukti_pembayaran' => 'bukti/demo-spp-' . $month . '.jpg',
                     'status'                  => $isPaid ? 'paid' : 'pending',
                 ]);

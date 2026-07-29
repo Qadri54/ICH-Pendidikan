@@ -86,21 +86,16 @@
                               @submit="submitting = true"
                               class="px-5 py-4 space-y-3">
                             @csrf
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
-                                    <input type="number" name="jumlah_bayar"
-                                           value="{{ old('jumlah_bayar', $invoice->jumlah) }}"
-                                           class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                                  font-sans text-sm focus:outline-none focus:border-ich-teal">
-                                </div>
-                                <div>
-                                    <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Nama Bank</label>
-                                    <input type="text" name="nama_bank" value="{{ old('nama_bank') }}"
-                                           placeholder="BCA, BRI, dsb" required
-                                           class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
-                                                  font-sans text-sm focus:outline-none focus:border-ich-teal">
-                                </div>
+                            <div class="flex flex-col items-center gap-2 py-2">
+                                <img src="{{ asset('storage/qris.png') }}" alt="QRIS" class="w-48 rounded-lg">
+                                <p class="font-sans text-xs text-ich-ink-400">Scan QRIS untuk pembayaran</p>
+                            </div>
+                            <div>
+                                <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Jumlah Bayar</label>
+                                <input type="number" name="jumlah_bayar"
+                                       value="{{ old('jumlah_bayar', $invoice->jumlah) }}"
+                                       class="w-full h-10 px-3 bg-white border-2 border-ich-line rounded-ich-lg
+                                              font-sans text-sm focus:outline-none focus:border-ich-teal">
                             </div>
                             <div>
                                 <label class="block font-ui font-bold text-xs text-ich-ink-600 mb-1">Bukti Transfer</label>

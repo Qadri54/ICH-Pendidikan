@@ -56,7 +56,6 @@ class DummyDataSeeder extends Seeder
         $students = Student::whereNotNull('class_id')->get();
         $adminUser = User::whereHas('role', fn($q) => $q->where('role_name', 'Admin'))->first();
 
-        $banks = ['BRI', 'BCA', 'Mandiri', 'BNI', 'Bank Sumut', 'BSI'];
         $sppAmount = 350000;
 
         foreach ($students as $student) {
@@ -91,7 +90,6 @@ class DummyDataSeeder extends Seeder
                         'approved_by'              => $isPaid ? $adminUser?->user_id : null,
                         'payment_date'             => $payDate,
                         'jumlah_bayar'             => $sppAmount,
-                        'nama_bank'                => $banks[array_rand($banks)],
                         'gambar_bukti_pembayaran'  => 'bukti/dummy_spp_' . $student->student_id . '_' . $month . '.jpg',
                         'status'                   => $isPaid ? 'paid' : 'pending',
                         'created_at'               => $payDate,
@@ -110,8 +108,6 @@ class DummyDataSeeder extends Seeder
         $admin = Admin::first();
         $totalFee = 3000000;
 
-        $banks = ['BRI', 'BCA', 'Mandiri', 'BNI', 'Bank Sumut', 'BSI'];
-
         foreach ($students as $index => $student) {
             $regFee = RegistrationFee::create([
                 'student_id'   => $student->student_id,
@@ -128,7 +124,6 @@ class DummyDataSeeder extends Seeder
                     'approved_by'             => $admin?->admin_id,
                     'payment_date'            => $payDate,
                     'jumlah_bayar'            => $totalFee,
-                    'nama_bank'               => $banks[array_rand($banks)],
                     'gambar_bukti_pembayaran' => 'bukti/dummy_reg_' . $student->student_id . '.jpg',
                     'payment_category'        => 'full',
                     'status'                  => 'approved',
@@ -149,7 +144,6 @@ class DummyDataSeeder extends Seeder
                         'approved_by'             => $admin?->admin_id,
                         'payment_date'            => $payDate,
                         'jumlah_bayar'            => $amount,
-                        'nama_bank'               => $banks[array_rand($banks)],
                         'gambar_bukti_pembayaran' => 'bukti/dummy_reg_' . $student->student_id . '_' . ($i + 1) . '.jpg',
                         'payment_category'        => 'installment',
                         'status'                  => 'approved',
