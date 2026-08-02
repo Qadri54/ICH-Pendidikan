@@ -83,6 +83,36 @@ class RegistrationService {
         return Registration::with(['user', 'user.role'])->findOrFail($id);
     }
 
+    public function submitByAdmin(array $data): Registration
+    {
+        return DB::transaction(function () use ($data) {
+            $password = 'ICH-' . now()->format('Ymd') . '-' . rand(1000, 9999);
+
+            $user = $this->userService->createUser([
+                'name'      => $data['nama_ayah'],
+                'email'     => $data['email'],
+                'no_hp'     => $data['no_telp_ayah'] ?? $data['no_telp_ibu'],
+                'password'  => $password,
+                'status'    => 'active',
+                'role_name' => 'Orang Tua',
+            ]);
+
+            $registrationData = collect($data)->except('email')->toArray();
+
+            $registration = Registration::create([
+                ...$registrationData,
+                'user_id' => $user->user_id,
+                'status'  => 'pending',
+                'source'  => 'admin',
+            ]);
+
+            session()->flash('generated_password', $password);
+            session()->flash('generated_email', $data['email']);
+
+            return $registration;
+        });
+    }
+
     public function approve(int $id): Registration {
         return DB::transaction(function () use ($id) {
             $registration = Registration::findOrFail($id);

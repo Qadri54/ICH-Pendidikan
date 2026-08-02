@@ -10,6 +10,12 @@
                 <p class="text-sm text-ich-ink-400 mt-0.5">PPDB — Total: {{ $pendaftaran->total() }}</p>
             </div>
         </div>
+        @if(auth()->user()->role?->role_name === 'Admin')
+            <a href="{{ route('admin.pendaftaran.create') }}"
+               class="px-4 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                + Daftarkan Siswa
+            </a>
+        @endif
     </div>
 
     <form method="GET" class="flex gap-3 mb-4">

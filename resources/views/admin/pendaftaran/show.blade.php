@@ -16,6 +16,15 @@
         </span>
     </div>
 
+    @if(session('generated_password'))
+        <div class="mb-4 px-4 py-3 bg-ich-info-soft border border-ich-teal/20 rounded-lg">
+            <p class="font-ui font-bold text-sm text-ich-teal">Akun orang tua berhasil dibuat!</p>
+            <p class="text-sm text-ich-ink-600 mt-1">Email: <span class="font-semibold">{{ session('generated_email') }}</span></p>
+            <p class="text-sm text-ich-ink-600">Password: <span class="font-semibold font-mono">{{ session('generated_password') }}</span></p>
+            <p class="text-xs text-ich-ink-400 mt-1">Catat password ini — tidak akan ditampilkan lagi.</p>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {{-- Detail info --}}

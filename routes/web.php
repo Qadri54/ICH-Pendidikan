@@ -204,6 +204,8 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::delete('raport/photo/{photoId}', [AdminRaportController::class, 'deletePhoto'])->name('raport.photo.destroy');
             Route::delete('raport/{id}',         [AdminRaportController::class, 'destroy'])->name('raport.destroy');
 
+            Route::get('pendaftaran/create',            [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+            Route::post('pendaftaran',                   [PendaftaranController::class, 'store'])->name('pendaftaran.store');
             Route::patch('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
 
             Route::post('pembayaran-pendaftaran/{transaksi}/approve', [PembayaranPendaftaranController::class, 'approve'])->name('pembayaran-pendaftaran.approve');
