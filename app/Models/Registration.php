@@ -36,6 +36,7 @@ class Registration extends Model
         'pendidikan_ibu',
         'no_telp_ibu',
         'status',
+        'source',
         'rejection_reason',
     ];
 
