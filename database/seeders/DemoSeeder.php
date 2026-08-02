@@ -20,12 +20,14 @@ use App\Models\SavingTransaction;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\StudentChecklistAssessment;
 use App\Models\StudentPassbook;
 use App\Models\StudentReportCard;
 use App\Models\Teacher;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,6 +39,7 @@ class DemoSeeder extends Seeder
     {
         $this->setupInfrastructure();
         $this->seedRegistrations();
+        $this->seedDemoStudentAttendance();
         $this->seedSavings();
         $this->seedPhysicalMeasurements();
         $this->seedSubmittedReportCard();
@@ -112,7 +115,7 @@ class DemoSeeder extends Seeder
             $this->seedStudentSpp($student, $adminUser);
         }
 
-        $this->command->info('PPDB: 2 pending + 1 diterima (siswa + cicilan + SPP)');
+        $this->command->info('PPDB: demo.ortu1 diterima (siswa + cicilan + SPP)');
     }
 
     private function seedStudentFees(Student $student, Admin $admin): void
@@ -297,6 +300,57 @@ class DemoSeeder extends Seeder
         return 'TRX-' . $d . '-' . str_pad($this->txnSeq++, 6, '0', STR_PAD_LEFT);
     }
 
+    // ─── KEHADIRAN SISWA DEMO ────────────────────────────────────────────
+
+    private function seedDemoStudentAttendance(): void
+    {
+        $student = Student::where('NIS', '2338')->first();
+        if (!$student) return;
+
+        if (StudentAttendance::where('student_id', $student->student_id)->exists()) return;
+
+        $class = ClassRoom::find($student->class_id);
+        $teacher = $class?->homeroom_teacher_id
+            ? Teacher::find($class->homeroom_teacher_id)
+            : null;
+        if (!$teacher) return;
+
+        $startDate = Carbon::create(2026, 1, 5);
+        $endDate   = Carbon::create(2026, 6, 20);
+
+        $schoolDays = collect(CarbonPeriod::create($startDate, $endDate))
+            ->filter(fn (Carbon $date) => $date->isWeekday())
+            ->values();
+
+        $holidays = collect([
+            '2026-01-01', '2026-01-29', '2026-02-12',
+            '2026-03-20', '2026-03-29', '2026-03-30', '2026-03-31',
+            '2026-04-01', '2026-04-02', '2026-04-03',
+            '2026-05-01', '2026-05-14', '2026-05-25', '2026-06-01',
+        ]);
+
+        $schoolDays = $schoolDays->reject(fn (Carbon $d) => $holidays->contains($d->format('Y-m-d')));
+
+        foreach ($schoolDays as $date) {
+            $rand   = rand(1, 100);
+            $status = match (true) {
+                $rand <= 85 => 'hadir',
+                $rand <= 91 => 'sakit',
+                $rand <= 96 => 'izin',
+                default     => 'tanpa keterangan',
+            };
+
+            StudentAttendance::create([
+                'student_id' => $student->student_id,
+                'teacher_id' => $teacher->teacher_id,
+                'status'     => $status,
+                'created_at' => $date->copy()->setTime(7, 30, rand(0, 59)),
+            ]);
+        }
+
+        $this->command->info('Kehadiran: data absensi siswa demo (Khalisa Zahra)');
+    }
+
     // ─── RAPORT: PENGUKURAN FISIK ────────────────────────────────────────
 
     private function seedPhysicalMeasurements(): void
@@ -324,7 +378,7 @@ class DemoSeeder extends Seeder
 
     private function seedSubmittedReportCard(): void
     {
-        $student = Student::where('NIS', '2322')->first();
+        $student = Student::where('NIS', '2338')->first();
         if (!$student) return;
 
         if (StudentReportCard::where('student_id', $student->student_id)->exists()) return;
@@ -344,8 +398,8 @@ class DemoSeeder extends Seeder
             'status'              => 'submitted',
         ]);
 
-        $nama = 'Archilla';
-        $ortu = 'Ayah dan Mama';
+        $nama = 'Khalisa';
+        $ortu = 'Ayah dan Bunda';
 
         NarrativeAssessment::create([
             'report_card_id' => $rc->report_card_id,
@@ -393,7 +447,7 @@ class DemoSeeder extends Seeder
             'tanggal_ukur'   => '2025-10-15',
         ]);
 
-        $this->command->info("Raport: 1 raport submitted (Archilla - NIS 2322) siap di-approve admin");
+        $this->command->info("Raport: 1 raport submitted (Khalisa Zahra - NIS 2338) siap di-approve admin");
     }
 
     private function getLeafCategoryIds(): array
@@ -434,9 +488,7 @@ class DemoSeeder extends Seeder
                 ['Kepala Yayasan', 'yayasan@iqra.com',        'Read-only admin area'],
                 ['Orang Tua',      'aswan.lubis@iqra.com',    'Portal lengkap: SPP, kehadiran, raport, tabungan'],
                 ['Orang Tua',      'binsar.sitompul@iqra.com','2 anak (1 alumni + 1 aktif)'],
-                ['Calon Ortu 1',   'demo.ortu1@iqra.com',     'Pendaftaran PENDING (untuk approve demo)'],
-                ['Calon Ortu 2',   'demo.ortu2@iqra.com',     'Pendaftaran PENDING (untuk reject demo)'],
-                ['Calon Ortu 3',   'demo.ortu3@iqra.com',     'Diterima, cicilan PENDING (untuk approve demo)'],
+                ['Orang Tua Demo', 'demo.ortu1@iqra.com',     'Portal lengkap + cicilan PENDING + raport SUBMITTED'],
             ],
         );
     }
@@ -447,10 +499,11 @@ class DemoSeeder extends Seeder
     {
         return [
             [
-                'name'  => 'Sari Dewi',
-                'email' => 'demo.ortu1@iqra.com',
-                'no_hp' => '081360765971',
-                'registration' => [
+                'name'           => 'Sari Dewi',
+                'email'          => 'demo.ortu1@iqra.com',
+                'no_hp'          => '081360765971',
+                'create_student' => true,
+                'registration'   => [
                     'jenis_pendaftaran' => 'TK',
                     'nama_siswa'        => 'Khalisa Zahra',
                     'tempat_lahir'      => 'Medan',
@@ -473,67 +526,6 @@ class DemoSeeder extends Seeder
                     'pendidikan_ibu'    => 'S1',
                     'pekerjaan_ibu'     => 'Ibu Rumah Tangga',
                     'no_telp_ibu'       => '081299000001',
-                    'status'            => 'pending',
-                ],
-            ],
-            [
-                'name'  => 'Fitri Handayani',
-                'email' => 'demo.ortu2@iqra.com',
-                'no_hp' => '081360765971',
-                'registration' => [
-                    'jenis_pendaftaran' => 'TK',
-                    'nama_siswa'        => 'Arjuna Prasetyo',
-                    'tempat_lahir'      => 'Binjai',
-                    'tanggal_lahir'     => '2021-07-22',
-                    'jenis_kelamin'     => 'L',
-                    'alamat'            => 'Jl. Perjuangan No. 45, Binjai',
-                    'anak_ke'           => 2,
-                    'ukuran_baju'       => 'M',
-                    'nama_ayah'         => 'Dimas Prasetyo',
-                    'tempat_lahir_ayah' => 'Binjai',
-                    'tanggal_lahir_ayah' => '1988-11-05',
-                    'alamat_ayah'       => 'Jl. Perjuangan No. 45, Binjai',
-                    'pendidikan_ayah'   => 'S1',
-                    'pekerjaan_ayah'    => 'PNS',
-                    'no_telp_ayah'      => '081299000022',
-                    'nama_ibu'          => 'Fitri Handayani',
-                    'tempat_lahir_ibu'  => 'Medan',
-                    'tanggal_lahir_ibu' => '1990-02-14',
-                    'alamat_ibu'        => 'Jl. Perjuangan No. 45, Binjai',
-                    'pendidikan_ibu'    => 'S1',
-                    'pekerjaan_ibu'     => 'Guru',
-                    'no_telp_ibu'       => '081299000002',
-                    'status'            => 'pending',
-                ],
-            ],
-            [
-                'name'           => 'Maya Putri',
-                'email'          => 'demo.ortu3@iqra.com',
-                'no_hp'          => '081360765971',
-                'create_student' => true,
-                'registration'   => [
-                    'jenis_pendaftaran' => 'TK',
-                    'nama_siswa'        => 'Khadijah Azzahra',
-                    'tempat_lahir'      => 'Medan',
-                    'tanggal_lahir'     => '2021-01-08',
-                    'jenis_kelamin'     => 'P',
-                    'alamat'            => 'Jl. Setiabudi No. 88, Medan',
-                    'anak_ke'           => 1,
-                    'ukuran_baju'       => 'M',
-                    'nama_ayah'         => 'Reza Gunawan',
-                    'tempat_lahir_ayah' => 'Medan',
-                    'tanggal_lahir_ayah' => '1989-09-12',
-                    'alamat_ayah'       => 'Jl. Setiabudi No. 88, Medan',
-                    'pendidikan_ayah'   => 'S2',
-                    'pekerjaan_ayah'    => 'Dokter',
-                    'no_telp_ayah'      => '081299000033',
-                    'nama_ibu'          => 'Maya Putri',
-                    'tempat_lahir_ibu'  => 'Medan',
-                    'tanggal_lahir_ibu' => '1991-04-25',
-                    'alamat_ibu'        => 'Jl. Setiabudi No. 88, Medan',
-                    'pendidikan_ibu'    => 'S1',
-                    'pekerjaan_ibu'     => 'Apoteker',
-                    'no_telp_ibu'       => '081299000003',
                     'status'            => 'accepted',
                 ],
             ],
