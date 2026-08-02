@@ -292,13 +292,27 @@
             </div>
 
             {{-- Tab buttons --}}
-            <div class="flex gap-2 mb-5">
+            <div class="flex flex-wrap gap-2 mb-5">
                 <button @click="tab = 'keuangan'" :class="tab === 'keuangan' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Keuangan</button>
                 <button @click="tab = 'absensi-siswa'" :class="tab === 'absensi-siswa' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Absensi Siswa</button>
                 <button @click="tab = 'absensi-guru'" :class="tab === 'absensi-guru' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Absensi Guru</button>
+                <button @click="tab = 'data-siswa'" :class="tab === 'data-siswa' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Data Siswa</button>
+                <button @click="tab = 'data-guru'" :class="tab === 'data-guru' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Data Guru</button>
+                <button @click="tab = 'data-ortu'" :class="tab === 'data-ortu' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Data Orang Tua</button>
+                <button @click="tab = 'spp'" :class="tab === 'spp' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">SPP</button>
+                <button @click="tab = 'pendaftaran'" :class="tab === 'pendaftaran' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Pendaftaran</button>
+                <button @click="tab = 'kelas'" :class="tab === 'kelas' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Kelas</button>
+                <button @click="tab = 'tabungan'" :class="tab === 'tabungan' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Tabungan</button>
             </div>
 
             {{-- Keuangan export --}}
@@ -381,6 +395,90 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         Excel
                     </button>
+                </div>
+            </div>
+
+            {{-- Data Siswa export --}}
+            <div x-show="tab === 'data-siswa'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan data siswa aktif, alumni, dan keluar beserta grafik pertumbuhan.</p>
+                <div class="flex gap-3 no-loading">
+                    <a href="{{ route('admin.laporan.export.data-siswa-pdf') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- Data Guru export --}}
+            <div x-show="tab === 'data-guru'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan data guru aktif dan nonaktif.</p>
+                <div class="flex gap-3 no-loading">
+                    <a href="{{ route('admin.laporan.export.data-guru-pdf') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- Data Orang Tua export --}}
+            <div x-show="tab === 'data-ortu'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan data orang tua aktif dan status pembayaran SPP.</p>
+                <div class="flex gap-3 no-loading">
+                    <a href="{{ route('admin.laporan.export.data-orang-tua-pdf') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- SPP export --}}
+            <div x-show="tab === 'spp'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan SPP semester: total terbayar, tunggakan, dan daftar belum bayar per kelas.</p>
+                <div class="flex gap-3 no-loading">
+                    <a :href="'{{ route('admin.laporan.export.spp-pdf') }}?period_id=' + periodId"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- Pendaftaran export --}}
+            <div x-show="tab === 'pendaftaran'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan pendaftaran semester: total daftar, via aplikasi vs admin, pendapatan, dan cicilan.</p>
+                <div class="flex gap-3 no-loading">
+                    <a :href="'{{ route('admin.laporan.export.pendaftaran-pdf') }}?period_id=' + periodId"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- Kelas export --}}
+            <div x-show="tab === 'kelas'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan data kelas: jumlah siswa aktif dan wali kelas.</p>
+                <div class="flex gap-3 no-loading">
+                    <a href="{{ route('admin.laporan.export.kelas-pdf') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
+            </div>
+
+            {{-- Tabungan export --}}
+            <div x-show="tab === 'tabungan'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan tabungan: total per kelas dan top 10 siswa.</p>
+                <div class="flex gap-3 no-loading">
+                    <a href="{{ route('admin.laporan.export.tabungan-pdf') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
                 </div>
             </div>
         </div>
