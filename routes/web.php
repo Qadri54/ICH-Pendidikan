@@ -159,6 +159,13 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::get('laporan/export/absensi-siswa-excel', [LaporanController::class, 'exportAbsensiSiswaExcel'])->name('laporan.export.absensi-siswa-excel');
         Route::get('laporan/export/absensi-guru-pdf',    [LaporanController::class, 'exportAbsensiGuruPdf'])->name('laporan.export.absensi-guru-pdf');
         Route::get('laporan/export/absensi-guru-excel',  [LaporanController::class, 'exportAbsensiGuruExcel'])->name('laporan.export.absensi-guru-excel');
+        Route::get('laporan/export/data-siswa-pdf',      [LaporanController::class, 'exportDataSiswaPdf'])->name('laporan.export.data-siswa-pdf');
+        Route::get('laporan/export/data-guru-pdf',       [LaporanController::class, 'exportDataGuruPdf'])->name('laporan.export.data-guru-pdf');
+        Route::get('laporan/export/data-orang-tua-pdf',  [LaporanController::class, 'exportDataOrangTuaPdf'])->name('laporan.export.data-orang-tua-pdf');
+        Route::get('laporan/export/spp-pdf',             [LaporanController::class, 'exportSppPdf'])->name('laporan.export.spp-pdf');
+        Route::get('laporan/export/pendaftaran-pdf',     [LaporanController::class, 'exportPendaftaranPdf'])->name('laporan.export.pendaftaran-pdf');
+        Route::get('laporan/export/kelas-pdf',           [LaporanController::class, 'exportKelasPdf'])->name('laporan.export.kelas-pdf');
+        Route::get('laporan/export/tabungan-pdf',        [LaporanController::class, 'exportTabunganPdf'])->name('laporan.export.tabungan-pdf');
         Route::get('laporan',    [LaporanController::class,    'index'])->name('laporan.index');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
 

@@ -126,4 +126,39 @@ class LaporanController extends Controller
             $request->integer('month')
         );
     }
+
+    public function exportDataSiswaPdf()
+    {
+        return $this->exportService->exportDataSiswaPdf();
+    }
+
+    public function exportDataGuruPdf()
+    {
+        return $this->exportService->exportDataGuruPdf();
+    }
+
+    public function exportDataOrangTuaPdf()
+    {
+        return $this->exportService->exportDataOrangTuaPdf();
+    }
+
+    public function exportSppPdf(Request $request)
+    {
+        return $this->exportService->exportSppPdf($request->integer('period_id') ?: null);
+    }
+
+    public function exportPendaftaranPdf(Request $request)
+    {
+        return $this->exportService->exportPendaftaranPdf($request->integer('period_id') ?: null);
+    }
+
+    public function exportKelasPdf()
+    {
+        return $this->exportService->exportKelasPdf();
+    }
+
+    public function exportTabunganPdf()
+    {
+        return $this->exportService->exportTabunganPdf();
+    }
 }
