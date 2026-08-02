@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicPeriod;
 use App\Models\ClassRoom;
+use App\Models\Registration;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -83,7 +84,16 @@ class SiswaController extends Controller
     public function show(Student $siswa)
     {
         $siswa->load('classRoom');
-        return view('admin.siswa.show', compact('siswa'));
+
+        $registration = null;
+        if ($siswa->user_id) {
+            $registration = Registration::where('user_id', $siswa->user_id)
+                ->where('nama_siswa', $siswa->nama_siswa)
+                ->latest()
+                ->first();
+        }
+
+        return view('admin.siswa.show', compact('siswa', 'registration'));
     }
 
     public function edit(Student $siswa)

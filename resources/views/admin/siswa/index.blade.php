@@ -1,7 +1,6 @@
 @php $isReadOnly = in_array(auth()->user()->role?->role_name, ['Kepala Sekolah', 'Kepala Yayasan']); @endphp
 <x-main-layout title="Daftar Siswa">
 <div x-data="{
-    showCreate: {{ $errors->any() && old('_modal') === 'create' ? 'true' : 'false' }},
     showEdit: {{ $errors->any() && old('_modal') === 'edit' ? 'true' : 'false' }},
     showDetail: false,
     showDelete: false,
@@ -76,13 +75,6 @@
                 <p class="text-sm text-ich-ink-400 mt-0.5">Total: {{ $siswa->total() }} siswa</p>
             </div>
         </div>
-        @if(! $isReadOnly)
-            <button @click="showCreate = true"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-ich-green text-white
-                           font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                + Tambah Siswa
-            </button>
-        @endif
     </div>
 
     @if(session('success'))
@@ -226,90 +218,6 @@
     </div>
 
     <div class="mt-4">{{ $siswa->links() }}</div>
-
-    {{-- Modal Create --}}
-    <x-admin-modal show="showCreate" title="Tambah Siswa Baru" maxWidth="2xl">
-        <form method="POST" action="{{ route('admin.siswa.store') }}" class="space-y-4">
-            @csrf
-            <input type="hidden" name="_modal" value="create">
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Siswa <span class="text-ich-error">*</span></label>
-                    <input type="text" name="nama_siswa" value="{{ old('_modal') === 'create' ? old('nama_siswa') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal-dark">
-                    @error('nama_siswa') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">NIS</label>
-                    <input type="text" name="NIS" value="{{ old('_modal') === 'create' ? old('NIS') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Kelas <span class="text-ich-error">*</span></label>
-                    <select name="class_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                        <option value="">-- Pilih Kelas --</option>
-                        @foreach($kelas as $k)
-                            <option value="{{ $k->class_id }}" {{ old('class_id') == $k->class_id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
-                        @endforeach
-                    </select>
-                    @error('class_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Jenis Kelamin <span class="text-ich-error">*</span></label>
-                    <select name="jenis_kelamin" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                        <option value="L" {{ old('jenis_kelamin') === 'L' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="P" {{ old('jenis_kelamin') === 'P' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tanggal Lahir <span class="text-ich-error">*</span></label>
-                    <input type="date" name="tanggal_lahir" value="{{ old('_modal') === 'create' ? old('tanggal_lahir') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @error('tanggal_lahir') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tempat Lahir <span class="text-ich-error">*</span></label>
-                    <input type="text" name="tempat_lahir" value="{{ old('_modal') === 'create' ? old('tempat_lahir') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @error('tempat_lahir') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ayah <span class="text-ich-error">*</span></label>
-                    <input type="text" name="nama_ayah" value="{{ old('_modal') === 'create' ? old('nama_ayah') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @error('nama_ayah') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Nama Ibu <span class="text-ich-error">*</span></label>
-                    <input type="text" name="nama_ibu" value="{{ old('_modal') === 'create' ? old('nama_ibu') : '' }}"
-                           class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    @error('nama_ibu') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-            <div>
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Akun Orang Tua (opsional)</label>
-                <select name="user_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="">-- Tidak ditautkan --</option>
-                    @foreach($parents as $p)
-                        <option value="{{ $p->user_id }}" {{ old('user_id') == $p->user_id ? 'selected' : '' }}>{{ $p->name }} ({{ $p->email }})</option>
-                    @endforeach
-                </select>
-                <p class="text-ich-ink-400 text-xs mt-1">Tautkan siswa ke akun orang tua yang sudah terdaftar.</p>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-                <button type="submit" class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">Simpan</button>
-                <button type="button" @click="showCreate = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
-            </div>
-        </form>
-    </x-admin-modal>
 
     {{-- Modal Edit --}}
     <x-admin-modal show="showEdit" title="Edit Siswa" maxWidth="2xl">
