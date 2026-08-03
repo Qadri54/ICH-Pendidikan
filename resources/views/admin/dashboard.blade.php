@@ -61,6 +61,161 @@
         </div>
     </div>
 
+    {{-- Ringkasan Eksekutif --}}
+    @if($executive)
+    <div class="bg-white rounded-xl shadow-ich-card overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-ich-line flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-ich-purple-soft flex items-center justify-center">
+                    <svg class="w-4 h-4 text-ich-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div>
+                    <h2 class="font-ui font-bold text-ich-ink-900">Ringkasan Eksekutif</h2>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $executive['period_label'] }}</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.laporan.index') }}"
+               class="text-xs font-ui font-bold text-ich-teal hover:underline no-loading">
+                Export PDF &rarr;
+            </a>
+        </div>
+
+        <div class="p-6">
+            {{-- Metric cards --}}
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+                {{-- Collection Rate --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Collection Rate SPP</span>
+                        <div class="w-8 h-8 rounded-lg {{ $executive['collection_rate'] >= 80 ? 'bg-ich-success-soft' : ($executive['collection_rate'] >= 50 ? 'bg-ich-warning-soft' : 'bg-ich-error-soft') }} flex items-center justify-center">
+                            <svg class="w-4 h-4 {{ $executive['collection_rate'] >= 80 ? 'text-ich-success' : ($executive['collection_rate'] >= 50 ? 'text-ich-warning' : 'text-ich-error') }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-display font-bold {{ $executive['collection_rate'] >= 80 ? 'text-ich-success' : ($executive['collection_rate'] >= 50 ? 'text-ich-warning' : 'text-ich-error') }}">
+                        {{ $executive['collection_rate'] }}%
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                        <div class="h-1.5 rounded-full {{ $executive['collection_rate'] >= 80 ? 'bg-ich-success' : ($executive['collection_rate'] >= 50 ? 'bg-ich-warning' : 'bg-ich-error') }}"
+                             style="width: {{ min($executive['collection_rate'], 100) }}%"></div>
+                    </div>
+                    <p class="text-xs text-ich-ink-400 mt-1.5">Rp {{ number_format($executive['revenue'], 0, ',', '.') }} terkumpul semester ini</p>
+                </div>
+
+                {{-- Revenue vs Previous --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Pendapatan Semester</span>
+                        @if($executive['revenue_delta'] !== null)
+                            <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold
+                                {{ $executive['revenue_delta'] >= 0 ? 'bg-ich-success-soft text-ich-success' : 'bg-ich-error-soft text-ich-error' }}">
+                                {{ $executive['revenue_delta'] >= 0 ? '+' : '' }}{{ $executive['revenue_delta'] }}%
+                            </span>
+                        @endif
+                    </div>
+                    <div class="text-2xl font-display font-bold text-ich-ink-900">
+                        Rp {{ number_format($executive['revenue'], 0, ',', '.') }}
+                    </div>
+                    @if($executive['prev_revenue'] > 0)
+                        <p class="text-xs text-ich-ink-400 mt-1.5">Semester lalu: Rp {{ number_format($executive['prev_revenue'], 0, ',', '.') }}</p>
+                    @else
+                        <p class="text-xs text-ich-ink-300 mt-1.5">Tidak ada data pembanding</p>
+                    @endif
+                </div>
+
+                {{-- Revenue per Siswa --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Revenue / Siswa</span>
+                        <div class="w-8 h-8 rounded-lg bg-ich-green-surface flex items-center justify-center">
+                            <svg class="w-4 h-4 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-display font-bold text-ich-ink-900">
+                        Rp {{ number_format($executive['siswa_aktif'] > 0 ? round($executive['revenue'] / $executive['siswa_aktif']) : 0, 0, ',', '.') }}
+                    </div>
+                    <p class="text-xs text-ich-ink-400 mt-1.5">{{ $executive['siswa_aktif'] }} siswa aktif</p>
+                </div>
+            </div>
+
+            {{-- Second row: Churn, PPDB, Rasio --}}
+            <div class="grid grid-cols-3 gap-4 mb-5">
+                {{-- Churn Rate --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Churn Rate</span>
+                    <div class="text-xl font-display font-bold mt-1
+                        {{ $executive['churn_rate'] > 5 ? 'text-ich-error' : ($executive['churn_rate'] > 0 ? 'text-ich-warning' : 'text-ich-success') }}">
+                        {{ $executive['churn_rate'] }}%
+                    </div>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $executive['siswa_keluar'] }} siswa keluar</p>
+                </div>
+
+                {{-- Konversi PPDB --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Konversi PPDB</span>
+                    <div class="text-xl font-display font-bold mt-1
+                        {{ $executive['conversion_rate'] >= 70 ? 'text-ich-success' : ($executive['conversion_rate'] >= 40 ? 'text-ich-warning' : 'text-ich-error') }}">
+                        {{ $executive['conversion_rate'] }}%
+                    </div>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $executive['total_accepted'] }}/{{ $executive['total_registrations'] }} diterima</p>
+                </div>
+
+                {{-- Rasio Guru:Siswa --}}
+                <div class="rounded-xl border border-ich-line p-4">
+                    <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Rasio Guru:Siswa</span>
+                    <div class="text-xl font-display font-bold mt-1
+                        {{ $executive['rasio'] > 15 ? 'text-ich-warning' : 'text-ich-success' }}">
+                        1:{{ $executive['rasio'] }}
+                    </div>
+                    <p class="text-xs text-ich-ink-400 mt-0.5">{{ $executive['guru_aktif'] }} guru, {{ $executive['siswa_aktif'] }} siswa</p>
+                </div>
+            </div>
+
+            {{-- Aging Analysis --}}
+            @if($executive['total_outstanding'] > 0)
+                <div class="rounded-xl border border-ich-line p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-ui font-bold text-ich-ink-400 uppercase tracking-wide">Aging Tunggakan SPP</span>
+                        <span class="text-xs font-ui font-bold text-ich-error">
+                            Total: Rp {{ number_format($executive['total_outstanding'], 0, ',', '.') }}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3">
+                        @foreach($executive['aging'] as $a)
+                            <div class="text-center">
+                                <div class="text-lg font-display font-bold {{ $loop->last && $a['count'] > 0 ? 'text-ich-error' : 'text-ich-ink-900' }}">
+                                    {{ $a['count'] }}
+                                </div>
+                                <div class="text-xs text-ich-ink-400 font-ui">{{ $a['label'] }}</div>
+                                <div class="text-xs font-ui font-semibold {{ $loop->last && $a['amount'] > 0 ? 'text-ich-error' : 'text-ich-ink-600' }} mt-0.5">
+                                    Rp {{ number_format($a['amount'], 0, ',', '.') }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    {{-- Aging progress bar --}}
+                    @if($executive['total_outstanding'] > 0)
+                        <div class="flex rounded-full h-2 mt-3 overflow-hidden">
+                            @foreach($executive['aging'] as $i => $a)
+                                @php
+                                    $pct = round($a['amount'] / $executive['total_outstanding'] * 100);
+                                    $colors = ['bg-ich-success', 'bg-ich-warning', 'bg-orange-400', 'bg-ich-error'];
+                                @endphp
+                                @if($pct > 0)
+                                    <div class="{{ $colors[$i] }}" style="width: {{ $pct }}%"></div>
+                                @endif
+                            @endforeach
+                        </div>
+                        <div class="flex justify-between mt-1">
+                            <span class="text-[10px] text-ich-ink-300">Baru</span>
+                            <span class="text-[10px] text-ich-ink-300">Lama</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </div>
+    </div>
+    @endif
+
     {{-- Revenue & Alerts --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {{-- Revenue highlight --}}
