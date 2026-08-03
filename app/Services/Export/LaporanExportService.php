@@ -337,6 +337,166 @@ class LaporanExportService
         return $pdf->download('laporan-tabungan-' . now()->format('Y-m-d') . '.pdf');
     }
 
+    public function exportRingkasanEksekutifPdf(?int $periodId = null): Response
+    {
+        $period = $periodId
+            ? AcademicPeriod::findOrFail($periodId)
+            : AcademicPeriod::where('is_active', true)->first() ?? AcademicPeriod::latest('tanggal_mulai')->first();
+
+        $start = $period->tanggal_mulai;
+        $end   = $period->tanggal_selesai;
+        $periodLabel = $period->tahun_ajaran . ' - Semester ' . $period->semester;
+
+        $prevPeriod = AcademicPeriod::where('tanggal_mulai', '<', $start)
+            ->orderByDesc('tanggal_mulai')
+            ->first();
+        $prevPeriodLabel = $prevPeriod
+            ? $prevPeriod->tahun_ajaran . ' - Semester ' . $prevPeriod->semester
+            : null;
+
+        // ── Siswa ──
+        $totalSiswaAktif = Student::where('status', 'aktif')->count();
+        $siswaBaru = Student::whereBetween('created_at', [$start, $end])->count();
+        $siswaKeluar = Student::where('status', 'keluar')
+            ->whereBetween('updated_at', [$start, $end])
+            ->count();
+
+        $prevSiswaBaru = 0;
+        if ($prevPeriod) {
+            $prevSiswaBaru = Student::whereBetween('created_at', [$prevPeriod->tanggal_mulai, $prevPeriod->tanggal_selesai])->count();
+        }
+
+        // ── Guru & Rasio ──
+        $totalGuruAktif = Teacher::whereHas('user', fn ($q) => $q->where('status', 'active'))->count();
+        $rasioGuruSiswa = $totalGuruAktif > 0 ? round($totalSiswaAktif / $totalGuruAktif) : 0;
+
+        // ── Keuangan SPP ──
+        $sppInvoicedAmount = (int) SppInvoice::whereBetween('tanggal_tahun', [$start, $end])->sum('jumlah');
+        $sppCollectedAmount = (int) SppInvoice::where('status', 'paid')
+            ->whereBetween('tanggal_tahun', [$start, $end])
+            ->sum('jumlah');
+        $sppCollectionRate = $sppInvoicedAmount > 0
+            ? round(($sppCollectedAmount / $sppInvoicedAmount) * 100, 1)
+            : 0;
+
+        $prevSppCollected = 0;
+        if ($prevPeriod) {
+            $prevSppCollected = (int) SppInvoice::where('status', 'paid')
+                ->whereBetween('tanggal_tahun', [$prevPeriod->tanggal_mulai, $prevPeriod->tanggal_selesai])
+                ->sum('jumlah');
+        }
+
+        // ── Keuangan Pendaftaran ──
+        $regCollected = (int) RegistrationTransaction::where('status', 'approved')
+            ->whereBetween('payment_date', [$start, $end])
+            ->sum('jumlah_bayar');
+
+        $prevRegCollected = 0;
+        if ($prevPeriod) {
+            $prevRegCollected = (int) RegistrationTransaction::where('status', 'approved')
+                ->whereBetween('payment_date', [$prevPeriod->tanggal_mulai, $prevPeriod->tanggal_selesai])
+                ->sum('jumlah_bayar');
+        }
+
+        $totalRevenue     = $sppCollectedAmount + $regCollected;
+        $prevTotalRevenue = $prevSppCollected + $prevRegCollected;
+        $revenueDelta = $prevTotalRevenue > 0
+            ? round((($totalRevenue - $prevTotalRevenue) / $prevTotalRevenue) * 100, 1)
+            : null;
+
+        $revenuePerSiswa = $totalSiswaAktif > 0 ? round($totalRevenue / $totalSiswaAktif) : 0;
+
+        // ── Aging Analysis Tunggakan ──
+        $unpaidInvoices = SppInvoice::whereIn('status', ['unpaid', 'overdue'])->get();
+
+        $aging = [
+            ['label' => '≤ 1 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '2–3 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '4–6 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '> 6 Bulan', 'count' => 0, 'amount' => 0],
+        ];
+
+        foreach ($unpaidInvoices as $inv) {
+            $months = $inv->jatuh_tempo ? max(0, (int) now()->diffInMonths($inv->jatuh_tempo, false)) : 0;
+            $idx = match (true) {
+                $months <= 1 => 0,
+                $months <= 3 => 1,
+                $months <= 6 => 2,
+                default      => 3,
+            };
+            $aging[$idx]['count']++;
+            $aging[$idx]['amount'] += $inv->jumlah;
+        }
+        $totalOutstanding = (int) $unpaidInvoices->sum('jumlah');
+
+        // ── Pendapatan Bulanan ──
+        $monthlyRevenue = [];
+        $date = $start->copy()->startOfMonth();
+        while ($date->lte($end)) {
+            $spp = (int) SppInvoice::where('status', 'paid')
+                ->whereYear('tanggal_tahun', $date->year)
+                ->whereMonth('tanggal_tahun', $date->month)
+                ->sum('jumlah');
+            $reg = (int) RegistrationTransaction::where('status', 'approved')
+                ->whereYear('payment_date', $date->year)
+                ->whereMonth('payment_date', $date->month)
+                ->sum('jumlah_bayar');
+            $monthlyRevenue[] = [
+                'label' => $date->translatedFormat('M Y'),
+                'spp'   => $spp,
+                'reg'   => $reg,
+                'total' => $spp + $reg,
+            ];
+            $date->addMonth();
+        }
+        $maxMonthlyRevenue = max(array_column($monthlyRevenue, 'total') ?: [1]);
+
+        // ── PPDB ──
+        $totalRegistrations = Registration::whereBetween('created_at', [$start, $end])->count();
+        $totalAccepted = Registration::where('status', 'accepted')->whereBetween('created_at', [$start, $end])->count();
+        $totalRejected = Registration::where('status', 'rejected')->whereBetween('created_at', [$start, $end])->count();
+        $totalPending  = Registration::where('status', 'pending')->whereBetween('created_at', [$start, $end])->count();
+        $conversionRate = $totalRegistrations > 0
+            ? round(($totalAccepted / $totalRegistrations) * 100, 1)
+            : 0;
+
+        $regViaApp   = Registration::whereBetween('created_at', [$start, $end])->where('source', 'app')->count();
+        $regViaAdmin = Registration::whereBetween('created_at', [$start, $end])->where('source', 'admin')->count();
+
+        // ── Churn Rate ──
+        $totalAtPeriodStart = Student::whereIn('status', ['aktif', 'keluar', 'alumni'])
+            ->where('created_at', '<', $start)
+            ->count();
+        $churnRate = $totalAtPeriodStart > 0
+            ? round(($siswaKeluar / $totalAtPeriodStart) * 100, 1)
+            : 0;
+
+        // ── Kelas Overview ──
+        $classOverview = ClassRoom::withCount(['students' => fn ($q) => $q->where('status', 'aktif')])
+            ->with('homeroomTeacher.user')
+            ->orderBy('nama_kelas')
+            ->get();
+
+        $kepalaSekolah = $this->getKepalaSekolahName();
+
+        $pdf = Pdf::loadView('exports.ringkasan-eksekutif-pdf', compact(
+            'periodLabel', 'prevPeriodLabel',
+            'totalSiswaAktif', 'siswaBaru', 'siswaKeluar', 'prevSiswaBaru',
+            'totalGuruAktif', 'rasioGuruSiswa',
+            'sppInvoicedAmount', 'sppCollectedAmount', 'sppCollectionRate',
+            'regCollected', 'totalRevenue', 'prevTotalRevenue', 'revenueDelta',
+            'revenuePerSiswa',
+            'aging', 'totalOutstanding',
+            'totalRegistrations', 'totalAccepted', 'totalRejected', 'totalPending',
+            'conversionRate', 'regViaApp', 'regViaAdmin',
+            'monthlyRevenue', 'maxMonthlyRevenue',
+            'churnRate', 'classOverview',
+            'kepalaSekolah'
+        ))->setPaper('a4', 'portrait');
+
+        return $pdf->download('ringkasan-eksekutif-' . now()->format('Y-m-d') . '.pdf');
+    }
+
     // ─── EXCEL ───────────────────────────────────────
 
     public function exportKeuanganExcel(?int $year = null): StreamedResponse

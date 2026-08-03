@@ -161,4 +161,9 @@ class LaporanController extends Controller
     {
         return $this->exportService->exportTabunganPdf();
     }
+
+    public function exportRingkasanEksekutifPdf(Request $request)
+    {
+        return $this->exportService->exportRingkasanEksekutifPdf($request->integer('period_id') ?: null);
+    }
 }

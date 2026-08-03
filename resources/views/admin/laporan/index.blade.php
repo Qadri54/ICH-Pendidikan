@@ -293,6 +293,8 @@
 
             {{-- Tab buttons --}}
             <div class="flex flex-wrap gap-2 mb-5">
+                <button @click="tab = 'eksekutif'" :class="tab === 'eksekutif' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
+                        class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Ringkasan Eksekutif</button>
                 <button @click="tab = 'keuangan'" :class="tab === 'keuangan' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Keuangan</button>
                 <button @click="tab = 'absensi-siswa'" :class="tab === 'absensi-siswa' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
@@ -313,6 +315,19 @@
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Kelas</button>
                 <button @click="tab = 'tabungan'" :class="tab === 'tabungan' ? 'bg-ich-green text-white shadow-sm' : 'bg-ich-surface text-ich-ink-500 hover:bg-gray-200'"
                         class="px-4 py-2 rounded-lg text-xs font-ui font-bold transition-all">Tabungan</button>
+            </div>
+
+            {{-- Ringkasan Eksekutif export --}}
+            <div x-show="tab === 'eksekutif'" x-cloak>
+                <p class="text-sm text-ich-ink-400 font-sans mb-2">Laporan evaluasi bisnis lengkap: metrik kinerja, collection rate, aging tunggakan, analisis PPDB, dan perbandingan antar semester.</p>
+                <p class="text-xs text-ich-ink-300 font-sans mb-4">Cocok untuk rapat yayasan dan evaluasi semester.</p>
+                <div class="flex gap-3 no-loading">
+                    <a :href="'{{ route('admin.laporan.export.ringkasan-eksekutif-pdf') }}?period_id=' + periodId"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        PDF
+                    </a>
+                </div>
             </div>
 
             {{-- Keuangan export --}}
@@ -489,7 +504,7 @@
     <script>
         function exportLaporan() {
             return {
-                tab: 'keuangan',
+                tab: 'eksekutif',
                 periodId: @json($activePeriodId),
                 periods: @json($periodsData),
                 selectedMonth: null,
