@@ -157,7 +157,7 @@ class DashboardController extends Controller
             ['label' => '> 6 bln', 'count' => 0, 'amount' => 0],
         ];
         foreach ($unpaidInvoices as $inv) {
-            $months = $inv->jatuh_tempo ? max(0, (int) now()->diffInMonths($inv->jatuh_tempo, false)) : 0;
+            $months = $inv->jatuh_tempo && now()->gt($inv->jatuh_tempo) ? (int) $inv->jatuh_tempo->diffInMonths(now()) : 0;
             $idx = match (true) {
                 $months <= 1 => 0,
                 $months <= 3 => 1,
