@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicPeriod;
+use App\Models\ClassRoom;
 use App\Models\Registration;
 use App\Models\RegistrationTransaction;
 use App\Models\SavingLedger;
@@ -84,8 +85,10 @@ class DashboardController extends Controller
         });
 
         $executive = $this->getExecutiveMetrics();
+        $classes = ClassRoom::orderBy('nama_kelas')->get();
+        $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
 
-        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear', 'executive'));
+        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear', 'executive', 'classes', 'periods'));
     }
 
     private function getExecutiveMetrics(): ?array
