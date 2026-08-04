@@ -7,6 +7,7 @@ use App\Models\AcademicPeriod;
 use App\Models\ClassRoom;
 use App\Models\Registration;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -83,7 +84,7 @@ class SiswaController extends Controller
 
     public function show(Student $siswa)
     {
-        $siswa->load('classRoom');
+        $siswa->load(['classRoom.homeroomTeacher.user', 'user', 'reportCards.period', 'passbooks']);
 
         $registration = null;
         if ($siswa->user_id) {
@@ -93,7 +94,22 @@ class SiswaController extends Controller
                 ->first();
         }
 
-        return view('admin.siswa.show', compact('siswa', 'registration'));
+        $attendance = StudentAttendance::where('student_id', $siswa->student_id)
+            ->selectRaw("status, COUNT(*) as total")
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $sppSummary = $siswa->sppInvoices()
+            ->selectRaw("status, COUNT(*) as total, SUM(jumlah) as jumlah")
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status');
+
+        $tabunganSaldo = $siswa->passbooks->sum('current_balance');
+
+        return view('admin.siswa.show', compact(
+            'siswa', 'registration', 'attendance', 'sppSummary', 'tabunganSaldo'
+        ));
     }
 
     public function edit(Student $siswa)
