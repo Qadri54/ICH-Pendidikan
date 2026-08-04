@@ -23,28 +23,59 @@
         .bar-track { display: inline-block; width: 300px; height: 14px; background: #f0f0f0; vertical-align: middle; }
         .bar-fill { display: inline-block; height: 14px; background: #3DA746; min-width: 1px; }
         .bar-value { display: inline-block; font-size: 8px; padding-left: 6px; vertical-align: middle; }
+        .kpi-row { margin-bottom: 16px; }
+        .kpi-box { display: inline-block; width: 19%; vertical-align: top; padding: 8px 4px; border: 1px solid #e5e7eb; border-radius: 6px; text-align: center; }
+        .kpi-box .kpi-value { font-size: 16px; font-weight: bold; color: #3DA746; }
+        .kpi-box .kpi-label { font-size: 8px; color: #666; margin-top: 2px; }
+        .kpi-box.info .kpi-value { color: #3b82f6; }
+        .kpi-box.danger .kpi-value { color: #e53e3e; }
+        .gender-bar { margin: 8px 0 16px 0; height: 20px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+        .gender-bar-l { display: inline-block; height: 20px; background: #3b82f6; float: left; }
+        .gender-bar-p { display: inline-block; height: 20px; background: #ec4899; float: left; }
     </style>
 </head>
 <body>
     <h3>Ringkasan Data Siswa</h3>
-    <table class="summary">
-        <tr>
-            <td class="label">Total Siswa Aktif</td>
-            <td class="value-highlight">{{ $totalAktif }}</td>
-        </tr>
-        <tr>
-            <td class="label">Total Alumni</td>
-            <td class="value">{{ $totalAlumni }}</td>
-        </tr>
-        <tr>
-            <td class="label">Total Keluar</td>
-            <td class="value">{{ $totalKeluar }}</td>
-        </tr>
-        <tr>
-            <td class="label">Siswa Tanpa Akun Orang Tua</td>
-            <td class="value">{{ $tanpaAkun }}</td>
-        </tr>
-    </table>
+
+    <div class="kpi-row">
+        <div class="kpi-box">
+            <div class="kpi-value">{{ $totalAktif }}</div>
+            <div class="kpi-label">Siswa Aktif</div>
+        </div>
+        <div class="kpi-box info">
+            <div class="kpi-value">{{ $totalAlumni }}</div>
+            <div class="kpi-label">Alumni</div>
+        </div>
+        <div class="kpi-box danger">
+            <div class="kpi-value">{{ $totalKeluar }}</div>
+            <div class="kpi-label">Keluar</div>
+        </div>
+        <div class="kpi-box">
+            <div class="kpi-value">{{ $retentionRate }}%</div>
+            <div class="kpi-label">Retention Rate</div>
+        </div>
+        <div class="kpi-box">
+            <div class="kpi-value">{{ $tanpaAkun }}</div>
+            <div class="kpi-label">Tanpa Akun Ortu</div>
+        </div>
+    </div>
+
+    <h3>Distribusi Gender</h3>
+    @php
+        $totalGender = $totalL + $totalP;
+        $pctL = $totalGender > 0 ? round($totalL / $totalGender * 100) : 0;
+        $pctP = $totalGender > 0 ? round($totalP / $totalGender * 100) : 0;
+    @endphp
+    <div class="gender-bar">
+        <span class="gender-bar-l" style="width: {{ $pctL }}%;"></span>
+        <span class="gender-bar-p" style="width: {{ $pctP }}%;"></span>
+    </div>
+    <div style="font-size: 9px; color: #555;">
+        <span style="display: inline-block; width: 10px; height: 10px; background: #3b82f6; vertical-align: middle;"></span>
+        Laki-laki: {{ $totalL }} ({{ $pctL }}%) &nbsp;&nbsp;
+        <span style="display: inline-block; width: 10px; height: 10px; background: #ec4899; vertical-align: middle;"></span>
+        Perempuan: {{ $totalP }} ({{ $pctP }}%)
+    </div>
 
     <h3>Grafik Pertumbuhan Jumlah Siswa (12 Bulan Terakhir)</h3>
     <div class="bar-container">
@@ -60,14 +91,18 @@
     </div>
 
     @foreach($studentsGrouped as $kelas => $students)
-        <h3>{{ $kelas }} ({{ $students->count() }} siswa)</h3>
+        @php
+            $kelasL = $students->where('jenis_kelamin', 'Laki-laki')->count();
+            $kelasP = $students->where('jenis_kelamin', 'Perempuan')->count();
+        @endphp
+        <h3>{{ $kelas }} ({{ $students->count() }} siswa — {{ $kelasL }}L / {{ $kelasP }}P)</h3>
         <table class="data">
             <thead>
                 <tr>
                     <th style="width: 30px;">No</th>
                     <th>NIS</th>
                     <th>Nama Siswa</th>
-                    <th>Jenis Kelamin</th>
+                    <th class="text-center">JK</th>
                     <th>Tanggal Lahir</th>
                 </tr>
             </thead>
@@ -77,7 +112,7 @@
                         <td class="text-center">{{ $i + 1 }}</td>
                         <td>{{ $siswa->NIS ?? '-' }}</td>
                         <td>{{ $siswa->nama_siswa }}</td>
-                        <td class="text-center">{{ $siswa->jenis_kelamin }}</td>
+                        <td class="text-center">{{ $siswa->jenis_kelamin === 'Laki-laki' ? 'L' : 'P' }}</td>
                         <td>{{ $siswa->tanggal_lahir?->format('d/m/Y') ?? '-' }}</td>
                     </tr>
                 @endforeach

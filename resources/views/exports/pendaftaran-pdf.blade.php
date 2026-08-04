@@ -18,15 +18,72 @@
         table.data tr:nth-child(even) { background: #fafafa; }
         .text-right { text-align: right; }
         .text-center { text-align: center; }
+        .kpi-row { margin-bottom: 16px; }
+        .kpi-box { display: inline-block; width: 32%; vertical-align: top; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 6px; text-align: center; }
+        .kpi-box .kpi-value { font-size: 18px; font-weight: bold; color: #3DA746; }
+        .kpi-box .kpi-label { font-size: 9px; color: #666; margin-top: 2px; }
+        .kpi-box.info .kpi-value { color: #3b82f6; }
+        .funnel { margin: 12px 0; }
+        .funnel-row { margin-bottom: 4px; }
+        .funnel-label { display: inline-block; width: 80px; font-size: 9px; text-align: right; padding-right: 8px; vertical-align: middle; }
+        .funnel-track { display: inline-block; height: 18px; vertical-align: middle; }
+        .funnel-value { display: inline-block; font-size: 9px; padding-left: 6px; vertical-align: middle; font-weight: bold; }
+        .bg-accepted { background: #3DA746; }
+        .bg-pending { background: #f59e0b; }
+        .bg-rejected { background: #e53e3e; }
     </style>
 </head>
 <body>
     <h3>Ringkasan Pendaftaran — {{ $periodLabel }}</h3>
+
+    <div class="kpi-row">
+        <div class="kpi-box">
+            <div class="kpi-value">{{ $totalRegistrations }}</div>
+            <div class="kpi-label">Total Pendaftar</div>
+        </div>
+        <div class="kpi-box">
+            <div class="kpi-value">{{ $conversionRate }}%</div>
+            <div class="kpi-label">Conversion Rate</div>
+        </div>
+        <div class="kpi-box info">
+            <div class="kpi-value">Rp {{ number_format($totalPendapatan / 1000000, 1) }}jt</div>
+            <div class="kpi-label">Pendapatan Pendaftaran</div>
+        </div>
+    </div>
+
+    @if($totalRegistrations > 0)
+    <h3>Conversion Funnel</h3>
+    @php
+        $maxFunnel = max($totalRegistrations, 1);
+        $widthAccepted = round($totalAccepted / $maxFunnel * 350);
+        $widthPending = round($totalPending / $maxFunnel * 350);
+        $widthRejected = round($totalRejected / $maxFunnel * 350);
+    @endphp
+    <div class="funnel">
+        <div class="funnel-row">
+            <span class="funnel-label">Total</span>
+            <span class="funnel-track" style="width: 350px; background: #e5e7eb;"></span>
+            <span class="funnel-value">{{ $totalRegistrations }}</span>
+        </div>
+        <div class="funnel-row">
+            <span class="funnel-label">Diterima</span>
+            <span class="funnel-track bg-accepted" style="width: {{ max($widthAccepted, 2) }}px;"></span>
+            <span class="funnel-value" style="color: #3DA746;">{{ $totalAccepted }} ({{ $totalRegistrations > 0 ? round($totalAccepted / $totalRegistrations * 100) : 0 }}%)</span>
+        </div>
+        <div class="funnel-row">
+            <span class="funnel-label">Pending</span>
+            <span class="funnel-track bg-pending" style="width: {{ max($widthPending, 2) }}px;"></span>
+            <span class="funnel-value" style="color: #f59e0b;">{{ $totalPending }} ({{ $totalRegistrations > 0 ? round($totalPending / $totalRegistrations * 100) : 0 }}%)</span>
+        </div>
+        <div class="funnel-row">
+            <span class="funnel-label">Ditolak</span>
+            <span class="funnel-track bg-rejected" style="width: {{ max($widthRejected, 2) }}px;"></span>
+            <span class="funnel-value" style="color: #e53e3e;">{{ $totalRejected }} ({{ $totalRegistrations > 0 ? round($totalRejected / $totalRegistrations * 100) : 0 }}%)</span>
+        </div>
+    </div>
+    @endif
+
     <table class="summary">
-        <tr>
-            <td class="label">Total Pendaftaran Semester Ini</td>
-            <td class="value-highlight">{{ $totalRegistrations }}</td>
-        </tr>
         <tr>
             <td class="label">Pendaftaran via Aplikasi</td>
             <td class="value">{{ $totalViaApp }}</td>

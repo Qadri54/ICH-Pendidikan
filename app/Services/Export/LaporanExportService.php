@@ -3,6 +3,7 @@
 namespace App\Services\Export;
 
 use App\Models\AcademicPeriod;
+use App\Models\AttendanceRecord;
 use App\Models\ClassRoom;
 use App\Models\Registration;
 use App\Models\RegistrationFee;
@@ -12,6 +13,7 @@ use App\Models\SavingLedger;
 use App\Models\SppInvoice;
 use App\Models\SppPayment;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\StudentPassbook;
 use App\Models\Teacher;
 use App\Models\User;
@@ -80,14 +82,32 @@ class LaporanExportService
     public function exportKeuanganPdf(?int $year = null): Response
     {
         $year             = $year ?? now()->year;
-        $totalSpp         = SppInvoice::where('status', 'paid')->sum('jumlah');
-        $totalPendaftaran = $this->registrationFeeService->getTotalCollected();
-        $totalTabungan    = SavingLedger::sum('total_balance');
+        $totalSpp         = (int) SppInvoice::where('status', 'paid')->sum('jumlah');
+        $totalPendaftaran = (int) $this->registrationFeeService->getTotalCollected();
+        $totalTabungan    = (int) SavingLedger::sum('total_balance');
         $monthlySummary   = $this->getMonthlySummary($year);
-        $kepalaSekolah    = $this->getKepalaSekolahName();
+
+        $sppInvoiced = (int) SppInvoice::whereYear('tanggal_tahun', $year)->sum('jumlah');
+        $sppCollected = (int) SppInvoice::where('status', 'paid')->whereYear('tanggal_tahun', $year)->sum('jumlah');
+        $collectionRate = $sppInvoiced > 0 ? round(($sppCollected / $sppInvoiced) * 100, 1) : 0;
+
+        $totalOutstanding = (int) SppInvoice::whereIn('status', ['unpaid', 'overdue'])->sum('jumlah');
+        $totalPendapatan = $totalSpp + $totalPendaftaran;
+        $maxMonthly = max(array_column($monthlySummary, 'spp') ?: [1]);
+
+        $prevYear = $year - 1;
+        $prevSpp = (int) SppInvoice::where('status', 'paid')->whereYear('tanggal_tahun', $prevYear)->sum('jumlah');
+        $prevPendaftaran = (int) RegistrationTransaction::where('status', 'approved')
+            ->whereYear('payment_date', $prevYear)->sum('jumlah_bayar');
+        $prevTotal = $prevSpp + $prevPendaftaran;
+        $yearDelta = $prevTotal > 0 ? round((($totalPendapatan - $prevTotal) / $prevTotal) * 100, 1) : null;
+
+        $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.keuangan-pdf', compact(
-            'totalSpp', 'totalPendaftaran', 'totalTabungan', 'monthlySummary', 'kepalaSekolah'
+            'year', 'totalSpp', 'totalPendaftaran', 'totalTabungan', 'totalPendapatan',
+            'collectionRate', 'totalOutstanding', 'monthlySummary', 'maxMonthly',
+            'prevYear', 'prevTotal', 'yearDelta', 'kepalaSekolah'
         ))->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-keuangan-' . now()->format('Y-m-d') . '.pdf');
@@ -100,8 +120,15 @@ class LaporanExportService
         $waliKelas     = $classroom->homeroomTeacher?->user?->name;
         $kepalaSekolah = $this->getKepalaSekolahName();
 
+        $hariEfektif = StudentAttendance::whereHas('student', fn ($q) => $q->where('class_id', $classId))
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->selectRaw('DATE(created_at) as tgl')
+            ->distinct()
+            ->count('tgl');
+
         $pdf = Pdf::loadView('exports.absensi-siswa-pdf', compact(
-            'classroom', 'recap', 'year', 'month', 'waliKelas', 'kepalaSekolah'
+            'classroom', 'recap', 'year', 'month', 'waliKelas', 'kepalaSekolah', 'hariEfektif'
         ));
 
         return $pdf->download("rekap-absensi-siswa-{$classroom->nama_kelas}-{$year}-{$month}.pdf");
@@ -112,7 +139,13 @@ class LaporanExportService
         $recap         = $this->attendanceService->getMonthlyRecap($year, $month);
         $kepalaSekolah = $this->getKepalaSekolahName();
 
-        $pdf = Pdf::loadView('exports.absensi-guru-pdf', compact('recap', 'year', 'month', 'kepalaSekolah'));
+        $hariEfektif = AttendanceRecord::whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->selectRaw('DATE(created_at) as tgl')
+            ->distinct()
+            ->count('tgl');
+
+        $pdf = Pdf::loadView('exports.absensi-guru-pdf', compact('recap', 'year', 'month', 'kepalaSekolah', 'hariEfektif'));
 
         return $pdf->download("rekap-absensi-guru-{$year}-{$month}.pdf");
     }
@@ -126,6 +159,12 @@ class LaporanExportService
         $tanpaAkun = Student::where('status', 'aktif')
             ->whereNull('user_id')
             ->count();
+
+        $totalL = Student::where('status', 'aktif')->where('jenis_kelamin', 'Laki-laki')->count();
+        $totalP = Student::where('status', 'aktif')->where('jenis_kelamin', 'Perempuan')->count();
+
+        $totalAll = $totalAktif + $totalAlumni + $totalKeluar;
+        $retentionRate = $totalAll > 0 ? round(($totalAktif / $totalAll) * 100, 1) : 0;
 
         $studentsGrouped = Student::with('classRoom')
             ->where('status', 'aktif')
@@ -149,6 +188,7 @@ class LaporanExportService
 
         $pdf = Pdf::loadView('exports.data-siswa-pdf', compact(
             'totalAktif', 'totalAlumni', 'totalKeluar', 'tanpaAkun',
+            'totalL', 'totalP', 'retentionRate',
             'studentsGrouped', 'growthData', 'maxGrowth', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
@@ -157,16 +197,22 @@ class LaporanExportService
 
     public function exportDataGuruPdf(): Response
     {
-        $teachers = Teacher::with('user')->get();
+        $teachers = Teacher::with(['user', 'homeroomClass'])->get();
 
         $guruAktif    = $teachers->filter(fn ($t) => $t->user?->status === 'active');
         $guruNonaktif = $teachers->filter(fn ($t) => $t->user?->status !== 'active');
         $totalAktif   = $guruAktif->count();
 
+        $totalSiswaAktif = Student::where('status', 'aktif')->count();
+        $rasio = $totalAktif > 0 ? round($totalSiswaAktif / $totalAktif) : 0;
+
+        $tipeBreakdown = $guruAktif->groupBy('tipe')->map->count()->sortDesc();
+
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.data-guru-pdf', compact(
-            'guruAktif', 'guruNonaktif', 'totalAktif', 'kepalaSekolah'
+            'guruAktif', 'guruNonaktif', 'totalAktif', 'totalSiswaAktif',
+            'rasio', 'tipeBreakdown', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-data-guru-' . now()->format('Y-m-d') . '.pdf');
@@ -181,8 +227,10 @@ class LaporanExportService
             ->pluck('user_id')
             ->unique();
 
-        $activeParents = User::whereIn('user_id', $activeParentIds)->get();
-        $totalAktif    = $activeParents->count();
+        $activeParents = User::whereIn('user_id', $activeParentIds)
+            ->withCount(['students' => fn ($q) => $q->where('status', 'aktif')])
+            ->get();
+        $totalAktif = $activeParents->count();
 
         $studentsWithUnpaid = Student::where('status', 'aktif')
             ->whereNotNull('user_id')
@@ -191,15 +239,29 @@ class LaporanExportService
             ->get();
 
         $unpaidInvoiceParents = $studentsWithUnpaid->groupBy('user_id')
-            ->map(fn ($students) => [
-                'parent' => $students->first()->user,
-                'students' => $students,
-            ]);
+            ->map(function ($students) {
+                $allInvoices = $students->flatMap->sppInvoices;
+                $oldestOverdue = $allInvoices->filter(fn ($inv) => $inv->jatuh_tempo && now()->gt($inv->jatuh_tempo))
+                    ->sortBy('jatuh_tempo')
+                    ->first();
+                $agingMonths = $oldestOverdue ? (int) $oldestOverdue->jatuh_tempo->diffInMonths(now()) : 0;
 
+                return [
+                    'parent'        => $students->first()->user,
+                    'students'      => $students,
+                    'total_tagihan' => $allInvoices->sum('jumlah'),
+                    'jumlah_invoice' => $allInvoices->count(),
+                    'aging_months'  => $agingMonths,
+                ];
+            })
+            ->sortByDesc('total_tagihan');
+
+        $totalTunggakan = $unpaidInvoiceParents->sum('total_tagihan');
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.data-orang-tua-pdf', compact(
-            'totalAkun', 'totalAktif', 'activeParents', 'unpaidInvoiceParents', 'kepalaSekolah'
+            'totalAkun', 'totalAktif', 'activeParents', 'unpaidInvoiceParents',
+            'totalTunggakan', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-data-orang-tua-' . now()->format('Y-m-d') . '.pdf');
@@ -214,20 +276,27 @@ class LaporanExportService
         $start = $period->tanggal_mulai;
         $end   = $period->tanggal_selesai;
 
+        $totalInvoiced = (int) SppInvoice::whereBetween('tanggal_tahun', [$start, $end])->sum('jumlah');
         $totalCollected = (int) SppInvoice::where('status', 'paid')
             ->whereBetween('tanggal_tahun', [$start, $end])
             ->sum('jumlah');
+        $collectionRate = $totalInvoiced > 0 ? round(($totalCollected / $totalInvoiced) * 100, 1) : 0;
 
         $monthlyBreakdown = [];
         $date = $start->copy()->startOfMonth();
         while ($date->lte($end)) {
-            $amount = (int) SppInvoice::where('status', 'paid')
+            $invoiced = (int) SppInvoice::whereYear('tanggal_tahun', $date->year)
+                ->whereMonth('tanggal_tahun', $date->month)
+                ->sum('jumlah');
+            $collected = (int) SppInvoice::where('status', 'paid')
                 ->whereYear('tanggal_tahun', $date->year)
                 ->whereMonth('tanggal_tahun', $date->month)
                 ->sum('jumlah');
             $monthlyBreakdown[] = [
-                'label' => $date->translatedFormat('F Y'),
-                'value' => $amount,
+                'label'     => $date->translatedFormat('F Y'),
+                'value'     => $collected,
+                'invoiced'  => $invoiced,
+                'rate'      => $invoiced > 0 ? round(($collected / $invoiced) * 100, 1) : 0,
             ];
             $date->addMonth();
         }
@@ -237,18 +306,49 @@ class LaporanExportService
             ->whereBetween('tanggal_tahun', [$start, $end])
             ->sum('jumlah');
 
+        $unpaidInvoices = SppInvoice::whereIn('status', ['unpaid', 'overdue'])
+            ->whereBetween('tanggal_tahun', [$start, $end])
+            ->get();
+
+        $aging = [
+            ['label' => '≤ 1 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '2–3 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '4–6 Bulan', 'count' => 0, 'amount' => 0],
+            ['label' => '> 6 Bulan', 'count' => 0, 'amount' => 0],
+        ];
+        foreach ($unpaidInvoices as $inv) {
+            $months = $inv->jatuh_tempo && now()->gt($inv->jatuh_tempo) ? (int) $inv->jatuh_tempo->diffInMonths(now()) : 0;
+            $idx = match (true) {
+                $months <= 1 => 0,
+                $months <= 3 => 1,
+                $months <= 6 => 2,
+                default      => 3,
+            };
+            $aging[$idx]['count']++;
+            $aging[$idx]['amount'] += $inv->jumlah;
+        }
+
         $unpaidByClass = SppInvoice::with(['student.classRoom', 'student.user'])
             ->whereIn('status', ['unpaid', 'overdue'])
             ->whereBetween('tanggal_tahun', [$start, $end])
             ->get()
             ->groupBy(fn ($inv) => $inv->student?->classRoom?->nama_kelas ?? 'Tanpa Kelas');
 
+        $totalSiswaAktif = Student::where('status', 'aktif')->count();
+        $siswaMenunggak = SppInvoice::whereIn('status', ['unpaid', 'overdue'])
+            ->whereBetween('tanggal_tahun', [$start, $end])
+            ->distinct('student_id')
+            ->count('student_id');
+        $delinquencyRate = $totalSiswaAktif > 0 ? round(($siswaMenunggak / $totalSiswaAktif) * 100, 1) : 0;
+
         $periodLabel = $period->tahun_ajaran . ' - Semester ' . $period->semester;
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.spp-pdf', compact(
-            'totalCollected', 'monthlyBreakdown', 'maxMonthly', 'totalOutstanding',
-            'unpaidByClass', 'periodLabel', 'kepalaSekolah'
+            'totalInvoiced', 'totalCollected', 'collectionRate',
+            'monthlyBreakdown', 'maxMonthly', 'totalOutstanding',
+            'aging', 'unpaidByClass', 'siswaMenunggak', 'delinquencyRate',
+            'periodLabel', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-spp-' . now()->format('Y-m-d') . '.pdf');
@@ -264,6 +364,11 @@ class LaporanExportService
         $end   = $period->tanggal_selesai;
 
         $totalRegistrations = Registration::whereBetween('created_at', [$start, $end])->count();
+        $totalAccepted = Registration::where('status', 'accepted')->whereBetween('created_at', [$start, $end])->count();
+        $totalRejected = Registration::where('status', 'rejected')->whereBetween('created_at', [$start, $end])->count();
+        $totalPending  = Registration::where('status', 'pending')->whereBetween('created_at', [$start, $end])->count();
+        $conversionRate = $totalRegistrations > 0 ? round(($totalAccepted / $totalRegistrations) * 100, 1) : 0;
+
         $totalViaApp   = Registration::whereBetween('created_at', [$start, $end])->where('source', 'app')->count();
         $totalViaAdmin = Registration::whereBetween('created_at', [$start, $end])->where('source', 'admin')->count();
 
@@ -288,7 +393,8 @@ class LaporanExportService
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.pendaftaran-pdf', compact(
-            'totalRegistrations', 'totalViaApp', 'totalViaAdmin', 'totalPendapatan',
+            'totalRegistrations', 'totalAccepted', 'totalRejected', 'totalPending',
+            'conversionRate', 'totalViaApp', 'totalViaAdmin', 'totalPendapatan',
             'unpaidFees', 'totalUnpaid', 'totalCicilan', 'totalLunas',
             'periodLabel', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
@@ -302,11 +408,18 @@ class LaporanExportService
             ->orderBy('nama_kelas')
             ->get();
 
-        $totalClasses = $classes->count();
+        $totalClasses  = $classes->count();
+        $totalSiswa    = $classes->sum(fn ($c) => $c->students->count());
+        $totalGuruAktif = Teacher::whereHas('user', fn ($q) => $q->where('status', 'active'))->count();
+        $rasio = $totalGuruAktif > 0 ? round($totalSiswa / $totalGuruAktif) : 0;
+        $totalL = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'Laki-laki')->count());
+        $totalP = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'Perempuan')->count());
+
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.kelas-pdf', compact(
-            'classes', 'totalClasses', 'kepalaSekolah'
+            'classes', 'totalClasses', 'totalSiswa', 'totalGuruAktif', 'rasio',
+            'totalL', 'totalP', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-kelas-' . now()->format('Y-m-d') . '.pdf');
@@ -315,6 +428,10 @@ class LaporanExportService
     public function exportTabunganPdf(): Response
     {
         $totalSavings = (int) StudentPassbook::sum('current_balance');
+        $totalPassbooks = StudentPassbook::count();
+        $totalSiswaAktif = Student::where('status', 'aktif')->count();
+        $participationRate = $totalSiswaAktif > 0 ? round(($totalPassbooks / $totalSiswaAktif) * 100, 1) : 0;
+        $avgBalance = $totalPassbooks > 0 ? round($totalSavings / $totalPassbooks) : 0;
 
         $savingsPerClass = SavingLedger::with('classRoom')
             ->where('status', 'Active')
@@ -331,7 +448,8 @@ class LaporanExportService
         $kepalaSekolah = $this->getKepalaSekolahName();
 
         $pdf = Pdf::loadView('exports.tabungan-pdf', compact(
-            'totalSavings', 'savingsPerClass', 'topStudents', 'kepalaSekolah'
+            'totalSavings', 'totalPassbooks', 'totalSiswaAktif', 'participationRate',
+            'avgBalance', 'savingsPerClass', 'topStudents', 'kepalaSekolah'
         ))->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-tabungan-' . now()->format('Y-m-d') . '.pdf');
