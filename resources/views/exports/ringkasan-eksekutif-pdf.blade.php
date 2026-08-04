@@ -72,7 +72,7 @@
                 <p class="metric-note">Rasio guru:siswa = 1:{{ $rasioGuruSiswa }}</p>
             </td>
             <td>
-                <p class="metric-label">Churn Rate</p>
+                <p class="metric-label">Tingkat Kehilangan Siswa</p>
                 <p class="metric-value" style="color: {{ $churnRate > 5 ? '#dc2626' : ($churnRate > 0 ? '#f59e0b' : '#16a34a') }};">{{ $churnRate }}%</p>
                 <p class="metric-note">{{ $siswaKeluar }} siswa keluar semester ini</p>
             </td>
@@ -101,12 +101,12 @@
                 </p>
             </td>
             <td>
-                <p class="metric-label">Collection Rate SPP</p>
+                <p class="metric-label">Tingkat Pembayaran SPP</p>
                 <p class="metric-value" style="color: {{ $sppCollectionRate >= 80 ? '#16a34a' : ($sppCollectionRate >= 50 ? '#f59e0b' : '#dc2626') }};">{{ $sppCollectionRate }}%</p>
                 <p class="metric-note">Rp {{ number_format($sppCollectedAmount, 0, ',', '.') }} / {{ number_format($sppInvoicedAmount, 0, ',', '.') }}</p>
             </td>
             <td>
-                <p class="metric-label">Revenue per Siswa</p>
+                <p class="metric-label">Pendapatan per Siswa</p>
                 <p class="metric-value">Rp {{ number_format($revenuePerSiswa, 0, ',', '.') }}</p>
                 <p class="metric-note">Total pendapatan / siswa aktif</p>
             </td>
@@ -122,8 +122,8 @@
     @if($sppCollectionRate < 70 || $churnRate > 5 || $totalOutstanding > 0)
         @if($sppCollectionRate < 70)
             <div class="warning-box">
-                <p class="box-title" style="color: #92400e;">Perhatian: Collection Rate SPP Rendah</p>
-                <p class="box-text">Hanya {{ $sppCollectionRate }}% tagihan SPP semester ini yang terbayar. Disarankan untuk meninjau strategi penagihan dan berkomunikasi dengan orang tua yang menunggak.</p>
+                <p class="box-title" style="color: #92400e;">Perhatian: Tingkat Pembayaran SPP Rendah</p>
+                <p class="box-text">Hanya {{ $sppCollectionRate }}% tagihan SPP semester ini yang terbayar (tingkat pembayaran). Disarankan untuk meninjau strategi penagihan dan berkomunikasi dengan orang tua yang menunggak.</p>
             </div>
         @endif
         @if($totalOutstanding > 5000000)
@@ -135,7 +135,7 @@
     @else
         <div class="highlight-box">
             <p class="box-title" style="color: #166534;">Kinerja Baik</p>
-            <p class="box-text">Collection rate SPP {{ $sppCollectionRate }}% dan tidak ada masalah churn signifikan. Pertahankan kinerja ini.</p>
+            <p class="box-text">Tingkat pembayaran SPP {{ $sppCollectionRate }}% dan tidak ada kehilangan siswa yang signifikan. Pertahankan kinerja ini.</p>
         </div>
     @endif
 
@@ -217,7 +217,7 @@
     @endforeach
 
     {{-- ════════ AGING ANALYSIS ════════ --}}
-    <h3>Aging Analysis Tunggakan SPP</h3>
+    <h3>Analisis Umur Tunggakan SPP</h3>
     <table class="data">
         <thead>
             <tr>

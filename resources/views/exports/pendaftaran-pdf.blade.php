@@ -43,7 +43,8 @@
         </div>
         <div class="kpi-box">
             <div class="kpi-value">{{ $conversionRate }}%</div>
-            <div class="kpi-label">Conversion Rate</div>
+            <div class="kpi-label">Tingkat Penerimaan</div>
+            <div style="font-size: 7px; color: #999; margin-top: 1px;">% pendaftar yang diterima</div>
         </div>
         <div class="kpi-box info">
             <div class="kpi-value">Rp {{ number_format($totalPendapatan / 1000000, 1) }}jt</div>
@@ -52,7 +53,7 @@
     </div>
 
     @if($totalRegistrations > 0)
-    <h3>Conversion Funnel</h3>
+    <h3>Alur Seleksi Pendaftaran</h3>
     @php
         $maxFunnel = max($totalRegistrations, 1);
         $widthAccepted = round($totalAccepted / $maxFunnel * 350);

@@ -29,6 +29,7 @@
         .kpi-box { display: inline-block; width: 32%; vertical-align: top; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 6px; text-align: center; }
         .kpi-box .kpi-value { font-size: 18px; font-weight: bold; color: #3DA746; }
         .kpi-box .kpi-label { font-size: 9px; color: #666; margin-top: 2px; }
+        .kpi-box .kpi-desc { font-size: 7px; color: #999; margin-top: 1px; }
         .kpi-box.danger .kpi-value { color: #e53e3e; }
         .kpi-box.warning .kpi-value { color: #f59e0b; }
         .aging-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
@@ -47,11 +48,13 @@
     <div class="kpi-row">
         <div class="kpi-box">
             <div class="kpi-value">{{ $collectionRate }}%</div>
-            <div class="kpi-label">Collection Rate</div>
+            <div class="kpi-label">Tingkat Pembayaran</div>
+            <div class="kpi-desc">% tagihan SPP yang terbayar</div>
         </div>
         <div class="kpi-box danger">
             <div class="kpi-value">{{ $delinquencyRate }}%</div>
-            <div class="kpi-label">Delinquency Rate ({{ $siswaMenunggak }} siswa)</div>
+            <div class="kpi-label">Tingkat Tunggakan</div>
+            <div class="kpi-desc">{{ $siswaMenunggak }} siswa menunggak</div>
         </div>
         <div class="kpi-box">
             <div class="kpi-value">Rp {{ number_format($totalCollected / 1000000, 1) }}jt</div>
@@ -74,7 +77,7 @@
         </tr>
     </table>
 
-    <h3>Aging Analysis Tunggakan</h3>
+    <h3>Analisis Umur Tunggakan</h3>
     @php $maxAging = max(array_column($aging, 'amount') ?: [1]); @endphp
     <table class="aging-table">
         <thead>
@@ -106,7 +109,7 @@
                 <th>Bulan</th>
                 <th class="text-right">Tagihan</th>
                 <th class="text-right">Terbayar</th>
-                <th class="text-center">Rate</th>
+                <th class="text-center">% Bayar</th>
             </tr>
         </thead>
         <tbody>
@@ -167,7 +170,7 @@
 
     @if($collectionRate < 80)
         <div class="insight-box">
-            <strong>Perhatian:</strong> Collection rate {{ $collectionRate }}% masih di bawah target 80%.
+            <strong>Perhatian:</strong> Tingkat pembayaran {{ $collectionRate }}% masih di bawah target 80%.
             {{ $siswaMenunggak }} siswa memiliki tunggakan aktif. Disarankan untuk mengirim pengingat pembayaran secara berkala.
         </div>
     @endif

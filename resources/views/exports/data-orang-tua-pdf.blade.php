@@ -84,7 +84,7 @@
                     <th>Kelas</th>
                     <th class="text-center">Tagihan</th>
                     <th class="text-right">Jumlah</th>
-                    <th class="text-center">Aging</th>
+                    <th class="text-center">Lama Tunggakan</th>
                 </tr>
             </thead>
             <tbody>

@@ -45,7 +45,8 @@
         </div>
         <div class="kpi-box">
             <div class="kpi-value">{{ $collectionRate }}%</div>
-            <div class="kpi-label">Collection Rate SPP</div>
+            <div class="kpi-label">Tingkat Pembayaran SPP</div>
+            <div style="font-size: 7px; color: #999; margin-top: 1px;">% tagihan terbayar</div>
         </div>
         <div class="kpi-box danger">
             <div class="kpi-value">Rp {{ number_format($totalOutstanding / 1000000, 1) }}jt</div>

@@ -93,7 +93,8 @@
             @endphp
             <div class="rounded-xl border border-ich-line border-l-4 {{ $crBorder }} {{ $crBg }} p-4 shadow-ich-card hover:-translate-y-0.5 transition-all">
                 <div class="flex items-center justify-between mb-1">
-                    <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Collection Rate SPP</span>
+                    <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Tingkat Pembayaran SPP</span>
+                    <span class="text-[9px] text-ich-ink-300 font-sans normal-case tracking-normal">% tagihan yang terbayar</span>
                 </div>
                 <div class="text-3xl font-display font-bold {{ $crText }} leading-tight">{{ $executive['collection_rate'] }}%</div>
                 <div class="w-full bg-white/80 rounded-full h-2 mt-2.5 shadow-inner">
@@ -131,7 +132,7 @@
             {{-- Revenue per Siswa --}}
             <div class="rounded-xl border border-ich-line border-l-4 border-l-ich-teal bg-gradient-to-r from-teal-50 to-white p-4 shadow-ich-card hover:-translate-y-0.5 transition-all">
                 <div class="flex items-center justify-between mb-1">
-                    <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Revenue / Siswa</span>
+                    <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider" title="Rata-rata pendapatan yang dihasilkan per siswa">Pendapatan / Siswa</span>
                     <div class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center">
                         <svg class="w-3.5 h-3.5 text-ich-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
@@ -155,7 +156,7 @@
                     <svg class="w-5 h-5 {{ $chColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"/></svg>
                 </div>
                 <div>
-                    <div class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Churn Rate</div>
+                    <div class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider" title="Persentase siswa yang keluar dari sekolah">Tingkat Kehilangan Siswa</div>
                     <div class="text-xl font-display font-bold {{ $chColor }}">{{ $executive['churn_rate'] }}%</div>
                     <div class="text-[10px] text-ich-ink-400">{{ $executive['siswa_keluar'] }} siswa keluar</div>
                 </div>
@@ -214,7 +215,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-ich-ink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-xs font-ui font-bold text-ich-ink-600">Aging Tunggakan SPP</span>
+                        <span class="text-xs font-ui font-bold text-ich-ink-600">Umur Tunggakan SPP</span>
                     </div>
                     <span class="px-2.5 py-1 bg-ich-error-soft text-ich-error text-xs font-ui font-bold rounded-full">
                         Rp {{ number_format($executive['total_outstanding'], 0, ',', '.') }}
@@ -303,7 +304,7 @@
 
             {{-- Ringkasan Eksekutif --}}
             <div x-show="tab === 'eksekutif'" x-cloak>
-                <p class="text-sm text-ich-ink-400 font-sans mb-2">Laporan evaluasi bisnis: metrik kinerja, collection rate, aging tunggakan, analisis PPDB, dan perbandingan antar semester.</p>
+                <p class="text-sm text-ich-ink-400 font-sans mb-2">Laporan evaluasi bisnis: metrik kinerja, tingkat pembayaran, umur tunggakan, analisis PPDB, dan perbandingan antar semester.</p>
                 <p class="text-xs text-ich-ink-300 font-sans mb-4">Cocok untuk rapat yayasan dan evaluasi semester.</p>
                 <div class="flex gap-3 no-loading">
                     <a :href="'{{ route('admin.laporan.export.ringkasan-eksekutif-pdf') }}?period_id=' + periodId"

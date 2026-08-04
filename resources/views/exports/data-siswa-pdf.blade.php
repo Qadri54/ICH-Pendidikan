@@ -52,7 +52,8 @@
         </div>
         <div class="kpi-box">
             <div class="kpi-value">{{ $retentionRate }}%</div>
-            <div class="kpi-label">Retention Rate</div>
+            <div class="kpi-label">Tingkat Retensi</div>
+            <div style="font-size: 7px; color: #999; margin-top: 1px;">% siswa yang bertahan</div>
         </div>
         <div class="kpi-box">
             <div class="kpi-value">{{ $tanpaAkun }}</div>
