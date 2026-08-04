@@ -57,8 +57,8 @@
     <div class="bar-container">
         @foreach($classes as $kelas)
             @php
-                $countL = $kelas->students->where('jenis_kelamin', 'Laki-laki')->count();
-                $countP = $kelas->students->where('jenis_kelamin', 'Perempuan')->count();
+                $countL = $kelas->students->where('jenis_kelamin', 'L')->count();
+                $countP = $kelas->students->where('jenis_kelamin', 'P')->count();
                 $countTotal = $countL + $countP;
                 $widthL = $maxStudents > 0 ? round($countL / $maxStudents * 100) : 0;
                 $widthP = $maxStudents > 0 ? round($countP / $maxStudents * 100) : 0;
@@ -93,8 +93,8 @@
         <tbody>
             @foreach($classes as $i => $kelas)
                 @php
-                    $countL = $kelas->students->where('jenis_kelamin', 'Laki-laki')->count();
-                    $countP = $kelas->students->where('jenis_kelamin', 'Perempuan')->count();
+                    $countL = $kelas->students->where('jenis_kelamin', 'L')->count();
+                    $countP = $kelas->students->where('jenis_kelamin', 'P')->count();
                 @endphp
                 <tr>
                     <td class="text-center">{{ $i + 1 }}</td>

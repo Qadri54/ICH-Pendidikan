@@ -93,8 +93,8 @@
 
     @foreach($studentsGrouped as $kelas => $students)
         @php
-            $kelasL = $students->where('jenis_kelamin', 'Laki-laki')->count();
-            $kelasP = $students->where('jenis_kelamin', 'Perempuan')->count();
+            $kelasL = $students->where('jenis_kelamin', 'L')->count();
+            $kelasP = $students->where('jenis_kelamin', 'P')->count();
         @endphp
         <h3>{{ $kelas }} ({{ $students->count() }} siswa — {{ $kelasL }}L / {{ $kelasP }}P)</h3>
         <table class="data">
@@ -113,7 +113,7 @@
                         <td class="text-center">{{ $i + 1 }}</td>
                         <td>{{ $siswa->NIS ?? '-' }}</td>
                         <td>{{ $siswa->nama_siswa }}</td>
-                        <td class="text-center">{{ $siswa->jenis_kelamin === 'Laki-laki' ? 'L' : 'P' }}</td>
+                        <td class="text-center">{{ $siswa->jenis_kelamin }}</td>
                         <td>{{ $siswa->tanggal_lahir?->format('d/m/Y') ?? '-' }}</td>
                     </tr>
                 @endforeach

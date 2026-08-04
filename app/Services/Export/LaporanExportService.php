@@ -160,8 +160,8 @@ class LaporanExportService
             ->whereNull('user_id')
             ->count();
 
-        $totalL = Student::where('status', 'aktif')->where('jenis_kelamin', 'Laki-laki')->count();
-        $totalP = Student::where('status', 'aktif')->where('jenis_kelamin', 'Perempuan')->count();
+        $totalL = Student::where('status', 'aktif')->where('jenis_kelamin', 'L')->count();
+        $totalP = Student::where('status', 'aktif')->where('jenis_kelamin', 'P')->count();
 
         $totalAll = $totalAktif + $totalAlumni + $totalKeluar;
         $retentionRate = $totalAll > 0 ? round(($totalAktif / $totalAll) * 100, 1) : 0;
@@ -414,8 +414,8 @@ class LaporanExportService
         $totalSiswa    = $classes->sum(fn ($c) => $c->students->count());
         $totalGuruAktif = Teacher::whereHas('user', fn ($q) => $q->where('status', 'active'))->count();
         $rasio = $totalGuruAktif > 0 ? round($totalSiswa / $totalGuruAktif) : 0;
-        $totalL = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'Laki-laki')->count());
-        $totalP = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'Perempuan')->count());
+        $totalL = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'L')->count());
+        $totalP = $classes->sum(fn ($c) => $c->students->where('jenis_kelamin', 'P')->count());
 
         $kepalaSekolah = $this->getKepalaSekolahName();
 
