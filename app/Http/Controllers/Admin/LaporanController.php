@@ -117,4 +117,24 @@ class LaporanController extends Controller
     {
         return $this->exportService->exportRingkasanEksekutifPdf($request->integer('period_id') ?: null);
     }
+
+    public function exportRaportPdf(Request $request)
+    {
+        return $this->exportService->exportRaportPdf($request->integer('period_id') ?: null);
+    }
+
+    public function exportKehadiranSiswaPdf(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:students,student_id',
+            'year'       => 'required|integer|min:2020',
+            'month'      => 'required|integer|min:1|max:12',
+        ]);
+
+        return $this->exportService->exportKehadiranSiswaPdf(
+            $request->integer('student_id'),
+            $request->integer('year'),
+            $request->integer('month')
+        );
+    }
 }

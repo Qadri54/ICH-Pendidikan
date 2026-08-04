@@ -15,6 +15,7 @@ use App\Models\SppPayment;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use App\Models\StudentPassbook;
+use App\Models\StudentReportCard;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Services\Attendance\AttendanceService;
@@ -933,6 +934,90 @@ class LaporanExportService
         }
 
         return $this->streamExcel($spreadsheet, "rekap-absensi-guru-{$year}-{$month}");
+    }
+
+    // ─── Raport ──────────────────────────────────────
+
+    public function exportRaportPdf(?int $periodId = null): Response
+    {
+        $period = $periodId
+            ? AcademicPeriod::findOrFail($periodId)
+            : AcademicPeriod::where('is_active', true)->first() ?? AcademicPeriod::latest('tanggal_mulai')->first();
+
+        $periodLabel = $period ? "{$period->tahun_ajaran} — Semester {$period->semester}" : 'Semua Periode';
+
+        $raports = StudentReportCard::with(['student.classRoom', 'homeroomTeacher.user'])
+            ->when($period, fn ($q) => $q->where('period_id', $period->period_id))
+            ->get();
+
+        $totalDraft     = $raports->where('status', 'draft')->count();
+        $totalSubmitted = $raports->where('status', 'submitted')->count();
+        $totalApproved  = $raports->where('status', 'approved')->count();
+        $totalRaport    = $raports->count();
+        $completionRate = $totalRaport > 0 ? round($totalApproved / $totalRaport * 100, 1) : 0;
+
+        $siswaAktif = Student::where('status', 'aktif')->count();
+        $belumDibuatkan = $siswaAktif - $totalRaport;
+        $coverageRate = $siswaAktif > 0 ? round($totalRaport / $siswaAktif * 100, 1) : 0;
+
+        $perKelas = $raports->groupBy(fn ($r) => $r->student?->classRoom?->nama_kelas ?? 'Tanpa Kelas')
+            ->map(fn ($items, $kelas) => [
+                'kelas'     => $kelas,
+                'total'     => $items->count(),
+                'draft'     => $items->where('status', 'draft')->count(),
+                'submitted' => $items->where('status', 'submitted')->count(),
+                'approved'  => $items->where('status', 'approved')->count(),
+            ])->sortKeys()->values();
+
+        $belumDibuatkanList = collect();
+        if ($period) {
+            $sudahPunya = $raports->pluck('student_id')->toArray();
+            $belumDibuatkanList = Student::with('classRoom')
+                ->where('status', 'aktif')
+                ->whereNotIn('student_id', $sudahPunya)
+                ->orderBy('nama_siswa')
+                ->get();
+        }
+
+        $kepalaSekolah = $this->getKepalaSekolahName();
+
+        $pdf = Pdf::loadView('exports.raport-rekap-pdf', compact(
+            'periodLabel', 'raports', 'totalDraft', 'totalSubmitted', 'totalApproved',
+            'totalRaport', 'completionRate', 'siswaAktif', 'belumDibuatkan', 'coverageRate',
+            'perKelas', 'belumDibuatkanList', 'kepalaSekolah'
+        ))->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan-raport-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    public function exportKehadiranSiswaPdf(int $studentId, int $year, int $month): Response
+    {
+        $student = Student::with('classRoom.homeroomTeacher.user', 'user')->findOrFail($studentId);
+
+        $attendances = StudentAttendance::where('student_id', $studentId)
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->orderBy('created_at')
+            ->get();
+
+        $summary = $attendances->groupBy('status')->map->count();
+        $hadir = $summary->get('Hadir', 0);
+        $sakit = $summary->get('Sakit', 0);
+        $izin  = $summary->get('Izin', 0);
+        $alpha = $summary->get('Alpha', 0);
+        $total = $hadir + $sakit + $izin + $alpha;
+        $pctHadir = $total > 0 ? round($hadir / $total * 100, 1) : 0;
+
+        $bulanLabel = Carbon::create($year, $month)->translatedFormat('F Y');
+        $kepalaSekolah = $this->getKepalaSekolahName();
+
+        $pdf = Pdf::loadView('exports.kehadiran-siswa-pdf', compact(
+            'student', 'attendances', 'hadir', 'sakit', 'izin', 'alpha',
+            'total', 'pctHadir', 'bulanLabel', 'kepalaSekolah'
+        ))->setPaper('a4', 'portrait');
+
+        $filename = 'kehadiran-' . str_replace(' ', '-', strtolower($student->nama_siswa)) . '-' . $year . '-' . $month . '.pdf';
+        return $pdf->download($filename);
     }
 
     // ─── Helpers ─────────────────────────────────────

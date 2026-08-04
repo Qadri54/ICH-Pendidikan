@@ -167,6 +167,8 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::get('laporan/export/kelas-pdf',           [LaporanController::class, 'exportKelasPdf'])->name('laporan.export.kelas-pdf');
         Route::get('laporan/export/tabungan-pdf',        [LaporanController::class, 'exportTabunganPdf'])->name('laporan.export.tabungan-pdf');
         Route::get('laporan/export/ringkasan-eksekutif-pdf', [LaporanController::class, 'exportRingkasanEksekutifPdf'])->name('laporan.export.ringkasan-eksekutif-pdf');
+        Route::get('laporan/export/raport-pdf',             [LaporanController::class, 'exportRaportPdf'])->name('laporan.export.raport-pdf');
+        Route::get('laporan/export/kehadiran-siswa-pdf',    [LaporanController::class, 'exportKehadiranSiswaPdf'])->name('laporan.export.kehadiran-siswa-pdf');
         Route::get('laporan', fn () => redirect()->route('dashboard'))->name('laporan.index');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
 
