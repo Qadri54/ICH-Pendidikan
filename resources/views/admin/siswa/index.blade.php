@@ -2,7 +2,6 @@
 <x-main-layout title="Daftar Siswa">
 <div x-data="{
     showEdit: {{ $errors->any() && old('_modal') === 'edit' ? 'true' : 'false' }},
-    showDetail: false,
     showDelete: false,
     showBulk: false,
     editId: '{{ old('_edit_id', '') }}',
@@ -17,7 +16,6 @@
         nama_ibu: '{{ old('nama_ibu', '') }}',
         status: '{{ old('status', 'aktif') }}',
     },
-    detail: {},
     deleteId: null,
     deleteName: '',
     selected: JSON.parse(sessionStorage.getItem('siswa_selected') || '[]'),
@@ -47,10 +45,6 @@
             status: s.status || 'aktif',
         };
         this.showEdit = true;
-    },
-    openDetail(s) {
-        this.detail = s;
-        this.showDetail = true;
     },
     openDelete(id, name) {
         this.deleteId = id;
@@ -190,10 +184,10 @@
                         <td class="px-4 py-3 text-ich-ink-600">{{ $s->nama_ibu }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
-                                <button @click="openDetail({{ Js::from(['NIS' => $s->NIS, 'nama_siswa' => $s->nama_siswa, 'kelas' => $s->classRoom?->nama_kelas ?? '-', 'jenis_kelamin' => $s->jenis_kelamin, 'tanggal_lahir' => $s->tanggal_lahir ? \Carbon\Carbon::parse($s->tanggal_lahir)->format('d M Y') : '-', 'tempat_lahir' => $s->tempat_lahir, 'nama_ayah' => $s->nama_ayah, 'nama_ibu' => $s->nama_ibu, 'status' => ucfirst($s->status)]) }})"
-                                        class="px-2.5 py-1 bg-ich-info-soft text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
+                                <a href="{{ route('admin.siswa.show', $s) }}"
+                                   class="px-2.5 py-1 bg-ich-info-soft text-ich-teal font-ui font-bold text-xs rounded hover:bg-ich-teal hover:text-white transition-colors">
                                     Detail
-                                </button>
+                                </a>
                                 @if(! $isReadOnly)
                                     <button @click="openEdit({{ Js::from(['student_id' => $s->student_id, 'nama_siswa' => $s->nama_siswa, 'NIS' => $s->NIS, 'class_id' => $s->class_id, 'jenis_kelamin' => $s->jenis_kelamin, 'tanggal_lahir' => $s->tanggal_lahir?->format('Y-m-d'), 'tempat_lahir' => $s->tempat_lahir, 'nama_ayah' => $s->nama_ayah, 'nama_ibu' => $s->nama_ibu, 'status' => $s->status]) }})"
                                             class="px-2.5 py-1 bg-ich-warning-soft text-ich-warning font-ui font-bold text-xs rounded hover:bg-ich-yellow hover:text-white transition-colors">
@@ -288,21 +282,6 @@
                 <button type="button" @click="showEdit = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Batal</button>
             </div>
         </form>
-    </x-admin-modal>
-
-    {{-- Modal Detail --}}
-    <x-admin-modal show="showDetail" title="Detail Siswa" maxWidth="md">
-        <div class="space-y-3">
-            <template x-for="[label, key] in [['NIS','NIS'],['Nama Siswa','nama_siswa'],['Kelas','kelas'],['Jenis Kelamin','jenis_kelamin'],['Status','status'],['Tanggal Lahir','tanggal_lahir'],['Tempat Lahir','tempat_lahir'],['Nama Ayah','nama_ayah'],['Nama Ibu','nama_ibu']]">
-                <div class="flex items-start gap-4 py-2 border-b border-ich-line last:border-0">
-                    <div class="w-36 font-ui font-bold text-sm text-ich-ink-400 shrink-0" x-text="label"></div>
-                    <div class="font-sans text-sm text-ich-ink-900" x-text="detail[key] || '-'"></div>
-                </div>
-            </template>
-        </div>
-        <div class="flex gap-3 pt-4">
-            <button type="button" @click="showDetail = false" class="px-6 py-2.5 bg-white border border-ich-line text-ich-ink-600 font-ui font-bold text-sm rounded-ich-lg hover:bg-gray-50 transition-colors">Tutup</button>
-        </div>
     </x-admin-modal>
 
     {{-- Modal Delete --}}
