@@ -222,14 +222,16 @@ class LaporanExportService
     {
         $totalAkun = User::whereHas('role', fn ($q) => $q->where('role_name', 'Orang Tua'))->count();
 
-        $activeParentIds = Student::where('status', 'aktif')
+        $childrenPerParent = Student::where('status', 'aktif')
             ->whereNotNull('user_id')
-            ->pluck('user_id')
-            ->unique();
+            ->get()
+            ->groupBy('user_id');
+
+        $activeParentIds = $childrenPerParent->keys();
 
         $activeParents = User::whereIn('user_id', $activeParentIds)
-            ->withCount(['students' => fn ($q) => $q->where('status', 'aktif')])
-            ->get();
+            ->get()
+            ->each(fn ($p) => $p->anak_aktif = $childrenPerParent[$p->user_id]->count());
         $totalAktif = $activeParents->count();
 
         $studentsWithUnpaid = Student::where('status', 'aktif')

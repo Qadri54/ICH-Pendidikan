@@ -67,7 +67,7 @@
                     <td class="text-center">{{ $i + 1 }}</td>
                     <td>{{ $parent->name }}</td>
                     <td>{{ $parent->email }}</td>
-                    <td class="text-center">{{ $parent->students_count }}</td>
+                    <td class="text-center">{{ $parent->anak_aktif }}</td>
                 </tr>
             @endforeach
         </tbody>
