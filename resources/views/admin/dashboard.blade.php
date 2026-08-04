@@ -488,88 +488,6 @@
                 </div>
             </div>
 
-            {{-- Kehadiran Siswa (Individual) --}}
-            <div x-show="tab === 'kehadiran-siswa'" x-cloak>
-                <p class="text-sm text-ich-ink-400 font-sans mb-4">Laporan kehadiran individual per siswa per bulan — cocok untuk dibagikan ke orang tua saat pertemuan.</p>
-                <form id="formKehadiranSiswa" class="flex flex-wrap items-end gap-3 mb-4"
-                      x-data="{
-                          searchSiswa: '',
-                          openSiswa: false,
-                          selectedSiswaId: '',
-                          selectedSiswaLabel: '',
-                          allSiswa: {{ Js::from($students->map(fn($s) => ['id' => $s->student_id, 'name' => $s->nama_siswa, 'kelas' => $s->classRoom?->nama_kelas ?? '-'])) }},
-                          get filteredSiswa() {
-                              if (!this.searchSiswa.trim()) return this.allSiswa;
-                              const q = this.searchSiswa.toLowerCase();
-                              return this.allSiswa.filter(s => s.name.toLowerCase().includes(q) || s.kelas.toLowerCase().includes(q));
-                          },
-                          pickSiswa(s) {
-                              this.selectedSiswaId = s.id;
-                              this.selectedSiswaLabel = s.name + ' — ' + s.kelas;
-                              this.searchSiswa = '';
-                              this.openSiswa = false;
-                          },
-                          clearSiswa() {
-                              this.selectedSiswaId = '';
-                              this.selectedSiswaLabel = '';
-                              this.searchSiswa = '';
-                          }
-                      }">
-                    <div class="relative" style="min-width: 280px;">
-                        <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Siswa</label>
-                        <input type="hidden" name="student_id" :value="selectedSiswaId">
-
-                        <template x-if="selectedSiswaId">
-                            <div class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm
-                                        flex items-center justify-between gap-2">
-                                <span class="text-ich-ink-900 truncate" x-text="selectedSiswaLabel"></span>
-                                <button type="button" @click="clearSiswa()"
-                                        class="shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-ich-error-soft text-ich-error text-xs hover:bg-ich-error hover:text-white transition-colors">&times;</button>
-                            </div>
-                        </template>
-
-                        <template x-if="!selectedSiswaId">
-                            <div>
-                                <input type="text" x-model="searchSiswa" @focus="openSiswa = true" @click="openSiswa = true"
-                                       placeholder="Ketik nama siswa..."
-                                       class="w-full h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm
-                                              placeholder:text-ich-ink-300 focus:outline-none focus:border-ich-teal transition-colors">
-                                <div x-show="openSiswa" @click.outside="openSiswa = false" x-transition
-                                     class="absolute z-50 left-0 right-0 mt-1 bg-white border border-ich-line rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                                    <template x-if="filteredSiswa.length === 0">
-                                        <div class="px-3 py-3 text-sm text-ich-ink-300 font-sans text-center">Tidak ditemukan</div>
-                                    </template>
-                                    <template x-for="s in filteredSiswa" :key="s.id">
-                                        <button type="button" @click="pickSiswa(s)"
-                                                class="w-full text-left px-3 py-2 hover:bg-ich-surface transition-colors
-                                                       border-b border-ich-line last:border-0 flex items-center justify-between gap-2">
-                                            <span class="font-ui font-semibold text-sm text-ich-ink-900" x-text="s.name"></span>
-                                            <span class="px-2 py-0.5 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full shrink-0" x-text="s.kelas"></span>
-                                        </button>
-                                    </template>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-ui font-bold text-ich-ink-500 mb-1">Bulan</label>
-                        <select name="month" x-model="selectedMonth" required
-                                class="h-10 px-3 bg-[#F9FAFB] border-2 border-ich-line rounded-lg font-sans text-sm focus:outline-none focus:border-ich-teal transition-colors">
-                            <template x-for="mo in months" :key="mo.m">
-                                <option :value="mo.m" x-text="mo.label + ' ' + mo.y"></option>
-                            </template>
-                        </select>
-                    </div>
-                    <input type="hidden" name="year" :value="monthData.y">
-                </form>
-                <div class="flex gap-3">
-                    <button onclick="exportKehadiranSiswa()"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        PDF
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -816,7 +734,6 @@
                 { key: 'kelas', label: 'Kelas' },
                 { key: 'tabungan', label: 'Tabungan' },
                 { key: 'raport', label: 'Raport' },
-                { key: 'kehadiran-siswa', label: 'Kehadiran Siswa' },
             ],
             selectedMonth: null,
             get period() { return this.periods.find(p => p.id == this.periodId) },
@@ -855,15 +772,6 @@
             ? '{{ route("admin.laporan.export.absensi-guru-pdf") }}'
             : '{{ route("admin.laporan.export.absensi-guru-excel") }}';
         window.location.href = url + '?year=' + year + '&month=' + month;
-    }
-
-    function exportKehadiranSiswa() {
-        const form = document.getElementById('formKehadiranSiswa');
-        const studentId = form.querySelector('[name=student_id]').value;
-        const month = form.querySelector('[name=month]').value;
-        const year = form.querySelector('[name=year]').value;
-        if (!studentId) { alert('Pilih siswa terlebih dahulu'); return; }
-        window.location.href = '{{ route("admin.laporan.export.kehadiran-siswa-pdf") }}?student_id=' + studentId + '&year=' + year + '&month=' + month;
     }
 
     (function () {

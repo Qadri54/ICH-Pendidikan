@@ -87,9 +87,8 @@ class DashboardController extends Controller
         $executive = $this->getExecutiveMetrics();
         $classes = ClassRoom::orderBy('nama_kelas')->get();
         $periods = AcademicPeriod::orderByDesc('tanggal_mulai')->get();
-        $students = Student::with('classRoom')->aktif()->orderBy('nama_siswa')->get();
 
-        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear', 'executive', 'classes', 'periods', 'students'));
+        return view('admin.dashboard', compact('user', 'role', 'stats', 'recentPayments', 'monthlyIncome', 'currentYear', 'executive', 'classes', 'periods'));
     }
 
     private function getExecutiveMetrics(): ?array
