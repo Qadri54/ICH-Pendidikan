@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\NarrativePhoto;
 use App\Models\Student;
+use App\Models\StudentReportCard;
 use App\Services\ReportCard\AcademicPeriodService;
 use App\Services\ReportCard\ChecklistAssessmentService;
 use App\Services\ReportCard\HealthConditionService;
@@ -35,10 +36,14 @@ class RaportController extends Controller
         $raports  = $this->reportCardService->getAll($filters);
         $periods  = $this->periodService->getAll();
         $classes  = ClassRoom::orderBy('nama_kelas')->get();
-        $students = Student::with('classRoom')->orderBy('nama_siswa')->get();
+        $students = Student::with('classRoom')->aktif()->orderBy('nama_siswa')->get();
         $active   = $this->periodService->getActive();
 
-        return view('admin.raport.index', compact('raports', 'periods', 'classes', 'filters', 'students', 'active'));
+        $existingRaports = StudentReportCard::select('student_id', 'period_id')->get()
+            ->groupBy('period_id')
+            ->map(fn ($items) => $items->pluck('student_id')->toArray());
+
+        return view('admin.raport.index', compact('raports', 'periods', 'classes', 'filters', 'students', 'active', 'existingRaports'));
     }
 
     // Form buat raport baru: pilih siswa + periode.

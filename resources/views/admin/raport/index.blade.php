@@ -193,25 +193,49 @@
 
     {{-- Modal Create --}}
     <x-admin-modal show="showCreate" title="Buat Raport Baru" maxWidth="md">
-        <form method="POST" action="{{ route('admin.raport.store') }}" class="space-y-4">
+        <form method="POST" action="{{ route('admin.raport.store') }}" class="space-y-4"
+              x-data="{
+                  search: '',
+                  open: false,
+                  selectedId: '{{ old('student_id', '') }}',
+                  selectedLabel: '',
+                  periodId: '{{ old('period_id', $active?->period_id ?? '') }}',
+                  allStudents: {{ Js::from($students->map(fn($s) => ['id' => $s->student_id, 'name' => $s->nama_siswa, 'kelas' => $s->classRoom?->nama_kelas ?? 'Tanpa kelas'])) }},
+                  existingRaports: {{ Js::from($existingRaports) }},
+                  get filtered() {
+                      const taken = this.existingRaports[this.periodId] || [];
+                      let list = this.allStudents.filter(s => !taken.includes(s.id));
+                      if (this.search.trim()) {
+                          const q = this.search.toLowerCase();
+                          list = list.filter(s => s.name.toLowerCase().includes(q) || s.kelas.toLowerCase().includes(q));
+                      }
+                      return list;
+                  },
+                  pick(s) {
+                      this.selectedId = s.id;
+                      this.selectedLabel = s.name + ' — ' + s.kelas;
+                      this.search = '';
+                      this.open = false;
+                  },
+                  clear() {
+                      this.selectedId = '';
+                      this.selectedLabel = '';
+                      this.search = '';
+                  },
+                  init() {
+                      if (this.selectedId) {
+                          const found = this.allStudents.find(s => s.id == this.selectedId);
+                          if (found) this.selectedLabel = found.name + ' — ' + found.kelas;
+                      }
+                  }
+              }">
             @csrf
             <input type="hidden" name="_modal" value="create">
 
             <div>
-                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Siswa <span class="text-ich-error">*</span></label>
-                <select name="student_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="">-- Pilih Siswa --</option>
-                    @foreach($students as $s)
-                        <option value="{{ $s->student_id }}" {{ old('student_id') == $s->student_id ? 'selected' : '' }}>
-                            {{ $s->nama_siswa }} — {{ $s->classRoom?->nama_kelas ?? 'Tanpa kelas' }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('student_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
-            <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Periode Akademik <span class="text-ich-error">*</span></label>
-                <select name="period_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                <select name="period_id" x-model="periodId" @change="clear()"
+                        class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
                     @foreach($periods as $period)
                         <option value="{{ $period->period_id }}"
                                 {{ old('period_id', $active?->period_id) == $period->period_id ? 'selected' : '' }}>
@@ -221,6 +245,48 @@
                     @endforeach
                 </select>
                 @error('period_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="relative">
+                <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Siswa <span class="text-ich-error">*</span></label>
+                <input type="hidden" name="student_id" :value="selectedId">
+
+                <template x-if="selectedId">
+                    <div class="w-full min-h-[46px] px-3.5 py-2.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm
+                                flex items-center justify-between gap-2">
+                        <span class="text-ich-ink-900" x-text="selectedLabel"></span>
+                        <button type="button" @click="clear()"
+                                class="shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-ich-error-soft text-ich-error text-xs hover:bg-ich-error hover:text-white transition-colors">&times;</button>
+                    </div>
+                </template>
+
+                <template x-if="!selectedId">
+                    <div>
+                        <input type="text" x-model="search" @focus="open = true" @click="open = true"
+                               placeholder="Ketik nama siswa atau kelas..."
+                               class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm
+                                      placeholder:text-ich-ink-300 focus:outline-none">
+
+                        <div x-show="open" @click.outside="open = false" x-transition
+                             class="absolute z-50 left-0 right-0 mt-1 bg-white border border-ich-line rounded-ich-lg shadow-lg max-h-56 overflow-y-auto">
+                            <template x-if="filtered.length === 0">
+                                <div class="px-3.5 py-3 text-sm text-ich-ink-300 font-sans text-center">
+                                    Tidak ada siswa ditemukan
+                                </div>
+                            </template>
+                            <template x-for="s in filtered" :key="s.id">
+                                <button type="button" @click="pick(s)"
+                                        class="w-full text-left px-3.5 py-2.5 hover:bg-ich-surface transition-colors
+                                               border-b border-ich-line last:border-0 flex items-center justify-between gap-2">
+                                    <span class="font-ui font-semibold text-sm text-ich-ink-900" x-text="s.name"></span>
+                                    <span class="px-2 py-0.5 bg-ich-green-surface text-ich-green font-ui font-bold text-xs rounded-full shrink-0" x-text="s.kelas"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                @error('student_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="flex gap-3 pt-2">
