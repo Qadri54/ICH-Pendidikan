@@ -150,7 +150,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
         Route::get('raport/{id}/edit', [AdminRaportController::class, 'edit'])->name('raport.edit');
 
         Route::get('pendaftaran',                  [PendaftaranController::class, 'index'])->name('pendaftaran.index');
-        Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show');
+        Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show')->where('pendaftaran', '[0-9]+');
         Route::get('pembayaran-pendaftaran',       [PembayaranPendaftaranController::class, 'index'])->name('pembayaran-pendaftaran.index');
 
         Route::get('laporan/export/keuangan-pdf',       [LaporanController::class, 'exportKeuanganPdf'])->name('laporan.export.keuangan-pdf');
