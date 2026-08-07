@@ -43,6 +43,61 @@ Route::get('/', function () {
     return view('welcome', compact('sections'));
 });
 
+// —— SEO: robots.txt & sitemap.xml ——
+// Dilayani lewat route (bukan file statis) supaya URL-nya otomatis mengikuti APP_URL.
+
+Route::get('/robots.txt', function () {
+    $disallow = [
+        '/admin/',
+        '/guru/',
+        '/dashboard',
+        '/beranda',
+        '/pendaftaran',
+        '/pembayaran',
+        '/tabungan',
+        '/kehadiran',
+        '/akademik',
+        '/profil-anak',
+        '/pengaturan',
+        '/profile',
+        '/notifications',
+        '/login',
+        '/register',
+        '/forgot-password',
+        '/reset-password',
+        '/storage/',
+    ];
+
+    $body = "User-agent: *\n";
+    foreach ($disallow as $path) {
+        $body .= "Disallow: {$path}\n";
+    }
+    $body .= "Allow: /\n\nSitemap: " . url('/sitemap.xml') . "\n";
+
+    return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+})->name('robots');
+
+Route::get('/sitemap.xml', function () {
+    // Hanya landing page yang publik — halaman lain ada di balik login.
+    $urls = [
+        ['loc' => url('/'), 'changefreq' => 'monthly', 'priority' => '1.0'],
+    ];
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach ($urls as $url) {
+        $xml .= "    <url>\n";
+        $xml .= '        <loc>' . htmlspecialchars($url['loc'], ENT_XML1) . "</loc>\n";
+        $xml .= '        <lastmod>' . now()->toDateString() . "</lastmod>\n";
+        $xml .= '        <changefreq>' . $url['changefreq'] . "</changefreq>\n";
+        $xml .= '        <priority>' . $url['priority'] . "</priority>\n";
+        $xml .= "    </url>\n";
+    }
+    $xml .= '</urlset>' . "\n";
+
+    return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
+})->name('sitemap');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

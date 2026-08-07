@@ -43,6 +43,44 @@
             return asset($path);
         return asset('images/' . $path);
     }
+
+    // —— SEO ——
+    $seoTitle = "PG/TK IQRA' Creative House Medan | PAUD Islam Terpadu";
+    $seoDescription = $footer['description']
+        ?? $tentang['description']
+        ?? "PG/TK Plus IQRA' Creative House Medan dengan program Hafidz, Bahasa Arab, English, Jepang, dan Mandarin untuk anak usia dini.";
+    $seoImage = imgSrc($hero['image'] ?? null) ?: asset('images/Logo.png');
+    $seoAddress = trim(preg_replace('/,\s*Medan\s*$/i', '', $footer['address'] ?? ''));
+
+    // Structured data Schema.org — dipakai Google untuk panel info sekolah.
+    // Dibangun di sini (bukan inline di <head>) karena Blade meng-compile '@context'
+    // sebagai directive kalau ditulis langsung di body template.
+    // Jam operasional mengikuti footer['hours']; ubah di sini kalau jamnya berubah.
+    $seoSchema = json_encode(array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'Preschool',
+        'name' => "PG/TK IQRA' Creative House",
+        'alternateName' => "IQRA' Creative House",
+        'description' => $seoDescription,
+        'url' => url('/'),
+        'logo' => asset('images/Logo.png'),
+        'image' => $seoImage,
+        'email' => $footer['email'] ?? null,
+        'telephone' => $footer['phone'] ?? null,
+        'address' => array_filter([
+            '@type' => 'PostalAddress',
+            'streetAddress' => $seoAddress ?: null,
+            'addressLocality' => 'Medan',
+            'addressRegion' => 'Sumatera Utara',
+            'addressCountry' => 'ID',
+        ]),
+        'openingHoursSpecification' => [[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            'opens' => '08:00',
+            'closes' => '12:00',
+        ]],
+    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -50,8 +88,29 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'ICH Pendidikan') }}</title>
+        <meta name="robots" content="index, follow">
+        <title>{{ $seoTitle }}</title>
+        <meta name="description" content="{{ Str::limit($seoDescription, 155) }}">
+        <link rel="canonical" href="{{ url('/') }}">
         <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
+
+        {{-- Open Graph (WhatsApp, Facebook, dll) --}}
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="IQRA' Creative House">
+        <meta property="og:locale" content="id_ID">
+        <meta property="og:url" content="{{ url('/') }}">
+        <meta property="og:title" content="{{ $seoTitle }}">
+        <meta property="og:description" content="{{ Str::limit($seoDescription, 155) }}">
+        <meta property="og:image" content="{{ $seoImage }}">
+
+        {{-- Twitter Card --}}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $seoTitle }}">
+        <meta name="twitter:description" content="{{ Str::limit($seoDescription, 155) }}">
+        <meta name="twitter:image" content="{{ $seoImage }}">
+
+        {{-- Structured data Schema.org (dibangun di blok PHP paling atas) --}}
+        <script type="application/ld+json">{!! $seoSchema !!}</script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
