@@ -50,7 +50,21 @@
         ?? $tentang['description']
         ?? "PG/TK Plus IQRA' Creative House Medan dengan program Hafidz, Bahasa Arab, English, Jepang, dan Mandarin untuk anak usia dini.";
     $seoImage = imgSrc($hero['image'] ?? null) ?: asset('images/Logo.png');
-    $seoAddress = trim(preg_replace('/,\s*Medan\s*$/i', '', $footer['address'] ?? ''));
+    // streetAddress hanya bagian jalan — kota/provinsi sudah punya field sendiri di
+    // PostalAddress, jadi buang ekornya kalau alamat footer sudah menyebut keduanya.
+    $seoAddress = trim($footer['address'] ?? '');
+    foreach (['/,\s*Sumatera\s+Utara\s*$/i', '/,\s*Medan\s*$/i'] as $pattern) {
+        $seoAddress = trim(preg_replace($pattern, '', $seoAddress));
+    }
+
+    // Profil sosial media untuk 'sameAs' — membantu Google menyatukan entitas
+    // "ICH Medan" (website + Instagram + Facebook) jadi satu sekolah yang sama.
+    $seoSameAs = array_values(array_filter([
+        $footer['instagram'] ?? null,
+        $footer['facebook'] ?? null,
+        $footer['youtube'] ?? null,
+        $footer['tiktok'] ?? null,
+    ], fn($url) => filter_var($url, FILTER_VALIDATE_URL) !== false));
 
     // Structured data Schema.org — dipakai Google untuk panel info sekolah.
     // Dibangun di sini (bukan inline di <head>) karena Blade meng-compile '@context'
@@ -60,13 +74,14 @@
         '@context' => 'https://schema.org',
         '@type' => 'Preschool',
         'name' => "PG/TK IQRA' Creative House",
-        'alternateName' => "IQRA' Creative House",
+        'alternateName' => ["ICH Medan", "ICH", "IQRA' Creative House Medan", "TK ICH Medan"],
         'description' => $seoDescription,
         'url' => url('/'),
         'logo' => asset('images/Logo.png'),
         'image' => $seoImage,
         'email' => $footer['email'] ?? null,
         'telephone' => $footer['phone'] ?? null,
+        'sameAs' => $seoSameAs,
         'address' => array_filter([
             '@type' => 'PostalAddress',
             'streetAddress' => $seoAddress ?: null,

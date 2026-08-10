@@ -34,4 +34,27 @@
             <input type="text" name="copyright" value="{{ $c['copyright'] ?? '' }}" class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm">
         </div>
     </div>
+
+    <div class="pt-4 border-t border-ich-line">
+        <h4 class="font-ui font-bold text-ich-ink-900 text-sm mb-1">Sosial Media</h4>
+        <p class="text-xs text-ich-ink-400 font-sans mb-3">Isi URL lengkap (diawali https://). Dipakai Google untuk mengenali akun resmi sekolah — kosongkan kalau belum ada.</p>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">Instagram</label>
+                <input type="url" name="instagram" value="{{ $c['instagram'] ?? '' }}" placeholder="https://instagram.com/..." class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">Facebook</label>
+                <input type="url" name="facebook" value="{{ $c['facebook'] ?? '' }}" placeholder="https://facebook.com/..." class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">YouTube</label>
+                <input type="url" name="youtube" value="{{ $c['youtube'] ?? '' }}" placeholder="https://youtube.com/@..." class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">TikTok</label>
+                <input type="url" name="tiktok" value="{{ $c['tiktok'] ?? '' }}" placeholder="https://tiktok.com/@..." class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm">
+            </div>
+        </div>
+    </div>
 </div>

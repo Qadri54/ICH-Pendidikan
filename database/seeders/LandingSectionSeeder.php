@@ -149,7 +149,7 @@ class LandingSectionSeeder extends Seeder
             'content' => [
                 'description' => "IQRA' Creative House adalah PG/TK Plus dengan program Hafidz, Arab, English, Jepang, dan Mandarin. Smart dan Religius.",
                 'email' => 'ichsumut@gmail.com',
-                'address' => 'Jl. Datuk Kabu Gg. Ridho No. 11E, Medan',
+                'address' => 'Jl. Datuk Kabu Gg. Ridho No. 11E, Medan, Sumatera Utara',
                 'hours' => "Senin – Sabtu\n08.00 – 12.00 WIB",
                 'phone' => '0813-6076-5971',
                 'whatsapp' => '6281360765971',
