@@ -203,6 +203,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
         Route::get('raport',           [AdminRaportController::class, 'index'])->name('raport.index');
         Route::get('raport/{id}/edit', [AdminRaportController::class, 'edit'])->name('raport.edit');
+        Route::get('raport/{id}/download', [AdminRaportController::class, 'download'])->name('raport.download');
 
         Route::get('pendaftaran',                  [PendaftaranController::class, 'index'])->name('pendaftaran.index');
         Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show')->where('pendaftaran', '[0-9]+');

@@ -20,6 +20,9 @@ class AbsensiGuruController extends Controller
     public function index(Request $request): View
     {
         $filters  = $request->only(['tanggal', 'status', 'teacher_id']);
+        if (empty($filters['tanggal'])) {
+            $filters['tanggal'] = now()->toDateString();
+        }
         $teachers = Teacher::with('user')->orderBy('teacher_id')->get();
 
         $records = null;

@@ -12,6 +12,7 @@ use App\Services\ReportCard\ChecklistAssessmentService;
 use App\Services\ReportCard\HealthConditionService;
 use App\Services\ReportCard\NarrativeAssessmentService;
 use App\Services\ReportCard\PhysicalMeasurementService;
+use App\Services\ReportCard\ReportCardPdfService;
 use App\Services\ReportCard\ReportCardService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class RaportController extends Controller
         private NarrativeAssessmentService $narrativeService,
         private PhysicalMeasurementService $physicalService,
         private HealthConditionService     $healthService,
+        private ReportCardPdfService       $pdfService,
     ) {}
 
     // Daftar raport dengan filter periode, kelas, dan status.
@@ -222,6 +224,14 @@ class RaportController extends Controller
 
         return redirect()->route('admin.raport.edit', $raportId)
             ->with('success', 'Foto berhasil dihapus.');
+    }
+
+    public function download(int $id)
+    {
+        $raport = StudentReportCard::findOrFail($id);
+        abort_if($raport->status !== 'approved', 403, 'Raport belum disetujui.');
+
+        return $this->pdfService->download($id);
     }
 
     // Hapus raport (hanya boleh status draft).
