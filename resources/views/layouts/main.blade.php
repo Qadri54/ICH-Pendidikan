@@ -79,7 +79,7 @@
     </div>
 </div>
 
-<div class="flex min-h-screen lg:h-screen lg:overflow-hidden" style="min-height:100dvh" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+<div class="flex h-screen overflow-hidden" style="height:100dvh" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     {{-- SIDEBAR --}}
     <aside class="bg-ich-sidebar flex flex-col items-center flex-shrink-0 transition-all duration-200"
@@ -225,7 +225,7 @@
         </header>
 
         {{-- PAGE CONTENT --}}
-        <main class="flex-1 lg:overflow-y-auto p-6">
+        <main class="flex-1 overflow-y-auto p-6">
 
             @if(session('success'))
                 <div class="mb-4 px-4 py-3 bg-ich-success-soft text-ich-success rounded-lg text-sm font-semibold flex items-center gap-2">

@@ -86,14 +86,14 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
                             <x-ich-icon name="mail" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Email</span>
                         </div>
-                        <p class="text-sm font-sans text-ich-ink-900 truncate">{{ $user->email }}</p>
+                        <p class="text-sm font-sans text-ich-ink-900 break-all" title="{{ $user->email }}">{{ $user->email }}</p>
                     </div>
                     <div class="bg-ich-surface rounded-lg p-3">
                         <div class="flex items-center gap-2 mb-1">
                             <x-ich-icon name="phone" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">No. HP</span>
                         </div>
-                        <p class="text-sm font-sans text-ich-ink-900">{{ $user->no_hp ?: '-' }}</p>
+                        <p class="text-sm font-sans text-ich-ink-900 break-all" title="{{ $user->no_hp ?: '-' }}">{{ $user->no_hp ?: '-' }}</p>
                     </div>
                     @unless($isMobile)
                     <div class="bg-ich-surface rounded-lg p-3">
@@ -101,7 +101,7 @@ $initials = collect(explode(' ', $user->name))->map(fn($w) => mb_strtoupper(mb_s
                             <x-ich-icon name="calendar" :size="14" color="#6B7280"/>
                             <span class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Bergabung</span>
                         </div>
-                        <p class="text-sm font-sans text-ich-ink-900">{{ $user->created_at?->translatedFormat('d M Y') ?? '-' }}</p>
+                        <p class="text-sm font-sans text-ich-ink-900 break-all" title="{{ $user->created_at?->translatedFormat('d M Y') ?? '-' }}">{{ $user->created_at?->translatedFormat('d M Y') ?? '-' }}</p>
                     </div>
                     @endunless
                 </div>
