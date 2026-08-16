@@ -119,7 +119,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="text-3xl font-display font-bold text-ich-ink-900 leading-tight">
+                <div class="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-ich-ink-900 leading-tight truncate" title="Rp {{ number_format($executive['revenue'], 0, ',', '.') }}">
                     Rp {{ number_format($executive['revenue'], 0, ',', '.') }}
                 </div>
                 @if($executive['prev_revenue'] > 0)
@@ -137,7 +137,7 @@
                         <svg class="w-3.5 h-3.5 text-ich-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
                 </div>
-                <div class="text-3xl font-display font-bold text-ich-ink-900 leading-tight">
+                <div class="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-ich-ink-900 leading-tight truncate" title="Rp {{ number_format($executive['siswa_aktif'] > 0 ? round($executive['revenue'] / $executive['siswa_aktif']) : 0, 0, ',', '.') }}">
                     Rp {{ number_format($executive['siswa_aktif'] > 0 ? round($executive['revenue'] / $executive['siswa_aktif']) : 0, 0, ',', '.') }}
                 </div>
                 <p class="text-[11px] text-ich-ink-500 mt-2">{{ $executive['siswa_aktif'] }} siswa aktif</p>
@@ -199,9 +199,9 @@
                 <div class="w-11 h-11 rounded-xl {{ $executive['total_outstanding'] > 0 ? 'bg-ich-error-soft' : 'bg-ich-success-soft' }} flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 {{ $executive['total_outstanding'] > 0 ? 'text-ich-error' : 'text-ich-success' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                     <div class="text-[10px] font-ui font-bold text-ich-ink-400 uppercase tracking-wider">Total Tunggakan</div>
-                    <div class="text-xl font-display font-bold {{ $executive['total_outstanding'] > 0 ? 'text-ich-error' : 'text-ich-success' }}">
+                    <div class="text-lg sm:text-xl font-display font-bold truncate {{ $executive['total_outstanding'] > 0 ? 'text-ich-error' : 'text-ich-success' }}" title="Rp {{ number_format($executive['total_outstanding'], 0, ',', '.') }}">
                         Rp {{ number_format($executive['total_outstanding'], 0, ',', '.') }}
                     </div>
                     <div class="text-[10px] text-ich-ink-400">SPP belum terbayar</div>
