@@ -2,6 +2,7 @@
 
 namespace App\Services\Registration;
 
+use App\Models\FeeSetting;
 use App\Models\RegistrationFee;
 use App\Models\RegistrationTransaction;
 use Illuminate\Support\Carbon;
@@ -10,22 +11,29 @@ use Illuminate\Support\Facades\DB;
 class RegistrationFeeService {
     const TOTAL_FEE = 3000000;
 
+    public function getRegistrationFee(): int
+    {
+        return FeeSetting::first()?->registration_fee ?? self::TOTAL_FEE;
+    }
+
     public function __construct(
         private FeeInstallmentService $feeInstallmentService,
     ) {
     }
 
     public function createFee(int $studentId): RegistrationFee {
-        return DB::transaction(function () use ($studentId) {
+        $feeAmount = $this->getRegistrationFee();
+
+        return DB::transaction(function () use ($studentId, $feeAmount) {
             $fee = RegistrationFee::create([
                 'student_id' => $studentId,
-                'total_jumlah' => self::TOTAL_FEE,
+                'total_jumlah' => $feeAmount,
                 'status' => 'unpaid',
             ]);
 
             $this->feeInstallmentService->createInstallments(
                 $fee->registration_fee_id,
-                self::TOTAL_FEE,
+                $feeAmount,
                 Carbon::now(),
             );
 

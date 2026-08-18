@@ -213,7 +213,10 @@
                             <h3 class="font-ui font-bold text-sm text-ich-ink-900">{{ $category->nama }}</h3>
                         </div>
                         <div class="divide-y divide-ich-line">
-                            @foreach($category->children as $child)
+                            @php
+                                $itemsToGrade = $category->children->isEmpty() ? collect([$category]) : $category->children;
+                            @endphp
+                            @foreach($itemsToGrade as $child)
                                 @php $existing = $checklists->get($child->category_id); @endphp
                                 {{-- x-data per baris: track status yang dipilih secara lokal --}}
                                 <div class="px-5 py-4"

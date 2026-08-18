@@ -15,3 +15,6 @@ Schedule::command('spp:generate-invoices')->monthlyOn(1, '00:00');
 
 // SPP — mark overdue invoices every day
 Schedule::command('spp:check-overdue')->daily();
+
+// Absensi — otomatis set 'Hadir' bagi siswa yang belum diabsen pada pukul 23:55 setiap hari
+Schedule::command('attendance:auto-insert-students')->dailyAt('23:55');

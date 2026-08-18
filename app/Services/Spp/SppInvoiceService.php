@@ -2,6 +2,7 @@
 
 namespace App\Services\Spp;
 
+use App\Models\FeeSetting;
 use App\Models\SppInvoice;
 use App\Models\Student;
 use App\Notifications\SppOverdueNotification;
@@ -15,6 +16,11 @@ class SppInvoiceService
      * Sesuaikan dengan tarif yang berlaku di IQRA' Creative House.
      */
     public const MONTHLY_FEE = 300000;
+
+    public function getMonthlyFee(): int
+    {
+        return FeeSetting::first()?->spp_fee ?? self::MONTHLY_FEE;
+    }
 
     /**
      * Generate invoice SPP bulan berjalan untuk seluruh siswa aktif.
@@ -42,10 +48,12 @@ class SppInvoiceService
             return 0;
         }
 
+        $feeAmount = $this->getMonthlyFee();
+
         $rows = array_map(fn ($id) => [
             'student_id'    => $id,
             'tanggal_tahun' => $period->toDateString(),
-            'jumlah'        => self::MONTHLY_FEE,
+            'jumlah'        => $feeAmount,
             'jatuh_tempo'   => $dueDate->toDateString(),
             'status'        => 'unpaid',
             'created_at'    => $createdAt,

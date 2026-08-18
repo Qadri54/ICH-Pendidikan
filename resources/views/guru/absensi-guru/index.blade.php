@@ -19,7 +19,21 @@
 
     <div class="max-w-lg">
 
-        @if(! $todayRecord)
+        @if(! $zone)
+            {{-- Error State: Koordinat Belum Diatur --}}
+            <div class="bg-white rounded-xl shadow-ich-card p-8 mb-5 text-center flex flex-col items-center justify-center border-2 border-ich-error-soft border-dashed">
+                <div class="w-20 h-20 bg-ich-error-soft rounded-full flex items-center justify-center mb-5 text-ich-error">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h2 class="font-display font-bold text-xl text-ich-ink-900 mb-2">Koordinat Sekolah Belum Diatur</h2>
+                <p class="text-sm font-sans text-ich-ink-500 mb-6 max-w-xs mx-auto leading-relaxed">
+                    Fitur absensi harian terkunci karena Admin belum mengatur titik pusat (latitude & longitude) dan radius geofence sekolah.
+                </p>
+                <div class="px-4 py-2 bg-ich-surface text-ich-ink-600 font-ui text-xs font-semibold rounded-lg">
+                    Silakan hubungi Admin Sekolah.
+                </div>
+            </div>
+        @elseif(! $todayRecord)
             {{-- Belum absen hari ini --}}
             <div class="bg-white rounded-xl shadow-ich-card p-6 mb-5">
                 <div class="flex items-center gap-3 mb-5">
@@ -100,11 +114,6 @@
                             destroy() { if (this.watchId) navigator.geolocation.clearWatch(this.watchId); }
                          }">
 
-                        @if(! $zone)
-                            <div class="bg-ich-warning-soft rounded-lg p-3 text-xs font-sans text-ich-warning">
-                                Titik koordinat sekolah belum dikonfigurasi. Hubungi admin.
-                            </div>
-                        @else
                             <form method="POST" action="{{ route('guru.absensi-guru.checkin') }}"
                                   enctype="multipart/form-data">
                                 @csrf
@@ -141,7 +150,7 @@
                                             <p class="text-ich-error font-semibold">
                                                 Anda berjarak <span x-text="dist"></span>m dari sekolah (akurasi ±<span x-text="acc"></span>m)
                                             </p>
-                                            <p class="text-ich-ink-400 mt-1">Anda berada di luar area sekolah (maks. <span x-text="radius"></span>m)</p>
+                                            <p class="text-ich-ink-400 mt-1">Anda berada di luar area sekolah (maks. <span x-text="radius"></span>m). Absensi akan ditandai sebagai <b>Diluar Jangkauan</b>.</p>
                                         </div>
                                     </template>
                                     <template x-if="loading">
@@ -167,8 +176,8 @@
                                         <span x-text="loading ? 'Mencari...' : (ready ? 'Ambil Ulang' : 'Ambil Lokasi')"></span>
                                     </button>
                                     <button type="submit"
-                                            :disabled="!withinZone"
-                                            :class="withinZone ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-ink-200 cursor-not-allowed'"
+                                            :disabled="!ready"
+                                            :class="!ready ? 'bg-ich-ink-200 cursor-not-allowed' : (withinZone ? 'bg-ich-green hover:bg-ich-green-dark' : 'bg-ich-warning hover:opacity-90')"
                                             class="flex-1 py-2.5 text-white font-ui font-bold text-sm
                                                    rounded-ich-lg shadow-ich-btn transition-colors">
                                         Check-in
@@ -177,10 +186,9 @@
 
                                 {{-- Radius info --}}
                                 <p class="text-xs text-ich-ink-400 font-sans mt-2 text-center">
-                                    Radius sekolah: {{ $zone['radius_meter'] }}m · Maks. akurasi GPS: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }}m
+                                    Radius sekolah: {{ $zone['radius_meter'] ?? '-' }}m · Maks. akurasi GPS: {{ \App\Models\AttendanceSetting::where('setting_key', 'max_gps_accuracy')->value('setting_value') ?? 100 }}m
                                 </p>
                             </form>
-                        @endif
                     </div>
 
                     {{-- Form Izin/Sakit --}}
@@ -231,6 +239,7 @@
                         'Izin'              => ['icon' => 'info',         'color' => '#8B5CF6', 'bg' => 'bg-ich-purple-soft', 'label' => 'Izin'],
                         'Sakit'             => ['icon' => 'alert',        'color' => '#EF4444', 'bg' => 'bg-ich-error-soft', 'label' => 'Sakit'],
                         'Tanpa Keterangan'  => ['icon' => 'clock',        'color' => '#E09F17', 'bg' => 'bg-ich-warning-soft', 'label' => 'Tanpa Keterangan'],
+                        'Diluar Jangkauan'  => ['icon' => 'alert',        'color' => '#E09F17', 'bg' => 'bg-ich-warning-soft', 'label' => 'Diluar Jangkauan'],
                         default             => ['icon' => 'clock',        'color' => '#6B7280', 'bg' => 'bg-ich-surface', 'label' => $todayRecord->attendance_status],
                     };
                 @endphp

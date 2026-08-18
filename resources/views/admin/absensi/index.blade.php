@@ -86,7 +86,7 @@
                 <div class="divide-y divide-ich-line">
                     @forelse($students as $i => $student)
                         @php $existing = $absences->get($student->student_id); @endphp
-                        <div class="px-5 py-3" x-data="{ sts{{ $i }}: 'tanpa keterangan' }">
+                        <div class="px-5 py-3" x-data="{ sts{{ $i }}: 'hadir' }">
                             <div class="flex items-center gap-4">
                                 <div class="flex-1">
                                     <p class="font-ui font-semibold text-sm text-ich-ink-900">{{ $student->nama_siswa }}</p>
@@ -115,7 +115,7 @@
                                     <div class="w-[280px] grid grid-cols-4 text-center">
                                         <label class="flex justify-center cursor-pointer">
                                             <input type="radio" name="absences[{{ $i }}][status]" value="hadir"
-                                                   @change="sts{{ $i }} = 'hadir'" class="accent-[#009966] w-4 h-4">
+                                                   @change="sts{{ $i }} = 'hadir'" checked class="accent-[#009966] w-4 h-4">
                                         </label>
                                         <label class="flex justify-center cursor-pointer">
                                             <input type="radio" name="absences[{{ $i }}][status]" value="izin"
@@ -127,7 +127,7 @@
                                         </label>
                                         <label class="flex justify-center cursor-pointer">
                                             <input type="radio" name="absences[{{ $i }}][status]" value="tanpa keterangan"
-                                                   @change="sts{{ $i }} = 'tanpa keterangan'" checked class="accent-[#E09F17] w-4 h-4">
+                                                   @change="sts{{ $i }} = 'tanpa keterangan'" class="accent-[#E09F17] w-4 h-4">
                                         </label>
                                     </div>
                                 @elseif(! $isToday && ! $existing)

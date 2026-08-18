@@ -134,7 +134,8 @@
                                             'Hadir'             => ['label' => 'Hadir',            'bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
                                             'Izin'              => ['label' => 'Izin',             'bg' => 'bg-ich-purple-soft', 'text' => 'text-ich-purple'],
                                             'Sakit'             => ['label' => 'Sakit',            'bg' => 'bg-ich-error-soft', 'text' => 'text-ich-error'],
-                                            'Tanpa Keterangan'  => ['label' => 'Tanpa Keterangan', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                                            'Tanpa Keterangan'  => ['label' => 'Tanpa Keterangan', 'bg' => 'bg-ich-error-soft', 'text' => 'text-ich-error'],
+                                            'Diluar Jangkauan'  => ['label' => 'Diluar Jangkauan', 'bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
                                             default             => ['label' => $record->attendance_status, 'bg' => 'bg-ich-surface', 'text' => 'text-ich-ink-400'],
                                         };
                                     @endphp
@@ -158,11 +159,32 @@
                                                 <span class="text-xs text-ich-ink-300">-</span>
                                             @endif
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold
-                                                         {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
-                                                {{ $stCfg['label'] }}
-                                            </span>
+                                        <td class="px-4 py-3" x-data="{ editing: false }">
+                                            @if(! $isReadOnly)
+                                                <div x-show="!editing" @click="editing = true" class="cursor-pointer group relative inline-block">
+                                                    <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
+                                                        {{ $stCfg['label'] }}
+                                                    </span>
+                                                    <span class="absolute -top-1 -right-1 hidden group-hover:block bg-white shadow rounded-full p-0.5 text-ich-teal">
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                                    </span>
+                                                </div>
+                                                <form x-show="editing" method="POST" action="{{ route('admin.absensi-guru.update', $record->id) }}" class="flex items-center gap-1" x-cloak>
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <select name="status" onchange="this.form.submit()" @click.away="editing = false" class="text-xs p-1 border border-ich-line rounded text-ich-ink-900 bg-white">
+                                                        <option value="Hadir" {{ $record->attendance_status == 'Hadir' ? 'selected' : '' }}>Hadir</option>
+                                                        <option value="Izin" {{ $record->attendance_status == 'Izin' ? 'selected' : '' }}>Izin</option>
+                                                        <option value="Sakit" {{ $record->attendance_status == 'Sakit' ? 'selected' : '' }}>Sakit</option>
+                                                        <option value="Tanpa Keterangan" {{ $record->attendance_status == 'Tanpa Keterangan' ? 'selected' : '' }}>Tanpa Ket.</option>
+                                                        <option value="Diluar Jangkauan" {{ $record->attendance_status == 'Diluar Jangkauan' ? 'selected' : '' }} disabled>Luar Jangkauan</option>
+                                                    </select>
+                                                </form>
+                                            @else
+                                                <span class="px-2 py-0.5 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
+                                                    {{ $stCfg['label'] }}
+                                                </span>
+                                            @endif
                                         </td>
                                         <td class="px-4 py-3 font-sans text-xs text-ich-ink-600">
                                             {{ $record->keterangan_izin ?? '-' }}
@@ -315,6 +337,9 @@
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ich-error-soft text-ich-error text-xs font-ui font-bold">
                         Tanpa Keterangan {{ $teacherRecap['summary']['tanpa_keterangan'] }}
                     </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ich-warning-soft text-ich-warning text-xs font-ui font-bold">
+                        Luar Area {{ $teacherRecap['summary']['diluar_jangkauan'] ?? 0 }}
+                    </span>
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-ich-ink-600 text-xs font-ui font-bold">
                         Total {{ $teacherRecap['summary']['total'] }} hari
                     </span>
@@ -350,7 +375,8 @@
                                     'Hadir'            => ['bg' => 'bg-ich-success-soft', 'text' => 'text-ich-success'],
                                     'Izin'             => ['bg' => 'bg-ich-purple-soft',  'text' => 'text-ich-purple'],
                                     'Sakit'            => ['bg' => 'bg-ich-error-soft',   'text' => 'text-ich-error'],
-                                    'Tanpa Keterangan' => ['bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
+                                    'Tanpa Keterangan' => ['bg' => 'bg-ich-error-soft',   'text' => 'text-ich-error'],
+                                    'Diluar Jangkauan' => ['bg' => 'bg-ich-warning-soft', 'text' => 'text-ich-warning'],
                                     default            => ['bg' => 'bg-ich-surface',      'text' => 'text-ich-ink-400'],
                                 };
                             @endphp
@@ -373,10 +399,32 @@
                                         <span class="text-xs text-ich-ink-300">-</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 text-center">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
-                                        {{ $recStatus }}
-                                    </span>
+                                <td class="px-4 py-3 text-center" x-data="{ editing: false }">
+                                    @if(! $isReadOnly)
+                                        <div x-show="!editing" @click="editing = true" class="cursor-pointer group relative inline-block">
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
+                                                {{ $recStatus === 'Tanpa Keterangan' ? 'Tanpa Ket.' : $recStatus }}
+                                            </span>
+                                            <span class="absolute -top-1 -right-1 hidden group-hover:block bg-white shadow rounded-full p-0.5 text-ich-teal">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                            </span>
+                                        </div>
+                                        <form x-show="editing" method="POST" action="{{ route('admin.absensi-guru.update', $rec->id) }}" class="flex items-center gap-1 justify-center" x-cloak>
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="status" onchange="this.form.submit()" @click.away="editing = false" class="text-xs p-1 border border-ich-line rounded text-ich-ink-900 bg-white">
+                                                <option value="Hadir" {{ $rec->attendance_status == 'Hadir' ? 'selected' : '' }}>Hadir</option>
+                                                <option value="Izin" {{ $rec->attendance_status == 'Izin' ? 'selected' : '' }}>Izin</option>
+                                                <option value="Sakit" {{ $rec->attendance_status == 'Sakit' ? 'selected' : '' }}>Sakit</option>
+                                                <option value="Tanpa Keterangan" {{ $rec->attendance_status == 'Tanpa Keterangan' ? 'selected' : '' }}>Tanpa Ket.</option>
+                                                <option value="Diluar Jangkauan" {{ $rec->attendance_status == 'Diluar Jangkauan' ? 'selected' : '' }} disabled>Luar Jangkauan</option>
+                                            </select>
+                                        </form>
+                                    @else
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-ui font-bold {{ $stCfg['bg'] }} {{ $stCfg['text'] }}">
+                                            {{ $recStatus === 'Tanpa Keterangan' ? 'Tanpa Ket.' : $recStatus }}
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 font-sans text-xs text-ich-ink-600">
                                     {{ $rec->keterangan_izin ?? '-' }}

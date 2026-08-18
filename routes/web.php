@@ -251,6 +251,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
             Route::post('absensi',     [AdminAbsensiController::class,    'store'])->name('absensi.store');
             Route::post('absensi-guru',[AdminAbsensiGuruController::class, 'store'])->name('absensi-guru.store');
+            Route::patch('absensi-guru/{record}',[AdminAbsensiGuruController::class, 'update'])->name('absensi-guru.update');
 
             Route::get('raport/create',          [AdminRaportController::class, 'create'])->name('raport.create');
             Route::post('raport',                [AdminRaportController::class, 'store'])->name('raport.store');
@@ -279,6 +280,9 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pengaturan/whatsapp',         [PengaturanController::class, 'updateWhatsApp'])->name('pengaturan.whatsapp.update');
             Route::post('pengaturan/whatsapp/test',   [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
             Route::get('pengaturan/whatsapp/status',   [PengaturanController::class, 'whatsappStatus'])->name('pengaturan.whatsapp.status');
+
+            // Route Tarif & Biaya
+            Route::post('pengaturan/fee', [PengaturanController::class, 'updateFee'])->name('pengaturan.fee.update');
 
             Route::get('landing',              [LandingController::class, 'index'])->name('landing.index');
             Route::get('landing/{key}/edit',   [LandingController::class, 'edit'])->name('landing.edit');

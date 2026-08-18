@@ -231,5 +231,6 @@ class RaportController extends Controller
         $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
         $raport  = StudentReportCard::findOrFail($id);
         abort_if($raport->homeroom_teacher_id !== $teacher->teacher_id, 403);
+        abort_if($raport->status === 'approved', 403, 'Raport yang sudah disetujui tidak dapat diubah.');
     }
 }

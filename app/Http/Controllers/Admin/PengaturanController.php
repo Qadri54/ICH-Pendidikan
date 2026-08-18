@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicPeriod;
 use App\Models\AttendanceSetting;
+use App\Models\FeeSetting;
 use App\Models\RegistrationSetting;
 use App\Models\WhatsAppSetting;
 use App\Services\Attendance\GeofenceService;
@@ -26,8 +27,9 @@ class PengaturanController extends Controller
                                     ->orderByDesc('semester')
                                     ->get();
         $whatsappSettings    = WhatsAppSetting::getAll();
+        $feeSetting          = FeeSetting::first();
 
-        return view('admin.pengaturan.index', compact('settings', 'registrationSetting', 'semesters', 'whatsappSettings'));
+        return view('admin.pengaturan.index', compact('settings', 'registrationSetting', 'semesters', 'whatsappSettings', 'feeSetting'));
     }
 
     public function update(Request $request)
@@ -56,6 +58,24 @@ class PengaturanController extends Controller
 
         return redirect()->route('admin.pengaturan.index')
             ->with('success', "Pengaturan berhasil disimpan.");
+    }
+
+    public function updateFee(Request $request)
+    {
+        $data = $request->validate([
+            'spp_fee'          => 'required|integer|min:0',
+            'registration_fee' => 'required|integer|min:0',
+        ]);
+
+        $feeSetting = FeeSetting::first();
+        if ($feeSetting) {
+            $feeSetting->update($data);
+        } else {
+            FeeSetting::create($data);
+        }
+
+        return redirect()->route('admin.pengaturan.index')
+            ->with('success', 'Pengaturan tarif biaya berhasil disimpan.');
     }
 
     public function togglePendaftaran()

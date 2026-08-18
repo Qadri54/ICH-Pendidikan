@@ -43,9 +43,7 @@ class AttendanceService
             $accuracy
         );
 
-        if (! $isWithinGeofence) {
-            throw new \InvalidArgumentException('Anda berada di luar area sekolah. Check-in hanya dapat dilakukan di dalam radius geofence.');
-        }
+        $status = $isWithinGeofence ? 'Hadir' : 'Diluar Jangkauan';
 
         $selfiePath = $data['selfie']->store('attendance/selfies', 'public');
 
@@ -56,8 +54,8 @@ class AttendanceService
             'check_in_longitude'  => $data['longitude'],
             'check_in_accuracy'   => $data['accuracy'],
             'selfie_path'         => $selfiePath,
-            'is_within_geofence'  => 'ya',
-            'attendance_status'   => 'Hadir',
+            'is_within_geofence'  => $isWithinGeofence ? 'ya' : 'tidak',
+            'attendance_status'   => $status,
         ]);
     }
 
@@ -133,6 +131,7 @@ class AttendanceService
                     'izin'              => $records->where('attendance_status', 'Izin')->count(),
                     'sakit'             => $records->where('attendance_status', 'Sakit')->count(),
                     'tanpa_keterangan'  => $records->where('attendance_status', 'Tanpa Keterangan')->count(),
+                    'diluar_jangkauan'  => $records->where('attendance_status', 'Diluar Jangkauan')->count(),
                 ];
             })
             ->values();

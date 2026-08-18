@@ -22,7 +22,7 @@
     }
 }">
 
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-xl bg-ich-green-surface flex items-center justify-center">
                 <svg class="w-5 h-5 text-ich-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -35,7 +35,7 @@
             </p>
             </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
             <a href="{{ route('admin.keuangan.bukti-pembayaran') }}"
                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200
                       font-ui font-bold text-sm rounded-ich-lg hover:bg-blue-100 transition-colors">
@@ -167,14 +167,59 @@
 
             <div>
                 <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Siswa <span class="text-ich-error">*</span></label>
-                <select name="student_id" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
-                    <option value="">-- Pilih Siswa --</option>
-                    @foreach($siswa as $s)
-                        <option value="{{ $s->student_id }}" {{ old('student_id') == $s->student_id ? 'selected' : '' }}>
-                            {{ $s->nama_siswa }} — {{ $s->classRoom?->nama_kelas }}
-                        </option>
-                    @endforeach
-                </select>
+                <div x-data="{
+                    search: '',
+                    open: false,
+                    selectedId: '{{ old('student_id', '') }}',
+                    selectedName: '',
+                    students: [
+                        @foreach($siswa as $s)
+                            { id: '{{ $s->student_id }}', name: '{{ addslashes($s->nama_siswa) }} — {{ addslashes($s->classRoom?->nama_kelas) }}' },
+                        @endforeach
+                    ],
+                    get filteredStudents() {
+                        if (this.search === '') return this.students;
+                        return this.students.filter(s => s.name.toLowerCase().includes(this.search.toLowerCase()));
+                    },
+                    init() {
+                        if (this.selectedId) {
+                            let s = this.students.find(s => s.id == this.selectedId);
+                            if (s) this.selectedName = s.name;
+                        }
+                    },
+                    selectStudent(student) {
+                        this.selectedId = student.id;
+                        this.selectedName = student.name;
+                        this.open = false;
+                        this.search = '';
+                    }
+                }" @click.away="open = false" class="relative w-full">
+                    <input type="hidden" name="student_id" :value="selectedId">
+                    
+                    <div @click="open = !open" 
+                         class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm flex items-center justify-between cursor-pointer focus:outline-none">
+                        <span x-text="selectedName || '-- Cari & Pilih Siswa --'" :class="!selectedName ? 'text-gray-500' : 'text-gray-900'"></span>
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+
+                    <div x-show="open" x-transition x-cloak
+                         class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-2 border-b border-gray-100">
+                            <input type="text" x-model="search" placeholder="Ketik nama siswa..." 
+                                   class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:border-ich-teal focus:ring-1 focus:ring-ich-teal">
+                        </div>
+                        <ul class="max-h-48 overflow-y-auto">
+                            <template x-for="s in filteredStudents" :key="s.id">
+                                <li @click="selectStudent(s)" 
+                                    class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 transition-colors"
+                                    x-text="s.name"></li>
+                            </template>
+                            <li x-show="filteredStudents.length === 0" class="px-4 py-3 text-sm text-gray-500 text-center italic">
+                                Siswa tidak ditemukan.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 @error('student_id') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
