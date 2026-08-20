@@ -36,7 +36,7 @@ class FeeInstallmentService {
 
     public function payInstallment(int $installmentId): bool {
         return FeeInstallment::where('installment_id', $installmentId)
-            ->where('status', 'unpaid')
+            ->whereIn('status', ['unpaid', 'overdue'])
             ->update(['status' => 'paid']);
     }
 

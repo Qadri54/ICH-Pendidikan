@@ -117,6 +117,16 @@ class DummyDataSeeder extends Seeder
                 'updated_at'   => Carbon::create(2025, 12, rand(1, 28)),
             ]);
 
+            app(\App\Services\Registration\FeeInstallmentService::class)->createInstallments(
+                $regFee->registration_fee_id,
+                $regFee->total_jumlah,
+                Carbon::now()
+            );
+
+            // Because they are supposedly 'paid', we should mark them as paid in FeeInstallment as well:
+            app(\App\Services\Registration\FeeInstallmentService::class)->payAllInstallments($regFee->registration_fee_id);
+
+
             if ($index % 3 === 0) {
                 $payDate = Carbon::create(2025, 11, rand(10, 25));
                 RegistrationTransaction::create([

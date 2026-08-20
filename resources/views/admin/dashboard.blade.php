@@ -628,10 +628,10 @@
             <table class="w-full text-xs">
                 <thead class="bg-ich-surface">
                     <tr>
-                        <th class="px-4 py-2 text-left font-ui font-bold text-ich-ink-600">Bulan</th>
-                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-green">SPP</th>
-                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-teal">Pendaftaran</th>
-                        <th class="px-4 py-2 text-right font-ui font-bold text-ich-ink-600">Total</th>
+                        <th class="px-4 py-3.5 text-left font-ui font-bold text-ich-ink-600">Bulan</th>
+                        <th class="px-4 py-3.5 text-right font-ui font-bold text-ich-green">SPP</th>
+                        <th class="px-4 py-3.5 text-right font-ui font-bold text-ich-teal">Pendaftaran</th>
+                        <th class="px-4 py-3.5 text-right font-ui font-bold text-ich-ink-600">Total</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-ich-line">
@@ -639,17 +639,17 @@
                     @foreach($monthlyIncome as $row)
                         @php $grandSpp += $row['spp']; $grandReg += $row['pendaftaran']; @endphp
                         <tr class="hover:bg-ich-surface transition-colors">
-                            <td class="px-4 py-2 font-ui font-semibold text-ich-ink-700">{{ $row['label'] }}</td>
-                            <td class="px-4 py-2 text-right text-ich-green">Rp {{ number_format($row['spp'], 0, ',', '.') }}</td>
-                            <td class="px-4 py-2 text-right text-ich-teal">Rp {{ number_format($row['pendaftaran'], 0, ',', '.') }}</td>
-                            <td class="px-4 py-2 text-right font-ui font-bold text-ich-ink-900">Rp {{ number_format($row['spp'] + $row['pendaftaran'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-3 font-ui font-semibold text-ich-ink-700">{{ $row['label'] }}</td>
+                            <td class="px-4 py-3 text-right text-ich-green">Rp {{ number_format($row['spp'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-3 text-right text-ich-teal">Rp {{ number_format($row['pendaftaran'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-3 text-right font-ui font-bold text-ich-ink-900">Rp {{ number_format($row['spp'] + $row['pendaftaran'], 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                     <tr class="bg-ich-surface font-ui font-bold text-xs">
-                        <td class="px-4 py-2 text-ich-ink-700">Total</td>
-                        <td class="px-4 py-2 text-right text-ich-green">Rp {{ number_format($grandSpp, 0, ',', '.') }}</td>
-                        <td class="px-4 py-2 text-right text-ich-teal">Rp {{ number_format($grandReg, 0, ',', '.') }}</td>
-                        <td class="px-4 py-2 text-right text-ich-ink-900">Rp {{ number_format($grandSpp + $grandReg, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-ich-ink-700">Total</td>
+                        <td class="px-4 py-3 text-right text-ich-green">Rp {{ number_format($grandSpp, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right text-ich-teal">Rp {{ number_format($grandReg, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right text-ich-ink-900">Rp {{ number_format($grandSpp + $grandReg, 0, ',', '.') }}</td>
                     </tr>
                 </tbody>
             </table>

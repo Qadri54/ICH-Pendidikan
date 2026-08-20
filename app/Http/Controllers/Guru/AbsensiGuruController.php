@@ -92,6 +92,7 @@ class AbsensiGuruController extends Controller
             'izin'             => $records->where('attendance_status', 'Izin')->count(),
             'sakit'            => $records->where('attendance_status', 'Sakit')->count(),
             'tanpa_keterangan' => $records->where('attendance_status', 'Tanpa Keterangan')->count(),
+            'diluar_jangkauan' => $records->where('attendance_status', 'Diluar Jangkauan')->count(),
             'total'            => $records->count(),
         ];
 

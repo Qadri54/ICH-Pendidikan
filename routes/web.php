@@ -203,6 +203,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
         Route::get('raport',           [AdminRaportController::class, 'index'])->name('raport.index');
         Route::get('raport/{id}/edit', [AdminRaportController::class, 'edit'])->name('raport.edit');
+        Route::get('raport/{id}/download', [AdminRaportController::class, 'download'])->name('raport.download');
 
         Route::get('pendaftaran',                  [PendaftaranController::class, 'index'])->name('pendaftaran.index');
         Route::get('pendaftaran/{pendaftaran}',    [PendaftaranController::class, 'show'])->name('pendaftaran.show')->where('pendaftaran', '[0-9]+');
@@ -250,6 +251,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
             Route::post('absensi',     [AdminAbsensiController::class,    'store'])->name('absensi.store');
             Route::post('absensi-guru',[AdminAbsensiGuruController::class, 'store'])->name('absensi-guru.store');
+            Route::patch('absensi-guru/{record}',[AdminAbsensiGuruController::class, 'update'])->name('absensi-guru.update');
 
             Route::get('raport/create',          [AdminRaportController::class, 'create'])->name('raport.create');
             Route::post('raport',                [AdminRaportController::class, 'store'])->name('raport.store');
@@ -278,6 +280,16 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pengaturan/whatsapp',         [PengaturanController::class, 'updateWhatsApp'])->name('pengaturan.whatsapp.update');
             Route::post('pengaturan/whatsapp/test',   [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
             Route::get('pengaturan/whatsapp/status',   [PengaturanController::class, 'whatsappStatus'])->name('pengaturan.whatsapp.status');
+
+            // Route Backup Data
+            Route::get('backup', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');
+            Route::post('backup', [\App\Http\Controllers\Admin\BackupController::class, 'store'])->name('backup.store');
+            Route::get('backup/download', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
+            Route::delete('backup', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('backup.destroy');
+
+
+            // Route Tarif & Biaya
+            Route::post('pengaturan/fee', [PengaturanController::class, 'updateFee'])->name('pengaturan.fee.update');
 
             Route::get('landing',              [LandingController::class, 'index'])->name('landing.index');
             Route::get('landing/{key}/edit',   [LandingController::class, 'edit'])->name('landing.edit');

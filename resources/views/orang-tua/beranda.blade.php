@@ -9,6 +9,60 @@
             <p class="font-sans text-xs opacity-70 mt-1">{{ now()->translatedFormat('l, d F Y') }}</p>
         </div>
 
+        {{-- Notifikasi Raport --}}
+        @foreach($latestRaports as $raport)
+            <div class="bg-ich-teal-soft rounded-xl shadow-sm p-4 flex items-center justify-between gap-3 border border-ich-teal/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-ich-teal text-white flex items-center justify-center flex-shrink-0">
+                        <x-ich-icon name="book" :size="20"/>
+                    </div>
+                    <div>
+                        <p class="font-ui font-bold text-sm text-ich-ink-900 leading-tight">Raport Baru Tersedia!</p>
+                        <p class="font-sans text-xs text-ich-ink-500 mt-0.5">Raport {{ $raport->student->nama_siswa }} telah selesai dinilai.</p>
+                    </div>
+                </div>
+                <a href="{{ route('akademik.detail', $raport->student_id) }}" class="px-3 py-1.5 bg-ich-teal text-white font-ui font-bold text-xs rounded-lg whitespace-nowrap shadow-sm hover:bg-ich-teal-dark">
+                    Lihat Raport
+                </a>
+            </div>
+        @endforeach
+
+        {{-- Notifikasi SPP Tertunggak --}}
+        @foreach($unpaidSpp as $spp)
+            <div class="bg-ich-error-soft rounded-xl shadow-sm p-4 flex items-center justify-between gap-3 border border-ich-error/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-ich-error text-white flex items-center justify-center flex-shrink-0">
+                        <x-ich-icon name="alert" :size="20"/>
+                    </div>
+                    <div>
+                        <p class="font-ui font-bold text-sm text-ich-ink-900 leading-tight">Tagihan SPP Belum Dibayar</p>
+                        <p class="font-sans text-xs text-ich-ink-500 mt-0.5">{{ $spp->student->nama_siswa }} - Rp {{ number_format($spp->amount, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+                <a href="{{ route('pembayaran.spp.detail', $spp->student_id) }}" class="px-3 py-1.5 bg-ich-error text-white font-ui font-bold text-xs rounded-lg whitespace-nowrap shadow-sm hover:bg-ich-error-dark">
+                    Bayar
+                </a>
+            </div>
+        @endforeach
+
+        {{-- Info Tabungan Singkat --}}
+        @if($totalTabungan > 0)
+            <div class="bg-ich-purple-soft rounded-xl shadow-sm p-4 flex items-center justify-between gap-3 border border-ich-purple/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-ich-purple text-white flex items-center justify-center flex-shrink-0">
+                        <x-ich-icon name="piggy" :size="20"/>
+                    </div>
+                    <div>
+                        <p class="font-ui font-bold text-sm text-ich-ink-900 leading-tight">Total Saldo Tabungan</p>
+                        <p class="font-sans text-xs text-ich-ink-500 mt-0.5">Semua Anak</p>
+                    </div>
+                </div>
+                <div class="font-display font-bold text-ich-purple">
+                    Rp {{ number_format($totalTabungan, 0, ',', '.') }}
+                </div>
+            </div>
+        @endif
+
         {{-- Ringkasan Absensi Bulan Ini --}}
         @if($absensiPerAnak->isNotEmpty())
             <div>

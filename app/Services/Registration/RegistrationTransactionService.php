@@ -15,6 +15,7 @@ class RegistrationTransactionService
 {
     public function __construct(
         private RegistrationFeeService $registrationFeeService,
+        private FeeInstallmentService $feeInstallmentService,
     ) {}
 
     public function upload(array $data): RegistrationTransaction
@@ -58,6 +59,21 @@ class RegistrationTransactionService
 
             $feeStatus = $totalPaid >= $fee->total_jumlah ? 'paid' : 'installments';
             $this->registrationFeeService->updateStatus($fee->registration_fee_id, $feeStatus);
+
+            // Perbarui status cicilan (fee_installments)
+            if ($transaction->payment_category === 'full') {
+                $this->feeInstallmentService->payAllInstallments($fee->registration_fee_id);
+            } else {
+                // Cari cicilan pertama yang belum lunas
+                $installment = \App\Models\FeeInstallment::where('registration_fee_id', $fee->registration_fee_id)
+                    ->where('status', '!=', 'paid')
+                    ->orderBy('tanggal_jatuh_tempo', 'asc')
+                    ->first();
+                    
+                if ($installment) {
+                    $this->feeInstallmentService->payInstallment($installment->installment_id);
+                }
+            }
 
             $user = $transaction->registrationFee->student?->user;
             if ($user) {

@@ -164,13 +164,15 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-5">
-                    <button type="submit"
-                            class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                                   rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                        Simpan Narasi
-                    </button>
-                </div>
+                @if($raport->status !== 'approved')
+                    <div class="mt-5">
+                        <button type="submit"
+                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Simpan Narasi
+                        </button>
+                    </div>
+                @endif
             </form>
         </div>
 
@@ -186,7 +188,10 @@
                             <h3 class="font-ui font-bold text-sm text-ich-ink-900">{{ $category->nama }}</h3>
                         </div>
                         <div class="divide-y divide-ich-line">
-                            @foreach($category->children as $child)
+                            @php
+                                $itemsToGrade = $category->children->isEmpty() ? collect([$category]) : $category->children;
+                            @endphp
+                            @foreach($itemsToGrade as $child)
                                 @php $existing = $checklists->get($child->category_id); @endphp
                                 <div class="px-5 py-4"
                                      x-data="{ selected: '{{ $existing?->status ?? '' }}' }">
@@ -229,13 +234,17 @@
                         <p class="font-sans text-ich-ink-400">Belum ada kategori checklist.</p>
                     </div>
                 @endforelse
-                @if($categories->isNotEmpty())
+                @if($categories->isNotEmpty() && $raport->status !== 'approved')
                     <div class="mt-2">
                         <button type="submit"
                                 class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
                                        rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
                             Simpan Checklist
                         </button>
+                        <p class="text-xs text-ich-ink-400 font-sans mt-2">BM = Belum Muncul · MM = Mulai Muncul · SM = Sudah Muncul</p>
+                    </div>
+                @elseif($categories->isNotEmpty())
+                    <div class="mt-2">
                         <p class="text-xs text-ich-ink-400 font-sans mt-2">BM = Belum Muncul · MM = Mulai Muncul · SM = Sudah Muncul</p>
                     </div>
                 @endif
@@ -299,13 +308,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5">
-                    <button type="submit"
-                            class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
-                                   rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
-                        Simpan Data Fisik & Kesehatan
-                    </button>
-                </div>
+                @if($raport->status !== 'approved')
+                    <div class="mt-5">
+                        <button type="submit"
+                                class="px-6 py-2.5 bg-ich-green text-white font-ui font-bold text-sm
+                                       rounded-ich-lg shadow-ich-btn hover:bg-ich-green-dark transition-colors">
+                            Simpan Data Fisik & Kesehatan
+                        </button>
+                    </div>
+                @endif
             </form>
         </div>
     </div>

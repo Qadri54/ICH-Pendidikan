@@ -127,12 +127,10 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center gap-3">
-                                            @if($raport->status !== 'approved')
-                                                <a href="{{ route('guru.raport.edit', $raport->report_card_id) }}"
-                                                   class="text-xs font-ui font-bold text-ich-teal hover:underline">
-                                                    Edit
-                                                </a>
-                                            @endif
+                                            <a href="{{ route('guru.raport.edit', $raport->report_card_id) }}"
+                                               class="text-xs font-ui font-bold text-ich-teal hover:underline">
+                                                {{ $raport->status === 'approved' ? 'Lihat Detail' : 'Edit' }}
+                                            </a>
                                             @if($raport->status === 'draft')
                                                 <form method="POST"
                                                       action="{{ route('guru.raport.submit', $raport->report_card_id) }}"

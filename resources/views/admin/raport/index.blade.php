@@ -151,6 +151,14 @@
                                            class="text-xs font-ui font-bold text-ich-teal hover:underline">
                                             {{ $isReadOnly ? 'Lihat' : 'Edit' }}
                                         </a>
+                                        @if($raport->status === 'approved')
+                                            <a href="{{ route('admin.raport.download', $raport->report_card_id) }}"
+                                               target="_blank"
+                                               class="text-blue-600 hover:text-blue-800 transition-colors no-loading"
+                                               title="Download PDF">
+                                                <x-ich-icon name="download" :size="20" />
+                                            </a>
+                                        @endif
                                         @if(! $isReadOnly)
                                             @if($raport->status === 'submitted')
                                                 <button type="button"

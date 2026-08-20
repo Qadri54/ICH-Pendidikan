@@ -20,6 +20,9 @@ class AbsensiGuruController extends Controller
     public function index(Request $request): View
     {
         $filters  = $request->only(['tanggal', 'status', 'teacher_id']);
+        if (empty($filters['tanggal'])) {
+            $filters['tanggal'] = now()->toDateString();
+        }
         $teachers = Teacher::with('user')->orderBy('teacher_id')->get();
 
         $records = null;
@@ -65,6 +68,7 @@ class AbsensiGuruController extends Controller
                     'izin'             => $summaryRecords->where('attendance_status', 'Izin')->count(),
                     'sakit'            => $summaryRecords->where('attendance_status', 'Sakit')->count(),
                     'tanpa_keterangan' => $summaryRecords->where('attendance_status', 'Tanpa Keterangan')->count(),
+                    'diluar_jangkauan' => $summaryRecords->where('attendance_status', 'Diluar Jangkauan')->count(),
                     'total'            => $summaryRecords->count(),
                 ],
             ];
@@ -107,5 +111,18 @@ class AbsensiGuruController extends Controller
         } catch (\InvalidArgumentException $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function update(Request $request, AttendanceRecord $record): RedirectResponse
+    {
+        $data = $request->validate([
+            'status' => 'required|in:Hadir,Izin,Sakit,Tanpa Keterangan',
+        ]);
+
+        $record->update([
+            'attendance_status' => $data['status'],
+        ]);
+
+        return back()->with('success', 'Status absensi berhasil diperbarui.');
     }
 }

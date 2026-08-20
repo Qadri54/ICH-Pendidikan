@@ -53,10 +53,14 @@ class AuthFlowTest extends TestCase
     #[Test]
     public function orang_tua_diarahkan_ke_beranda_setelah_login(): void
     {
-        User::factory()->orangTua()->create(['email' => 'ortu@ich.test']);
+        $user = User::factory()->orangTua()->create(['email' => 'ortu@ich.test', 'status' => 'active']);
 
+        // POST /login selalu diarahkan ke /dashboard oleh Laravel Breeze
         $this->post('/login', ['email' => 'ortu@ich.test', 'password' => 'password'])
-             ->assertRedirect('/beranda');
+             ->assertRedirect('/dashboard');
+             
+        // Dashboard Controller bertugas meredirect Orang Tua ke /beranda
+        $this->actingAs($user)->get('/dashboard')->assertRedirect('/beranda');
     }
 
     #[Test]
@@ -137,7 +141,7 @@ class AuthFlowTest extends TestCase
     #[Test]
     public function user_bisa_logout(): void
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->admin()->create(['status' => 'active']));
 
         $this->post('/logout')->assertRedirect('/');
 

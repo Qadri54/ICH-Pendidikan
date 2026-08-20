@@ -132,6 +132,9 @@
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ich-error-soft text-ich-error text-xs font-ui font-bold">
                 Tanpa Ket. <span x-text="count('Tanpa Keterangan')"></span>
             </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ich-warning-soft text-ich-warning text-xs font-ui font-bold">
+                Luar Area <span x-text="count('Diluar Jangkauan')"></span>
+            </span>
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-ich-ink-600 text-xs font-ui font-bold">
                 Total <span x-text="filteredRecords.length"></span> hari
             </span>
@@ -162,6 +165,7 @@
                                         'bg-ich-success-soft text-ich-success': rec.status === 'Hadir',
                                         'bg-ich-info-soft text-ich-info': rec.status === 'Sakit',
                                         'bg-ich-purple-soft text-ich-purple': rec.status === 'Izin',
+                                        'bg-ich-warning-soft text-ich-warning': rec.status === 'Diluar Jangkauan',
                                         'bg-ich-error-soft text-ich-error': rec.status === 'Tanpa Keterangan',
                                     }" class="px-2.5 py-1 font-ui font-bold text-xs rounded-full"
                                        x-text="rec.status === 'Tanpa Keterangan' ? 'Tanpa Ket.' : rec.status">

@@ -6,8 +6,19 @@
     </div>
 
     @if($ledgers->isEmpty())
-        <div class="bg-white rounded-xl shadow-ich-card p-10 text-center">
-            <p class="font-ui font-bold text-ich-ink-600">Belum ada ledger tabungan yang di-assign ke Anda.</p>
+        <div class="bg-white rounded-xl shadow-ich-card p-10 text-center flex flex-col items-center justify-center border-2 border-dashed border-ich-line">
+            <div class="w-20 h-20 bg-ich-surface rounded-full flex items-center justify-center mb-5 text-ich-ink-400">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h2 class="font-display font-bold text-xl text-ich-ink-900 mb-2">Buku Kas Belum Dibuat</h2>
+            <p class="text-sm font-sans text-ich-ink-500 mb-6 max-w-sm mx-auto leading-relaxed">
+                Anda belum ditugaskan untuk mengelola tabungan manapun. Admin sekolah perlu membuatkan <strong>Ledger/Buku Kas</strong> untuk Anda terlebih dahulu.
+            </p>
+            <div class="px-4 py-2 bg-ich-blue-soft text-ich-teal font-ui text-xs font-semibold rounded-lg">
+                Silakan hubungi Admin Sekolah
+            </div>
         </div>
     @else
         <div class="bg-white rounded-xl shadow-ich-card overflow-hidden">
