@@ -365,6 +365,12 @@ class DemoSeeder extends Seeder
             'status'       => 'installments',
         ]);
 
+        app(\App\Services\Registration\FeeInstallmentService::class)->createInstallments(
+            $fee->registration_fee_id,
+            $fee->total_jumlah,
+            Carbon::now()
+        );
+
         RegistrationTransaction::create([
             'registration_fee_id'     => $fee->registration_fee_id,
             'approved_by'             => $admin->admin_id,
