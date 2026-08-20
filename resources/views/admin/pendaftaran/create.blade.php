@@ -14,24 +14,8 @@
     <form method="POST" action="{{ route('admin.pendaftaran.store') }}" class="space-y-6 max-w-3xl"
           x-data="{ jenis: '{{ old('jenis_pendaftaran', 'TK') }}' }">
         @csrf
-
-        {{-- Jenis Pendaftaran --}}
-        <div class="bg-white rounded-xl shadow-ich-card p-6">
-            <h3 class="font-ui font-bold text-sm text-ich-ink-900 border-b border-ich-line pb-3 mb-4">Jenis Pendaftaran</h3>
-            <div class="flex gap-3">
-                <label class="flex-1 flex items-center gap-2.5 h-11 px-3.5 border-2 rounded-ich-lg cursor-pointer transition-colors"
-                       :class="jenis === 'TK' ? 'border-ich-teal bg-[#F0FDFA]' : 'border-ich-line bg-white'">
-                    <input type="radio" name="jenis_pendaftaran" value="TK" x-model="jenis" class="accent-ich-teal">
-                    <span class="font-ui font-semibold text-sm text-ich-ink-900">PG / TK ICH</span>
-                </label>
-                <label class="flex-1 flex items-center gap-2.5 h-11 px-3.5 border-2 rounded-ich-lg cursor-pointer transition-colors"
-                       :class="jenis === 'Mengaji' ? 'border-ich-teal bg-[#F0FDFA]' : 'border-ich-line bg-white'">
-                    <input type="radio" name="jenis_pendaftaran" value="Mengaji" x-model="jenis" class="accent-ich-teal">
-                    <span class="font-ui font-semibold text-sm text-ich-ink-900">Mengaji</span>
-                </label>
-            </div>
-            @error('jenis_pendaftaran') <p class="text-ich-error text-xs mt-1">{{ $message }}</p> @enderror
-        </div>
+        {{-- Jenis Pendaftaran (Disembunyikan karena hanya TK untuk saat ini) --}}
+        <input type="hidden" name="jenis_pendaftaran" value="TK" x-model="jenis">
 
         {{-- Akun Orang Tua --}}
         <div class="bg-white rounded-xl shadow-ich-card p-6">

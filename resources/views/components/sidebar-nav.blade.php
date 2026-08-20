@@ -21,6 +21,7 @@
         ['label' => 'Pendaftaran',    'route' => 'admin.pendaftaran.index',           'icon' => 'clipboard', 'badge' => $pendingRegistrationCount],
         ['label' => 'Landing Page',   'route' => 'admin.landing.index',               'icon' => 'home'],
         ['label' => 'Pengaturan',     'route' => 'admin.pengaturan.index',            'icon' => 'settings'],
+        ['label' => 'Backup Data',    'route' => 'admin.backup.index',                'icon' => 'database'],
     ];
 
     $guruMenu = [

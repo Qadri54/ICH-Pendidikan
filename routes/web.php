@@ -281,6 +281,13 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::post('pengaturan/whatsapp/test',   [PengaturanController::class, 'testWhatsApp'])->name('pengaturan.whatsapp.test');
             Route::get('pengaturan/whatsapp/status',   [PengaturanController::class, 'whatsappStatus'])->name('pengaturan.whatsapp.status');
 
+            // Route Backup Data
+            Route::get('backup', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');
+            Route::post('backup', [\App\Http\Controllers\Admin\BackupController::class, 'store'])->name('backup.store');
+            Route::get('backup/download', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
+            Route::delete('backup', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('backup.destroy');
+
+
             // Route Tarif & Biaya
             Route::post('pengaturan/fee', [PengaturanController::class, 'updateFee'])->name('pengaturan.fee.update');
 
