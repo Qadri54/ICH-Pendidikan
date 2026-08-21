@@ -10,14 +10,14 @@ class DatabaseSeeder extends Seeder {
         Schema::disableForeignKeyConstraints();
 
         $this->call([
-            ClassRoomSeeder::class,
+            // ClassRoomSeeder::class,
             UserSeeder::class,
-            ParentStudentSeeder::class,
-            AcademicPeriodSeeder::class,
-            DevelopmentCategorySeeder::class,
-            ReportCardSeeder::class,
-            DummyDataSeeder::class,
-            DemoSeeder::class,
+            // ParentStudentSeeder::class,
+            // AcademicPeriodSeeder::class,
+            // DevelopmentCategorySeeder::class,
+            // ReportCardSeeder::class,
+            // DummyDataSeeder::class,
+            // DemoSeeder::class,
             LandingSectionSeeder::class,
         ]);
 
