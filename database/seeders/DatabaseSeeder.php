@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder {
             // ReportCardSeeder::class,
             // DummyDataSeeder::class,
             // DemoSeeder::class,
+            PDFDataSeeder::class,
             LandingSectionSeeder::class,
         ]);
 

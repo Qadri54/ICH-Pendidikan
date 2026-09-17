@@ -87,7 +87,7 @@
                               class="px-5 py-4 space-y-3">
                             @csrf
                             <div class="flex flex-col items-center gap-2 py-2">
-                                <img src="{{ asset('storage/qris.png') }}" alt="QRIS" class="w-48 rounded-lg">
+                                <img src="{{ asset('storage/' . (\App\Models\FeeSetting::first()?->qris_image ?? 'qris.png')) }}" alt="QRIS" class="w-48 rounded-lg">
                                 <p class="font-sans text-xs text-ich-ink-400">Scan QRIS untuk pembayaran</p>
                             </div>
                             <div>

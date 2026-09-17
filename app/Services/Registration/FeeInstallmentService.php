@@ -4,7 +4,7 @@ namespace App\Services\Registration;
 
 use App\Models\FeeInstallment;
 use App\Notifications\RegistrationFeeOverdueNotification;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class FeeInstallmentService {
     public function createInstallments(
@@ -68,4 +68,4 @@ class FeeInstallmentService {
 
         return $installments->count();
     }
-} 
+}

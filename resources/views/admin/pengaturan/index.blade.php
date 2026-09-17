@@ -161,6 +161,48 @@
                     </div>
                 </form>
             </div>
+
+            <div class="bg-white rounded-xl shadow-ich-card p-6 mt-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-9 h-9 rounded-lg bg-ich-primary/10 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-ich-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="font-display font-bold text-ich-ink-900">Pembayaran QRIS</h2>
+                        <p class="text-xs text-ich-ink-400 font-sans">Perbarui gambar barcode QRIS untuk pembayaran pendaftaran & SPP</p>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('admin.pengaturan.qris.update') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="flex items-start gap-6 mb-6">
+                        <div class="shrink-0 w-32 h-32 bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center relative">
+                            @if(isset($feeSetting) && $feeSetting->qris_image)
+                                <img src="{{ asset('storage/' . $feeSetting->qris_image) }}" alt="QRIS Aktif" class="w-full h-full object-contain bg-white">
+                            @else
+                                <span class="text-xs text-gray-400">Belum ada QRIS</span>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-ui font-semibold text-ich-ink-700 mb-1.5">Unggah Gambar QRIS Baru</label>
+                            <input type="file" name="qris_image" accept="image/jpeg,image/png,image/jpg" required
+                                   class="block w-full text-sm text-gray-500
+                                          file:mr-4 file:py-2 file:px-4
+                                          file:rounded-full file:border-0
+                                          file:text-sm file:font-semibold
+                                          file:bg-ich-teal/10 file:text-ich-teal
+                                          hover:file:bg-ich-teal/20">
+                            <p class="mt-2 text-xs text-gray-400">Format: JPG, JPEG, PNG. Maksimal ukuran file: 2MB.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-4 border-t border-ich-line">
+                        <button type="submit" class="px-6 py-2.5 bg-ich-teal text-white font-ui font-bold text-sm rounded-ich-lg shadow-sm hover:bg-ich-teal-dark transition-colors">
+                            Simpan QRIS
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         {{-- Tab: Pendaftaran --}}
@@ -584,6 +626,17 @@
                                 </button>
                                 <input type="hidden" name="whatsapp_enabled" :value="waEnabled">
                             </div>
+                        </div>
+
+                        {{-- API Key Fonnte --}}
+                        <div class="bg-ich-surface rounded-xl p-5">
+                            <label class="block text-sm font-ui font-semibold text-ich-ink-700 mb-2">API Token Fonnte</label>
+                            <input type="text" name="fonnte_token" value="{{ old('fonnte_token', $whatsappSettings['fonnte_token'] ?? '') }}"
+                                   placeholder="Masukkan Token dari Dashboard Fonnte"
+                                   class="w-full px-3.5 py-2.5 bg-white border-2 border-ich-line rounded-ich-lg font-sans text-sm focus:outline-none focus:border-ich-teal">
+                            <p class="font-sans text-xs text-ich-ink-400 mt-2">
+                                Dapatkan token di menu <a href="https://md.fonnte.com/device" target="_blank" class="text-ich-teal hover:underline font-bold">Device Fonnte</a>.
+                            </p>
                         </div>
 
                         {{-- Status Device Fonnte --}}

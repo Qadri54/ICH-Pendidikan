@@ -78,6 +78,27 @@ class PengaturanController extends Controller
             ->with('success', 'Pengaturan tarif biaya berhasil disimpan.');
     }
 
+    public function updateQris(Request $request)
+    {
+        $request->validate([
+            'qris_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('qris_image')) {
+            $path = $request->file('qris_image')->store('qris', 'public');
+            
+            $feeSetting = FeeSetting::first();
+            if ($feeSetting) {
+                $feeSetting->update(['qris_image' => $path]);
+            } else {
+                FeeSetting::create(['qris_image' => $path]);
+            }
+        }
+
+        return redirect()->route('admin.pengaturan.index')
+            ->with('success', 'Gambar QRIS berhasil diperbarui.');
+    }
+
     public function togglePendaftaran()
     {
         $setting = RegistrationSetting::current();
@@ -137,12 +158,20 @@ class PengaturanController extends Controller
     {
         $data = $request->validate([
             'whatsapp_enabled' => 'required|in:true,false',
+            'fonnte_token'     => 'nullable|string',
         ]);
 
         WhatsAppSetting::updateOrCreate(
             ['setting_key' => 'whatsapp_enabled'],
             ['setting_value' => $data['whatsapp_enabled']]
         );
+
+        if (array_key_exists('fonnte_token', $data)) {
+            WhatsAppSetting::updateOrCreate(
+                ['setting_key' => 'fonnte_token'],
+                ['setting_value' => $data['fonnte_token']]
+            );
+        }
 
         return redirect()->route('admin.pengaturan.index')
             ->with('success', 'Pengaturan WhatsApp berhasil disimpan.');

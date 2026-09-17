@@ -290,6 +290,7 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
 
             // Route Tarif & Biaya
             Route::post('pengaturan/fee', [PengaturanController::class, 'updateFee'])->name('pengaturan.fee.update');
+            Route::post('pengaturan/qris', [PengaturanController::class, 'updateQris'])->name('pengaturan.qris.update');
 
             Route::get('landing',              [LandingController::class, 'index'])->name('landing.index');
             Route::get('landing/{key}/edit',   [LandingController::class, 'edit'])->name('landing.edit');
