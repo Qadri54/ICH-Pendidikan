@@ -164,6 +164,13 @@
             Buat Akun
         </a>
 
+        {{-- Kembali ke Landing Page --}}
+        <div class="text-center mt-4 mb-2">
+            <a href="{{ url('/') }}" class="font-sans font-bold text-[13px] text-white lg:text-ich-teal no-underline hover:underline">
+                &larr; Kembali ke Beranda
+            </a>
+        </div>
+
         {{-- Mobile-only: spacer + copyright --}}
         <div class="lg:hidden flex-1"></div>
         <div class="lg:hidden text-center font-sans text-[10px] text-white py-3" style="opacity:.9">

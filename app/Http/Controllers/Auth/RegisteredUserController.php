@@ -34,7 +34,6 @@ class RegisteredUserController extends Controller {
                 'required',
                 'numeric',
                 'digits_between:10,15',
-                'unique:users,no_hp',
                 'regex:/^(\+62|0)[0-9]{9,11}$/',  // Format Indonesia
             ],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],

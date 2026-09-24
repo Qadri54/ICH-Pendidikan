@@ -1415,7 +1415,7 @@
                 <a href="#program">Program</a>
                 <a href="#aktivitas">Aktivitas</a>
                 <a href="#testimoni">Testimoni</a>
-                <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank"
+                <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank"
                     rel="noopener">Kontak</a>
             </div>
             <div class="nav-cta">
@@ -1437,7 +1437,7 @@
             <a href="#program" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Program</a>
             <a href="#aktivitas" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Aktivitas</a>
             <a href="#testimoni" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Testimoni</a>
-            <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank" rel="noopener"
+            <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank" rel="noopener"
                 onclick="document.querySelector('.mobile-menu').classList.remove('open')"
                 style="color:#F5A623">Kontak</a>
             <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;width:80%;max-width:280px;">

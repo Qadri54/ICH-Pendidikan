@@ -11,9 +11,16 @@
             $jenisLabel = $pendaftaran->jenis_pendaftaran === 'TK' ? 'PG / TK ICH' : 'Magrib Mengaji';
             $jenisBg    = $pendaftaran->jenis_pendaftaran === 'TK' ? 'bg-ich-purple-soft text-ich-purple' : 'bg-ich-warning-soft text-ich-warning';
         @endphp
-        <span class="px-3 py-1.5 rounded-full text-xs font-ui font-bold {{ $jenisBg }}">
-            {{ $jenisLabel }}
-        </span>
+        <div class="flex items-center gap-3">
+            @if(! $isReadOnly)
+                <a href="{{ route('admin.pendaftaran.edit', $pendaftaran) }}" class="px-3 py-1.5 bg-white border border-ich-teal text-ich-teal text-sm font-ui font-bold rounded-lg hover:bg-gray-50 transition-colors">
+                    Edit Biodata
+                </a>
+            @endif
+            <span class="px-3 py-1.5 rounded-full text-xs font-ui font-bold {{ $jenisBg }}">
+                {{ $jenisLabel }}
+            </span>
+        </div>
     </div>
 
     @if(session('generated_password'))
