@@ -20,6 +20,8 @@ class User extends Authenticatable
         'foto',
         'password',
         'status',
+        'verified',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -29,11 +31,18 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'verified'          => 'boolean',
+            'email_verified_at' => 'datetime',
         ];
     }
 
     // Relationships
+    public function otp()
+    {
+        return $this->hasOne(Otp::class, 'user_id', 'user_id');
+    }
+
     public function role()
     {
         return $this->hasOne(Role::class, 'user_id', 'user_id');

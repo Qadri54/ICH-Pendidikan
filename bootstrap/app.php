@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->appendToGroup('web', [
             \App\Http\Middleware\EnsureAccountIsActive::class,
+            \App\Http\Middleware\EnsureUserIsVerified::class,
         ]);
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,

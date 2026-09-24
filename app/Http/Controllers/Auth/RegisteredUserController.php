@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\Auth\OtpService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,10 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller {
+    public function __construct(
+        private OtpService $otpService
+    ) {}
+
     /**
      * Display the registration view.
      */
@@ -45,6 +50,7 @@ class RegisteredUserController extends Controller {
             'email'    => $request->email,
             'password' => Hash::make($request->password),
             'no_hp'    => $request->no_hp,
+            'verified' => false,
         ]);
 
         // Role disimpan di tabel roles dengan FK user_id (hasOne)
@@ -54,6 +60,10 @@ class RegisteredUserController extends Controller {
 
         Auth::login($user);
 
-        return redirect()->route('beranda');
+        // Generate kode OTP di tabel otps dan kirim ke WhatsApp user
+        $this->otpService->generateAndSend($user);
+
+        return redirect()->route('otp.notice')
+            ->with('status', 'Kode verifikasi OTP telah dikirimkan ke nomor WhatsApp Anda.');
     }
 }
