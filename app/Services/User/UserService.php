@@ -48,11 +48,13 @@ class UserService
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'     => $data['name'],
-                'email'    => $data['email'],
-                'no_hp'    => $data['no_hp'],
-                'password' => Hash::make($data['password']),
-                'status'   => $data['status'],
+                'name'              => $data['name'],
+                'email'             => $data['email'],
+                'no_hp'             => $data['no_hp'],
+                'password'          => Hash::make($data['password']),
+                'status'            => $data['status'],
+                'verified'          => $data['verified'] ?? true,
+                'email_verified_at' => now(),
             ]);
 
             Role::create([

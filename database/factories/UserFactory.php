@@ -17,10 +17,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'     => fake()->name(),
-            'email'    => fake()->unique()->safeEmail(),
-            'no_hp'    => '08' . fake()->numerify('#########'),
-            'password' => static::$password ??= Hash::make('password'),
+            'name'              => fake()->name(),
+            'email'             => fake()->unique()->safeEmail(),
+            'no_hp'             => '08' . fake()->numerify('#########'),
+            'password'          => static::$password ??= Hash::make('password'),
+            'status'            => 'active',
+            'verified'          => true,
+            'email_verified_at' => now(),
         ];
     }
 

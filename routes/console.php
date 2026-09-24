@@ -21,3 +21,6 @@ Schedule::command('attendance:auto-insert-students')->dailyAt('23:55');
 
 // Backup Data — otomatis setiap jam 01:00 dini hari
 Schedule::command('backup:run-custom')->dailyAt('01:00');
+
+// OTP & User Cleanup — hapus otomatis akun yang belum terverifikasi > 30 hari sejak created_at
+Schedule::command('users:prune-unverified')->daily();
