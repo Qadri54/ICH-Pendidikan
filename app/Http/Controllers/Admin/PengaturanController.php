@@ -27,6 +27,13 @@ class PengaturanController extends Controller
                                     ->orderByDesc('semester')
                                     ->get();
         $whatsappSettings    = WhatsAppSetting::getAll();
+        $whatsappSettings['whatsapp_enabled'] = ($whatsappSettings['whatsapp_enabled'] ?? '') !== ''
+            ? $whatsappSettings['whatsapp_enabled']
+            : (config('services.whatsapp.enabled') ? 'true' : 'false');
+        $whatsappSettings['fonnte_token'] = filled($whatsappSettings['fonnte_token'] ?? null)
+            ? $whatsappSettings['fonnte_token']
+            : config('services.fonnte.token', '');
+
         $feeSetting          = FeeSetting::first();
 
         return view('admin.pengaturan.index', compact('settings', 'registrationSetting', 'semesters', 'whatsappSettings', 'feeSetting'));
@@ -56,7 +63,7 @@ class PengaturanController extends Controller
             );
         }
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'geofence'])
             ->with('success', "Pengaturan berhasil disimpan.");
     }
 
@@ -74,7 +81,7 @@ class PengaturanController extends Controller
             FeeSetting::create($data);
         }
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'biaya'])
             ->with('success', 'Pengaturan tarif biaya berhasil disimpan.');
     }
 
@@ -95,7 +102,7 @@ class PengaturanController extends Controller
             }
         }
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'biaya'])
             ->with('success', 'Gambar QRIS berhasil diperbarui.');
     }
 
@@ -106,7 +113,7 @@ class PengaturanController extends Controller
 
         $status = $setting->is_registration_period ? 'dibuka' : 'ditutup';
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'pendaftaran'])
             ->with('success', "Masa pendaftaran berhasil {$status}.");
     }
 
@@ -126,7 +133,7 @@ class PengaturanController extends Controller
             'is_active' => false,
         ]);
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'semester'])
             ->with('success', "Semester {$data['semester']} T.A {$data['tahun_ajaran']} berhasil ditambahkan.");
     }
 
@@ -137,20 +144,20 @@ class PengaturanController extends Controller
             $semester->update(['is_active' => true]);
         });
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'semester'])
             ->with('success', "Semester {$semester->semester} T.A {$semester->tahun_ajaran} berhasil diaktifkan.");
     }
 
     public function destroySemester(AcademicPeriod $semester)
     {
         if ($semester->is_active) {
-            return redirect()->route('admin.pengaturan.index')
+            return redirect()->route('admin.pengaturan.index', ['tab' => 'semester'])
                 ->with('error', 'Semester aktif tidak dapat dihapus.');
         }
 
         $semester->delete();
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'semester'])
             ->with('success', 'Semester berhasil dihapus.');
     }
 
@@ -166,14 +173,14 @@ class PengaturanController extends Controller
             ['setting_value' => $data['whatsapp_enabled']]
         );
 
-        if (array_key_exists('fonnte_token', $data)) {
+        if (filled($data['fonnte_token'] ?? null)) {
             WhatsAppSetting::updateOrCreate(
                 ['setting_key' => 'fonnte_token'],
-                ['setting_value' => $data['fonnte_token']]
+                ['setting_value' => trim($data['fonnte_token'])]
             );
         }
 
-        return redirect()->route('admin.pengaturan.index')
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'whatsapp'])
             ->with('success', 'Pengaturan WhatsApp berhasil disimpan.');
     }
 
@@ -182,15 +189,19 @@ class PengaturanController extends Controller
         $request->validate(['test_phone' => 'required|string']);
 
         $success = $whatsAppService->testSend($request->test_phone);
+        $errorDetail = $whatsAppService->getLastError();
 
-        return redirect()->route('admin.pengaturan.index')
-            ->with($success ? 'success' : 'error', $success ? 'Pesan uji coba berhasil dikirim!' : 'Gagal mengirim pesan. Periksa konfigurasi.');
+        return redirect()->route('admin.pengaturan.index', ['tab' => 'whatsapp'])
+            ->with(
+                $success ? 'success' : 'error',
+                $success
+                    ? 'Pesan uji coba berhasil dikirim!'
+                    : 'Gagal mengirim pesan. ' . ($errorDetail ?: 'Periksa konfigurasi.')
+            );
     }
 
     public function whatsappStatus(WhatsAppService $whatsAppService)
     {
-        return response()->json([
-            'status' => $whatsAppService->getDeviceStatus(),
-        ]);
+        return response()->json($whatsAppService->getDeviceInfo());
     }
 }

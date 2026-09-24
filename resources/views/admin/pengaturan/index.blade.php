@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <div x-data="{ tab: 'pendaftaran' }" class="max-w-4xl">
+    <div x-data="{ tab: @js(request('tab', 'pendaftaran')) }" class="max-w-4xl">
 
         {{-- Status Overview Cards --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -640,11 +640,37 @@
                         </div>
 
                         {{-- Status Device Fonnte --}}
-                        <div class="bg-ich-surface rounded-xl p-5" x-data="{ loading: false, deviceStatus: 'unknown' }">
+                        <div class="bg-ich-surface rounded-xl p-5"
+                             x-data="{
+                                 loading: false,
+                                 deviceStatus: 'unknown',
+                                 deviceName: null,
+                                 deviceNumber: null,
+                                 deviceQuota: null,
+                                 deviceReason: null,
+                                 checkStatus() {
+                                     this.loading = true;
+                                     fetch('{{ route('admin.pengaturan.whatsapp.status') }}')
+                                         .then(r => r.json())
+                                         .then(d => {
+                                             this.deviceStatus = d.status || 'error';
+                                             this.deviceName = d.name || null;
+                                             this.deviceNumber = d.device || null;
+                                             this.deviceQuota = d.quota || null;
+                                             this.deviceReason = d.reason || null;
+                                             this.loading = false;
+                                         })
+                                         .catch(() => {
+                                             this.loading = false;
+                                             this.deviceStatus = 'error';
+                                         });
+                                 }
+                             }"
+                             x-init="checkStatus()">
                             <div class="flex items-center justify-between mb-3">
                                 <p class="font-ui font-bold text-sm text-ich-ink-700">Status Device Fonnte</p>
                                 <button type="button"
-                                        @click="loading = true; fetch('{{ route('admin.pengaturan.whatsapp.status') }}').then(r => r.json()).then(d => { deviceStatus = d.status; loading = false; }).catch(() => { loading = false; deviceStatus = 'error'; })"
+                                        @click="checkStatus()"
                                         class="px-3 py-1.5 text-xs font-ui font-bold bg-ich-teal/10 text-ich-teal rounded-lg hover:bg-ich-teal hover:text-white transition-colors">
                                     <span x-show="!loading">Cek Status</span>
                                     <span x-show="loading">Memeriksa...</span>
@@ -652,12 +678,13 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <div class="w-2 h-2 rounded-full"
-                                     :class="deviceStatus === 'connected' ? 'bg-ich-success' : deviceStatus === 'error' || deviceStatus === 'disconnected' ? 'bg-ich-error' : deviceStatus === 'not_configured' ? 'bg-ich-warning' : 'bg-ich-ink-300'"></div>
+                                     :class="deviceStatus === 'connected' ? 'bg-ich-success' : (deviceStatus === 'error' || deviceStatus === 'disconnected' || deviceStatus === 'invalid_token') ? 'bg-ich-error' : deviceStatus === 'not_configured' ? 'bg-ich-warning' : 'bg-ich-ink-300'"></div>
                                 <span class="font-sans text-xs text-ich-ink-500" x-text="
-                                    deviceStatus === 'connected' ? 'Terhubung' :
+                                    deviceStatus === 'connected' ? ('Terhubung' + (deviceName || deviceNumber ? ' — ' + [deviceName, deviceNumber].filter(Boolean).join(' (') + (deviceNumber ? ')' : '') : '') + (deviceQuota ? ' • Kuota: ' + deviceQuota : '')) :
                                     deviceStatus === 'disconnected' ? 'Terputus — scan QR di dashboard Fonnte' :
+                                    deviceStatus === 'invalid_token' ? ('Token tidak valid — ' + (deviceReason || 'periksa kembali API Token Fonnte')) :
                                     deviceStatus === 'not_configured' ? 'Token belum dikonfigurasi' :
-                                    deviceStatus === 'error' ? 'Gagal memeriksa status' : 'Belum dicek'
+                                    deviceStatus === 'error' ? ('Gagal memeriksa status' + (deviceReason ? ': ' + deviceReason : '')) : 'Belum dicek'
                                 "></span>
                             </div>
                             <p class="font-sans text-xs text-ich-ink-400 mt-3">

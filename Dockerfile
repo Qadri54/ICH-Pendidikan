@@ -33,8 +33,10 @@ RUN composer dump-autoload --optimize
 FROM php:8.3-fpm-alpine
 
 RUN apk add --no-cache \
+    ca-certificates \
     libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev icu-dev oniguruma-dev \
+    && update-ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring gd zip intl opcache bcmath pcntl \
     && rm -rf /var/cache/apk/*

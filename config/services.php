@@ -40,8 +40,9 @@ return [
     ],
 
     'fonnte' => [
-        'token' => env('FONNTE_TOKEN', ''),
-        'url'   => 'https://api.fonnte.com',
+        'token'      => env('FONNTE_TOKEN', ''),
+        'url'        => env('FONNTE_URL', 'https://api.fonnte.com'),
+        'verify_ssl' => env('FONNTE_VERIFY_SSL', true),
     ],
 
 ];
