@@ -42,6 +42,8 @@
                             <input type="hidden" :name="'members['+i+'][id]'" x-model="m.id">
                             <input type="hidden" :name="'members['+i+'][existing_photo]'" x-model="m.photo">
                             <input type="hidden" :name="'members['+i+'][type]'" :value="getAutoType(m)">
+                            <input type="hidden" :name="'members['+i+'][branch]'" x-model="m.branch">
+                            <input type="hidden" :name="'members['+i+'][role]'" x-model="m.role">
                             <input type="hidden" :name="'members['+i+'][order]'" :value="i + 1">
 
                             <button type="button" @click="removeMember(i)"

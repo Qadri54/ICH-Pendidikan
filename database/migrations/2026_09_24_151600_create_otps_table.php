@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('otp_code', 6);
             $table->unsignedTinyInteger('send_count')->default(1);
             $table->timestamp('send_window_started_at')->nullable();
-            $table->timestamp('expires_at');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }

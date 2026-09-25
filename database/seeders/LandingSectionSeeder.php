@@ -56,24 +56,36 @@ class LandingSectionSeeder extends Seeder
                 'title' => 'Struktur Organisasi Yayasan',
                 'subtitle' => "Struktur organisasi IQRA' Creative House yang mendukung pengelolaan pendidikan secara profesional dan terintegrasi.",
                 'members' => [
-                    ['id' => 1, 'parent_id' => null, 'position' => 'Pembina', 'name' => 'Antoni', 'photo' => null, 'type' => 'advisory', 'order' => 1],
-                    ['id' => 2, 'parent_id' => null, 'position' => 'Ketua Yayasan', 'name' => 'Aulia, S.Si., M.Sc', 'photo' => null, 'type' => 'head', 'order' => 2],
-                    ['id' => 3, 'parent_id' => null, 'position' => 'Pengawas', 'name' => 'Adzkia Safitri, A.Md.Kom', 'photo' => null, 'type' => 'advisory', 'order' => 3],
-                    ['id' => 4, 'parent_id' => 1, 'position' => 'Kord. Maghrib Mengaji', 'name' => 'Novi Hariyanti', 'photo' => null, 'type' => 'default', 'order' => 1],
-                    ['id' => 5, 'parent_id' => 2, 'position' => 'Kepala Sekolah TK', 'name' => 'Adli Qarin, S.S., M.Ikom', 'photo' => null, 'type' => 'default', 'order' => 1],
-                    ['id' => 6, 'parent_id' => 2, 'position' => 'Direktur Training / R&B', 'name' => 'Prof. Dr. Ir. Roslina, M.I.T.', 'photo' => null, 'type' => 'default', 'order' => 2],
-                    ['id' => 7, 'parent_id' => 4, 'position' => 'Guru Iqra', 'name' => 'Novi Hariyanti', 'photo' => null, 'type' => 'default', 'order' => 1],
-                    ['id' => 8, 'parent_id' => 4, 'position' => 'Administrasi', 'name' => 'Rangga Alif Mulya', 'photo' => null, 'type' => 'default', 'order' => 2],
-                    ['id' => 9, 'parent_id' => 4, 'position' => "Guru Al-Qur'an", 'name' => 'Yun Anggraini', 'photo' => null, 'type' => 'default', 'order' => 3],
-                    ['id' => 10, 'parent_id' => 7, 'position' => null, 'name' => 'Mutiara Shahira A.Md.A.B.', 'photo' => null, 'type' => 'staff', 'order' => 1],
-                    ['id' => 11, 'parent_id' => 7, 'position' => null, 'name' => 'Almira Salsabila', 'photo' => null, 'type' => 'staff', 'order' => 2],
-                    ['id' => 12, 'parent_id' => 5, 'position' => 'Bendahara', 'name' => 'Almira Salsabila', 'photo' => null, 'type' => 'default', 'order' => 1],
-                    ['id' => 13, 'parent_id' => 5, 'position' => 'Tata Usaha', 'name' => 'Rangga Alif Mulya', 'photo' => null, 'type' => 'default', 'order' => 2],
-                    ['id' => 14, 'parent_id' => 12, 'position' => 'Kurikulum', 'name' => 'Mutiara Shahira A.Md.A.B.', 'photo' => null, 'type' => 'default', 'order' => 1],
-                    ['id' => 15, 'parent_id' => 14, 'position' => 'Guru / Wali Kelas', 'name' => 'Sofia Aurora Susanto S.Pd', 'photo' => null, 'type' => 'staff', 'order' => 1],
-                    ['id' => 16, 'parent_id' => 14, 'position' => 'Guru / Wali Kelas', 'name' => 'Lisma Farida Pane S.Pd.I', 'photo' => null, 'type' => 'staff', 'order' => 2],
-                    ['id' => 17, 'parent_id' => 6, 'position' => 'Training', 'name' => 'Tim', 'photo' => null, 'type' => 'unit', 'order' => 1],
-                    ['id' => 18, 'parent_id' => 6, 'position' => 'R & D', 'name' => 'Tim', 'photo' => null, 'type' => 'unit', 'order' => 2],
+                    // Pucuk Pimpinan Yayasan
+                    ['id' => 1, 'branch' => 'yayasan', 'parent_id' => null, 'position' => 'PEMBINA YAYASAN', 'name' => 'Antoni', 'photo' => null, 'type' => 'advisory', 'role' => 'pembina', 'order' => 1],
+                    ['id' => 2, 'branch' => 'yayasan', 'parent_id' => null, 'position' => 'KETUA YAYASAN', 'name' => 'Aulia, S.Si., M.Sc', 'photo' => null, 'type' => 'head', 'role' => 'ketua', 'order' => 2],
+                    ['id' => 3, 'branch' => 'yayasan', 'parent_id' => null, 'position' => 'PENGAWAS YAYASAN', 'name' => 'Adzkia Safitri, A.Md.Kom', 'photo' => null, 'type' => 'advisory', 'role' => 'pengawas', 'order' => 3],
+
+                    // Maghrib Mengaji (Cabang Kiri Terpisah)
+                    ['id' => 4, 'branch' => 'maghrib', 'parent_id' => null, 'position' => 'KORD. MAGHRIB MENGAJI / GURU IQRA', 'name' => 'Novi Hariyanti', 'photo' => null, 'type' => 'head', 'order' => 4],
+                    ['id' => 5, 'branch' => 'maghrib', 'parent_id' => 4, 'position' => 'TU / GURU IQRA', 'name' => 'Maysha Nuratikayani', 'photo' => null, 'type' => 'staff', 'order' => 1],
+                    ['id' => 6, 'branch' => 'maghrib', 'parent_id' => 4, 'position' => "GURU AL-QUR'AN", 'name' => 'Yun Anggraini', 'photo' => null, 'type' => 'staff', 'order' => 2],
+                    ['id' => 7, 'branch' => 'maghrib', 'parent_id' => 4, 'position' => 'GURU IQRA', 'name' => 'Almira Salsabila', 'photo' => null, 'type' => 'staff', 'order' => 3],
+                    ['id' => 8, 'branch' => 'maghrib', 'parent_id' => 4, 'position' => 'GURU IQRA', 'name' => 'Mutiara Shahira A.Md.A.B.', 'photo' => null, 'type' => 'staff', 'order' => 4],
+
+                    // Struktur Yayasan & TK (Di bawah Ketua Yayasan)
+                    ['id' => 9, 'branch' => 'yayasan', 'parent_id' => 2, 'position' => 'KEPALA SEKOLAH TK', 'name' => 'Adli Qarin, S.S., M.Ikom', 'photo' => null, 'type' => 'principal', 'order' => 1],
+                    ['id' => 10, 'branch' => 'yayasan', 'parent_id' => 2, 'position' => 'DIREKTUR TRAINING / R&D', 'name' => 'Prof. Dr. Ir. Roslina, M.I.T.', 'photo' => null, 'type' => 'unit', 'order' => 2],
+
+                    // Di bawah Direktur Training / R&D
+                    ['id' => 11, 'branch' => 'yayasan', 'parent_id' => 10, 'position' => 'TRAINING', 'name' => 'Tim', 'photo' => null, 'type' => 'unit', 'order' => 1],
+                    ['id' => 12, 'branch' => 'yayasan', 'parent_id' => 10, 'position' => 'R & D', 'name' => 'Tim', 'photo' => null, 'type' => 'unit', 'order' => 2],
+
+                    // Di bawah Kepala Sekolah TK
+                    ['id' => 13, 'branch' => 'yayasan', 'parent_id' => 9, 'position' => 'BENDAHARA', 'name' => 'Almira Salsabila', 'photo' => null, 'type' => 'default', 'order' => 1],
+                    ['id' => 14, 'branch' => 'yayasan', 'parent_id' => 9, 'position' => 'TATA USAHA', 'name' => 'Maysha Nuratikayani', 'photo' => null, 'type' => 'default', 'order' => 2],
+
+                    // Di bawah Bendahara
+                    ['id' => 15, 'branch' => 'yayasan', 'parent_id' => 13, 'position' => 'KURIKULUM', 'name' => 'Mutiara Shahira A.Md.A.B.', 'photo' => null, 'type' => 'default', 'order' => 1],
+
+                    // Di bawah Kurikulum
+                    ['id' => 16, 'branch' => 'yayasan', 'parent_id' => 15, 'position' => 'GURU / WALI KELAS', 'name' => 'Niken Ristia', 'photo' => null, 'type' => 'staff', 'order' => 1],
+                    ['id' => 17, 'branch' => 'yayasan', 'parent_id' => 15, 'position' => 'GURU / WALI KELAS', 'name' => 'Lisma Farida Pane S.Pd.I', 'photo' => null, 'type' => 'staff', 'order' => 2],
                 ],
             ],
         ]);
