@@ -736,6 +736,18 @@
                 display: none;
             }
 
+            /* Garis putus-putus untuk Penasihat / Advisory */
+            .org-tree li.node-advisory::before {
+                border-top-style: dashed;
+            }
+            .org-tree li.node-advisory::after {
+                border-top-style: dashed;
+                border-left-style: dashed;
+            }
+            .org-tree li.node-advisory > ul::before {
+                border-left-style: dashed;
+            }
+
             .org-card {
                 background: #fff;
                 border-radius: 10px;
@@ -1583,7 +1595,8 @@
                                     if (!empty($node['children'])) {
                                         echo '<ul>';
                                         foreach ($node['children'] as $child) {
-                                            echo '<li>';
+                                            $isAdvisory = ($child['type'] ?? '') === 'advisory' ? 'node-advisory' : '';
+                                            echo '<li class="' . $isAdvisory . '">';
                                             $renderNode($child);
                                             echo '</li>';
                                         }
@@ -1593,7 +1606,8 @@
                             @endphp
                             <ul>
                                 @foreach($orgTree as $root)
-                                    <li>
+                                    @php $isAdvisoryRoot = ($root['type'] ?? '') === 'advisory' ? 'node-advisory' : ''; @endphp
+                                    <li class="{{ $isAdvisoryRoot }}">
                                         @php $renderNode($root); @endphp
                                     </li>
                                 @endforeach
