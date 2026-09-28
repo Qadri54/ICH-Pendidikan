@@ -34,55 +34,6 @@
     };
     $sortTree($orgTree);
 
-    // Map individual nodes for precision tree rendering
-    $pembina = null; $ketua = null; $pengawas = null;
-    $kepalaSekolah = null; $direkturTraining = null;
-    $bendahara = null; $tataUsaha = null; $kurikulum = null;
-    $guru1 = null; $guru2 = null;
-    $unitTraining = null; $unitRnd = null;
-    $maghribRoot = null; $maghribChildren = [];
-
-    foreach ($memberMap as $m) {
-        $pos = strtoupper($m['position'] ?? '');
-        $name = strtoupper($m['name'] ?? '');
-        $role = strtolower($m['role'] ?? '');
-        $branch = strtolower($m['branch'] ?? '');
-
-        if ($branch === 'maghrib' || str_contains($pos, 'MAGHRIB')) {
-            if (empty($m['parent_id'])) {
-                $maghribRoot = $m;
-            } else {
-                $maghribChildren[] = $m;
-            }
-        } elseif ($role === 'pembina' || str_contains($pos, 'PEMBINA')) {
-            $pembina = $m;
-        } elseif ($role === 'ketua' || str_contains($pos, 'KETUA')) {
-            $ketua = $m;
-        } elseif ($role === 'pengawas' || str_contains($pos, 'PENGAWAS')) {
-            $pengawas = $m;
-        } elseif (str_contains($pos, 'KEPALA SEKOLAH')) {
-            $kepalaSekolah = $m;
-        } elseif (str_contains($pos, 'DIREKTUR') || str_contains($pos, 'TRAINING / R&D') || str_contains($pos, 'TRAINING / R&B')) {
-            $direkturTraining = $m;
-        } elseif (str_contains($pos, 'BENDAHARA')) {
-            $bendahara = $m;
-        } elseif (str_contains($pos, 'TATA USAHA') && $branch !== 'maghrib') {
-            $tataUsaha = $m;
-        } elseif (str_contains($pos, 'KURIKULUM')) {
-            $kurikulum = $m;
-        } elseif (str_contains($pos, 'TRAINING') && str_contains($name, 'TIM')) {
-            $unitTraining = $m;
-        } elseif ((str_contains($pos, 'R & D') || str_contains($pos, 'R&D')) && str_contains($name, 'TIM')) {
-            $unitRnd = $m;
-        } elseif (str_contains($pos, 'GURU') && str_contains($name, 'NIKEN')) {
-            $guru1 = $m;
-        } elseif (str_contains($pos, 'GURU') && (str_contains($name, 'LISMA') || str_contains($name, 'PANE'))) {
-            $guru2 = $m;
-        }
-    }
-
-    usort($maghribChildren, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
-
     function imgSrc($path) {
         if (!$path)
             return '';
@@ -683,7 +634,7 @@
 
             /* —— STRUKTUR ORGANISASI —— */
             .struktur {
-                background: #f8fafc;
+                background: var(--bg);
             }
 
             .struktur-inner {
@@ -692,262 +643,210 @@
             }
 
             .org-wrap {
-                margin-top: 40px;
+                margin-top: 48px;
                 padding-bottom: 24px;
                 overflow-x: auto;
             }
 
-            .org-board {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 32px;
-                min-width: 100%;
+            .org-tree {
+                --ln: #B8D8BA;
                 width: fit-content;
+                min-width: 100%;
+                padding: 16px 40px;
                 margin: 0 auto;
-                padding: 10px 16px;
             }
 
-            @media (max-width: 1100px) {
-                .org-board {
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 52px;
-                }
-            }
-
-            .org-branch {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .org-branch-title {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                padding: 6px 18px;
-                border-radius: 999px;
-                font-family: 'Poppins', sans-serif;
-                font-size: 11px;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-                margin-bottom: 24px;
-            }
-
-            .org-branch-maghrib .org-branch-title {
-                background: #E8F5E9;
-                color: #2E7D32;
-                border: 1px solid #C8E6C9;
-            }
-
-            .org-branch-yayasan .org-branch-title {
-                background: #FFF8E1;
-                color: #B45309;
-                border: 1px solid #FDE68A;
-            }
-
-            /* Leadership Row (Pembina ----- Ketua ----- Pengawas) */
-            .org-leadership-row {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: relative;
-            }
-
-            .org-dashed-line {
-                width: 32px;
-                border-top: 2px dashed #475569;
-                height: 0;
+            .org-tree ul {
                 margin: 0;
-                flex-shrink: 0;
-            }
-
-            /* Vertical Green Stems */
-            .org-v-stem {
-                width: 2px;
-                height: 20px;
-                background: #7CB589;
-                margin: 0 auto;
-                flex-shrink: 0;
-            }
-
-            .org-v-stem-tall {
-                height: 26px;
-            }
-
-            /* Horizontal Branches (Flexbox tree branches) */
-            .org-branches-row {
-                display: flex;
-                justify-content: center;
-                position: relative;
-                width: 100%;
-                margin: 0;
-                padding: 0;
+                padding: 24px 0 0;
                 list-style: none;
-            }
-
-            .org-branch-col {
-                position: relative;
-                padding-top: 20px;
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+                justify-content: center;
+                position: relative;
             }
 
-            .org-branch-col::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: 50%;
-                width: 50%;
-                height: 20px;
-                border-top: 2px solid #7CB589;
-            }
-
-            .org-branch-col::after {
+            .org-tree ul::before {
                 content: '';
                 position: absolute;
                 top: 0;
                 left: 50%;
+                height: 24px;
+                border-left: 2px solid var(--ln);
+            }
+
+            .org-tree li {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                padding: 24px 12px 0;
+            }
+
+            .org-tree li::before,
+            .org-tree li::after {
+                content: '';
+                position: absolute;
+                top: 0;
                 width: 50%;
-                height: 20px;
-                border-top: 2px solid #7CB589;
-                border-left: 2px solid #7CB589;
+                height: 24px;
             }
 
-            .org-branch-col:first-child::before {
+            .org-tree li::before {
+                right: 50%;
+                border-top: 2px solid var(--ln);
+            }
+
+            .org-tree li::after {
+                left: 50%;
+                border-top: 2px solid var(--ln);
+                border-left: 2px solid var(--ln);
+            }
+
+            .org-tree li:first-child::before {
                 border-top: none;
             }
 
-            .org-branch-col:last-child::after {
+            .org-tree li:last-child::after {
                 border-top: none;
             }
 
-            .org-branch-col:only-child::before {
+            .org-tree li:only-child::before {
                 display: none;
             }
 
-            .org-branch-col:only-child::after {
+            .org-tree li:only-child::after {
                 border-top: none;
-                left: 50%;
-                width: 0;
             }
 
-            /* Clean Cards with Profile Avatar Initial */
+            .org-tree>ul {
+                padding-top: 0;
+            }
+
+            .org-tree>ul::before {
+                display: none;
+            }
+
+            .org-tree>ul>li {
+                padding: 0 10px; /* Hapus padding atas, hanya spacing samping */
+                z-index: 1;
+            }
+
+            /* Hubungkan root node (Petinggi) dengan garis menyamping dari sisi card */
+            .org-tree>ul>li::before,
+            .org-tree>ul>li::after {
+                display: block;
+                top: 60px; /* Posisi vertikal garis (menembus tengah card) */
+                height: 0; /* Hilangkan garis vertikal ke bawah */
+                border-top: 3px dashed #000 !important; /* Warna hitam dan lebih tebal */
+                border-left: none !important; /* Hapus garis kiri bawaan */
+                z-index: -1; /* Posisikan garis di belakang card */
+            }
+            
+            .org-tree>ul>li:first-child::before {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:last-child::after {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:only-child::before,
+            .org-tree>ul>li:only-child::after {
+                display: none !important;
+            }
+
+            /* Pastikan background putih menutupi garis di belakangnya */
+            .org-tree>ul>li>.org-card {
+                position: relative;
+                z-index: 2;
+                background-color: #fff;
+            }
+
             .org-card {
-                background: #ffffff;
+                background: #fff;
                 border-radius: 10px;
-                padding: 10px 10px 12px;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-                border: 1px solid #E2E8F0;
-                border-top: 3.5px solid #22C55E;
+                padding: 12px 14px;
+                box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
                 text-align: center;
-                box-sizing: border-box;
-                width: 142px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                min-width: 120px;
+                max-width: 180px;
+                border-top: 3px solid var(--green);
             }
 
-            .org-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+            .org-card.oc-head {
+                border-top-color: var(--yellow);
+                background: linear-gradient(to bottom, #FFFBF0, #fff);
+                min-width: 152px;
             }
 
-            .org-card.oc-gold {
-                border-top-color: #F59E0B;
-            }
-
-            .org-card.oc-red {
-                border-top-color: #EF4444;
-            }
-
-            .org-card.oc-teal {
-                border-top-color: #0EA5E9;
-            }
-
-            .org-card.oc-green {
-                border-top-color: #22C55E;
-            }
-
-            .org-card.oc-mint {
-                border-top-color: #10B981;
+            .org-card.oc-adv {
+                border-top-color: var(--teal);
+                min-width: 140px;
             }
 
             .org-card.oc-unit {
-                width: 115px;
+                border-top-color: #d4e8d6;
+                min-width: 100px;
+                max-width: 180px;
             }
 
-            .org-card.oc-sm {
-                width: 128px;
+            .org-card {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
-            .org-card.oc-head-wide {
-                width: 168px;
+            .org-card.oc-end {
+                background: var(--green);
+                border-top-color: var(--green-d);
             }
 
-            /* Circular Profile Avatar with Initial */
+            .org-card.oc-end .oc-name {
+                color: #fff;
+            }
+
+            .org-card.oc-end .oc-role {
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .oc-photo {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin: 0 auto 6px;
+                border: 2px solid #EEF6F0;
+            }
+
             .oc-avatar {
-                width: 42px;
-                height: 42px;
+                width: 48px;
+                height: 48px;
                 border-radius: 50%;
                 margin: 0 auto 6px;
+                background: #EEF6F0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-family: 'Poppins', sans-serif;
                 font-weight: 700;
-                font-size: 16px;
-                line-height: 1;
-                flex-shrink: 0;
-            }
-
-            .oc-avatar-green {
-                background: #EEF6F0;
-                color: #2E7D32;
-                border: 1.5px solid #C8E6C9;
-            }
-
-            .oc-avatar-gold {
-                background: #FFF8E1;
-                color: #D97706;
-                border: 1.5px solid #FDE68A;
-            }
-
-            .oc-avatar-red {
-                background: #FEE2E2;
-                color: #DC2626;
-                border: 1.5px solid #FECACA;
-            }
-
-            .oc-avatar-teal {
-                background: #E0F2FE;
-                color: #0284C7;
-                border: 1.5px solid #BAE6FD;
+                font-size: 18px;
+                color: var(--green);
             }
 
             .oc-role {
                 font-family: 'Inter', sans-serif;
-                font-size: 8.5px;
-                font-weight: 700;
-                color: #64748B;
+                font-size: 9.5px;
+                font-weight: 600;
+                color: var(--muted);
                 text-transform: uppercase;
-                letter-spacing: 0.04em;
-                line-height: 1.25;
+                letter-spacing: 0.03em;
                 margin-bottom: 3px;
+                line-height: 1.3;
             }
 
             .oc-name {
                 font-family: 'Nunito Sans', sans-serif;
+                font-weight: 700;
                 font-size: 11.5px;
-                font-weight: 800;
-                color: #0F172A;
-                line-height: 1.25;
+                color: var(--ink);
+                line-height: 1.3;
             }
 
             /* —— PROGRAMS —— */
@@ -1540,7 +1439,7 @@
                 <a href="#program">Program</a>
                 <a href="#aktivitas">Aktivitas</a>
                 <a href="#testimoni">Testimoni</a>
-                <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank"
+                <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank"
                     rel="noopener">Kontak</a>
             </div>
             <div class="nav-cta">
@@ -1562,7 +1461,7 @@
             <a href="#program" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Program</a>
             <a href="#aktivitas" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Aktivitas</a>
             <a href="#testimoni" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Testimoni</a>
-            <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank" rel="noopener"
+            <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank" rel="noopener"
                 onclick="document.querySelector('.mobile-menu').classList.remove('open')"
                 style="color:#F5A623">Kontak</a>
             <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;width:80%;max-width:280px;">
@@ -1674,153 +1573,58 @@
                         <p class="section-sub">{{ $struktur['subtitle'] ?? '' }}</p>
                     </div>
                     <div class="org-wrap">
-                        @php
-                            $renderCard = function ($node, $colorClass = '', $avatarVariant = 'green') {
-                                if (!$node) return;
-                                $role = $node['position'] ?? '';
-                                $name = $node['name'] ?? '';
-                                $initial = mb_strtoupper(mb_substr(trim($name), 0, 1));
-                                if ($initial === '') {
-                                    $initial = mb_strtoupper(mb_substr(trim($role), 0, 1)) ?: '?';
-                                }
-
-                                echo '<div class="org-card ' . e($colorClass) . '">';
-                                echo '<div class="oc-avatar oc-avatar-' . e($avatarVariant) . '">' . e($initial) . '</div>';
-                                if (!empty($role)) {
-                                    echo '<div class="oc-role">' . e($role) . '</div>';
-                                }
-                                echo '<div class="oc-name">' . e($name) . '</div>';
-                                echo '</div>';
-                            };
-
-                            $renderTree = null;
-                            $renderTree = function ($node) use (&$renderTree, $renderCard) {
-                                echo '<div class="org-branch-col">';
-                                $renderCard($node, 'oc-green', 'green');
-                                if (!empty($node['children'])) {
-                                    echo '<div class="org-branches-row">';
-                                    foreach ($node['children'] as $child) {
-                                        $renderTree($child);
+                        <div class="org-tree" id="orgTree">
+                            @php
+                                $renderNode = null;
+                                $renderNode = function ($node) use (&$renderNode) {
+                                    $typeClass = match ($node['type'] ?? 'default') {
+                                        'head' => 'oc-head',
+                                        'advisory' => 'oc-adv',
+                                        'staff' => 'oc-unit',
+                                        'unit' => 'oc-unit',
+                                        default => '',
+                                    };
+                                    $photo = $node['photo'] ?? null;
+                                    $name = $node['name'] ?? '';
+                                    $initial = mb_strtoupper(mb_substr($name, 0, 1));
+                                    $photoSrc = '';
+                                    if ($photo) {
+                                        $photoSrc = str_starts_with($photo, 'landing/') ? asset('storage/' . $photo) : asset($photo);
                                     }
+
+                                    echo '<div class="org-card ' . $typeClass . '">';
+                                    if ($photo) {
+                                        echo '<img src="' . e($photoSrc) . '" alt="' . e($name) . '" class="oc-photo">';
+                                    } else {
+                                        echo '<div class="oc-avatar">' . e($initial) . '</div>';
+                                    }
+                                    if (!empty($node['position'])) {
+                                        echo '<div class="oc-role">' . e($node['position']) . '</div>';
+                                    }
+                                    echo '<div class="oc-name">' . e($name) . '</div>';
                                     echo '</div>';
-                                }
-                                echo '</div>';
-                            };
-                        @endphp
 
-                        @if($pembina && $ketua && $pengawas)
-                            {{-- TAMPILAN PRESISI SESUAI BAGAN RESMI (MAGHRIB MENGAJI & YAYASAN/TK) --}}
-                            <div class="org-board">
-                                {{-- CABANG KIRI: MAGHRIB MENGAJI --}}
-                                @if($maghribRoot)
-                                    <div class="org-branch org-branch-maghrib">
-                                        <div class="org-branch-title">Maghrib Mengaji</div>
-
-                                        {{-- Pimpinan Maghrib Mengaji --}}
-                                        @php $renderCard($maghribRoot, 'oc-green oc-head-wide', 'green'); @endphp
-
-                                        <div class="org-v-stem"></div>
-
-                                        {{-- 4 Posisi Bawahan Sejajar --}}
-                                        <div class="org-branches-row">
-                                            @foreach($maghribChildren as $mc)
-                                                <div class="org-branch-col" style="padding: 20px 4px 0;">
-                                                    @php $renderCard($mc, 'oc-green oc-sm', 'green'); @endphp
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                {{-- CABANG KANAN: STRUKTUR YAYASAN & TK --}}
-                                <div class="org-branch org-branch-yayasan">
-                                    <div class="org-branch-title">Struktur Yayasan & TK</div>
-
-                                    {{-- PUCUK PIMPINAN: PEMBINA ----- KETUA ----- PENGAWAS --}}
-                                    <div class="org-leadership-row">
-                                        @php $renderCard($pembina, 'oc-gold', 'gold'); @endphp
-
-                                        <div class="org-dashed-line"></div>
-
-                                        @php $renderCard($ketua, 'oc-gold oc-head-wide', 'gold'); @endphp
-
-                                        <div class="org-dashed-line"></div>
-
-                                        @php $renderCard($pengawas, 'oc-gold', 'gold'); @endphp
-                                    </div>
-
-                                    {{-- STEM DOWN DARI KETUA YAYASAN --}}
-                                    <div class="org-v-stem"></div>
-
-                                    {{-- DUA DIVISI UTAMA: TK (KIRI) DAN TRAINING (KANAN) --}}
-                                    <div class="org-branches-row">
-                                        {{-- DIVISI TK --}}
-                                        <div class="org-branch-col" style="padding: 20px 14px 0;">
-                                            @php $renderCard($kepalaSekolah, 'oc-red', 'red'); @endphp
-
-                                            <div class="org-v-stem"></div>
-
-                                            {{-- Bendahara & Tata Usaha --}}
-                                            <div class="org-branches-row">
-                                                {{-- Kolom Kiri: Bendahara -> Kurikulum -> Guru --}}
-                                                <div class="org-branch-col" style="padding: 20px 6px 0;">
-                                                    @php $renderCard($bendahara, 'oc-green', 'green'); @endphp
-
-                                                    <div class="org-v-stem org-v-stem-tall"></div>
-
-                                                    @php $renderCard($kurikulum, 'oc-green', 'green'); @endphp
-
-                                                    <div class="org-v-stem"></div>
-
-                                                    {{-- 2 Guru / Wali Kelas --}}
-                                                    <div class="org-branches-row">
-                                                        <div class="org-branch-col" style="padding: 20px 4px 0;">
-                                                            @php $renderCard($guru1, 'oc-green oc-sm', 'green'); @endphp
-                                                        </div>
-                                                        <div class="org-branch-col" style="padding: 20px 4px 0;">
-                                                            @php $renderCard($guru2, 'oc-green oc-sm', 'green'); @endphp
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- Kolom Kanan: Tata Usaha --}}
-                                                <div class="org-branch-col" style="padding: 20px 6px 0;">
-                                                    @php $renderCard($tataUsaha, 'oc-green', 'green'); @endphp
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {{-- DIVISI TRAINING / R&D --}}
-                                        <div class="org-branch-col" style="padding: 20px 14px 0;">
-                                            @php $renderCard($direkturTraining, 'oc-teal', 'teal'); @endphp
-
-                                            <div class="org-v-stem"></div>
-
-                                            {{-- Training & R&D Units --}}
-                                            <div class="org-branches-row">
-                                                <div class="org-branch-col" style="padding: 20px 5px 0;">
-                                                    @php $renderCard($unitTraining, 'oc-mint oc-unit', 'green'); @endphp
-                                                </div>
-                                                <div class="org-branch-col" style="padding: 20px 5px 0;">
-                                                    @php $renderCard($unitRnd, 'oc-mint oc-unit', 'green'); @endphp
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            {{-- FALLBACK GENERIC TREE --}}
-                            <div class="org-tree" id="orgTree">
-                                <ul>
-                                    @foreach($orgTree as $root)
-                                        <li>
-                                            @php $renderTree($root); @endphp
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                                    if (!empty($node['children'])) {
+                                        echo '<ul>';
+                                        foreach ($node['children'] as $child) {
+                                            $isAdvisory = ($child['type'] ?? '') === 'advisory' ? 'node-advisory' : '';
+                                            echo '<li class="' . $isAdvisory . '">';
+                                            $renderNode($child);
+                                            echo '</li>';
+                                        }
+                                        echo '</ul>';
+                                    }
+                                };
+                            @endphp
+                            <ul>
+                                @foreach($orgTree as $root)
+                                    @php $isAdvisoryRoot = ($root['type'] ?? '') === 'advisory' ? 'node-advisory' : ''; @endphp
+                                    <li class="{{ $isAdvisoryRoot }}">
+                                        @php $renderNode($root); @endphp
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>

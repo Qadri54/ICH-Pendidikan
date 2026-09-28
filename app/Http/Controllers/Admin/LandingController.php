@@ -71,9 +71,10 @@ class LandingController extends Controller
     private function updateHero(Request $request, $section)
     {
         $content = $section->content;
-        $content['badge'] = $request->input('badge', $content['badge']);
-        $content['title'] = $request->input('title', $content['title']);
-        $content['subtitle'] = $request->input('subtitle', $content['subtitle']);
+        $content['badge'] = $request->input('badge', $content['badge'] ?? '');
+        $content['title'] = $request->input('title', $content['title'] ?? '');
+        $content['subtitle'] = $request->input('subtitle', $content['subtitle'] ?? '');
+        $content['whatsapp_nav'] = $request->input('whatsapp_nav', $content['whatsapp_nav'] ?? '');
 
         if ($request->hasFile('image')) {
             $content['image'] = $this->service->storeImage($request->file('image'));

@@ -50,4 +50,11 @@ class PembayaranPendaftaranController extends Controller
         return redirect()->route('admin.pembayaran-pendaftaran.index')
             ->with('success', 'Pembayaran berhasil ditolak.');
     }
+
+    public function destroy(\App\Models\RegistrationFee $fee)
+    {
+        $fee->delete();
+        return redirect()->route('admin.pembayaran-pendaftaran.index')
+            ->with('success', 'Data pembayaran pendaftaran berhasil dihapus.');
+    }
 }

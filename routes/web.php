@@ -265,11 +265,13 @@ Route::middleware(['auth', 'role:Admin,Kepala Sekolah,Kepala Yayasan'])
             Route::delete('raport/{id}',         [AdminRaportController::class, 'destroy'])->name('raport.destroy');
 
             Route::get('pendaftaran/create',            [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+            Route::get('pendaftaran/{pendaftaran}/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit');
             Route::post('pendaftaran',                   [PendaftaranController::class, 'store'])->name('pendaftaran.store');
             Route::patch('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
 
             Route::post('pembayaran-pendaftaran/{transaksi}/approve', [PembayaranPendaftaranController::class, 'approve'])->name('pembayaran-pendaftaran.approve');
             Route::post('pembayaran-pendaftaran/{transaksi}/reject',  [PembayaranPendaftaranController::class, 'reject'])->name('pembayaran-pendaftaran.reject');
+            Route::delete('pembayaran-pendaftaran/{fee}', [PembayaranPendaftaranController::class, 'destroy'])->name('pembayaran-pendaftaran.destroy');
 
             Route::post('pengaturan',                              [PengaturanController::class, 'update'])->name('pengaturan.update');
             Route::post('pengaturan/toggle-pendaftaran',           [PengaturanController::class, 'togglePendaftaran'])->name('pengaturan.toggle-pendaftaran');

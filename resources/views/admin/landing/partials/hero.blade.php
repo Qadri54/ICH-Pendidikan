@@ -16,6 +16,10 @@
         <textarea name="subtitle" rows="3" class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-ich-green/30 focus:border-ich-green">{{ $c['subtitle'] ?? '' }}</textarea>
     </div>
     <div>
+        <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">No. WhatsApp (Untuk Navigasi Atas)</label>
+        <input type="text" name="whatsapp_nav" value="{{ $c['whatsapp_nav'] ?? '6281360765971' }}" class="w-full border border-ich-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-ich-green/30 focus:border-ich-green" placeholder="628xxxxxxxxxx">
+    </div>
+    <div>
         <label class="block text-sm font-ui font-bold text-ich-ink-600 mb-1">Gambar Background</label>
         @if(!empty($c['image']))
             <img src="{{ asset($c['image']) }}" alt="Hero" class="w-40 h-24 object-cover rounded-lg mb-2">

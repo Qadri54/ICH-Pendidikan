@@ -10,8 +10,21 @@
         <form method="POST" action="{{ route('admin.guru.update', $guru->teacher_id) }}" class="space-y-4">
             @csrf @method('PUT')
 
-            <div class="px-3 py-2 bg-ich-info-soft rounded-ich-md text-sm text-ich-teal font-ui font-bold">
-                Tipe: {{ $tipe }}
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Tipe Guru</label>
+                    <select name="tipe_guru" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                        <option value="Guru" {{ old('tipe_guru', $tipe) === 'Guru' ? 'selected' : '' }}>Guru TK</option>
+                        <option value="Guru Ngaji" {{ old('tipe_guru', $tipe) === 'Guru Ngaji' ? 'selected' : '' }}>Guru Ngaji</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-ui font-bold text-sm text-ich-ink-600 mb-1.5">Status Aktif</label>
+                    <select name="status" class="w-full h-[46px] px-3.5 bg-white border-2 border-ich-teal rounded-ich-lg font-sans text-sm focus:outline-none">
+                        <option value="active" {{ old('status', $guru->user?->status) === 'active' ? 'selected' : '' }}>Aktif</option>
+                        <option value="inactive" {{ old('status', $guru->user?->status) === 'inactive' ? 'selected' : '' }}>Non-Aktif</option>
+                    </select>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">

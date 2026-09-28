@@ -147,8 +147,8 @@
 
                             {{-- Aksi --}}
                             <td class="px-5 py-4">
-                                @if($pendingTx && ! $isReadOnly)
-                                    <div class="flex flex-col gap-2 min-w-[120px]">
+                                <div class="flex flex-col gap-2 min-w-[120px]">
+                                    @if($pendingTx && ! $isReadOnly)
                                         <button type="button"
                                                 @click="$dispatch('open-confirm', {
                                                     title: 'Setujui Pembayaran',
@@ -171,10 +171,21 @@
                                                        hover:bg-ich-error hover:text-white transition-colors">
                                             Tolak
                                         </button>
-                                    </div>
-                                @else
-                                    <span class="text-xs text-ich-ink-400">—</span>
-                                @endif
+                                    @endif
+
+                                    @if(! $isReadOnly)
+                                        <form action="{{ route('admin.pembayaran-pendaftaran.destroy', $fee) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data tagihan pendaftaran ini secara permanen?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="w-full px-3 py-1.5 bg-red-100 text-red-600 font-ui font-bold text-xs rounded-lg hover:bg-red-200 transition-colors">
+                                                Hapus Data
+                                            </button>
+                                        </form>
+                                    @endif
+                                    @if(! $pendingTx && $isReadOnly)
+                                        <span class="text-xs text-ich-ink-400">—</span>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

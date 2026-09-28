@@ -30,6 +30,10 @@ class SppPaymentService
         ]);
 
         $payment->load('student');
+        
+        // Ubah status invoice menjadi pending agar user melihat perubahan status
+        SppInvoice::where('invoice_id', $data['invoice_id'])->update(['status' => 'pending']);
+
         $admins = User::whereHas('role', fn ($q) => $q->where('role_name', 'Admin'))->get();
         Notification::send($admins, new SppPaymentUploadedNotification($payment));
 
@@ -71,6 +75,11 @@ class SppPaymentService
     {
         $payment = SppPayment::findOrFail($paymentId);
         $payment->update(['status' => 'cancelled']);
+
+        // Kembalikan status invoice ke unpaid atau overdue jika jatuh tempo
+        $invoice = SppInvoice::findOrFail($payment->invoice_id);
+        $status = now()->isAfter($invoice->jatuh_tempo) ? 'overdue' : 'unpaid';
+        $invoice->update(['status' => $status]);
 
         $payment->load('student.user', 'invoice');
         if ($payment->student?->user) {
