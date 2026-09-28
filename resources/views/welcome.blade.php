@@ -760,18 +760,6 @@
                 background-color: #fff;
             }
 
-            /* Garis putus-putus untuk Penasihat / Advisory */
-            .org-tree li.node-advisory::before {
-                border-top-style: dashed;
-            }
-            .org-tree li.node-advisory::after {
-                border-top-style: dashed;
-                border-left-style: dashed;
-            }
-            .org-tree li.node-advisory > ul::before {
-                border-left-style: dashed;
-            }
-
             .org-card {
                 background: #fff;
                 border-radius: 10px;
