@@ -720,7 +720,6 @@
 
             .org-tree>ul {
                 padding-top: 0;
-                gap: 40px;
             }
 
             .org-tree>ul::before {
@@ -728,12 +727,37 @@
             }
 
             .org-tree>ul>li {
-                padding-top: 0;
+                padding: 0 10px; /* Hapus padding atas, hanya spacing samping */
+                z-index: 1;
             }
 
+            /* Hubungkan root node (Petinggi) dengan garis menyamping dari sisi card */
             .org-tree>ul>li::before,
             .org-tree>ul>li::after {
-                display: none;
+                display: block;
+                top: 60px; /* Posisi vertikal garis (menembus tengah card) */
+                height: 0; /* Hilangkan garis vertikal ke bawah */
+                border-top: 3px dashed #000 !important; /* Warna hitam dan lebih tebal */
+                border-left: none !important; /* Hapus garis kiri bawaan */
+                z-index: -1; /* Posisikan garis di belakang card */
+            }
+            
+            .org-tree>ul>li:first-child::before {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:last-child::after {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:only-child::before,
+            .org-tree>ul>li:only-child::after {
+                display: none !important;
+            }
+
+            /* Pastikan background putih menutupi garis di belakangnya */
+            .org-tree>ul>li>.org-card {
+                position: relative;
+                z-index: 2;
+                background-color: #fff;
             }
 
             .org-card {
@@ -1415,7 +1439,7 @@
                 <a href="#program">Program</a>
                 <a href="#aktivitas">Aktivitas</a>
                 <a href="#testimoni">Testimoni</a>
-                <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank"
+                <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank"
                     rel="noopener">Kontak</a>
             </div>
             <div class="nav-cta">
@@ -1437,7 +1461,7 @@
             <a href="#program" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Program</a>
             <a href="#aktivitas" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Aktivitas</a>
             <a href="#testimoni" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Testimoni</a>
-            <a href="https://wa.me/{{ $footer['whatsapp'] ?? '6281360765971' }}" target="_blank" rel="noopener"
+            <a href="https://wa.me/{{ $hero['whatsapp_nav'] ?? ($footer['whatsapp'] ?? '6281360765971') }}" target="_blank" rel="noopener"
                 onclick="document.querySelector('.mobile-menu').classList.remove('open')"
                 style="color:#F5A623">Kontak</a>
             <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;width:80%;max-width:280px;">
@@ -1583,7 +1607,8 @@
                                     if (!empty($node['children'])) {
                                         echo '<ul>';
                                         foreach ($node['children'] as $child) {
-                                            echo '<li>';
+                                            $isAdvisory = ($child['type'] ?? '') === 'advisory' ? 'node-advisory' : '';
+                                            echo '<li class="' . $isAdvisory . '">';
                                             $renderNode($child);
                                             echo '</li>';
                                         }
@@ -1593,7 +1618,8 @@
                             @endphp
                             <ul>
                                 @foreach($orgTree as $root)
-                                    <li>
+                                    @php $isAdvisoryRoot = ($root['type'] ?? '') === 'advisory' ? 'node-advisory' : ''; @endphp
+                                    <li class="{{ $isAdvisoryRoot }}">
                                         @php $renderNode($root); @endphp
                                     </li>
                                 @endforeach

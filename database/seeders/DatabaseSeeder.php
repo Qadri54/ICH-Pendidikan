@@ -11,15 +11,15 @@ class DatabaseSeeder extends Seeder {
 
         $this->call([
             // ClassRoomSeeder::class,
-            UserSeeder::class,
-            // ParentStudentSeeder::class,
-            // AcademicPeriodSeeder::class,
-            // DevelopmentCategorySeeder::class,
-            // ReportCardSeeder::class,
-            // DummyDataSeeder::class,
-            // DemoSeeder::class,
-            PDFDataSeeder::class,
-            LandingSectionSeeder::class,
+            // UserSeeder::class,
+            // // ParentStudentSeeder::class,
+            // // AcademicPeriodSeeder::class,
+            // // DevelopmentCategorySeeder::class,
+            // // ReportCardSeeder::class,
+            // // DummyDataSeeder::class,
+            // // DemoSeeder::class,
+            // PDFDataSeeder::class,
+            // LandingSectionSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();
