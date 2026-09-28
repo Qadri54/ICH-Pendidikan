@@ -720,7 +720,6 @@
 
             .org-tree>ul {
                 padding-top: 0;
-                gap: 40px;
             }
 
             .org-tree>ul::before {
@@ -728,12 +727,37 @@
             }
 
             .org-tree>ul>li {
-                padding-top: 0;
+                padding: 0 10px; /* Hapus padding atas, hanya spacing samping */
+                z-index: 1;
             }
 
+            /* Hubungkan root node (Petinggi) dengan garis menyamping dari sisi card */
             .org-tree>ul>li::before,
             .org-tree>ul>li::after {
-                display: none;
+                display: block;
+                top: 60px; /* Posisi vertikal garis (menembus tengah card) */
+                height: 0; /* Hilangkan garis vertikal ke bawah */
+                border-top: 3px dashed #000 !important; /* Warna hitam dan lebih tebal */
+                border-left: none !important; /* Hapus garis kiri bawaan */
+                z-index: -1; /* Posisikan garis di belakang card */
+            }
+            
+            .org-tree>ul>li:first-child::before {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:last-child::after {
+                border-top: none !important;
+            }
+            .org-tree>ul>li:only-child::before,
+            .org-tree>ul>li:only-child::after {
+                display: none !important;
+            }
+
+            /* Pastikan background putih menutupi garis di belakangnya */
+            .org-tree>ul>li>.org-card {
+                position: relative;
+                z-index: 2;
+                background-color: #fff;
             }
 
             /* Garis putus-putus untuk Penasihat / Advisory */
