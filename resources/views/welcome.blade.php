@@ -731,25 +731,49 @@
                 z-index: 1;
             }
 
-            /* Hubungkan root node (Petinggi) dengan garis menyamping dari sisi card */
+            /* Sembunyikan garis hijau default untuk semua root node (paling atas) */
             .org-tree>ul>li::before,
             .org-tree>ul>li::after {
-                display: block;
+                display: none !important;
+                border: none !important;
+            }
+
+            /* Hubungkan root node (Petinggi) dengan garis putus-putus hitam menyamping */
+            .org-tree>ul>li.board-member::before,
+            .org-tree>ul>li.board-member::after {
+                content: '';
+                display: block !important;
+                position: absolute;
                 top: 60px; /* Posisi vertikal garis (menembus tengah card) */
-                height: 0; /* Hilangkan garis vertikal ke bawah */
-                border-top: 3px dashed #000 !important; /* Warna hitam dan lebih tebal */
-                border-left: none !important; /* Hapus garis kiri bawaan */
-                z-index: -1; /* Posisikan garis di belakang card */
+                width: 50%;
+                height: 0;
+                border-top: 3px dashed #000 !important; /* Warna hitam putus-putus persis image1.png */
+                border-left: none !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                z-index: 0;
+            }
+
+            .org-tree>ul>li.board-member::before {
+                right: 50%;
+                left: auto;
+            }
+
+            .org-tree>ul>li.board-member::after {
+                left: 50%;
+                right: auto;
             }
             
-            .org-tree>ul>li:first-child::before {
+            .org-tree>ul>li.board-first::before {
+                display: none !important;
                 border-top: none !important;
             }
-            .org-tree>ul>li:last-child::after {
+            .org-tree>ul>li.board-last::after {
+                display: none !important;
                 border-top: none !important;
             }
-            .org-tree>ul>li:only-child::before,
-            .org-tree>ul>li:only-child::after {
+            .org-tree>ul>li.board-first.board-last::before,
+            .org-tree>ul>li.board-first.board-last::after {
                 display: none !important;
             }
 
@@ -1616,10 +1640,29 @@
                                     }
                                 };
                             @endphp
+                            @php
+                                $roots = array_values($orgTree);
+                                $totalRoots = count($roots);
+                            @endphp
                             <ul>
-                                @foreach($orgTree as $root)
-                                    @php $isAdvisoryRoot = ($root['type'] ?? '') === 'advisory' ? 'node-advisory' : ''; @endphp
-                                    <li class="{{ $isAdvisoryRoot }}">
+                                @foreach($roots as $idx => $root)
+                                    @php 
+                                        $classes = [];
+                                        $isBoard = !empty($root['is_board']);
+                                        if ($isBoard) {
+                                            $classes[] = 'board-member';
+                                            $prevBoard = ($idx > 0 && !empty($roots[$idx - 1]['is_board']));
+                                            $nextBoard = ($idx < $totalRoots - 1 && !empty($roots[$idx + 1]['is_board']));
+                                            
+                                            if (!$prevBoard) {
+                                                $classes[] = 'board-first';
+                                            }
+                                            if (!$nextBoard) {
+                                                $classes[] = 'board-last';
+                                            }
+                                        }
+                                    @endphp
+                                    <li class="{{ implode(' ', $classes) }}">
                                         @php $renderNode($root); @endphp
                                     </li>
                                 @endforeach
