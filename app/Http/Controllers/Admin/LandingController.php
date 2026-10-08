@@ -145,6 +145,7 @@ class LandingController extends Controller
                 'name' => $m['name'],
                 'photo' => $m['existing_photo'] ?? null,
                 'type' => $m['type'] ?? 'default',
+                'is_board' => !empty($m['parent_id']) ? 0 : (!empty($m['is_board']) ? 1 : 0),
                 'order' => (int) ($m['order'] ?? ($idx + 1)),
             ];
 

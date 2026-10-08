@@ -96,6 +96,20 @@
                                                 </template>
                                             </template>
                                         </select>
+                                        <template x-if="!m.parent_id">
+                                            <div class="mt-2 pl-1">
+                                                <input type="hidden" :name="'members['+i+'][is_board]'" value="0">
+                                                <label class="flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox" 
+                                                           :name="'members['+i+'][is_board]'" 
+                                                           value="1" 
+                                                           :checked="m.is_board == 1"
+                                                           @change="m.is_board = $event.target.checked ? 1 : 0"
+                                                           class="rounded border-ich-line text-ich-green focus:ring-ich-green">
+                                                    <span class="text-[11px] font-ui text-ich-ink-600 font-bold">Gabung Garis Putus (Barisan Petinggi)</span>
+                                                </label>
+                                            </div>
+                                        </template>
                                     </div>
                                 </div>
                             </div>
@@ -156,12 +170,46 @@
 <style>
     .pv-tree { width: fit-content; min-width: 100%; padding: 8px 0; }
 
-    /* ── Root level: sejajar tanpa garis (seperti landing page) ── */
+    /* ── Root level: sejajar dengan garis putus jika barisan petinggi ── */
     .pv-roots {
         display: flex;
         justify-content: center;
-        gap: 28px;
+        gap: 0;
         padding: 0;
+    }
+    .pv-roots > .pv-node {
+        position: relative;
+        padding: 0 14px;
+    }
+    .pv-roots > .pv-node.pv-board-member::before,
+    .pv-roots > .pv-node.pv-board-member::after {
+        content: '';
+        position: absolute;
+        top: 45px;
+        width: 50%;
+        height: 0;
+        border-top: 2px dashed #000;
+        z-index: 0;
+    }
+    .pv-roots > .pv-node.pv-board-member::before {
+        right: 50%;
+    }
+    .pv-roots > .pv-node.pv-board-member::after {
+        left: 50%;
+    }
+    .pv-roots > .pv-node.pv-board-first::before {
+        display: none !important;
+    }
+    .pv-roots > .pv-node.pv-board-last::after {
+        display: none !important;
+    }
+    .pv-roots > .pv-node.pv-board-first.pv-board-last::before,
+    .pv-roots > .pv-node.pv-board-first.pv-board-last::after {
+        display: none !important;
+    }
+    .pv-roots > .pv-node > .pv-card {
+        position: relative;
+        z-index: 1;
     }
 
     /* ── Rekursif tree menggunakan <ul>/<li> seperti landing page ── */
@@ -244,6 +292,7 @@ function strukturEditor() {
                 name: '',
                 photo: null,
                 type: 'default',
+                is_board: 0,
                 order: this.members.length + 1
             });
         },
@@ -278,19 +327,29 @@ function strukturEditor() {
         renderRoots() {
             const roots = this.getTreeRoots();
             let html = '<div class="pv-roots">';
-            for (const root of roots) {
-                html += this.renderNode(root, true);
+            for (let i = 0; i < roots.length; i++) {
+                const root = roots[i];
+                const isBoard = (root.is_board == 1 || root.is_board === true);
+                let boardClasses = '';
+                if (isBoard) {
+                    boardClasses = 'pv-board-member';
+                    const prevBoard = (i > 0 && (roots[i - 1].is_board == 1 || roots[i - 1].is_board === true));
+                    const nextBoard = (i < roots.length - 1 && (roots[i + 1].is_board == 1 || roots[i + 1].is_board === true));
+                    if (!prevBoard) boardClasses += ' pv-board-first';
+                    if (!nextBoard) boardClasses += ' pv-board-last';
+                }
+                html += this.renderNode(root, true, boardClasses);
             }
             html += '</div>';
             return html;
         },
 
-        renderNode(node, isRoot) {
+        renderNode(node, isRoot, boardClasses = '') {
             const children = this.getChildren(node.id);
             const cardClass = isRoot ? 'pv-card pv-card--head' : (children.length > 0 ? 'pv-card' : 'pv-card pv-card--sub');
             const initial = node.name ? node.name.charAt(0).toUpperCase() : '?';
 
-            let html = '<div class="pv-node">';
+            let html = '<div class="pv-node ' + (isRoot ? boardClasses : '') + '">';
 
             html += '<div class="' + cardClass + '">';
             html += '<div class="pv-avatar">' + this.esc(initial) + '</div>';
